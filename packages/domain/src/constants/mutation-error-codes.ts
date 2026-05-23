@@ -10,9 +10,21 @@ export const AUTH_MUTATION_ERROR_CODES = {
 export type AuthMutationErrorCode =
   (typeof AUTH_MUTATION_ERROR_CODES)[keyof typeof AUTH_MUTATION_ERROR_CODES];
 
+/** Wishlist mutation error codes. */
+export const WISHLIST_MUTATION_ERROR_CODES = {
+  UNAUTHORIZED: "UNAUTHORIZED",
+  FORBIDDEN: "FORBIDDEN",
+  TRAINER_NOT_BOOKABLE: "TRAINER_NOT_BOOKABLE",
+  VALIDATION: "VALIDATION",
+} as const;
+
+export type WishlistMutationErrorCode =
+  (typeof WISHLIST_MUTATION_ERROR_CODES)[keyof typeof WISHLIST_MUTATION_ERROR_CODES];
+
 /** All known mutation error codes — extend as domains ship. */
 export const MUTATION_ERROR_CODES = {
   ...AUTH_MUTATION_ERROR_CODES,
+  ...WISHLIST_MUTATION_ERROR_CODES,
 } as const;
 
 export type MutationErrorCode =

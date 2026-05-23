@@ -209,6 +209,51 @@ export const MESSAGES = {
     saved: "Изменения сохранены",
     error: "Не удалось выполнить действие",
   },
+  wishlist: {
+    add: "Добавить в избранное",
+    remove: "Убрать из избранного",
+    toggling: "Обновляем…",
+    error: "Не удалось обновить избранное",
+    unauthorized: "Войдите, чтобы сохранить тренера",
+    forbidden: "Избранное доступно только клиентам",
+    trainerNotBookable: "Тренер недоступен для добавления",
+    validationError: "Некорректный запрос",
+  },
+  trainer: {
+    profile: {
+      metaTitle: "{name} — Pulse",
+      metaDescription: "Профиль тренера {name}: услуги, расписание и отзывы.",
+      tabs: {
+        about: "О тренере",
+        services: "Услуги",
+        schedule: "Расписание",
+        reviews: "Отзывы",
+      },
+      experienceLabel: "{years} лет опыта",
+      bookNow: "Забронировать",
+      fromPriceLabel: "от",
+      perSessionLabel: "за занятие",
+      serviceSelectLabel: "Услуга",
+      scheduleThisWeek: "На этой неделе",
+      scheduleEmpty: {
+        title: "Нет слотов на этой неделе",
+        description: "Попробуйте забронировать позже или выберите другую услугу.",
+      },
+      reviewsEmpty: {
+        title: "Пока нет отзывов",
+        description: "Станьте первым, кто оставит отзыв после занятия.",
+      },
+      aboutEmptyBio: "Тренер пока не добавил описание.",
+      certificatesTitle: "Сертификаты",
+      categoriesTitle: "Направления",
+      error: {
+        title: "Не удалось загрузить профиль",
+        description: "Проверьте подключение и попробуйте снова.",
+        retry: "Повторить",
+        backToCatalog: "В каталог",
+      },
+    },
+  },
   trainerReviewBanner: {
     title: "Профиль на проверке",
     description:

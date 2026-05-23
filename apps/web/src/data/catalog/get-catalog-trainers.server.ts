@@ -127,7 +127,9 @@ async function fetchCatalogTrainersByDbSort(
   const skip = (query.page - 1) * query.pageSize;
   const prisma = getPrisma();
 
-  const [rows, totalCount] = await prisma.$transaction([
+  // Read-only catalog: no $transaction — Prisma 7 + adapter-pg parallelizes join
+  // fetches on one pg Client inside transactions (pg@9 will hard-fail).
+  const [rows, totalCount] = await Promise.all([
     prisma.trainerProfile.findMany({
       where,
       orderBy,

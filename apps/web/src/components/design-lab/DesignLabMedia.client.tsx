@@ -88,6 +88,12 @@ export function DesignLabMedia() {
               src="https://picsum.photos/seed/pulse-trainer-anna/400/400"
               alt="Anna Yoga"
             />
+            <PhotoSlot
+              label="Portrait · Profile"
+              aspect="portrait"
+              src="https://picsum.photos/seed/pulse-trainer-portrait/600/800"
+              alt="Trainer portrait"
+            />
             <PhotoSlot label="No photo · Dmitry" aspect="cover" />
             <PhotoSlot label="Banner · Hero" aspect="banner" className="sm:col-span-1" />
           </div>
