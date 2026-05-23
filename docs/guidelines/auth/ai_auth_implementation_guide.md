@@ -3,6 +3,7 @@
 **Stack:** Next.js **16.2.6** (App Router) | Auth.js v5 | Prisma v7 | Neon | Vercel  
 **Methodology:** [`docs/meta/ai_first_project_methodology.md`](../../meta/ai_first_project_methodology.md)  
 **Runtime:** [ADR-002](../../prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — **`proxy.ts`**, not `middleware.ts`  
+**Auth canon:** [ADR-003](../../prds/07_governance/adr_003_auth_credentials_jwt_rbac.md) — Credentials, JWT, RBAC, four-layer model  
 **Schema:** [`database_schema_v1.md`](../../prds/03_data_model/database_schema_v1.md)
 
 ---
@@ -75,14 +76,14 @@ Use `@pulse/policy-edge` for path classification helpers if needed.
 
 ## 4. Route protection matrix
 
-See [`canonical_routes.md`](../../design/canonical_routes.md). Perimeter in **proxy**; object-level in **policy-server**.
+See [`canonical_routes.md`](../../design/canonical_routes.md) and [`authorization_matrix.md`](../../prds/04_authorization_privacy/authorization_matrix.md). Perimeter in **proxy**; object-level in **policy-server** ([`policy_enforcement_contract.md`](../../prds/04_authorization_privacy/policy_enforcement_contract.md)).
 
 ---
 
 ## 5. MVP flows
 
 - Registration → `user.role` from tile; trainer → `trainer_profile.status = pending`
-- Forgot password → `password_reset_token` + Resend
+- Forgot password → **post-MVP** (`password_reset_token` + Resend per ADR-003); not MVP UI
 - Credentials + bcrypt on `User.passwordHash`
 
 ---
@@ -102,4 +103,7 @@ Update docs and imports to match ADR-002.
 ## 7. Related
 
 - [ADR-002](../../prds/07_governance/adr_002_next162_vercel_runtime_policy.md)
+- [ADR-003](../../prds/07_governance/adr_003_auth_credentials_jwt_rbac.md)
+- [`auth_runtime_spec.md`](../../prds/05_runtime/auth_runtime_spec.md) — auth flows spec (W5)
+- [`authorization_matrix.md`](../../prds/04_authorization_privacy/authorization_matrix.md)
 - Cursor: [`auth-security.mdc`](../../../.cursor/rules/auth-security.mdc), [`policy-packages.mdc`](../../../.cursor/rules/policy-packages.mdc)

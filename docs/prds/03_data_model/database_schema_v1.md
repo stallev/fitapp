@@ -77,7 +77,7 @@
 
 ### 0.2 Инварианты (нельзя нарушать)
 
-1. **`trainer_profile.timezone` (IANA)** — единственный источник истины для weekly schedule, slot generation, reminders, display клиенту. Не использовать timezone Vercel/UTC по умолчанию для бизнес-логики расписания.
+1. **`trainer_profile.timezone` (IANA)** — единственный источник истины для weekly schedule, slot generation, reminders, display клиенту. Не использовать timezone Vercel/UTC по умолчанию для бизнес-логики расписания. **Governance:** [ADR-004](../07_governance/adr_004_timezone_scheduling_model.md).
 
 2. **Booking lifecycle** — переходы `pending` → `confirmed` → `completed` / `cancelled` только через documented use-cases в `packages/domain`. Прямой UPDATE из UI — баг.
 
@@ -87,7 +87,7 @@
 
 5. **Review immutability** — один review на booking; после publish не редактируется (только admin hide/delete).
 
-6. **Idempotency jobs** — каждый email/reminder job имеет `idempotency_key` UNIQUE в `delivery_log`; повторный запуск молча пропускается.
+6. **Idempotency jobs (post-MVP runtime)** — при включении email каждый send имеет `idempotency_key` UNIQUE в `delivery_log`; повторный запуск молча пропускается. **MVP:** таблицы `job_execution`, `delivery_log` в DDL, приложение **не** пишет delivery rows — см. [`mvp_scope.md`](../01_product_scope/mvp_scope.md).
 
 7. **Post-MVP readiness** — Stripe/Daily.co поля nullable с первого дня; включение фичи не требует breaking DDL.
 
@@ -150,7 +150,7 @@ CREATE INDEX idx_user_role ON "user"(role);
 ### 1.3 password_reset_token
 
 ```sql
--- MVP: forgot-password flow через Resend.
+-- Schema-ready. MVP: forgot-password email flow NOT implemented (post-MVP + Resend).
 CREATE TABLE password_reset_token (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id     uuid NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
@@ -557,7 +557,7 @@ CREATE INDEX idx_delivery_user_created ON delivery_log(user_id, created_at DESC)
 CREATE INDEX idx_delivery_booking ON delivery_log(booking_id);
 ```
 
-**Email events (MVP):** registration, trainer application received/approved/rejected, booking confirmed, reminder 24h, session completed + review request — см. [`fitness-platform-mvp.md`](../../default_docs/fitness-platform-mvp.md).
+**Email events (post-MVP):** E-01–E-09 — [`email_notifications_matrix.md`](../01_product_scope/email_notifications_matrix.md). **MVP:** DDL only; in-app UX per [`mvp_scope.md`](../01_product_scope/mvp_scope.md).
 
 ### 10.4 audit_log
 
@@ -631,9 +631,17 @@ Package: `packages/db/prisma/schema.prisma` — единственное DDL в 
 | Document | Purpose |
 |----------|---------|
 | [`ai_first_project_methodology.md`](../../meta/ai_first_project_methodology.md) | Doc hierarchy, agent cycle |
-| [`data_access_patterns.md`](./data_access_patterns.md) | Planned — hot path queries |
-| [`lifecycle_models.md`](../02_domain_model/lifecycle_models.md) | Planned — booking/verification state machines |
-| [`authorization_matrix.md`](../04_authorization_privacy/authorization_matrix.md) | Planned — role × resource |
+| [`02_domain_model/README.md`](../02_domain_model/README.md) | Domain layer entry |
+| [`lifecycle_models.md`](../02_domain_model/lifecycle_models.md) | Booking/verification state machines |
+| [`failure_modes_catalog.md`](../02_domain_model/failure_modes_catalog.md) | FM-xxx race/security index |
+| [`domain_invariants.md`](../02_domain_model/domain_invariants.md) | INV-01 … cross-schema rules |
+| [`data_access_patterns.md`](./data_access_patterns.md) | Hot path query patterns |
+| [`indexing_strategy.md`](./indexing_strategy.md) | Index canon + Wave 1 additions |
+| [`seed_data_spec.md`](./seed_data_spec.md) | Dev/CI seed fixtures |
+| [`adr_004_timezone_scheduling_model.md`](../07_governance/adr_004_timezone_scheduling_model.md) | Timezone & schedule ADR |
+| [`adr_007_file_asset_blob_lifecycle.md`](../07_governance/adr_007_file_asset_blob_lifecycle.md) | `file_asset` + Blob |
+| [`../06_operations/migration_runbook.md`](../06_operations/migration_runbook.md) | Migrate deploy procedures (W12) |
+| [`../../implementation/mvp/guides/neon_prisma_migrations_guide.md`](../../implementation/mvp/guides/neon_prisma_migrations_guide.md) | Neon + Prisma how-to |
 | Lampto reference | [`database_schema_v3.md`](../../examples/lampto/docs/prds/03_data_model/database_schema_v3.md) |
 
 ---

@@ -30,16 +30,16 @@ Pulse — MVP маркetplace фитнес-тренеров. Продуктов�
 | ORM | **Prisma v7** |
 | Database | **Neon PostgreSQL 17** — pooled `DATABASE_URL`, `DIRECT_URL` for migrations |
 | File storage | **Vercel Blob** — profile photos, certificates |
-| Transactional email | **Resend** |
+| Transactional email | **Resend** (post-MVP send; schema `delivery_log` on MVP) |
 | Toasts | Sonner |
 
 ### Jobs contour (MVP)
 
 | Компонент | Выбор |
 |-----------|-------|
-| Scheduling | **Vercel Cron** |
+| Scheduling | **Vercel Cron** (post-MVP for email) |
 | Execution | Vercel Serverless Functions (dedicated route handlers or `apps/workers`) |
-| Idempotency | `idempotency_key` + `delivery_log` table (pattern from lampto) |
+| Idempotency | `idempotency_key` + `delivery_log` table — **DDL on MVP**, runtime post-MVP |
 
 ### Monorepo layout
 
@@ -90,10 +90,14 @@ Identical **structure** to lampto:
 
 ## Связанные документы
 
+- [`adr_index.md`](./adr_index.md) — реестр ADR
+- [`decision_process.md`](./decision_process.md) — процесс принятия решений
 - [`docs/meta/ai_first_project_methodology.md`](../../meta/ai_first_project_methodology.md)
 - [`docs/reference/lampto_project_reference.md`](../../reference/lampto_project_reference.md)
 - [`docs/default_docs/fitness-platform-mvp.md`](../../default_docs/fitness-platform-mvp.md)
 - Pulse runtime policy: [ADR-002](./adr_002_next162_vercel_runtime_policy.md)
+- Email jobs (post-MVP): [ADR-006](./adr_006_idempotent_email_delivery.md)
+- Deploy & ops: [`vercel_deploy_guide.md`](../../implementation/mvp/guides/vercel_deploy_guide.md), [`06_operations/README.md`](../06_operations/README.md)
 - Lampto ADR reference (patterns only): [`adr_022_next16_vercel_runtime_policy.md`](../../examples/lampto/docs/prds/07_governance/adr_022_next16_vercel_runtime_policy.md)
 
 ---
@@ -102,5 +106,5 @@ Identical **structure** to lampto:
 
 - [ ] Do not configure Netlify for Pulse
 - [ ] Use Vercel env vars pattern (`DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `AUTH_URL`)
-- [ ] Use Resend for email, not SES
+- [ ] Use Resend for email when post-MVP email ships — not SES; **do not** wire Resend on MVP unless scope changes
 - [ ] Follow lampto **package boundaries**, not lampto **hosting** config

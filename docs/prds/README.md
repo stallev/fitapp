@@ -6,7 +6,9 @@
 
 **Методология:** [`docs/meta/ai_first_project_methodology.md`](../meta/ai_first_project_methodology.md)
 
-**Interim PRD (до миграции):** [`docs/default_docs/`](../default_docs/)
+**Реестр документации:** [`docs/meta/documentation_creation_registry.md`](../meta/documentation_creation_registry.md) — волны W0–W14 **complete**
+
+**Interim PRD (archive):** [`docs/default_docs/`](../default_docs/) — read-only; канон в `prds/`
 
 **Референс архитектуры:** [`docs/reference/lampto_project_reference.md`](../reference/lampto_project_reference.md)
 
@@ -14,21 +16,40 @@
 
 ## Статус слоёв
 
-| Слой | Каталог | Статус |
-|------|---------|--------|
-| Product Scope | `01_product_scope/` | Planned — см. `default_docs/` |
-| Domain Model | `02_domain_model/` | Planned |
-| Data Model | `03_data_model/` | Planned |
-| Authorization | `04_authorization_privacy/` | Planned |
-| Runtime | `05_runtime/` | ADR-001 принят |
-| Operations | `06_operations/` | Planned |
-| Governance | `07_governance/` | ADR-001 |
+| Слой | Каталог | Статус | Ключевые документы |
+|------|---------|--------|-------------------|
+| Product Scope | [`01_product_scope/`](01_product_scope/) | **Canonical** | `mvp_scope`, `pages_functional_spec`, user flows |
+| Domain Model | [`02_domain_model/`](02_domain_model/) | **Canonical** | lifecycle, FM catalog, invariants, use cases |
+| Data Model | [`03_data_model/`](03_data_model/) | **Canonical** | `database_schema_v1`, access patterns, indexes, seed |
+| Authorization | [`04_authorization_privacy/`](04_authorization_privacy/) | **Canonical** | matrix, policy contract, privacy |
+| Runtime | [`05_runtime/`](05_runtime/) | **Canonical** | backend, monorepo, auth runtime, cache |
+| Operations | [`06_operations/`](06_operations/) | **Canonical** | migration runbook, observability, cron registry |
+| Governance | [`07_governance/`](07_governance/) | **Canonical** | ADR-001–007 ACCEPTED, decision process |
+
+**Design & implementation** (см. [`architecture_master_index.md`](architecture_master_index.md) §10–12): UX contracts, wireframes, contracts, specs, phases P01–P07, guides — **Canonical**.
 
 ---
 
-## Созданные документы
+## Созданные документы по волнам
 
-- [`architecture_master_index.md`](architecture_master_index.md)
-- [`07_governance/adr_001_stack_and_runtime.md`](07_governance/adr_001_stack_and_runtime.md)
+| Волна | Содержимое |
+|-------|------------|
+| W1 | Product scope PRD, ADR index, decision process |
+| W3 | Domain model (lifecycle, FM, invariants, use cases) |
+| W4 | ADR-003–007 |
+| W5 | Authorization + runtime PRD |
+| W6 | Data model supplements |
+| W8–W9 | Implementation contracts + specs |
+| W10 | Wireframes MVP |
+| W11 | Phase descriptions P01–P07 + tasks |
+| W12 | Operations + guides |
+| W13 | Architecture learning pack (layer walkthroughs) |
+| W14 | Final index sync (этот каталог + master index) |
 
-Остальные PRD — в следующих задачах.
+---
+
+## Следующий шаг
+
+**P01 implementation** — [`../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) + [`P01_tasks.md`](../implementation/mvp/tasks/P01_tasks.md).
+
+**Registry:** [`documentation_creation_registry.md`](../meta/documentation_creation_registry.md) — wave W14 complete

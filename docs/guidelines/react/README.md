@@ -34,6 +34,8 @@ Patterns for **Next.js 16.2.6 App Router**, **React 19**, **TypeScript**, **Tail
 | [ai_responsive_table_guidelines.md](./ai_responsive_table_guidelines.md) | Admin tables, mobile cards |
 | [TypeScript monorepo](../typescript/ai_typescript_monorepo_guidelines.md) | Cross-package types |
 
+**UX contracts (product canon):** [`interaction_design_contract.md`](../../design/interaction_design_contract.md), [`ui_states_contract.md`](../../design/ui_states_contract.md), [`forms_and_validation_ux.md`](../../design/forms_and_validation_ux.md), [`content_and_microcopy_contract.md`](../../design/content_and_microcopy_contract.md) — enforced via Cursor Rules above.
+
 ---
 
 ## Principles

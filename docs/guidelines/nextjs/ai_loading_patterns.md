@@ -132,4 +132,6 @@ Before finishing route work:
 
 **Reference:** lampto [`ai_loading_patterns.md`](../../examples/lampto/docs/guidelines/nextjs/ai_loading_patterns.md) — adapted Netlify → Vercel, ADR-002.
 
+**Cache invalidation:** [`cache_revalidation_policy.md`](../../prds/05_runtime/cache_revalidation_policy.md) (W5) — post-mutation `updateTag` / `revalidatePath`.
+
 **Last updated:** May 2026

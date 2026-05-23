@@ -3,6 +3,7 @@
 **Role:** Implementation guide for AI agents  
 **Schema:** [`database_schema_v1.md`](../../prds/03_data_model/database_schema_v1.md) — `file_asset`, `file_upload_status`  
 **Runtime:** [ADR-001](../../prds/07_governance/adr_001_stack_and_runtime.md) — **Vercel Blob**  
+**Canon:** [ADR-007](../../prds/07_governance/adr_007_file_asset_blob_lifecycle.md) — lifecycle + FK rules  
 **Cursor rule:** **vercel-blob-uploads**
 
 Subordinate to product canon: trainer certificates, profile photos, verification documents.

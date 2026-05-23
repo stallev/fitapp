@@ -32,8 +32,8 @@ Monorepo: **Next.js 16.2.6** App Router + Vercel + Neon PostgreSQL.
 - `apps/*` handlers = тонкие адаптеры. Логика живёт в `packages/`
 - **Запрещено** импортировать `packages/policy/server` из request interception layer (`proxy.ts`, `middleware.ts`) и Edge runtime
 - **`TrainerProfile.timezone`** — источник истины для расписания, слотов, напоминаний и отображения времени
-- Каждый фоновый job: **`idempotency_key` + запись в `delivery_log`**
-- Долгие операции (email batch, напоминания) — **не в request path** → workers/cron
+- **Post-MVP:** каждый email job — **`idempotency_key` + `delivery_log`** (таблицы в schema с MVP, отправка позже — см. [`mvp_scope.md`](docs/prds/01_product_scope/mvp_scope.md))
+- Долгие операции (email batch, напоминания) — **не в request path** → workers/cron (**post-MVP**)
 - Post-MVP поля (Stripe, Daily.co) — nullable в схеме с первого дня
 
 ## Иерархия источников истины
@@ -43,17 +43,27 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Документация — точки входа
 
+**Статус документации:** MVP-complete (волны W0–W14). Реестр создания — [`documentation_creation_registry.md`](docs/meta/documentation_creation_registry.md).
+
 | Область | Документ |
 |---------|----------|
+| **Реестр документации (волны W0–W14)** | [`docs/meta/documentation_creation_registry.md`](docs/meta/documentation_creation_registry.md) |
 | Методология AI-first | [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md) |
 | Карта архитектуры | [`docs/prds/architecture_master_index.md`](docs/prds/architecture_master_index.md) |
 | Обзор для новых агентов | [`docs/architecture_learning_pack/01_architecture_overview.md`](docs/architecture_learning_pack/01_architecture_overview.md) |
-| MVP scope (interim) | [`docs/default_docs/fitness-platform-mvp.md`](docs/default_docs/fitness-platform-mvp.md) |
+| MVP scope (canonical) | [`docs/prds/01_product_scope/mvp_scope.md`](docs/prds/01_product_scope/mvp_scope.md) |
+| MVP scope (interim archive) | [`docs/default_docs/fitness-platform-mvp.md`](docs/default_docs/fitness-platform-mvp.md) |
 | **User flows (canonical)** | [`docs/prds/01_product_scope/user_flows/users_mvp/`](docs/prds/01_product_scope/user_flows/users_mvp/) |
 | **Database schema (canonical)** | [`docs/prds/03_data_model/database_schema_v1.md`](docs/prds/03_data_model/database_schema_v1.md) |
+| **Domain model (canonical)** | [`docs/prds/02_domain_model/`](docs/prds/02_domain_model/) — lifecycle, FM catalog, invariants |
+| **Authorization & runtime** | [`docs/prds/04_authorization_privacy/`](docs/prds/04_authorization_privacy/), [`docs/prds/05_runtime/`](docs/prds/05_runtime/) |
 | Страницы и маршруты | [`docs/design/canonical_routes.md`](docs/design/canonical_routes.md), [`docs/default_docs/fitness-platform-pages.md`](docs/default_docs/fitness-platform-pages.md) |
 | Design system | [`docs/default_docs/fitness-platform-design-system.md`](docs/default_docs/fitness-platform-design-system.md) |
 | Guidelines + Cursor Rules | [`docs/guidelines/README.md`](docs/guidelines/README.md) |
+| **Implementation contracts** | [`docs/implementation/mvp/contracts/`](docs/implementation/mvp/contracts/) |
+| **Implementation specs** | [`docs/implementation/mvp/specs/`](docs/implementation/mvp/specs/) |
+| **Implementation guides** | [`docs/implementation/mvp/guides/`](docs/implementation/mvp/guides/) |
+| **Implementation phases (P01–P07)** | [`docs/implementation/mvp/phases_tasks_descriptions/`](docs/implementation/mvp/phases_tasks_descriptions/) + [`tasks/`](docs/implementation/mvp/tasks/) |
 | HTML-прототип | [`docs/prototypes/Fitness_Platform_Prototype_v1.html`](docs/prototypes/Fitness_Platform_Prototype_v1.html) |
 | Runtime / стек | [`docs/prds/07_governance/adr_001_stack_and_runtime.md`](docs/prds/07_governance/adr_001_stack_and_runtime.md), [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
 

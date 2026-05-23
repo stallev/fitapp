@@ -2,7 +2,7 @@
 
 Typography for **`apps/web`** using shared atoms (on scaffold), semantic HTML, Warm Forest font tokens, and accessibility.
 
-**Design source:** [`fitness-platform-design-system.md`](../../default_docs/fitness-platform-design-system.md) §typography  
+**Design source:** [`visual_identity_contract.md`](../../design/visual_identity_contract.md), interim [`fitness-platform-design-system.md`](../../default_docs/fitness-platform-design-system.md) §typography  
 **UI rule:** **ui-warm-forest-shadcn**
 
 ---

@@ -5,8 +5,11 @@
 **Date:** 2026-05-23
 
 > Не дублировать этот список в других документах. Ссылайтесь на этот файл.  
-> Детальная page spec: [`docs/default_docs/fitness-platform-pages.md`](../default_docs/fitness-platform-pages.md)  
-> User flows: [`docs/default_docs/user-flow-*.md`](../default_docs/)
+> Детальная page spec: [`docs/prds/01_product_scope/pages_functional_spec.md`](../prds/01_product_scope/pages_functional_spec.md) (canonical)  
+> Interim archive: [`docs/default_docs/fitness-platform-pages.md`](../default_docs/fitness-platform-pages.md)  
+> User flows: [`docs/prds/01_product_scope/user_flows/users_mvp/`](../prds/01_product_scope/user_flows/users_mvp/)  
+> Prototype mapping: [`prototype_route_mapping.md`](prototype_route_mapping.md)  
+> Navigation contract: [`responsive_navigation_contract.md`](responsive_navigation_contract.md)
 
 ---
 
@@ -116,7 +119,7 @@
 | `/admin/*` | admin |
 | `/sessions/*` | client (owner of booking) |
 
-Full matrix: planned `authorization_matrix.md`.
+Full matrix: [`authorization_matrix.md`](../prds/04_authorization_privacy/authorization_matrix.md) (canonical W5).
 
 Public path allowlist pattern — see [`fitness-platform-pages.md`](../default_docs/fitness-platform-pages.md) § Middleware.
 
@@ -134,11 +137,21 @@ Do not implement until ADR and contract exist. Schema fields may be nullable pla
 
 ---
 
-## Wireframe index (planned)
+## Dev-only routes (not in production)
 
-When wireframes are authored: `docs/design/wireframes/route_index.md` maps each row above → markdown wireframe file.
+| Path | Route file | MVP | Notes |
+|------|------------|-----|-------|
+| `/design-system` | `(dev)/design-system/page.tsx` | ✅ | Design Lab — shared UI primitives showcase; `notFound()` in production unless `ALLOW_DESIGN_LAB=1`. Spec: [`design_system_lab_spec.md`](../implementation/mvp/specs/design_system_lab_spec.md) |
 
-Template: [`docs/examples/lampto/docs/design/wireframes/_page_template.md`](../examples/lampto/docs/design/wireframes/_page_template.md)
+---
+
+## Wireframe index
+
+**Canonical index:** [`wireframes/route_index.md`](wireframes/route_index.md) — path → wireframe file (W10 complete).
+
+**Prototype → route → wireframe:** [`prototype_route_mapping.md`](prototype_route_mapping.md).
+
+Template: [`wireframes/_page_template.md`](wireframes/_page_template.md)
 
 ---
 
@@ -146,4 +159,8 @@ Template: [`docs/examples/lampto/docs/design/wireframes/_page_template.md`](../e
 
 | Date | Change |
 |------|--------|
+| 2026-05-23 | W10 — wireframe index links |
+| 2026-05-23 | W15 — dev-only `/design-system` Design Lab route |
+| 2026-05-23 | W2 backlinks — prototype_route_mapping, responsive_navigation_contract |
+| 2026-05-23 | Link to canonical `pages_functional_spec.md` |
 | 2026-05-23 | Initial canonical list from fitness-platform-pages.md |

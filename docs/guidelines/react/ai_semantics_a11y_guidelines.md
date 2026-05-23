@@ -2,7 +2,7 @@
 
 Norms for **semantic HTML** and **WCAG 2.1 AA** in `apps/web`.  
 **Cursor rule:** **ui-semantics-a11y**  
-**Design system checklist:** [`fitness-platform-design-system.md`](../../default_docs/fitness-platform-design-system.md) §15
+**Design system checklist:** [`visual_identity_contract.md`](../../design/visual_identity_contract.md), [`accessibility_requirements.md`](../../design/accessibility_requirements.md)
 
 ---
 
@@ -133,6 +133,8 @@ Before finishing a UI task:
 | [`typography_text_guidelines.md`](../typography_text_guidelines.md) | Heading hierarchy, atoms |
 | [`ai_component_guidelines.md`](./ai_component_guidelines.md) | Component structure |
 | [`ai_form_handling_pattern.md`](./ai_form_handling_pattern.md) | Form a11y |
+| [`accessibility_requirements.md`](../../design/accessibility_requirements.md) | Product WCAG canon |
+| [`visual_identity_contract.md`](../../design/visual_identity_contract.md) | Contrast tokens |
 | [`ui-mobile-first.mdc`](../../.cursor/rules/ui-mobile-first.mdc) | Touch targets |
 
 **Reference:** lampto [`ux_ui_faang_principles_for_agents.md`](../../examples/lampto/docs/design/ux_ui_faang_principles_for_agents.md) §2.5

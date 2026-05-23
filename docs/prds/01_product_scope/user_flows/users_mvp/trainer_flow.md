@@ -494,3 +494,17 @@ Status Banner — всегда первый элемент на дашборде
 
 ### Навигация к клиенту
 Из Client Sheet нет глубокой навигации. Все действия (заметки) — прямо в Sheet. Не нужна отдельная страница клиента на MVP.
+
+---
+
+## Related documents
+
+| Document | Relationship |
+|----------|--------------|
+| [`pages_functional_spec.md`](../../pages_functional_spec.md) | Page-level behavior |
+| [`trainer_onboarding_spec.md`](../../../../implementation/mvp/specs/trainer_onboarding_spec.md) | Registration wizard UX (W9) |
+| [`trainer_schedule_spec.md`](../../../../implementation/mvp/specs/trainer_schedule_spec.md) | Schedule editor UX (W9) |
+| [`global_shell_spec.md`](../../../../implementation/mvp/specs/global_shell_spec.md) | Trainer shell (W9) |
+| [`canonical_routes.md`](../../../../design/canonical_routes.md) | Route inventory |
+
+**Registry:** [`documentation_creation_registry.md`](../../../../meta/documentation_creation_registry.md) — user flow trainer
