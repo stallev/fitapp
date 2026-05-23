@@ -16,7 +16,7 @@
 
 Implementation-spec **глобального app shell** Pulse: route groups, layout composition, shared chrome (TopBar, BottomNav, SidebarNav, PageContainer), theme/toast providers, nav config per role. Связывает UX contracts W2 с файловой структурой `apps/web`.
 
-**Аудитория:** AI-агенты фазы P01–P02; frontend implementers.
+**Аудитория:** AI-агенты фазы P03; frontend implementers.
 
 ---
 
@@ -195,6 +195,18 @@ Mapping: [`prototype_route_mapping.md`](../../../design/prototype_route_mapping.
 - [ ] Wireframe placeholders linked
 - [ ] Context7 nested layout pattern cited
 - [ ] Single nav config — drift guard documented
+
+---
+
+## UI Catalog (by screen)
+
+**Phase:** P03 · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
+
+| Screen / route group | CREATE | USE |
+|----------------------|--------|-----|
+| All authenticated roles | `AppShell`, `TopBar`, `BottomNav`, `SidebarNav`, `NavItem`, `PageContainer` | `Button`, theme toggle |
+| `(booking)` stripped | — | Minimal `TopBar` only |
+| Placeholder dashboards | — | `PulseCard`, `Empty`, typography atoms |
 
 ---
 

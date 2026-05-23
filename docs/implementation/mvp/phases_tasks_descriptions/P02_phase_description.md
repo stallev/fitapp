@@ -1,20 +1,39 @@
-# P02 — Public Discovery: Landing, Catalog & Trainer Profile
+# P02 — Auth & Request Guards
 
 **Тип:** Phase Description  
 **Статус:** Canonical  
-**Версия:** 1.0  
+**Версия:** 2.0  
 **Дата:** 2026-05-23  
-**Волна:** W11  
-**Зависит от:** [`P01_phase_description.md`](./P01_phase_description.md), [`catalog_discovery_spec.md`](../specs/catalog_discovery_spec.md), [`wishlist_contract.md`](../contracts/wishlist_contract.md), wireframes [`public_landing.md`](../../../design/wireframes/mvp/public_landing.md), [`public_trainers_catalog.md`](../../../design/wireframes/mvp/public_trainers_catalog.md), [`public_trainer_profile.md`](../../../design/wireframes/mvp/public_trainer_profile.md)  
-**Связанные документы:** [`P02_tasks.md`](../tasks/P02_tasks.md), [`cache_revalidation_policy.md`](../../../prds/05_runtime/cache_revalidation_policy.md)
+**Волна:** W16  
+**Зависит от:** [`P01_phase_description.md`](./P01_phase_description.md), [`authorization_policy_contract.md`](../contracts/authorization_policy_contract.md), [`auth_runtime_spec.md`](../../../prds/05_runtime/auth_runtime_spec.md)  
+**Связанные документы:** [`P02_tasks.md`](../tasks/P02_tasks.md)
+
+**Context7 verified:** Auth.js Credentials + JWT `role`; Next.js 16.2 `proxy.ts`.
 
 ---
 
 ## Purpose
 
-Фаза **P02** реализует **публичную зону discovery**: landing `/`, каталог `/trainers`, профиль тренера `/trainers/[id]`, wishlist toggle для авторизованного клиента. После P02 anonymous и client пользователи могут находить approved тренеров и переходить к booking (wizard — P03).
+Фаза **P02** — Auth.js v5 Credentials, JWT session with `role`, `/auth/login` + `/auth/register` (client), `proxy.ts` + `@pulse/policy-edge`, `@pulse/policy-server` stubs. **Без** trainer onboarding wizard.
 
-**Аудитория:** AI-агенты после завершения P01.
+**Аудитория:** AI-агенты после P01.
+
+---
+
+## Agent context budget
+
+| # | Document | Why |
+|---|----------|-----|
+| 1 | [`P02_tasks.md`](../tasks/P02_tasks.md) | Checklist |
+| 2 | [`authorization_policy_contract.md`](../contracts/authorization_policy_contract.md) | `PolicySessionContext` |
+| 3 | [`auth_runtime_spec.md`](../../../prds/05_runtime/auth_runtime_spec.md) | Flows, proxy matcher |
+| 4 | [`monorepo_boundaries_contract.md`](../contracts/monorepo_boundaries_contract.md) | FM-003 no policy-server in proxy |
+| 5 | [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) | P02 row |
+| 6 | [`forms_and_validation_ux.md`](../../../design/forms_and_validation_ux.md) | Auth form a11y |
+
+**Wireframe:** auth screens per [`auth_runtime_spec.md`](../../../prds/05_runtime/auth_runtime_spec.md).
+
+**MUST NOT read** P04+ phase docs.
 
 ---
 
@@ -24,61 +43,57 @@
 
 | Area | Deliverable |
 |------|-------------|
-| Landing | Hero, categories, featured trainers, CTAs → catalog |
-| Catalog | Filters (URL searchParams), sort, pagination, `TrainerCard` grid |
-| Profile | Tabs About / Services / Schedule preview / Reviews; sticky CTA → `/book/[trainerId]` |
-| Wishlist | Optimistic heart per [`wishlist_contract.md`](../contracts/wishlist_contract.md) |
-| Data | RSC queries — **approved trainers only** (INV-03) |
-| Cache | Tags per [`cache_revalidation_policy.md`](../../../prds/05_runtime/cache_revalidation_policy.md) |
+| Auth.js | Credentials, bcrypt, JWT `role`, session callback |
+| Actions | `signIn`, `signOut`, `registerClient` |
+| Routes | `/auth/login`, `/auth/register` |
+| Proxy | `apps/web/src/proxy.ts` — JWT-only via `@pulse/policy-edge` |
+| Policy | `@pulse/policy-edge`, `@pulse/policy-server` stubs |
 
 ### Out of scope
 
-- Booking wizard (`/book/*`) → **P03**
-- Trainer onboarding/register wizard → **P04**
-- Admin approve (affects listing indirectly) → **P05** (seed approved trainers for dev)
-- Payment, email notifications
-- Post-MVP geo/map filters
+- Trainer wizard `/auth/register/trainer` (→ **P10**)
+- App shell, role dashboards (→ **P03**)
+- Feature routes (→ **P04+**)
 
 ---
 
-## Prerequisites
+## UI Catalog (this phase)
 
-- **P01 complete** — auth, shell, packages, DB, seed with ≥1 `approved` trainer
-- Contracts read: [`wishlist_contract.md`](../contracts/wishlist_contract.md)
+| Action | Component | Route |
+|--------|-----------|-------|
+| **USE** | `Button`, `Input`, `Field`, `Checkbox` | `/auth/login`, `/auth/register` |
+| **USE** | `Container`, `Heading`, `ContentText`, `AlertText` | auth pages |
+| **MUST NOT** | Trainer wizard steps | → P10 |
+| **MUST NOT** | `AppShell`, nav chrome | → P03 |
 
 ---
 
-## Contracts & specs to read
+## Cross-phase dependencies
 
-| Document | Why |
-|----------|-----|
-| [`catalog_discovery_spec.md`](../specs/catalog_discovery_spec.md) | UX + data touchpoints |
-| [`wishlist_contract.md`](../contracts/wishlist_contract.md) | Toggle idempotency, optimistic UX |
-| [`pages_functional_spec.md`](../../../prds/01_product_scope/pages_functional_spec.md) | Page behavior |
-| [`client_flow.md`](../../../prds/01_product_scope/user_flows/users_mvp/client_flow.md) | Discovery journey |
-| Wireframes W10-02…04 | Layout regions |
+| Dependency | Blocker? | Notes |
+|------------|----------|-------|
+| **P01** complete | Yes | DB + domain enums |
+| User table + seed | Yes | Login smoke |
 
 ---
 
 ## In-scope routes
 
-| Path | MVP content |
-|------|-------------|
-| `/` | Landing — full wireframe fidelity |
-| `/trainers` | Catalog + filters |
-| `/trainers/[id]` | Public profile (404 if not approved / not found) |
+| Path | Content |
+|------|---------|
+| `/auth/login` | Functional form |
+| `/auth/register` | Client tile + form; terms checkbox |
 
-CTA «Book now» → `/book/[trainerId]`; guest redirect login with `callbackUrl` (page may 404 until P03 — **MAY** stub redirect message).
+Protected segments wired in proxy; pages MAY be stubs until P03.
 
 ---
 
 ## Happy path smoke
 
-1. Anonymous opens `/` → navigates to `/trainers`.
-2. Apply filter (e.g. max price) → URL updates → grid refreshes.
-3. Open approved trainer profile → tabs render; schedule preview shows slots label in trainer TZ.
-4. Client logged in → toggle wishlist heart → optimistic flip; persists on refresh.
-5. Tap «Book now» → `/book/[trainerId]` (login redirect if guest).
+1. Register client → session → redirect client home (stub OK).
+2. Login client/trainer/admin — role in session.
+3. Anonymous → `/admin/dashboard` → redirect login + `callbackUrl`.
+4. Client → `/admin/*` denied at proxy.
 
 ---
 
@@ -86,10 +101,8 @@ CTA «Book now» → `/book/[trainerId]`; guest redirect login with `callbackUrl
 
 | Scenario | Expected |
 |----------|----------|
-| `/trainers/[id]` for `pending` trainer | 404 or «not available» — not in catalog |
-| Empty catalog (no approved) | Empty state + CTA ([`ui_states_contract`](../../../design/ui_states_contract.md)) |
-| Wishlist toggle error | Rollback + `toast.error` ([**FM-005**](../../../prds/02_domain_model/failure_modes_catalog.md)) |
-| Invalid filter params | Ignore/sanitize; no 500 |
+| Invalid credentials | Generic error; no enumeration |
+| Duplicate register email | Validation error ([**FM-001**](../../../prds/02_domain_model/failure_modes_catalog.md)) |
 
 ---
 
@@ -97,9 +110,9 @@ CTA «Book now» → `/book/[trainerId]`; guest redirect login with `callbackUrl
 
 | Check | Expected |
 |-------|----------|
-| Pending trainer ID direct URL | No public PII beyond policy allowlist |
-| Wishlist mutation as anonymous | Redirect login or action deny |
-| Trainer listing query | Never returns `status != approved` |
+| `policy-server` in `proxy.ts` | **Forbidden** — FM-003 |
+| Password in response/logs | Never |
+| JWT role tampering | Server-side verify only |
 
 ---
 
@@ -107,19 +120,27 @@ CTA «Book now» → `/book/[trainerId]`; guest redirect login with `callbackUrl
 
 | Scenario | Expected |
 |----------|----------|
-| Double wishlist toggle | Idempotent per contract — final state correct ([**FM-005**](../../../prds/02_domain_model/failure_modes_catalog.md)) |
+| Double submit register | One user row |
+
+---
+
+## Drift risks & guards
+
+| Risk | Guard |
+|------|-------|
+| Account enumeration | Generic auth errors per spec |
+| FM-003 policy-server in proxy | Lint/import rule |
+| Auth logic in `apps/web` | Domain/policy layer for register |
+| Shell built before auth | P02 = auth only |
 
 ---
 
 ## Definition of done
 
-- [ ] Landing, catalog, profile match wireframes + [`catalog_discovery_spec.md`](../specs/catalog_discovery_spec.md)
-- [ ] Approved-only catalog enforced at query layer
-- [ ] Wishlist optimistic UI + contract compliance
-- [ ] UI states: empty catalog, loading skeletons, profile 404
-- [ ] `npm run typecheck` + lint pass
-- [ ] Smoke checklist passed
-- [ ] Cache tags documented if used
+- [ ] Auth.js login + client register working
+- [ ] `proxy.ts` live; no `middleware.ts` as canonical
+- [ ] Policy packages stubbed; import graph valid
+- [ ] Smoke passed; `typecheck` + lint pass
 
 ---
 
@@ -128,22 +149,18 @@ CTA «Book now» → `/book/[trainerId]`; guest redirect login with `callbackUrl
 | Document | Relationship |
 |----------|--------------|
 | [`P02_tasks.md`](../tasks/P02_tasks.md) | Checklist |
-| [`P03_phase_description.md`](./P03_phase_description.md) | Next — booking |
-| [`documentation_creation_registry.md`](../../../meta/documentation_creation_registry.md) | W11-03 |
+| [`P03_phase_description.md`](./P03_phase_description.md) | Next — shell |
 
 ---
 
 ## Agent notes
 
-- Не реализовывать booking wizard в P02 — только navigation target.
-- Фильтры **SHOULD** быть shareable via searchParams.
-- Один Primary CTA на экран профиля — «Book now».
-- Race resolution wishlist — в contract; spec — только UX rollback.
+- Async APIs: `await cookies()`, `await headers()` — Next.js 16.
+- **Одна сессия = P02 only.**
 
 ---
 
 ## Acceptance criteria
 
-- [ ] Happy + negative + security smoke documented above pass
-- [ ] Wireframe links valid
-- [ ] No duplicate route list
+- [ ] Auth + proxy smoke pass
+- [ ] No trainer wizard or full shell in PR

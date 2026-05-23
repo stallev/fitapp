@@ -1,22 +1,34 @@
-# P04 — Trainer: Onboarding, Profile, Services, Schedule & Clients
+# P04 — Public Landing
 
 **Тип:** Phase Description  
 **Статус:** Canonical  
-**Версия:** 1.0  
+**Версия:** 2.0  
 **Дата:** 2026-05-23  
-**Волна:** W11  
-**Зависит от:** [`P03_phase_description.md`](./P03_phase_description.md), [`trainer_onboarding_spec.md`](../specs/trainer_onboarding_spec.md), [`trainer_schedule_spec.md`](../specs/trainer_schedule_spec.md), [`trainer_verification_contract.md`](../contracts/trainer_verification_contract.md), [`schedule_slots_contract.md`](../contracts/schedule_slots_contract.md), [`file_upload_contract.md`](../contracts/file_upload_contract.md), trainer wireframes W10-07, 16–21  
-**Связанные документы:** [`P04_tasks.md`](../tasks/P04_tasks.md), [`trainer_flow.md`](../../../prds/01_product_scope/user_flows/users_mvp/trainer_flow.md)
-
-**Context7 verified:** Next.js 16.2 — segment `loading.tsx` for `/trainer/schedule` skeleton (`/vercel/next.js/v16.2.2`).
+**Волна:** W16  
+**Зависит от:** [`P03_phase_description.md`](./P03_phase_description.md), [`catalog_discovery_spec.md`](../specs/catalog_discovery_spec.md)  
+**Связанные документы:** [`P04_tasks.md`](../tasks/P04_tasks.md), wireframe [`public_landing.md`](../../../design/wireframes/mvp/public_landing.md)
 
 ---
 
 ## Purpose
 
-Фаза **P04** — **trainer contour**: регистрация/onboarding wizard, dashboard, редактирование профиля, CRUD услуг, расписание (weekly + exceptions), список клиентов и карточка клиента, income history (без Stripe). После P04 тренер может подать заявку на модерацию и управлять расписанием для client booking (P03).
+Фаза **P04** — публичный landing `/` only: hero, categories, featured trainers, primary CTA → `/trainers`.
 
 **Аудитория:** AI-агенты после P03.
+
+---
+
+## Agent context budget
+
+| # | Document | Why |
+|---|----------|-----|
+| 1 | [`P04_tasks.md`](../tasks/P04_tasks.md) | Checklist |
+| 2 | [`catalog_discovery_spec.md`](../specs/catalog_discovery_spec.md) | Landing section |
+| 3 | [`public_landing.md`](../../../design/wireframes/mvp/public_landing.md) | Wireframe W10-02 |
+| 4 | [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) | P04 row |
+| 5 | [`client_flow.md`](../../../prds/01_product_scope/user_flows/users_mvp/client_flow.md) | Discovery entry |
+
+**MUST NOT read** P05+ phase docs.
 
 ---
 
@@ -24,50 +36,53 @@
 
 ### In scope
 
-| Area | Routes |
-|------|--------|
-| Onboarding | `/auth/register/trainer` — 5-step wizard |
-| Trainer app | `/trainer/dashboard`, `/trainer/profile`, `/trainer/services`, `/trainer/schedule`, `/trainer/clients`, `/trainer/clients/[id]`, `/trainer/income` |
-| Uploads | Photo, certificates via Blob contract |
-| Schedule | `UpsertWeeklyIntervals`, exceptions |
-| Services | CRUD + active toggle (optimistic optional) |
-| Booking ops | Mark session completed (enables client review) |
+| Area | Deliverable |
+|------|-------------|
+| `/` | Full landing wireframe fidelity |
+| Featured trainers | Approved-only query (stub OK if P05 seed pending) |
+| CTA | Primary → `/trainers` |
 
 ### Out of scope
 
-- Admin approve/reject UI → **P05**
-- Stripe payouts `/trainer/payouts`
-- Email E-01/E-02 on submit/approve
-- Public catalog listing logic (P02) — only side effect when approved
+- Catalog `/trainers` (→ **P05**)
+- Profile, wishlist (→ **P06**)
+- Booking (→ **P07**)
 
 ---
 
-## Prerequisites
+## UI Catalog (this phase)
 
-- P01–P03 complete
-- [`trainer_onboarding_spec.md`](../specs/trainer_onboarding_spec.md), [`trainer_schedule_spec.md`](../specs/trainer_schedule_spec.md)
+| Action | Component | Route |
+|--------|-----------|-------|
+| **CREATE** | Landing section modules | `/` |
+| **USE** | `SectionTitle`, `PulseCard`, `Button`, `CustomLink`, `SpecChip` | `/` |
+| **USE** | `TrainerCard` preview row | `/` (fixture OK) |
+| **MUST NOT** | Catalog filters | → P05 |
 
 ---
 
-## Contracts & specs to read
+## Cross-phase dependencies
 
-| Document | Why |
-|----------|-----|
-| [`trainer_verification_contract.md`](../contracts/trainer_verification_contract.md) | Submit application, statuses |
-| [`file_upload_contract.md`](../contracts/file_upload_contract.md) | Blob upload lifecycle |
-| [`schedule_slots_contract.md`](../contracts/schedule_slots_contract.md) | Intervals, exceptions, TZ |
-| [`privacy_data_handling.md`](../../../prds/04_authorization_privacy/privacy_data_handling.md) | Client notes visibility |
-| [`trainer_flow.md`](../../../prds/01_product_scope/user_flows/users_mvp/trainer_flow.md) | Journeys |
+| Dependency | Blocker? | Notes |
+|------------|----------|-------|
+| **P03** shell | Yes | `(public)` layout |
+| Approved trainer seed | No | Fixture OK for featured row |
+
+---
+
+## In-scope routes
+
+| Path | Content |
+|------|---------|
+| `/` | Landing only |
 
 ---
 
 ## Happy path smoke
 
-1. New user → `/auth/register/trainer` → complete 5 steps → submit → `/trainer/dashboard` + «Under review» banner.
-2. Admin approves (P05 or seed) → trainer appears in catalog.
-3. Trainer edits `/trainer/profile`, adds service on `/trainer/services`, sets schedule on `/trainer/schedule`.
-4. Client books slot (P03) → trainer sees client on `/trainer/clients` and detail with private notes auto-save.
-5. Trainer marks booking completed → client can review.
+1. Anonymous opens `/` → hero + categories render.
+2. Primary CTA → `/trainers`.
+3. Featured section shows approved trainers only (or fixture).
 
 ---
 
@@ -75,11 +90,7 @@
 
 | Scenario | Expected |
 |----------|----------|
-| Submit wizard without timezone | Validation error step 1 (INV-01) |
-| Invalid interval `end <= start` | Inline error on schedule sheet |
-| Upload wrong MIME / size | Error per file contract |
-| Pending trainer edits public slug | No public page until approved |
-| Service toggle error | `toast.error` + rollback if optimistic |
+| No approved trainers | Featured empty state + CTA |
 
 ---
 
@@ -87,29 +98,32 @@
 
 | Check | Expected |
 |-------|----------|
-| Trainer A views Trainer B client notes | Deny |
-| Client accesses `/trainer/schedule` | Proxy deny |
-| Direct Blob URL without policy | Denied/expired |
+| Pending trainer in featured query | Excluded (INV-03) |
 
 ---
 
 ## Concurrency & race check
 
-| Scenario | Expected |
-|----------|----------|
-| Overlapping schedule save | Last-write or validation per contract |
-| Double submit application | Idempotent — one submitted_at |
+N/A.
+
+---
+
+## Drift risks & guards
+
+| Risk | Guard |
+|------|-------|
+| Duplicate primary CTA | One `Button` default per screen |
+| Hardcoded strings | `@/lib/messages` |
+| Full catalog in P04 | Route scope `/` only |
 
 ---
 
 ## Definition of done
 
-- [ ] Onboarding wizard + all trainer routes per wireframes
-- [ ] `TrainerProfile.timezone` required and displayed on schedule
-- [ ] File uploads via Blob contract
-- [ ] Complete booking action for trainer
-- [ ] Income page — DB snapshot only, no Stripe
-- [ ] Smoke checklist passed
+- [ ] Landing matches wireframe + spec
+- [ ] CTA → `/trainers`
+- [ ] One primary CTA; responsive 390px/md
+- [ ] Smoke + typecheck + lint pass
 
 ---
 
@@ -118,22 +132,17 @@
 | Document | Relationship |
 |----------|--------------|
 | [`P04_tasks.md`](../tasks/P04_tasks.md) | Checklist |
-| [`P05_phase_description.md`](./P05_phase_description.md) | Admin |
-| [`documentation_creation_registry.md`](../../../meta/documentation_creation_registry.md) | W11-07 |
+| [`P05_phase_description.md`](./P05_phase_description.md) | Next — catalog |
 
 ---
 
 ## Agent notes
 
-- Onboarding **не** смешивать с P01 client register.
-- Auto-save trainer notes — debounce + error toast only.
-- Banner «Under review» — slot in trainer layout per global shell spec.
+- **Одна сессия = P04 only.**
 
 ---
 
 ## Acceptance criteria
 
-- [ ] Onboarding E2E to pending status
-- [ ] Schedule + services functional for booking integration
-- [ ] Security: cross-trainer client access denied
-- [ ] TZ invariant respected
+- [ ] Landing smoke pass
+- [ ] No `/trainers` implementation in PR

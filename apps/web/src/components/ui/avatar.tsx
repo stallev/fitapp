@@ -5,24 +5,37 @@ import { Avatar as AvatarPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
+const AVATAR_SIZE_CLASSES = {
+  xs: "size-6 text-[10px]",
+  sm: "size-8 text-xs",
+  default: "size-10 text-sm",
+  md: "size-10 text-sm",
+  lg: "size-14 text-base",
+  xl: "size-20 text-xl",
+  "2xl": "size-28 text-2xl",
+} as const;
+
+export type AvatarSize = keyof typeof AVATAR_SIZE_CLASSES;
+
 function Avatar({
   className,
   size = "default",
   ...props
 }: React.ComponentProps<typeof AvatarPrimitive.Root> & {
-  size?: "default" | "sm" | "lg"
+  size?: AvatarSize;
 }) {
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
       data-size={size}
       className={cn(
-        "group/avatar relative flex size-8 shrink-0 rounded-full select-none after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken data-[size=lg]:size-10 data-[size=sm]:size-6 dark:after:mix-blend-lighten",
-        className
+        "group/avatar relative flex shrink-0 rounded-full select-none after:absolute after:inset-0 after:rounded-full after:border after:border-border after:mix-blend-darken dark:after:mix-blend-lighten",
+        AVATAR_SIZE_CLASSES[size],
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function AvatarImage({
@@ -49,8 +62,8 @@ function AvatarFallback({
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
       className={cn(
-        "flex size-full items-center justify-center rounded-full bg-muted text-sm text-muted-foreground group-data-[size=sm]/avatar:text-xs",
-        className
+        "flex size-full items-center justify-center rounded-full bg-primary-container font-semibold text-on-primary-container",
+        className,
       )}
       {...props}
     />

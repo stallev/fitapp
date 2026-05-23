@@ -164,6 +164,18 @@ sequenceDiagram
 
 ---
 
+## UI Catalog (by screen)
+
+**Phase:** P12 · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
+
+| Screen | CREATE | USE |
+|--------|--------|-----|
+| `/trainer/schedule` | Schedule editor modules | `Tabs`, `ScheduleDayPickerRow`, `DayPill`, `Calendar` |
+| `/trainer/clients` | `ClientListCard` | `Empty`, search input |
+| `/trainer/dashboard`, `/trainer/income` | Dashboard widgets | `PulseCardKpi`, `KeyValueRow` |
+
+---
+
 ## Related documents
 
 | Document | Relationship |

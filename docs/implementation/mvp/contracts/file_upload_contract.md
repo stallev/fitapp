@@ -182,6 +182,7 @@ sequenceDiagram
 
 ## Agent notes
 
+- **UI phases P10–P11:** `PhotoSlot`, `FileUploadZone` — see [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) P10/P11 rows.
 - Create DB row **before** Blob bytes upload.
 - Profile `photo_url` may mirror ready asset URL — still keep `file_asset` row.
 - Post-MVP: cron deletes stale `pending` &gt; 24h.

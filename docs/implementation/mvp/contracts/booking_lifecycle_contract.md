@@ -203,6 +203,7 @@ Losing actor gets conflict; UI refresh + optional toast.error.
 
 ## Agent notes
 
+- **UI phase P07:** booking wizard — no payment UI (ADR-005). Components: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) P07 row.
 - Wizard success toast = «request sent» semantics until trainer confirms — not status hack.
 - Admin cancel bypasses 24h client window.
 - `CompleteBooking` before `starts_at` allowed on MVP per lifecycle_models agent note.

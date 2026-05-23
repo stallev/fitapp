@@ -31,7 +31,7 @@
 | Document | Purpose | Primary phase |
 |----------|---------|---------------|
 | [`migration_runbook.md`](./migration_runbook.md) | Безопасный цикл Prisma migrate на Neon (dev/preview/prod) | P01 |
-| [`observability_plan.md`](./observability_plan.md) | Логи, ошибки, метрики MVP; расширение post-MVP | P01–P07 |
+| [`observability_plan.md`](./observability_plan.md) | Логи, ошибки, метрики MVP; расширение post-MVP | P01–P14 |
 | [`cron_jobs_registry.md`](./cron_jobs_registry.md) | Реестр Cron jobs, auth, idempotency (schema-ready MVP) | P06 |
 | [`../../implementation/mvp/guides/local_dev_setup.md`](../../implementation/mvp/guides/local_dev_setup.md) | Первый запуск monorepo локально | P01 |
 | [`../../implementation/mvp/guides/vercel_deploy_guide.md`](../../implementation/mvp/guides/vercel_deploy_guide.md) | Vercel project, env, preview/prod | P01 |

@@ -195,19 +195,29 @@ docs/implementation/mvp/
     └── P{N}_tasks.md
 ```
 
-Шаблон Phase Description — идентичен lampto (см. оригинал §2.5). **Канон фаз P01–P07:** [`documentation_creation_registry.md`](documentation_creation_registry.md) волна W11.
+Шаблон Phase Description: [`_phase_template.md`](../implementation/mvp/phases_tasks_descriptions/_phase_template.md). **Канон фаз P01–P15:** [`documentation_creation_registry.md`](documentation_creation_registry.md) волна W16. Миграция W11→W16: [`_migration_P01-P07_to_P01-P15.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md).
 
 **Фазы Pulse (canonical):**
 
 | Фаза | Фокус | Phase doc | Tasks |
 |------|-------|-----------|-------|
-| P01 | Monorepo scaffold, Prisma, Auth.js, shell UI | [`P01_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) | [`P01_tasks.md`](../implementation/mvp/tasks/P01_tasks.md) |
-| P02 | Public zone: landing, catalog, trainer profile | [`P02_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P02_phase_description.md) | [`P02_tasks.md`](../implementation/mvp/tasks/P02_tasks.md) |
-| P03 | Client: booking flow, bookings, reviews | [`P03_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P03_phase_description.md) | [`P03_tasks.md`](../implementation/mvp/tasks/P03_tasks.md) |
-| P04 | Trainer: onboarding, profile, services, schedule, clients | [`P04_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P04_phase_description.md) | [`P04_tasks.md`](../implementation/mvp/tasks/P04_tasks.md) |
-| P05 | Admin: verification, complaints, refunds, reviews | [`P05_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P05_phase_description.md) | [`P05_tasks.md`](../implementation/mvp/tasks/P05_tasks.md) |
-| P06 | Email jobs (Resend), `delivery_log` — **post-MVP runtime** | [`P06_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P06_phase_description.md) | [`P06_tasks.md`](../implementation/mvp/tasks/P06_tasks.md) |
-| P07 | Hardening, a11y, UI states quality gate | [`P07_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P07_phase_description.md) | [`P07_tasks.md`](../implementation/mvp/tasks/P07_tasks.md) |
+| P01 | Monorepo & data layer | [`P01_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) | [`P01_tasks.md`](../implementation/mvp/tasks/P01_tasks.md) |
+| P02 | Auth & request guards | [`P02_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P02_phase_description.md) | [`P02_tasks.md`](../implementation/mvp/tasks/P02_tasks.md) |
+| P03 | Design system & app shell | [`P03_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P03_phase_description.md) | [`P03_tasks.md`](../implementation/mvp/tasks/P03_tasks.md) |
+| P04 | Public landing | [`P04_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P04_phase_description.md) | [`P04_tasks.md`](../implementation/mvp/tasks/P04_tasks.md) |
+| P05 | Catalog discovery | [`P05_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P05_phase_description.md) | [`P05_tasks.md`](../implementation/mvp/tasks/P05_tasks.md) |
+| P06 | Trainer profile + wishlist | [`P06_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P06_phase_description.md) | [`P06_tasks.md`](../implementation/mvp/tasks/P06_tasks.md) |
+| P07 | Booking wizard | [`P07_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P07_phase_description.md) | [`P07_tasks.md`](../implementation/mvp/tasks/P07_tasks.md) |
+| P08 | Client bookings hub | [`P08_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P08_phase_description.md) | [`P08_tasks.md`](../implementation/mvp/tasks/P08_tasks.md) |
+| P09 | Client reviews | [`P09_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P09_phase_description.md) | [`P09_tasks.md`](../implementation/mvp/tasks/P09_tasks.md) |
+| P10 | Trainer onboarding | [`P10_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P10_phase_description.md) | [`P10_tasks.md`](../implementation/mvp/tasks/P10_tasks.md) |
+| P11 | Trainer profile & services | [`P11_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P11_phase_description.md) | [`P11_tasks.md`](../implementation/mvp/tasks/P11_tasks.md) |
+| P12 | Trainer schedule & clients | [`P12_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P12_phase_description.md) | [`P12_tasks.md`](../implementation/mvp/tasks/P12_tasks.md) |
+| P13 | Admin moderation | [`P13_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P13_phase_description.md) | [`P13_tasks.md`](../implementation/mvp/tasks/P13_tasks.md) |
+| P14 | Quality gate (a11y, UI states) | [`P14_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P14_phase_description.md) | [`P14_tasks.md`](../implementation/mvp/tasks/P14_tasks.md) |
+| P15 | Email jobs (Resend) — **post-MVP** | [`P15_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P15_phase_description.md) | [`P15_tasks.md`](../implementation/mvp/tasks/P15_tasks.md) |
+
+**UI matrix:** [`ui_component_phase_matrix.md`](../implementation/mvp/ui_component_phase_matrix.md)
 
 ### 2.6 Contracts: язык между фазами
 
@@ -379,8 +389,9 @@ docs/
 **Для первой сессии реализации (P01):**
 
 - [x] `apps/web/AGENTS.md`
-- [x] `docs/implementation/mvp/phases_tasks_descriptions/P01_phase_description.md` — P01–P07 (W11)
-- [x] `docs/implementation/mvp/tasks/P01_tasks.md` — P01–P07 task checklists (W11)
+- [x] `docs/implementation/mvp/phases_tasks_descriptions/P01_phase_description.md` — P01–P15 (W16)
+- [x] `docs/implementation/mvp/tasks/P01_tasks.md` — P01–P15 task checklists (W16)
+- [x] `docs/implementation/mvp/ui_component_phase_matrix.md` — Phase × Component (W16)
 - [ ] Monorepo scaffold (package.json, workspaces)
 
 **Guidelines (baseline ported):**

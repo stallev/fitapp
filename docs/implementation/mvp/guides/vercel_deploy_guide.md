@@ -53,8 +53,8 @@ Configure in Vercel Dashboard → Project → Settings → Environment Variables
 | `AUTH_SECRET` | ✅ | ✅ | Unique per env recommended |
 | `AUTH_URL` | ✅ | ✅ | `https://<preview-url>` / `https://<prod-domain>` |
 | `BLOB_READ_WRITE_TOKEN` | ✅ | ✅ | When upload feature enabled |
-| `CRON_SECRET` | ❌ MVP | ❌ MVP | P06 post-MVP |
-| `RESEND_API_KEY` | ❌ MVP | ❌ MVP | P06 post-MVP |
+| `CRON_SECRET` | ❌ MVP | ❌ MVP | P15 post-MVP |
+| `RESEND_API_KEY` | ❌ MVP | ❌ MVP | P15 post-MVP |
 
 **MUST** — `AUTH_URL` matches deployed origin for Auth.js callbacks ([`auth_runtime_spec.md`](../../../prds/05_runtime/auth_runtime_spec.md)).
 
@@ -149,7 +149,7 @@ Parallel preview deploys on same Neon branch: last migrate wins — prefer branc
 
 ---
 
-## Post-MVP additions (P06)
+## Post-MVP additions (P15)
 
 When email phase unlocks:
 

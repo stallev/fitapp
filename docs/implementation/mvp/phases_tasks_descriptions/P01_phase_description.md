@@ -1,22 +1,38 @@
-# P01 — Monorepo Scaffold, Database, Auth & Global Shell
+# P01 — Monorepo & Data Layer
 
 **Тип:** Phase Description  
 **Статус:** Canonical  
-**Версия:** 1.0  
+**Версия:** 2.0  
 **Дата:** 2026-05-23  
-**Волна:** W11  
-**Зависит от:** [`monorepo_boundaries_contract.md`](../contracts/monorepo_boundaries_contract.md), [`authorization_policy_contract.md`](../contracts/authorization_policy_contract.md), [`monorepo_packages.md`](../../../prds/05_runtime/monorepo_packages.md), [`global_shell_spec.md`](../specs/global_shell_spec.md), [`auth_runtime_spec.md`](../../../prds/05_runtime/auth_runtime_spec.md)  
-**Связанные документы:** [`P01_tasks.md`](../tasks/P01_tasks.md), [`database_schema_v1.md`](../../../prds/03_data_model/database_schema_v1.md), [`adr_002_next162_vercel_runtime_policy.md`](../../../prds/07_governance/adr_002_next162_vercel_runtime_policy.md)
-
-**Context7 verified:** Next.js 16.2 — `proxy.ts` export `function proxy(request: NextRequest)`; `cookies()` / `headers()` async in App Router (`/vercel/next.js/v16.2.2`). Auth.js — Credentials `authorize`, JWT `role` in `jwt`/`session` callbacks (`/websites/authjs_dev`). Prisma — `DATABASE_URL` (pooled) + `DIRECT_URL` (CLI/migrations) (`/websites/prisma_io`).
+**Волна:** W16  
+**Зависит от:** [`monorepo_boundaries_contract.md`](../contracts/monorepo_boundaries_contract.md), [`database_schema_v1.md`](../../../prds/03_data_model/database_schema_v1.md)  
+**Связанные документы:** [`P01_tasks.md`](../tasks/P01_tasks.md), [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md)
 
 ---
 
 ## Purpose
 
-Фаза **P01** — технический фундамент Pulse MVP: monorepo workspaces, Prisma schema + migrate, Auth.js Credentials + RBAC, `proxy.ts` guards, глобальный app shell (layouts, nav, theme, toast). После P01 приложение деплоится на Vercel с рабочей auth и role-aware shell; feature-экраны — placeholders или минимальные empty states.
+Фаза **P01** — monorepo workspaces и data layer: `@pulse/domain`, `@pulse/db` (Prisma v1), seed skeleton, `.env.example`. **Без** auth UI, proxy и product screens. После P01 — `npm run typecheck`, migrate applied, seed runs.
 
-**Аудитория:** AI-агенты первой implementation-сессии; tech lead при review scaffold PR.
+**Аудитория:** AI-агенты первой implementation-сессии после W16 docs.
+
+---
+
+## Agent context budget
+
+| # | Document | Why |
+|---|----------|-----|
+| 1 | [`P01_tasks.md`](../tasks/P01_tasks.md) | Checklist |
+| 2 | [`monorepo_boundaries_contract.md`](../contracts/monorepo_boundaries_contract.md) | PKG rules |
+| 3 | [`database_schema_v1.md`](../../../prds/03_data_model/database_schema_v1.md) | Full DDL |
+| 4 | [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md) | Dev users |
+| 5 | [`monorepo_packages.md`](../../../prds/05_runtime/monorepo_packages.md) | Package layout |
+| 6 | [`neon_prisma_migrations_guide.md`](../guides/neon_prisma_migrations_guide.md) | Dual URL |
+| 7 | [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) | P01 row only |
+
+**Wireframe:** none — infrastructure phase.
+
+**MUST NOT read** other `P*_phase_description.md` in this session.
 
 ---
 
@@ -26,74 +42,54 @@
 
 | Area | Deliverable |
 |------|-------------|
-| Monorepo | Root workspaces; `@pulse/domain`, `@pulse/db`, `@pulse/policy-edge`, `@pulse/policy-server`; import graph per contract |
-| Database | Prisma schema v1, initial migration, seed script skeleton |
-| Auth | Auth.js v5 Credentials, JWT session, `role` in token, login + client register |
-| Request interception | `apps/web/src/proxy.ts` — JWT-only role/path checks via `@pulse/policy-edge` |
-| Global shell | Route groups, `AppShell`, TopBar, BottomNav, SidebarNav, providers ([`global_shell_spec.md`](../specs/global_shell_spec.md)) |
-| Dev UX | `@/lib/messages`, `product-toast.ts`, Warm Forest tokens in `globals.css`, shadcn baseline |
-| Placeholder routes | Role dashboards with empty states; protected segments wired |
+| Monorepo | Root workspaces `apps/*`, `packages/*` |
+| `@pulse/domain` | `UserRole`, `BookingStatus`, `MutationResult`, minimal Zod DTOs |
+| `@pulse/db` | Prisma schema v1, client export, `directUrl` |
+| Migrations | Initial migrate applied locally |
+| Seed | Admin + client + pending trainer skeleton |
+| Env | `.env.example` with `DATABASE_URL`, `DIRECT_URL` |
 
 ### Out of scope
 
-- Каталог, профиль тренера, booking wizard (→ **P02**, **P03**)
-- Trainer multi-step onboarding `/auth/register/trainer` (→ **P04**)
-- Domain booking/schedule mutations beyond auth/register (→ **P03**–**P04**)
-- Admin moderation UI (→ **P05**)
-- Resend, Cron, Stripe, Daily.co ([`post_mvp_deferrals.md`](../../../prds/01_product_scope/post_mvp_deferrals.md))
-- Password reset email flow ([`password_reset_spec.md`](../specs/password_reset_spec.md) — post-MVP)
+- Auth.js, login/register (→ **P02**)
+- `proxy.ts`, policy packages runtime (→ **P02**)
+- App shell, Design Lab polish (→ **P03**)
+- Product routes content (→ **P04+**)
 
 ---
 
-## Prerequisites
+## UI Catalog (this phase)
 
-- Документация W1–W10 complete (contracts, specs, wireframes)
-- `apps/web` — initial Next.js 16.2.6 shell (P01 расширяет, не пересоздаёт)
-- Neon project + env vars (`DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`) — local `.env` или Vercel preview
-
----
-
-## Contracts & specs to read (mandatory)
-
-| Document | Why |
-|----------|-----|
-| [`monorepo_boundaries_contract.md`](../contracts/monorepo_boundaries_contract.md) | PKG-01…03, forbidden imports |
-| [`authorization_policy_contract.md`](../contracts/authorization_policy_contract.md) | `PolicySessionContext`, stub `assertCan*` |
-| [`global_shell_spec.md`](../specs/global_shell_spec.md) | Layout tree, nav config |
-| [`auth_runtime_spec.md`](../../../prds/05_runtime/auth_runtime_spec.md) | Login/register flows, proxy matcher |
-| [`database_schema_v1.md`](../../../prds/03_data_model/database_schema_v1.md) | Full DDL |
-| [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md) | Dev users all roles |
+| Action | Component | Notes |
+|--------|-----------|-------|
+| — | **No product UI** | Packages + DB only |
 
 ---
 
-## In-scope routes (reference only)
+## Cross-phase dependencies
 
-Маршруты — [`canonical_routes.md`](../../../design/canonical_routes.md). P01 **MUST** создать файловую структуру и shell для групп; контент — placeholder / auth-only:
-
-| Group | Paths (shell + placeholder) |
-|-------|----------------------------|
-| `(public)` | `/`, `/auth/login`, `/auth/register` — login/register **functional**; landing **minimal** |
-| `(client)` | `/client/dashboard`, `/client/bookings`, `/client/profile` — empty states |
-| `(trainer)` | `/trainer/dashboard`, `/trainer/profile`, … — empty + review banner slot |
-| `(admin)` | `/admin/dashboard`, … — empty states |
-| `(booking)`, `(session)` | Layout only; pages stub |
-
-**MUST NOT** дублировать полный список URL в коде — nav config values only.
+| Dependency | Blocker? | Notes |
+|------------|----------|-------|
+| W16 docs complete | Yes | Phase numbering P01–P15 |
+| Neon + env vars | Yes | Local `.env` |
+| `apps/web` shell exists | No | P01 extends, not recreates |
 
 ---
 
-## Implementation sequence (recommended)
+## In-scope routes
+
+None functional — file structure MAY be stubbed in P03. P01 focuses on `packages/` only.
+
+---
+
+## Implementation sequence
 
 ```mermaid
 flowchart TD
-  A[Workspaces + packages scaffold] --> B[Prisma schema + migrate]
-  B --> C[@pulse/domain enums + MutationResult]
-  C --> D[policy-edge + policy-server stubs]
-  D --> E[Auth.js + register/login actions]
-  E --> F[proxy.ts + policy-edge guards]
-  F --> G[Shell layouts + shadcn + messages]
-  G --> H[Placeholder pages + seed]
-  H --> I[typecheck + lint + smoke]
+  A[Workspaces scaffold] --> B[Prisma schema + migrate]
+  B --> C[@pulse/domain enums]
+  C --> D[Seed script skeleton]
+  D --> E[typecheck + seed smoke]
 ```
 
 ---
@@ -101,14 +97,9 @@ flowchart TD
 ## Happy path smoke
 
 1. `npm run typecheck` (root) — pass.
-2. `npm run lint -w web` — pass.
-3. Seed: client, trainer (`pending`), admin exist.
-4. Anonymous → `/client/dashboard` → redirect `/auth/login?callbackUrl=…`.
-5. Login as client → `/client/dashboard` — shell visible (TopBar + BottomNav on mobile).
-6. Login as trainer → `/trainer/dashboard` — «Under review» banner slot renders when `status=pending`.
-7. Login as admin → `/admin/dashboard` — admin shell + sidebar nav.
-8. Register new client on `/auth/register` → auto session → client dashboard empty state.
-9. Theme toggle + Sonner toast on test mutation (dev-only button or register success path).
+2. `npx prisma migrate status` — applied.
+3. `npm run db:seed` (or equivalent) — admin, client, pending trainer rows.
+4. `@pulse/domain` imports work from `apps/web` typecheck (no runtime auth yet).
 
 ---
 
@@ -116,10 +107,9 @@ flowchart TD
 
 | Scenario | Expected |
 |----------|----------|
-| Invalid login credentials | Generic error; no account enumeration ([`auth_runtime_spec`](../../../prds/05_runtime/auth_runtime_spec.md)) |
-| Duplicate email on register | Field/banner error; no partial user row |
-| Trainer accesses `/admin/*` | Redirect or 403 per proxy |
-| Missing `AUTH_SECRET` / `DATABASE_URL` | Build or runtime fail with clear message |
+| Missing `DATABASE_URL` | Clear error on migrate/seed |
+| Duplicate seed email | UNIQUE constraint — one row ([**FM-001**](../../../prds/02_domain_model/failure_modes_catalog.md)) |
+| Schema drift vs DDL doc | Diff caught in review |
 
 ---
 
@@ -127,33 +117,38 @@ flowchart TD
 
 | Check | Expected |
 |-------|----------|
-| Client JWT → `GET /admin/dashboard` | Denied at proxy (403 or redirect login) |
-| Unauthenticated Server Action (protected) | `assertCan*` / session gate denies |
-| `policy-server` import in `proxy.ts` | **Lint/build fail** — FM-003 guard |
-| Password in response/logs | Never returned |
+| `.env` in git | Not committed |
+| Seed passwords | Dev-only; documented in seed guide |
 
 ---
 
 ## Concurrency & race check
 
-| Scenario | P01 expectation |
-|----------|-----------------|
-| Double submit register | UNIQUE on `user.email` — one row; second returns validation error ([**FM-001**](../../../prds/02_domain_model/failure_modes_catalog.md)) |
-| Concurrent package boundary violation | CI typecheck catches forbidden imports |
+| Scenario | Expected |
+|----------|----------|
+| Double seed run | Idempotent or safe upsert per seed spec |
+
+---
+
+## Drift risks & guards
+
+| Risk | Guard |
+|------|-------|
+| Schema ↔ `database_schema_v1.md` | Prisma diff review each migration |
+| FM-001 duplicate seed emails | UNIQUE on `user.email` |
+| Package import graph | `monorepo_boundaries_contract` CI/typecheck |
+| Phase scope creep into auth | P01 tasks — no Auth.js |
 
 ---
 
 ## Definition of done
 
-- [ ] All `@pulse/*` packages scaffolded; import graph matches [`monorepo_boundaries_contract.md`](../contracts/monorepo_boundaries_contract.md)
-- [ ] Prisma migrate applied; schema matches [`database_schema_v1.md`](../../../prds/03_data_model/database_schema_v1.md)
-- [ ] Auth.js: login, client register, JWT `role`, sign-out
-- [ ] `proxy.ts` live; **no** `middleware.ts` as canonical
-- [ ] Global shell per [`global_shell_spec.md`](../specs/global_shell_spec.md)
-- [ ] `@/lib/messages` + `PRODUCT_TOAST_DURATION_MS` wired
-- [ ] Smoke checklist above passed
-- [ ] No Resend/Stripe/Daily code or env usage
-- [ ] Docs: if behavior diverges from spec — update spec in same PR
+- [ ] All `@pulse/domain`, `@pulse/db` scaffolded
+- [ ] Prisma migrate applied; schema matches DDL doc
+- [ ] Seed runs with all roles
+- [ ] Post-MVP columns present, unused in app
+- [ ] `npm run typecheck` pass
+- [ ] Smoke checklist passed
 
 ---
 
@@ -161,30 +156,20 @@ flowchart TD
 
 | Document | Relationship |
 |----------|--------------|
-| [`P01_tasks.md`](../tasks/P01_tasks.md) | Agent checklist |
-| [`P02_phase_description.md`](./P02_phase_description.md) | Next phase — public discovery |
-| [`monorepo_boundaries_contract.md`](../contracts/monorepo_boundaries_contract.md) | Package rules |
-| [`global_shell_spec.md`](../specs/global_shell_spec.md) | Shell implementation |
-| [`documentation_creation_registry.md`](../../../meta/documentation_creation_registry.md) | Wave W11-01 |
-
-**Registry:** [`documentation_creation_registry.md`](../../../meta/documentation_creation_registry.md) — wave W11-01
+| [`P01_tasks.md`](../tasks/P01_tasks.md) | Checklist |
+| [`P02_phase_description.md`](./P02_phase_description.md) | Next — auth |
+| [`_migration_P01-P07_to_P01-P15.md`](./_migration_P01-P07_to_P01-P15.md) | W11 → W16 map |
 
 ---
 
 ## Agent notes
 
-- **Одна сессия = P01 only.** Не начинать catalog/booking UI.
-- Async APIs: `await cookies()`, `await params`, `await searchParams` — Next.js 16.
-- `proxy.ts` — **JWT/cookie checks only**; DB checks in Server Actions via `policy-server`.
-- Не писать business logic в `apps/web` — даже register создаёт user через domain/policy layer.
-- После scaffold — обновить `apps/web/AGENTS.md` только если меняется структура каталогов.
+- **Одна сессия = P01 only.** Не начинать Auth.js или shell.
+- Business logic in `packages/`, not `apps/web`.
 
 ---
 
 ## Acceptance criteria
 
-- [ ] Front matter + DoD checklist complete
-- [ ] Smoke: happy auth + shell + negative login + security 403 admin
-- [ ] Race: duplicate email register handled
-- [ ] Context7 APIs reflected (async headers/cookies, Auth.js JWT role, Prisma dual URL)
-- [ ] No second route inventory (link to `canonical_routes.md` only)
+- [ ] Packages + migrate + seed verified
+- [ ] No auth, proxy, or product UI in PR scope

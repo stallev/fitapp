@@ -493,7 +493,23 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 | W11-13 | `P07_phase_description.md` | accessibility_requirements, ui_states | methodology |
 | W11-14 | `P07_tasks.md` | P07_phase | — |
 
-*(Полные пути: `docs/implementation/mvp/phases_tasks_descriptions/` и `tasks/`)*
+*(W11 superseded by W16 — см. миграцию [`_migration_P01-P07_to_P01-P15.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md))*
+
+---
+
+### Волна W16 — Phase restructure P01–P15 + UI matrix
+
+| ID | Файл | Зависит от | Обновить backlinks |
+|----|------|------------|-------------------|
+| W16-01 | `_phase_template.md` | W11 phase docs | methodology §2.5 |
+| W16-02 | `_migration_P01-P07_to_P01-P15.md` | W11 | AGENTS, README |
+| W16-03 | `ui_component_phase_matrix.md` | design_system_lab_spec | phase docs, specs |
+| W16-04 … W16-18 | `P01`…`P15_phase_description.md` | W11 split + new phases | methodology, mvp_scope |
+| W16-19 … W16-33 | `P01`…`P15_tasks.md` | matching phase docs | — |
+| W16-34 | Specs UI Catalog sections | ui_component_phase_matrix | global_shell, catalog, booking, onboarding, schedule, admin, complaint |
+| W16-35 | Cross-ref sync | W16 phases | AGENTS, architecture_master_index, guides, observability |
+
+*(Полные пути: `docs/implementation/mvp/`)*
 
 ---
 
@@ -504,12 +520,12 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 | W12-01 | `docs/prds/06_operations/README.md` | backend_requirements | architecture_master_index |
 | W12-02 | `docs/prds/06_operations/migration_runbook.md` | database_schema_v1, ADR-001, Context7 Prisma | database_schema_v1 |
 | W12-03 | `docs/prds/06_operations/observability_plan.md` | backend_requirements | backend_requirements |
-| W12-04 | `docs/prds/06_operations/cron_jobs_registry.md` | email_notifications_contract, P06 | adr_006 |
+| W12-04 | `docs/prds/06_operations/cron_jobs_registry.md` | email_notifications_contract, P15 | adr_006 |
 | W12-05 | `docs/implementation/mvp/guides/local_dev_setup.md` | migration_runbook, seed_data_spec | implementation/mvp/README |
 | W12-06 | `guides/vercel_deploy_guide.md` | ADR-001, auth_runtime_spec | ADR-001 |
 | W12-07 | `guides/neon_prisma_migrations_guide.md` | migration_runbook | migration_runbook |
 | W12-08 | `guides/seed_and_fixtures_guide.md` | seed_data_spec | seed_data_spec |
-| W12-09 | `guides/cron_jobs_setup_guide.md` | cron_jobs_registry, P06 | cron_jobs_registry |
+| W12-09 | `guides/cron_jobs_setup_guide.md` | cron_jobs_registry, P15 | cron_jobs_registry |
 
 ---
 
@@ -610,7 +626,7 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 | Implementation contracts | 9 |
 | Implementation specs | 8 |
 | Wireframes + template + index | 30 |
-| Phases + tasks | 14 |
+| Phases + tasks | 30 (W16) + 14 (W11 superseded) |
 | Operations + guides | 9 |
 | Architecture learning pack | 3 |
 | Meta sync (W14 — правки существующих) | 6 файлов |
@@ -620,18 +636,21 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 
 ## 9. Быстрый старт для агента
 
-**Следующий шаг:** **P01 implementation** — [`P01_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) + [`P01_tasks.md`](../implementation/mvp/tasks/P01_tasks.md).
+**Следующий шаг:** **P01 implementation** (monorepo & data layer) — [`P01_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) + [`P01_tasks.md`](../implementation/mvp/tasks/P01_tasks.md).
 
-**Документация MVP-complete (W0–W14, 2026-05-23).** Новые PRD/specs — только при material scope change или post-MVP feature.
+**Документация MVP-complete (W0–W16, 2026-05-23).** Фазы P01–P15 (W16 restructure). Новые PRD/specs — только при material scope change.
+
+**Миграция W11→W16:** [`_migration_P01-P07_to_P01-P15.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md)
 
 **Перед начинанием сессии реализации прочитать:**
 
 1. Этот реестр (§2 требования)
 2. [`ai_first_project_methodology.md`](./ai_first_project_methodology.md)
-3. Файлы из колонки «Зависит от» для текущего ID
-4. Context7 — если волна W4, W5, W12 (runtime/auth/db)
+3. Файлы из колонки «Зависит от» для текущей фазы
+4. [`ui_component_phase_matrix.md`](../implementation/mvp/ui_component_phase_matrix.md) — row for active phase only
+5. Context7 — если runtime/auth/db
 
-**После завершения волны W14** документация считается **MVP-complete** для начала P01 implementation.
+**После завершения W16** документация готова к пофазной имплементации P01→P14 (+ P15 post-MVP).
 
 ---
 
@@ -639,6 +658,7 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 
 | Date | Change |
 |------|--------|
+| 2026-05-23 | **W16 complete** — P01–P15 phase restructure (30 phase/task files), `_phase_template.md`, `_migration_P01-P07_to_P01-P15.md`, `ui_component_phase_matrix.md`, UI Catalog sections in specs, cross-ref sync |
 | 2026-05-23 | **W15-01** — `design_system_lab_spec.md` (shared UI primitives + Design Lab page) |
 | 2026-05-23 | **W14 complete** — final index sync: `architecture_master_index`, `prds/README`, `design/README`, methodology checklist, `AGENTS.md`, `implementation/mvp/README` |
 | 2026-05-23 | W13 complete — architecture learning pack: booking, trainer verification, email jobs layer walkthroughs |

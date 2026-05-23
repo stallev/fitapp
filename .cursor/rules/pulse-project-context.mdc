@@ -64,6 +64,7 @@ Runtime policy: [ADR-001](docs/prds/07_governance/adr_001_stack_and_runtime.md),
 | Guidelines | [`docs/guidelines/README.md`](docs/guidelines/README.md) |
 | Pages spec | [`docs/default_docs/fitness-platform-pages.md`](docs/default_docs/fitness-platform-pages.md) |
 | Design system | [`docs/default_docs/fitness-platform-design-system.md`](docs/default_docs/fitness-platform-design-system.md) |
+| **UI component catalog (Design Lab)** | `/design-system` → `apps/web/src/components/atoms/`, `components/ui/` — spec: [`design_system_lab_spec.md`](docs/implementation/mvp/specs/design_system_lab_spec.md) |
 | Lampto reference | [`docs/reference/lampto_project_reference.md`](docs/reference/lampto_project_reference.md) |
 
 ## Cursor rules (beyond this file)

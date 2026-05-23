@@ -32,8 +32,12 @@ apps/web/src/
 ├── data/             — DAL (server-only queries)
 ├── lib/              — App utilities, messages, UI helpers
 └── components/
-    └── ui/           — shadcn primitives
+    ├── atoms/        — Typography atoms (Heading, ContentText, …) — catalog: /design-system
+    ├── ui/           — Tokenized shadcn primitives (Button, PulseCard, CustomLink, …)
+    └── design-lab/   — Design Lab showcase only — MUST NOT import in product routes
 ```
+
+**Design Lab catalog:** dev-only `/design-system` (`app/(dev)/design-system/`) visualizes the canonical UI catalog. Product screens **MUST** import from `@/components/atoms` and `@/components/ui/*` — spec: [`design_system_lab_spec.md`](../../docs/implementation/mvp/specs/design_system_lab_spec.md).
 
 - **`page.tsx` / `layout.tsx`** — only files with `default` export
 - Feature components — **named export**, one component per `*.tsx` file (≤140 lines target)
@@ -61,6 +65,7 @@ Visual and interaction canon — **do not invent** ad-hoc styles:
 
 | Topic | Source |
 |-------|--------|
+| **UI component catalog** | `/design-system` (local dev) — import `@/components/atoms`, `@/components/ui/*`; spec: [`design_system_lab_spec.md`](../../docs/implementation/mvp/specs/design_system_lab_spec.md) |
 | Design tokens, typography | [`fitness-platform-design-system.md`](../../docs/default_docs/fitness-platform-design-system.md), [`typography_text_guidelines.md`](../../docs/guidelines/typography_text_guidelines.md) |
 | Page layout reference | [`Fitness_Platform_Prototype_v1.html`](../../docs/prototypes/Fitness_Platform_Prototype_v1.html) |
 | User-visible copy | `@/lib/messages` (when wired) — rule: `ui-messages-and-copy.mdc` |
@@ -110,6 +115,7 @@ When `packages/` exist — also `npm run typecheck` from monorepo root.
 - [ ] No `@pulse/policy-server` import in `proxy.ts` / `middleware.ts`
 - [ ] Routes match [`canonical_routes.md`](../../docs/design/canonical_routes.md)
 - [ ] UI follows Warm Forest tokens — no arbitrary Tailwind color strings for product UI
+- [ ] Product UI uses Design Lab catalog imports (`@/components/atoms`, `@/components/ui/*`) — no `@/components/design-lab/**` in routes
 - [ ] Mutations: pending UI + toast per mutation rules
 
 ## Do NOT

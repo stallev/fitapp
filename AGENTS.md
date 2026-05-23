@@ -59,11 +59,12 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 | **Authorization & runtime** | [`docs/prds/04_authorization_privacy/`](docs/prds/04_authorization_privacy/), [`docs/prds/05_runtime/`](docs/prds/05_runtime/) |
 | Страницы и маршруты | [`docs/design/canonical_routes.md`](docs/design/canonical_routes.md), [`docs/default_docs/fitness-platform-pages.md`](docs/default_docs/fitness-platform-pages.md) |
 | Design system | [`docs/default_docs/fitness-platform-design-system.md`](docs/default_docs/fitness-platform-design-system.md) |
+| **UI component catalog (Design Lab)** | [`docs/implementation/mvp/specs/design_system_lab_spec.md`](docs/implementation/mvp/specs/design_system_lab_spec.md) — `/design-system` → `apps/web/src/components/atoms/`, `components/ui/` |
 | Guidelines + Cursor Rules | [`docs/guidelines/README.md`](docs/guidelines/README.md) |
 | **Implementation contracts** | [`docs/implementation/mvp/contracts/`](docs/implementation/mvp/contracts/) |
 | **Implementation specs** | [`docs/implementation/mvp/specs/`](docs/implementation/mvp/specs/) |
 | **Implementation guides** | [`docs/implementation/mvp/guides/`](docs/implementation/mvp/guides/) |
-| **Implementation phases (P01–P07)** | [`docs/implementation/mvp/phases_tasks_descriptions/`](docs/implementation/mvp/phases_tasks_descriptions/) + [`tasks/`](docs/implementation/mvp/tasks/) |
+| **Implementation phases (P01–P15)** | [`docs/implementation/mvp/phases_tasks_descriptions/`](docs/implementation/mvp/phases_tasks_descriptions/) + [`tasks/`](docs/implementation/mvp/tasks/) + [`ui_component_phase_matrix.md`](docs/implementation/mvp/ui_component_phase_matrix.md) |
 | HTML-прототип | [`docs/prototypes/Fitness_Platform_Prototype_v1.html`](docs/prototypes/Fitness_Platform_Prototype_v1.html) |
 | Runtime / стек | [`docs/prds/07_governance/adr_001_stack_and_runtime.md`](docs/prds/07_governance/adr_001_stack_and_runtime.md), [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
 
@@ -82,7 +83,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P01 (scaffold).  
+**Текущая фаза:** P01 (monorepo & data layer). W16 docs restructure complete — см. [`_migration_P01-P07_to_P01-P15.md`](docs/implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md).  
 `apps/web` — начальный Next.js shell; `packages/` и workers — ещё не созданы.  
 Не расширять реализацию без явной фазы и contract.
 

@@ -1,20 +1,35 @@
-# P07 — Hardening, Accessibility & Quality Gate
+# P07 — Booking Wizard
 
 **Тип:** Phase Description  
 **Статус:** Canonical  
-**Версия:** 1.0  
+**Версия:** 2.0  
 **Дата:** 2026-05-23  
-**Волна:** W11  
-**Зависит от:** [`P05_phase_description.md`](./P05_phase_description.md), [`accessibility_requirements.md`](../../../design/accessibility_requirements.md), [`ui_states_contract.md`](../../../design/ui_states_contract.md), [`interaction_design_contract.md`](../../../design/interaction_design_contract.md)  
-**Связанные документы:** [`P07_tasks.md`](../tasks/P07_tasks.md), [`ai_semantics_a11y_guidelines.md`](../../../guidelines/react/ai_semantics_a11y_guidelines.md)
+**Волна:** W16  
+**Зависит от:** [`P06_phase_description.md`](./P06_phase_description.md), [`booking_wizard_spec.md`](../specs/booking_wizard_spec.md), [`booking_lifecycle_contract.md`](../contracts/booking_lifecycle_contract.md), [`schedule_slots_contract.md`](../contracts/schedule_slots_contract.md)  
+**Связанные документы:** [`P07_tasks.md`](../tasks/P07_tasks.md), [`adr_005_mvp_booking_without_payment.md`](../../../prds/07_governance/adr_005_mvp_booking_without_payment.md)
 
 ---
 
 ## Purpose
 
-Фаза **P07** — **quality gate** перед production MVP: WCAG 2.1 AA pass по [`accessibility_requirements.md`](../../../design/accessibility_requirements.md), полнота UI states (empty/loading/error/forbidden), performance smoke, doc↔code sync, optional axe/Playwright baseline. Может выполняться **после P05** параллельно с отложенным P06.
+Фаза **P07** — 3-step booking wizard `/book/[trainerId]`, `(booking)` stripped chrome, `createBooking` → `pending`, redirect `?booked=1` + toast. **No payment UI** (ADR-005).
 
-**Аудитория:** AI-агенты финального polish; QA checklist.
+**Аудитория:** AI-агенты после P06.
+
+---
+
+## Agent context budget
+
+| # | Document | Why |
+|---|----------|-----|
+| 1 | [`P07_tasks.md`](../tasks/P07_tasks.md) | Checklist |
+| 2 | [`booking_wizard_spec.md`](../specs/booking_wizard_spec.md) | Wizard UX |
+| 3 | [`booking_lifecycle_contract.md`](../contracts/booking_lifecycle_contract.md) | FM-002 |
+| 4 | [`schedule_slots_contract.md`](../contracts/schedule_slots_contract.md) | Slots + TZ |
+| 5 | [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) | P07 row |
+| 6 | [`adr_005_mvp_booking_without_payment.md`](../../../prds/07_governance/adr_005_mvp_booking_without_payment.md) | No payment |
+
+**MUST NOT read** P08+ phase docs.
 
 ---
 
@@ -24,46 +39,51 @@
 
 | Area | Deliverable |
 |------|-------------|
-| Accessibility | Keyboard nav, focus rings, labels, contrast light/dark, touch 44px |
-| UI states audit | Every async region per [`ui_states_contract.md`](../../../design/ui_states_contract.md) |
-| Mutation UX | Toast, pending, optimistic rollback audit |
-| Performance | Lighthouse smoke on landing, catalog, dashboard |
-| Docs sync | Phase DoD doc alignment |
-| CI hooks | Optional: axe, typecheck/lint in CI (if repo ready) |
+| `/book/[trainerId]` | Service → Slot → Confirm |
+| Domain | `createBooking`, `GenerateAvailableSlots` |
+| Layout | `(booking)` — no bottom nav |
 
 ### Out of scope
 
-- Formal VPAT / legal audit
-- Full E2E suite for all flows (smoke subset only)
-- RTL localization
-- P06 email (separate phase)
+- Client bookings list (→ **P08**)
+- Reviews (→ **P09**)
+- Payment, email E-06
 
 ---
 
-## Prerequisites
+## UI Catalog (this phase)
 
-- P01–P05 feature-complete
-- Wireframes W10 as visual baseline
+| Action | Component | Route |
+|--------|-----------|-------|
+| **CREATE** | `BookingWizard`, schedule grid wrapper | `/book/[trainerId]` |
+| **USE** | `WizardHeader`, `ChoiceCard`, `SummaryCard`, `SchedulePicker`, `TimeSlotButton`, `Progress`, `MetaRow` | wizard |
+| **MUST NOT** | Payment UI | ADR-005 |
 
 ---
 
-## Contracts & specs to read
+## Cross-phase dependencies
 
-| Document | Why |
-|----------|-----|
-| [`accessibility_requirements.md`](../../../design/accessibility_requirements.md) | A1–A4 rules |
-| [`ui_states_contract.md`](../../../design/ui_states_contract.md) | State matrix |
-| [`interaction_design_contract.md`](../../../design/interaction_design_contract.md) | Toast/pending |
-| [`forms_and_validation_ux.md`](../../../design/forms_and_validation_ux.md) | Form a11y |
+| Dependency | Blocker? | Notes |
+|------------|----------|-------|
+| **P06** profile CTA | Yes | Entry path |
+| Trainer services + schedule | Yes | Seed |
+| **P11** services (full) | No | Seed OK |
+
+---
+
+## In-scope routes
+
+| Path | Content |
+|------|---------|
+| `/book/[trainerId]` | Wizard |
 
 ---
 
 ## Happy path smoke
 
-1. Keyboard-only: login → catalog → book → logout — no traps.
-2. Screen reader spot-check: one `h1` per route, labeled nav regions.
-3. Theme toggle: contrast still passes A1-MUST-3.
-4. All primary flows show loading skeleton then content.
+1. Client → wizard → pick service → slot → confirm.
+2. Submit → `pending` booking → redirect `/client/bookings/[id]?booked=1` + RedirectToast.
+3. Guest → redirect login.
 
 ---
 
@@ -71,9 +91,8 @@
 
 | Scenario | Expected |
 |----------|----------|
-| Network error on catalog | Error state + retry CTA (Zero Dead Ends) |
-| 403 forbidden page | Dedicated forbidden UI, not blank |
-| Form validation | `aria-invalid` + describedby |
+| Slot taken on submit | `toast.error`; no double book ([**FM-002**](../../../prds/02_domain_model/failure_modes_catalog.md)) |
+| Unapproved trainer | Blocked at preload |
 
 ---
 
@@ -81,8 +100,8 @@
 
 | Check | Expected |
 |-------|----------|
-| Auth error messages | Generic (A3-MUST-4) |
-| No sensitive data in toast copy |
+| Guest `/book/*` | Redirect login |
+| Tampered trainerId | Policy deny |
 
 ---
 
@@ -90,28 +109,26 @@
 
 | Scenario | Expected |
 |----------|----------|
-| Optimistic rollback | Focus returns to control; error announced |
+| Double submit confirm | One booking; UNIQUE slot (FM-002) |
 
 ---
 
-## Drift & consistency notes
+## Drift risks & guards
 
 | Risk | Guard |
 |------|-------|
-| Docs vs implemented routes | Compare [`canonical_routes.md`](../../../design/canonical_routes.md) vs `apps/web/src/app` |
-| Wireframe vs UI | Spot-check 5 key screens |
-| Guidelines vs code | `@/lib/messages` — no hardcoded user strings in touched files |
+| Toast from Server Action before redirect | Query param pattern |
+| TZ display | `TrainerProfile.timezone` |
+| Payment UI creep | ADR-005 review |
 
 ---
 
 ## Definition of done
 
-- [ ] Accessibility checklist A1–A4 signed off (manual)
-- [ ] UI states matrix gaps closed or documented exceptions
-- [ ] Lighthouse: no critical a11y violations on 3 key URLs
-- [ ] `npm run typecheck` + lint clean
-- [ ] Product docs updated if behavior changed during hardening
-- [ ] Known issues list empty or tracked
+- [ ] Wizard per spec; no payment UI
+- [ ] FM-002 handled
+- [ ] Pending UI + redirect toast
+- [ ] Smoke + typecheck + lint pass
 
 ---
 
@@ -120,22 +137,16 @@
 | Document | Relationship |
 |----------|--------------|
 | [`P07_tasks.md`](../tasks/P07_tasks.md) | Checklist |
-| [`documentation_creation_registry.md`](../../../meta/documentation_creation_registry.md) | W11-13 |
-| W14 final index sync | Next documentation wave |
+| [`P08_phase_description.md`](./P08_phase_description.md) | Next — client hub |
 
 ---
 
 ## Agent notes
 
-- P07 — **не** feature phase; минимальные diffs, фиксы a11y/states.
-- Prefer shadcn/Radix primitives over custom widgets.
-- `prefers-reduced-motion` in globals.css.
+- **Одна сессия = P07 only.**
 
 ---
 
 ## Acceptance criteria
 
-- [ ] WCAG spot-check documented
-- [ ] Forbidden/empty/error states on all P01–P05 routes
-- [ ] Doc sync complete
-- [ ] No new features / scope creep
+- [ ] Booking E2E without payment

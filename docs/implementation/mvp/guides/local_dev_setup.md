@@ -73,7 +73,7 @@ AUTH_SECRET="replace-with-random-secret"
 AUTH_URL="http://localhost:3000"
 ```
 
-**MVP — do NOT add:** `RESEND_API_KEY`, `CRON_SECRET` (until P06).
+**MVP — do NOT add:** `RESEND_API_KEY`, `CRON_SECRET` (until P15).
 
 Optional when file upload ships:
 

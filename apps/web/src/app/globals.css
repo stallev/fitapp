@@ -10,7 +10,11 @@
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-display), ui-serif, Georgia, serif;
   --font-heading: var(--font-display), ui-serif, Georgia, serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, monospace;
+  --color-subtle-foreground: hsl(var(--color-ink-3));
+  --color-primary-container: hsl(var(--color-primary-container));
+  --color-on-primary-container: hsl(var(--color-on-primary-container));
   --color-sidebar-ring: hsl(var(--sidebar-ring));
   --color-sidebar-border: hsl(var(--sidebar-border));
   --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
@@ -115,6 +119,34 @@
   --sidebar-accent-foreground: 158 30% 15%; /* --color-on-primary-container */
   --sidebar-border: 40 32% 78%; /* --color-surface-dim */
   --sidebar-ring: 145 33% 26%; /* --color-primary */
+
+  /* Brand refs for CVA (design kit) */
+  --forest: #1a3028;
+  --forest-mid: #2d5a40;
+  --gold: #c4973a;
+  --gold-light: #e8c070;
+  --cream: #f5f0e8;
+  --cream-border: #d8ccb4;
+  --green-soft: #e4f0e8;
+  --amber-soft: #f5e6c8;
+  --green-text: #1a5c32;
+
+  /* Elevation */
+  --shadow-card: 0 1px 2px rgba(26, 48, 40, 0.08);
+  --shadow-hover: 0 4px 16px rgba(26, 48, 40, 0.1);
+  --shadow-overlay: 0 8px 32px rgba(26, 48, 40, 0.18);
+  --shadow-button-hover: 0 2px 10px rgba(26, 48, 40, 0.35);
+  --shadow-destructive-hover: 0 2px 10px rgba(178, 58, 58, 0.35);
+
+  /* PulseCard geometry */
+  --card-radius-sm: 10px;
+  --card-radius-md: 14px;
+  --card-radius-lg: 16px;
+  --card-radius-xl: 20px;
+  --card-p-sm: 12px;
+  --card-p-kpi: 14px;
+  --card-p-md: 16px;
+  --card-p-lg: 20px;
 }
 
 .dark {
@@ -182,6 +214,22 @@
   --sidebar-accent-foreground: 140 30% 83%; /* --color-on-primary-container */
   --sidebar-border: 147 19% 30%; /* --color-surface-dim */
   --sidebar-ring: 145 25% 55%; /* --color-primary */
+
+  /* Brand refs for CVA (design kit) */
+  --forest: #87c09f;
+  --forest-mid: #6ea886;
+  --gold: #e8c070;
+  --gold-light: #f5d89a;
+  --cream: #0e1814;
+  --cream-border: #3d5a4a;
+  --green-soft: #1f3a2a;
+  --amber-soft: #3a2f1a;
+  --green-text: #6ee7a0;
+
+  /* Elevation — same structure, forest-tinted */
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.32);
+  --shadow-overlay: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 @layer base {
@@ -195,5 +243,25 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  .cn-toast {
+    @apply rounded-xl border border-border bg-popover text-popover-foreground font-sans shadow-[var(--shadow-overlay)];
+  }
+
+  [data-sonner-toaster][data-sonner-theme="light"] {
+    --normal-bg: hsl(var(--popover));
+    --normal-text: hsl(var(--popover-foreground));
+    --normal-border: hsl(var(--border));
+    --border-radius: var(--radius-lg);
+  }
+
+  [data-sonner-toaster][data-sonner-theme="dark"] {
+    --normal-bg: hsl(var(--popover));
+    --normal-text: hsl(var(--popover-foreground));
+    --normal-border: hsl(var(--border));
+    --border-radius: var(--radius-lg);
   }
 }

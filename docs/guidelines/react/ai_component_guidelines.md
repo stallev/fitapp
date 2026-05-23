@@ -38,9 +38,13 @@
 
 ## 2.2 Shared components
 
-- Search `components/ui/`, `components/atoms/`, domain folders **before** new JSX.
+- Before new JSX: open **Design Lab** `/design-system` and check the catalog in `components/atoms/`, `components/ui/`.
+- Import product UI from `@/components/atoms` and `@/components/ui/*` only — **not** from `components/design-lab/` (showcase wrappers).
 - Reuse on 2+ routes → extract shared component (named export, one file).
+- New repeating primitive → add to catalog + Design Lab section before use in product screens.
 - Routes stay thin — compose features, do not embed large UI trees.
+
+Spec: [`design_system_lab_spec.md`](../../implementation/mvp/specs/design_system_lab_spec.md) §Product UI catalog contract.
 
 ---
 
@@ -75,11 +79,19 @@ When `reactCompiler: true`:
 
 ```
 components/
-  ui/           # shadcn primitives
+  ui/           # shadcn + tokenized primitives (Button, PulseCard, CustomLink, …)
+  atoms/        # typography atoms — import via @/components/atoms
+  shell/        # app chrome: TopBar, BottomNav, SideNav — see global_shell_spec
+  design-lab/   # Design Lab showcase only — not for product import
+  catalog/      # discovery molecules (TrainerCard)
   booking/      # booking-specific
   trainer/      # trainer dashboard
   admin/        # moderation tables
 ```
+
+**Full inventory (paths, phases, FAANG UX, Context7, prototype anchors):** [`design_system_lab_spec.md`](../../implementation/mvp/specs/design_system_lab_spec.md) § Component catalog placement & Phase 2–3 inventory.
+
+**Catalog index:** `/design-system` (dev-only). Cursor rule: **ui-warm-forest-shadcn** §Design Lab catalog.
 
 Routes stay thin — data in `src/data/**`, actions in `src/actions/**`.
 

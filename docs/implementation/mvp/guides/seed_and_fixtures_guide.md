@@ -54,7 +54,7 @@ npm run db:seed -w @pulse/db
 
 1. `npx prisma studio` — check `user` count ≥ 6.
 2. Login at `/auth/login` as `client@pulse.dev` / `client123`.
-3. Visit `/client/bookings` — expect 4 bookings (after P03).
+3. Visit `/client/bookings` — expect 4 bookings (after P08).
 4. Login as `admin@pulse.dev` — `/admin/trainers` shows `pending@pulse.dev`.
 
 ---
@@ -134,12 +134,12 @@ Post-seed manual checks (expand as phases ship):
 
 | Phase | Route | Actor | Expected |
 |-------|-------|-------|----------|
-| P02 | `/trainers` | guest | ≥ 3 trainers |
-| P02 | `/trainers/[id]` | guest | Services visible |
-| P03 | `/client/bookings` | client | 4 bookings |
-| P03 | `/book/[trainerId]` | client | Slots from schedule |
-| P04 | `/trainer/dashboard` | anna | Upcoming sessions |
-| P05 | `/admin/trainers` | admin | pending in queue |
+| P05 | `/trainers` | guest | ≥ 3 trainers |
+| P06 | `/trainers/[id]` | guest | Services visible |
+| P08 | `/client/bookings` | client | 4 bookings |
+| P07 | `/book/[trainerId]` | client | Slots from schedule |
+| P12 | `/trainer/dashboard` | anna | Upcoming sessions |
+| P13 | `/admin/trainers` | admin | pending in queue |
 
 From [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md) §Smoke routes.
 
@@ -162,7 +162,7 @@ From [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md) §Smok
 ## Agent notes
 
 - Implement seed only in `packages/db/prisma/seed.ts` — not in apps/web.
-- `pending@pulse.dev` must stay pending for P05 admin smoke.
+- `pending@pulse.dev` must stay pending for P13 admin smoke.
 - Do not insert `job_execution` / `delivery_log` rows in seed.
 
 ---

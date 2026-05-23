@@ -1,4 +1,5 @@
 import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
@@ -92,6 +93,123 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+export const pulseCardVariants = cva(
+  "border border-[color:var(--cream-border)] bg-card text-card-foreground transition-[box-shadow,border-color,background-color,transform] duration-150",
+  {
+    variants: {
+      variant: {
+        base: [
+          "rounded-[var(--card-radius-lg)]",
+          "shadow-[var(--shadow-card)]",
+          "ring-1 ring-border/60",
+          "p-[var(--card-p-md)]",
+        ],
+        elevated: [
+          "rounded-[var(--card-radius-xl)]",
+          "shadow-[var(--shadow-overlay)]",
+          "overflow-hidden",
+        ],
+        compact: [
+          "rounded-[var(--card-radius-md)]",
+          "shadow-none",
+          "p-[var(--card-p-sm)]",
+        ],
+        row: [
+          "rounded-[var(--card-radius-sm)]",
+          "shadow-none",
+          "p-[var(--card-p-sm)]",
+          "flex min-w-0 items-start gap-3",
+        ],
+        kpi: [
+          "rounded-[var(--card-radius-md)]",
+          "shadow-[var(--shadow-card)]",
+          "ring-1 ring-border/60",
+          "p-[var(--card-p-kpi)]",
+          "min-w-0",
+        ],
+      },
+      interactive: {
+        true: [
+          "cursor-pointer",
+          "hover:border-[color:var(--forest-mid)]",
+          "hover:shadow-[var(--shadow-overlay)]",
+          "active:scale-[0.99]",
+          "focus-visible:outline-none",
+          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
+        ],
+        false: "",
+      },
+      state: {
+        default: "",
+        active:
+          "border-[color:var(--forest-mid)] bg-[color:var(--green-soft)]",
+        warning:
+          "border-[color:var(--gold-light)] bg-[color:var(--amber-soft)]",
+        muted: "opacity-50",
+      },
+    },
+    compoundVariants: [
+      {
+        interactive: true,
+        state: "muted",
+        className: [
+          "pointer-events-none",
+          "cursor-default",
+          "hover:border-[color:var(--cream-border)]",
+          "hover:shadow-none",
+          "active:scale-100",
+        ],
+      },
+    ],
+    defaultVariants: {
+      variant: "base",
+      interactive: false,
+      state: "default",
+    },
+  },
+)
+
+function PulseCard({
+  className,
+  variant,
+  interactive,
+  state,
+  ...props
+}: React.ComponentProps<"div"> & VariantProps<typeof pulseCardVariants>) {
+  return (
+    <div
+      data-slot="pulse-card"
+      className={cn(
+        pulseCardVariants({ variant, interactive, state }),
+        className,
+      )}
+      {...props}
+    />
+  )
+}
+
+function PulseCardContent({
+  className,
+  density = "md",
+  ...props
+}: React.ComponentProps<"div"> & { density?: "sm" | "md" | "lg" }) {
+  return (
+    <div
+      data-slot="pulse-card-content"
+      className={cn(
+        "min-w-0",
+        density === "sm" && "p-[var(--card-p-sm)]",
+        density === "md" && "p-[var(--card-p-md)]",
+        density === "lg" && "p-[var(--card-p-lg)]",
+        className,
+      )}
+      {...props}
+    />
+  )
+}
+
+export type PulseCardProps = React.ComponentProps<typeof PulseCard>
+
 export {
   Card,
   CardHeader,
@@ -100,4 +218,6 @@ export {
   CardAction,
   CardDescription,
   CardContent,
+  PulseCard,
+  PulseCardContent,
 }
