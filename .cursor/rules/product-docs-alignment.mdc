@@ -1,0 +1,36 @@
+---
+description: Keep Pulse product docs aligned when behavior changes
+alwaysApply: true
+---
+
+# Product documentation alignment
+
+When you **add** or **materially change** user-facing or cross-cutting behavior (routes, permissions, data flows, booking lifecycle, admin flows), update project docs in the **same task** unless the user explicitly limits scope to code only.
+
+**Methodology:** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md) — §3.4 product-docs-alignment, §2.2 agent cycle VERIFICATION step.
+
+## What to do
+
+1. **Compare** implemented behavior with PRD, user flows, and design artifacts.
+2. **Update the smallest set** of files that describe that surface.
+3. If behavior intentionally diverges — update docs to match new truth.
+
+## Where to look and update
+
+| Topic | Files |
+|-------|--------|
+| Scope / MVP | [`docs/default_docs/fitness-platform-mvp.md`](docs/default_docs/fitness-platform-mvp.md), future `mvp_scope.md` |
+| User journeys | [`docs/prds/01_product_scope/user_flows/users_mvp/`](docs/prds/01_product_scope/user_flows/users_mvp/) |
+| Routes / IA | [`docs/design/canonical_routes.md`](docs/design/canonical_routes.md) |
+| Contracts | [`docs/implementation/mvp/contracts/`](docs/implementation/mvp/contracts/) |
+| Database | [`docs/prds/03_data_model/database_schema_v1.md`](docs/prds/03_data_model/database_schema_v1.md) |
+| Authorization | [`docs/prds/04_authorization_privacy/`](docs/prds/04_authorization_privacy/) (when created) |
+| Governance | ADRs in [`docs/prds/07_governance/`](docs/prds/07_governance/) |
+
+## Precedence
+
+Follow source-of-truth order in [`pulse-project-context.mdc`](pulse-project-context.mdc).
+
+## Scope boundary
+
+Pure refactors with no observable behavior change — doc updates optional unless fixing factual errors.

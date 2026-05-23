@@ -19,6 +19,21 @@ Pulse **наследует подходы**, но имеет **свой доме
 
 ---
 
+## Приоритет: Pulse Rules > lampto code
+
+> **Код референсного проекта (`docs/examples/lampto/`) не полностью соответствует актуальным Cursor Rules и Guidelines Pulse.**  
+> Эталон lampto полезен для **архитектурных паттернов** (слои domain → policy → db → web, фазовая декомпозиция, contracts), но **не является безусловным эталоном UI-кода, naming или file-size дисциплины**.
+
+**При разработке Pulse:**
+
+1. **Cursor Rules** (`.cursor/rules/*.mdc`) и **Guidelines** (`docs/guidelines/`) Pulse — **канон** для UI, React, naming, mobile-first, DRY/SOLID, separation of logic/presentation.
+2. **Код lampto** — read-only **reference for structure and flows**; если расходится с Pulse rules — **следовать Pulse rules**.
+3. **HTML prototype Pulse** — [`Fitness_Platform_Prototype_v1.html`](../prototypes/Fitness_Platform_Prototype_v1.html) + design system; subordinate to Rules/PRD (см. **pulse-project-context** §Source-of-truth).
+
+Явные отличия стека и домена — [ADR-001](../prds/07_governance/adr_001_stack_and_runtime.md), [ADR-002](../prds/07_governance/adr_002_next162_vercel_runtime_policy.md).
+
+---
+
 ## Что копировать один в один (принципы)
 
 | Область | Эталон в lampto | Применение в Pulse |
@@ -30,7 +45,7 @@ Pulse **наследует подходы**, но имеет **свой доме
 | Фазовая декомпозиция | `P{N}_phase_description.md` + `P{N}_tasks.md` | Тот же формат |
 | Contracts | `implementation/mvp/contracts/` | Контракты по доменным flows Pulse |
 | AGENTS.md | корень + `apps/web/AGENTS.md` | [`AGENTS.md`](../../AGENTS.md) |
-| Cursor Rules | `.cursor/rules/*.mdc` | `.cursor/rules/` — по мере появления паттернов |
+| Cursor Rules | `.cursor/rules/*.mdc` | `.cursor/rules/` — core + UI/UX (см. [`docs/guidelines/README.md`](../guidelines/README.md)) |
 | Иерархия источников истины | Rules → AGENTS → Contracts → PRD → Guidelines | См. methodology §3.2 |
 
 ---
@@ -42,7 +57,7 @@ Pulse **наследует подходы**, но имеет **свой доме
 | Продукт | Bible study platform | Fitness trainer marketplace |
 | Роли | Student, Leader, Editor, Admin | Client, Trainer, Admin |
 | Hosting | Netlify | **Vercel** |
-| Next.js | 16.x | **15.x** (App Router) |
+| Next.js | 16.2.6 (pinned) | **16.2.6** (App Router, `proxy.ts`) — [ADR-002](../prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
 | Auth | Auth.js + Google OAuth | **Auth.js + Credentials** (email/password) |
 | Email | SES (AWS) | **Resend** |
 | File storage | S3 | **Vercel Blob** |
@@ -90,8 +105,9 @@ Queued account deletion (domain → db → policy → web composition):
 
 ## Правило для AI-агентов
 
-> Перед реализацией нового паттерна в Pulse — **найти аналог в lampto**.  
-> Если аналог есть — следовать структуре lampto, адаптируя только домен и ADR-001 отличия.  
+> Перед реализацией нового **архитектурного** паттерна в Pulse — **найти аналог в lampto**.  
+> Если аналог есть — следовать **структуре слоёв** lampto, адаптируя домен и ADR-001/002 отличия.  
+> Для **UI, React, naming, mobile-first, prototype fidelity** — **Pulse Cursor Rules и Guidelines** (не копировать lampto UI-код слепо).  
 > Если аналога нет — создать contract + phase description по шаблону из [`ai_first_project_methodology.md`](../meta/ai_first_project_methodology.md).
 
 ---

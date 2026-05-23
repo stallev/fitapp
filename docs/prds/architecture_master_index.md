@@ -47,9 +47,10 @@ Purpose: define **what the system does**.
 |----------|--------|---------|
 | [`default_docs/fitness-platform-mvp.md`](../default_docs/fitness-platform-mvp.md) | Interim PRD | MVP scope, roles, stack summary, post-MVP deferrals |
 | [`default_docs/fitness-platform-pages.md`](../default_docs/fitness-platform-pages.md) | Interim spec | Page-by-page functional spec, responsive rules |
-| [`default_docs/user-flow-client.md`](../default_docs/user-flow-client.md) | Interim flow | Client journeys |
-| [`default_docs/user-flow-trainer.md`](../default_docs/user-flow-trainer.md) | Interim flow | Trainer journeys |
-| [`default_docs/user-flow-admin.md`](../default_docs/user-flow-admin.md) | Interim flow | Admin journeys |
+| [`default_docs/user-flow-client.md`](../default_docs/user-flow-client.md) | Interim archive | Client journeys |
+| [`default_docs/user-flow-trainer.md`](../default_docs/user-flow-trainer.md) | Interim archive | Trainer journeys |
+| [`default_docs/user-flow-admin.md`](../default_docs/user-flow-admin.md) | Interim archive | Admin journeys |
+| [`01_product_scope/user_flows/users_mvp/`](../01_product_scope/user_flows/users_mvp/) | **Canonical** | Migrated MVP user flows |
 | [`design/canonical_routes.md`](../design/canonical_routes.md) | **Canonical** | Single inventory of all routes — do not duplicate elsewhere |
 | [`prototypes/Fitness_Platform_Prototype_v1.html`](../prototypes/Fitness_Platform_Prototype_v1.html) | Visual reference | HTML prototype (Warm Forest UI) |
 | `prds/01_product_scope/mvp_scope.md` | Planned | Migrated canonical MVP scope |
@@ -84,7 +85,7 @@ Purpose: define **how data is stored**.
 
 | Document | Status | Purpose |
 |----------|--------|---------|
-| `prds/03_data_model/database_schema_v1.md` | Planned | Canonical PostgreSQL/Neon schema |
+| `prds/03_data_model/database_schema_v1.md` | **Canonical** | PostgreSQL/Neon schema v1 |
 | `prds/03_data_model/data_access_patterns.md` | Planned | SQL/query patterns for hot paths |
 | `prds/03_data_model/indexing_strategy.md` | Planned | Indexes for catalog, schedule, bookings |
 | Lampto reference | Reference | [`database_schema_v3.md`](../examples/lampto/docs/prds/03_data_model/database_schema_v3.md) — layering pattern |
@@ -113,7 +114,8 @@ Purpose: define **how the system executes requests and jobs**.
 
 | Document | Status | Purpose |
 |----------|--------|---------|
-| [`prds/07_governance/adr_001_stack_and_runtime.md`](07_governance/adr_001_stack_and_runtime.md) | **Canonical** | Stack: Next.js 15, Vercel, Neon, Prisma v7, Resend, Blob |
+| [`prds/07_governance/adr_001_stack_and_runtime.md`](07_governance/adr_001_stack_and_runtime.md) | **Canonical** | Stack: Vercel, Neon, Prisma v7, Resend, Blob |
+| [`prds/07_governance/adr_002_next162_vercel_runtime_policy.md`](07_governance/adr_002_next162_vercel_runtime_policy.md) | **Canonical** | **Next.js 16.2.6** pin, `proxy.ts`, cache policy |
 | `prds/05_runtime/backend_requirements.md` | Planned | Web + jobs contours |
 | `prds/05_runtime/monorepo_packages.md` | Planned | Workspaces, package boundaries |
 | Lampto reference | Reference | [`backend_stack_decision.md`](../examples/lampto/docs/prds/05_runtime/backend_stack_decision.md) |
@@ -203,7 +205,7 @@ For a new AI agent session on Pulse:
 fitapp/
 ├── AGENTS.md
 ├── apps/
-│   ├── web/                 — Next.js 15 (not scaffolded yet)
+│   ├── web/                 — Next.js 16.2.6 (not scaffolded yet)
 │   └── workers/               — job entrypoints (planned)
 ├── packages/
 │   ├── domain/

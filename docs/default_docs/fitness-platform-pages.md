@@ -1,6 +1,6 @@
 # Fitness Platform — Page-by-Page Functional Specification
 
-> **Framework**: Next.js 15 App Router · TypeScript  
+> **Framework**: Next.js **16.2.6** App Router · TypeScript  
 > **Auth**: Auth.js v5, Credentials provider (email + password)  
 > **ORM**: Prisma v7  
 > **Database**: PostgreSQL v17 on Neon  
@@ -270,37 +270,47 @@ datasource db {
 }
 ```
 
-### Middleware — защита маршрутов
+### Route protection — `proxy.ts` (Next.js 16.2.6)
+
+> **Не используйте `middleware.ts` как канон.** Next.js 16 переименовал interception в `proxy.ts`. См. [ADR-002](../prds/07_governance/adr_002_next162_vercel_runtime_policy.md).
 
 ```typescript
-// middleware.ts
-import { auth } from '@/auth'
+// proxy.ts — target (apps/web/src/proxy.ts)
 import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import NextAuth from 'next-auth'
+import authConfig from '@/auth.config'
 
+const { auth } = NextAuth(authConfig)
 const PUBLIC = ['/', '/trainers', '/auth']
 
-export default auth((req) => {
-  const { pathname } = req.nextUrl
+export async function proxy(request: NextRequest) {
+  const session = await auth()
+  const { pathname } = request.nextUrl
   const isPublic = PUBLIC.some(p => pathname === p || pathname.startsWith(p + '/'))
-  const role = req.auth?.user?.role
+  const role = session?.user?.role
 
-  if (!req.auth && !isPublic)
-    return NextResponse.redirect(new URL(`/auth/login?callbackUrl=${pathname}`, req.url))
+  if (!session && !isPublic)
+    return NextResponse.redirect(new URL(`/auth/login?callbackUrl=${pathname}`, request.url))
 
   if (pathname.startsWith('/client') && role !== 'client')
-    return NextResponse.redirect(new URL('/auth/login', req.url))
+    return NextResponse.redirect(new URL('/auth/login', request.url))
   if (pathname.startsWith('/trainer') && role !== 'trainer')
-    return NextResponse.redirect(new URL('/auth/login', req.url))
+    return NextResponse.redirect(new URL('/auth/login', request.url))
   if (pathname.startsWith('/admin') && role !== 'admin')
-    return NextResponse.redirect(new URL('/auth/login', req.url))
+    return NextResponse.redirect(new URL('/auth/login', request.url))
   if (pathname.startsWith('/book') && role !== 'client')
-    return NextResponse.redirect(new URL('/auth/login', req.url))
-})
+    return NextResponse.redirect(new URL('/auth/login', request.url))
+
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: ['/((?!_next/static|_next/image|favicon.ico|api/auth).*)'],
 }
 ```
+
+**Legacy `middleware.ts`:** допустим только как временный шаг миграции. Codemod: `npx @next/codemod@canary middleware-to-proxy .`
 
 ---
 

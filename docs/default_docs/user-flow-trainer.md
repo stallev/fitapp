@@ -2,7 +2,7 @@
 
 > Роль: **TRAINER** — специалист, управляющий профилем, услугами, расписанием и клиентами  
 > Источник: HTML-прототип + UX-принципы Warm Forest design system  
-> Платформа: Web (Next.js 15, Vercel) · Responsive: Mobile-first, адаптация для Tablet (md) и Desktop (lg)
+> Платформа: Web (Next.js 16.2.6, Vercel) · Responsive: Mobile-first, адаптация для Tablet (md) и Desktop (lg)
 
 ---
 

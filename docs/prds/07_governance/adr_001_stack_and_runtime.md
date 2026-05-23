@@ -22,7 +22,7 @@ Pulse — MVP маркetplace фитнес-тренеров. Продуктов�
 
 | Компонент | Выбор |
 |-----------|-------|
-| Framework | **Next.js 15.x** App Router, TypeScript |
+| Framework | **Next.js 16.2.6** (pinned) App Router, TypeScript — see [ADR-002](./adr_002_next162_vercel_runtime_policy.md) |
 | Hosting | **Vercel** (preview per PR, region fra1) |
 | Bundler | Turbopack (default) |
 | UI | shadcn/ui + Tailwind CSS v4, Warm Forest tokens |
@@ -82,8 +82,8 @@ Identical **structure** to lampto:
 ## Последствия
 
 - Guidelines ported from lampto **must be adapted** for Vercel runtime (not Netlify).
-- ADR-026 (lampto Netlify policy) is **not applicable** to Pulse; this ADR supersedes for fitapp repo.
-- Agents reading lampto docs must check this ADR for hosting/auth/email differences.
+- **Next.js 16.2.6 runtime** (proxy.ts, async APIs, cache invalidation) — [ADR-002](./adr_002_next162_vercel_runtime_policy.md). Lampto ADR-026 (Netlify) is **not applicable**; adopt Next 16 interception rules from lampto ADR-022 pattern via ADR-002.
+- Agents reading lampto docs must check ADR-001 + ADR-002 for hosting/version differences.
 - When migrating jobs to AWS, add **ADR-00N** — mechanical extraction, not domain rewrite.
 
 ---
@@ -93,7 +93,8 @@ Identical **structure** to lampto:
 - [`docs/meta/ai_first_project_methodology.md`](../../meta/ai_first_project_methodology.md)
 - [`docs/reference/lampto_project_reference.md`](../../reference/lampto_project_reference.md)
 - [`docs/default_docs/fitness-platform-mvp.md`](../../default_docs/fitness-platform-mvp.md)
-- Lampto ADR reference: [`docs/examples/lampto/docs/prds/07_governance/adr_026_next16_netlify_runtime_policy.md`](../../examples/lampto/docs/prds/07_governance/adr_026_next16_netlify_runtime_policy.md)
+- Pulse runtime policy: [ADR-002](./adr_002_next162_vercel_runtime_policy.md)
+- Lampto ADR reference (patterns only): [`adr_022_next16_vercel_runtime_policy.md`](../../examples/lampto/docs/prds/07_governance/adr_022_next16_vercel_runtime_policy.md)
 
 ---
 

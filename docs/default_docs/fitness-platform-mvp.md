@@ -10,7 +10,7 @@ Online marketplace connecting fitness trainers with clients. Supports session di
 
 | Layer | Choice | Notes |
 |---|---|---|
-| Framework | Next.js 15 App Router, TypeScript | Vercel-optimised |
+| Framework | Next.js **16.2.6** App Router, TypeScript | Vercel-optimised — [ADR-002](../prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
 | Hosting | **Vercel** | Preview deployments из каждого PR |
 | Auth | **Auth.js v5**, Credentials (email + password) | JWT strategy |
 | ORM | **Prisma v7** | directUrl для миграций, pooled URL для runtime |

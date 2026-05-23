@@ -2,7 +2,7 @@
 
 > Роль: **ADMIN** — модератор платформы, обрабатывающий верификации, жалобы и возвраты  
 > Источник: HTML-прототип + UX-принципы Warm Forest design system  
-> Платформа: Web (Next.js 15, Vercel) · Primarily Desktop — admin зона оптимизирована для больших экранов, но responsive
+> Платформа: Web (Next.js 16.2.6, Vercel) · Primarily Desktop — admin зона оптимизирована для больших экранов, но responsive
 
 ---
 

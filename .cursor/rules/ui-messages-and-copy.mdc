@@ -1,0 +1,37 @@
+---
+description: UI copy, errors, labels — centralize in @/lib/messages for i18n readiness
+globs:
+  - apps/web/src/**/*.tsx
+  - apps/web/src/**/*.ts
+alwaysApply: false
+---
+
+# UI messages and copy (`apps/web`)
+
+**Guide:** [`docs/guidelines/react/copy_and_messages.md`](docs/guidelines/react/copy_and_messages.md)
+
+## Source of truth
+
+- User-visible strings from **`@/lib/messages`** (`src/lib/messages/ru.ts`). Nested namespaces: `auth`, `booking`, `trainer`, `admin`, `site`, …
+- **Do not** duplicate the same sentence in Server Action and component.
+
+## What belongs in messages
+
+- Validation and server-action errors, form-level `formError`, alerts.
+- Button labels, page titles, help text, toast strings.
+- Default `metadata` title/description.
+- **Display labels** for `<option>`; **domain/API values** — shared `@/lib/...` constants or `@pulse/domain`.
+
+## Pulse domains (MVP)
+
+- `auth` — login, register, password reset
+- `booking` — statuses, actions, errors
+- `trainer` — onboarding, schedule, services
+- `admin` — moderation, verification
+- `catalog` — filters, empty states
+
+## Locales (later)
+
+- Parallel modules or JSON + resolver; optional `[lang]` segment — see ADR-002 and Next.js i18n when implementing.
+
+Reference: lampto `ui-messages-and-copy.mdc`.

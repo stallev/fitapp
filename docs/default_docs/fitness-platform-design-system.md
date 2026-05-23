@@ -1,6 +1,6 @@
 # Fitness Platform — Design System
 
-> **Framework**: Next.js 15 App Router · TypeScript  
+> **Framework**: Next.js **16.2.6** App Router · TypeScript  
 > **Auth**: Auth.js v5  
 > **ORM**: Prisma v7  
 > **Database**: PostgreSQL v17 on Neon  

@@ -1,0 +1,36 @@
+---
+description: App Router streaming — Suspense per independent DB region, segment loading.tsx
+globs: apps/web/src/app/**/*
+alwaysApply: false
+---
+
+# App Router: streaming and loading (mandatory for route work)
+
+**Normative doc:** [`docs/guidelines/nextjs/ai_loading_patterns.md`](docs/guidelines/nextjs/ai_loading_patterns.md)  
+**Runtime:** [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — Next.js **16.2.6**, Vercel streaming supported
+
+When you **add or edit** `page.tsx`, segment `layout.tsx`, or `loading.tsx` under `apps/web/src/app/`:
+
+## Do
+
+1. **Multiple independent Prisma queries** for **different UI sections** → separate async Server Components, each in **`<Suspense fallback={<RegionSkeleton />}>`**. Avoid blocking whole page with one top-level `Promise.all` unless documented exception.
+2. **New or materially changed data-heavy route** → colocated **`loading.tsx`** (skeleton matching page chrome).
+3. Keep **`page.tsx` light**: `await params`, fast `auth()` + redirects, static shell; defer heavy work to Suspense children.
+4. Pair Suspense with segment **error** story where failure is possible.
+
+## Do not
+
+- Duplicate the **same** full-page loading UI via both `loading.tsx` and wrapping Suspense for identical content.
+- Leave long DB work only in layout/`page` top level when UI could stream in regions.
+
+## Pulse examples
+
+- `/trainers` catalog: filter shell + Suspense trainer grid
+- `/client/bookings`: upcoming vs past in separate Suspense regions
+- `/admin/trainers/pending`: table region streams independently
+
+## Before you finish
+
+Run checklist in **ai_loading_patterns.md §7**. Verify on Vercel preview when available.
+
+Reference: lampto `app-router-streaming-loading.mdc` — Vercel not Netlify.

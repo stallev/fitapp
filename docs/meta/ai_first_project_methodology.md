@@ -37,7 +37,7 @@
 
 | Компонент | Технология | Роль |
 |-----------|-----------|------|
-| Фреймворк | Next.js 15.x (App Router) | Routing, SSR, Server Actions |
+| Фреймворк | **Next.js 16.2.6** (pinned) App Router | Routing, SSR, Server Actions — [ADR-002](../prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
 | Хостинг | **Vercel** | Serverless deployment, preview из PR |
 | Bundler | Turbopack (default) | Сборка |
 | БД | Neon PostgreSQL 17 + Prisma v7 | Единственный источник истины |
@@ -50,7 +50,8 @@
 Принципы контура A:
 - **Тонкий BFF**: Route Handlers и Server Actions — только адаптеры; бизнес-логика в `packages/`
 - **Server Components по умолчанию**: `'use client'` только там, где нужны хуки или браузерные события
-- **Async Request APIs**: в Next.js 15+ `cookies()`, `headers()`, `params`, `searchParams` — асинхронны
+- **Async Request APIs**: в Next.js 16 `cookies()`, `headers()`, `params`, `searchParams` — асинхронны
+- **Request interception**: канон — **`proxy.ts`** (Next.js 16); `middleware.ts` — только временная миграция
 - **Быстрый time-to-market**: минимальный DevOps, без отдельного API-сервиса до появления мобильного клиента
 
 **Эталон layered architecture в коде (целевой):** первый нетривиальный flow Pulse (booking lifecycle или trainer verification) должен повторить паттерн lampto account deletion — см. [`docs/examples/lampto/docs/architecture_learning_pack/15_reference_account_deletion_layers_ru.md`](../examples/lampto/docs/architecture_learning_pack/15_reference_account_deletion_layers_ru.md).
@@ -90,7 +91,7 @@ monorepo/
 |--------|------|--------|
 | `apps/web` | `packages/domain` | ✅ разрешено |
 | `apps/web` | `packages/policy/server` | ✅ только из Route Handlers и Server Actions |
-| `middleware.ts` | `packages/policy/server` | ❌ запрещено (нет Prisma в Edge) |
+| `proxy.ts` / `middleware.ts` | `packages/policy/server` | ❌ запрещено (нет Prisma в interception layer) |
 | `packages/domain` | `packages/db` | ❌ запрещено (domain — чистый) |
 | `packages/*` | `apps/*` | ❌ запрещено (одностороннее направление) |
 
@@ -163,8 +164,16 @@ AI-агент — **не поисковик и не генератор кода*
 
 **На старте Pulse:**
 - `pulse-project-context.mdc` — always-applied
+- `product-docs-alignment.mdc` — always-applied
+- `typescript-monorepo-types.mdc` — always-applied
 
-**Перенос из lampto по мере появления кода** (не копировать до scaffold):
+**Baseline (documentation phase — active):**
+- `data-server-actions-and-api.mdc`
+- `policy-packages.mdc`
+- `auth-security.mdc`
+- `nextjs-vercel-app-router.mdc`
+
+**Перенос из lampto по мере появления кода** (не копировать UI rules до scaffold):
 - `ui-toast-mutations.mdc`
 - `ui-mutation-pending.mdc`
 - `react-one-component-per-file.mdc`
@@ -216,12 +225,13 @@ docs/implementation/mvp/
 
 Guidelines переносятся из lampto с адаптацией под Vercel и Warm Forest:
 
-- `docs/guidelines/nextjs/` — data handling, loading, Vercel runtime
-- `docs/guidelines/react/` — forms, optimistic UI, components
-- `docs/guidelines/auth/` — Credentials flow, middleware
-- `docs/guidelines/typescript/` — monorepo types
+- `docs/guidelines/nextjs/` — README, data handling, loading, Vercel runtime, admin, Blob upload
+- `docs/guidelines/react/` — forms, optimistic UI, components, hooks, utilities, tables, messages
+- `docs/guidelines/auth/` — `ai_auth_implementation_guide.md`
+- `docs/guidelines/typescript/` — `ai_typescript_monorepo_guidelines.md`
+- `docs/guidelines/typography_text_guidelines.md` — Warm Forest typography
 
-До переноса — ориентир: [`docs/examples/lampto/docs/guidelines/`](../examples/lampto/docs/guidelines/).
+Все guidelines ссылаются на [`ai_first_project_methodology.md`](../../meta/ai_first_project_methodology.md) как на методологический канон.
 
 ---
 
@@ -309,7 +319,8 @@ docs/
 | Тип | Pulse |
 |-----|-------|
 | PRD (interim) | [`fitness-platform-mvp.md`](../default_docs/fitness-platform-mvp.md) |
-| User flows (interim) | [`user-flow-client.md`](../default_docs/user-flow-client.md) и др. |
+| User flows (canonical) | [`user_flows/users_mvp/client_flow.md`](../01_product_scope/user_flows/users_mvp/client_flow.md) и др. |
+| User flows (interim archive) | [`user-flow-client.md`](../default_docs/user-flow-client.md) и др. |
 | Design system (interim) | [`fitness-platform-design-system.md`](../default_docs/fitness-platform-design-system.md) |
 | Prototype | [`Fitness_Platform_Prototype_v1.html`](../prototypes/Fitness_Platform_Prototype_v1.html) |
 | ADR | [`adr_001_stack_and_runtime.md`](../prds/07_governance/adr_001_stack_and_runtime.md) |
@@ -326,14 +337,16 @@ docs/
 - [x] `docs/meta/ai_first_project_methodology.md` — этот документ
 - [x] `docs/reference/lampto_project_reference.md` — референс lampto
 - [x] `docs/prds/architecture_master_index.md` — карта архитектуры
-- [x] `docs/prds/07_governance/adr_001_stack_and_runtime.md` — выбор стека
+- [x] `docs/prds/07_governance/adr_001_stack_and_runtime.md` — выбор стека (Vercel, Neon, …)
+- [x] `docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md` — Next.js **16.2.6** pin + `proxy.ts`
 - [x] `docs/design/canonical_routes.md` — все маршруты
 - [x] `docs/architecture_learning_pack/01_architecture_overview.md` — обзор для агентов
 - [x] `AGENTS.md` — точка входа monorepo
 - [x] `.cursor/rules/pulse-project-context.mdc` — always-applied контекст
 - [x] Структура каталогов monorepo + docs
 - [ ] `docs/prds/01_product_scope/mvp_scope.md` — миграция из default_docs
-- [ ] `docs/prds/03_data_model/database_schema_v1.md`
+- [x] `docs/prds/03_data_model/database_schema_v1.md`
+- [x] `docs/prds/01_product_scope/user_flows/users_mvp/` — client, trainer, admin flows
 - [ ] `docs/prds/04_authorization_privacy/authorization_matrix.md`
 
 **Для первой сессии реализации (следующие задачи):**
@@ -343,10 +356,16 @@ docs/
 - [ ] `docs/implementation/mvp/tasks/P01_tasks.md`
 - [ ] Monorepo scaffold (package.json, workspaces)
 
-**Guidelines (по мере появления паттернов):**
+**Guidelines (baseline ported):**
 
-- [ ] Port from lampto: nextjs, react, auth guidelines
-- [ ] Cursor rules: ui-toast, ui-mutation-pending, policy-packages
+- [x] `docs/guidelines/nextjs/` — README, data handling, loading, Vercel runtime, admin, Blob upload
+- [x] `docs/guidelines/react/` — forms, optimistic UI, components, hooks, utilities, tables, messages
+- [x] `docs/guidelines/auth/` — Credentials guide
+- [x] `docs/guidelines/typescript/` — monorepo types
+- [x] `docs/guidelines/typography_text_guidelines.md` — Warm Forest typography
+- [x] Cursor rules (core): product-docs-alignment, typescript-monorepo-types, data-server-actions, policy-packages, auth-security, nextjs-vercel-app-router
+- [x] Cursor rules (UI/UX, from lampto): ui-toast, ui-mutation-pending, ui-optimistic, react-ui, warm-forest-shadcn, streaming-loading, blob-uploads, admin-forms, messages, icons, DRY
+- [ ] On scaffold: wire `@/lib/messages`, `product-toast.ts`, typography atoms to match guidelines
 
 ---
 

@@ -2,7 +2,7 @@
 
 > Роль: **CLIENT** — пользователь, ищущий и бронирующий тренеров  
 > Источник: HTML-прототип + UX-принципы Warm Forest design system  
-> Платформа: Web (Next.js 15, Vercel) · Responsive: Mobile-first, адаптация для Tablet (md: 768px) и Desktop (lg: 1024px+)
+> Платформа: Web (Next.js 16.2.6, Vercel) · Responsive: Mobile-first, адаптация для Tablet (md: 768px) и Desktop (lg: 1024px+)
 
 ---
 

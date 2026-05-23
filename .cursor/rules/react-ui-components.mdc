@@ -1,0 +1,63 @@
+---
+description: React 19 — RSC/client boundaries, components, cn(), hooks — apps/web
+globs:
+  - apps/web/src/components/**
+  - apps/web/src/hooks/**
+alwaysApply: false
+---
+
+# React / components (`apps/web`)
+
+**Methodology:** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md)  
+**Guides:** [ai_component_guidelines.md](docs/guidelines/react/ai_component_guidelines.md), [ai_react_hooks_guidelines.md](docs/guidelines/react/ai_react_hooks_guidelines.md), [ai_react_utilities_guidelines.md](docs/guidelines/react/ai_react_utilities_guidelines.md)  
+**Naming:** **react-naming-conventions** · **Logic/presentation:** **react-logic-presentation**
+
+## Server vs client
+
+- **Server Components by default** — no `'use client'`.
+- **`'use client'`** only for hooks, DOM events, client-only APIs; directive at **top of file**.
+- Prefer `.client.tsx` / `.client.ts` for new client-entry modules.
+
+## Domain literals
+
+- **No inline domain strings** — roles, booking statuses, enum codes.
+- Import from `@/lib/...` or `@pulse/domain`.
+- **User-visible text** → `@/lib/messages` (**ui-messages-and-copy**).
+
+## Components
+
+- Explicit **props interfaces**; **no `React.FC`** for new components.
+- Arrow components `const X = (props: Props) => …` (exceptions: `page.tsx`, `layout.tsx`, `'use server'`).
+- Primitives in `components/ui/`; features in dedicated folders.
+
+## Styling
+
+- Tailwind + **`cn()`** from `@/lib/utils`; variants via **cva**.
+- Semantic tokens per **ui-warm-forest-shadcn** and [`fitness-platform-design-system.md`](docs/default_docs/fitness-platform-design-system.md).
+
+## Structure
+
+- **One feature component per file:** **react-one-component-per-file** (≤ **140 lines** target)
+- **Maximize shared components** — search `components/ui/`, `components/atoms/`, domain folders before inline JSX; extract on 2+ routes (**react-logic-presentation**)
+- Named exports for shared components; avoid deep barrel chains.
+
+## Forms & mutations
+
+- [ai_form_handling_pattern.md](docs/guidelines/react/ai_form_handling_pattern.md)
+- Toast: **ui-toast-mutations**; pending: **ui-mutation-pending**
+
+## React Compiler
+
+When `reactCompiler: true` in `next.config.ts` — do not add `memo` / `useCallback` / `useMemo` without profiled need. Follow [Rules of React](https://react.dev/reference/rules).
+
+## shadcn/ui
+
+Use **shadcn MCP** before hand-rolling primitives. Adapt to Warm Forest tokens. Prefer Radix-based primitives for a11y (**ui-semantics-a11y**).
+
+## Semantics & a11y
+
+- **Semantic HTML + WCAG 2.1 AA** — **ui-semantics-a11y**; guide: [ai_semantics_a11y_guidelines.md](docs/guidelines/react/ai_semantics_a11y_guidelines.md)
+- Native `<button>`, `<a>`, `<label>`, landmarks — not div-as-button
+- Icon-only: `aria-label`; decorative lucide: `aria-hidden`
+
+Reference: lampto `react-ui-components.mdc` — Pulse design system paths.

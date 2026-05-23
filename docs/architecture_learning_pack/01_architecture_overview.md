@@ -1,7 +1,8 @@
 # 01 — Архитектура проекта Pulse: общий обзор
 
 **Дата:** 2026-05-23  
-**Стек MVP:** Next.js 15 (Vercel) + Neon PostgreSQL + Prisma v7 + Resend + Vercel Blob  
+**Стек MVP:** Next.js **16.2.6** (Vercel) + Neon PostgreSQL + Prisma v7 + Resend + Vercel Blob  
+**Runtime:** [ADR-002](../prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — `proxy.ts`, async APIs
 **Референс архитектуры:** [`docs/examples/lampto/`](../examples/lampto/) — см. [`lampto_project_reference.md`](../reference/lampto_project_reference.md)
 
 ---
@@ -32,7 +33,7 @@
 
 - UI + **тонкий BFF** (Route Handlers / Server Actions)
 - быстрый time-to-market, preview deployments из PR
-- Auth.js Credentials, role-based middleware
+- Auth.js Credentials, role-based **`proxy.ts`** gate (Next.js 16.2.6)
 - Neon + Prisma v7 с connection pooling для serverless
 
 ### Контур B — Jobs
@@ -68,7 +69,7 @@ packages/policy   → edge (JWT) + server (Prisma ACL)
 packages/db       → Prisma, repositories
 ```
 
-**Запрещено:** `packages/domain` → `packages/db`; `middleware` → `policy/server`.
+**Запрещено:** `packages/domain` → `packages/db`; **`proxy.ts` / `middleware.ts`** → `policy/server`.
 
 Эталон реализации слоёв в lampto: account deletion flow — [`15_reference_account_deletion_layers_ru.md`](../examples/lampto/docs/architecture_learning_pack/15_reference_account_deletion_layers_ru.md).
 

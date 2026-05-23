@@ -1,14 +1,51 @@
 # Guidelines
 
-Нормы реализации по технологиям — переносятся из lampto с адаптацией под Vercel и Pulse design system.
+Нормы реализации — адаптированы из lampto под Vercel, **Next.js 16.2.6** и Pulse design system (Warm Forest).
 
-## Planned ports from lampto
+**Methodology (канон):** [`docs/meta/ai_first_project_methodology.md`](../meta/ai_first_project_methodology.md) — §2.7 Guidelines, §2.4 Cursor Rules.
 
-- `nextjs/` — data handling, loading, Vercel runtime
-- `react/` — forms, optimistic UI, components
-- `auth/` — Auth.js Credentials, middleware
-- `typescript/` — monorepo typecheck
+## Available
 
-**Reference:** [`docs/examples/lampto/docs/guidelines/`](../examples/lampto/docs/guidelines/)
+| Area | Index |
+|------|--------|
+| TypeScript | [`typescript/README.md`](typescript/README.md) |
+| Next.js | [`nextjs/README.md`](nextjs/README.md) |
+| React | [`react/README.md`](react/README.md) |
+| Auth | [`auth/ai_auth_implementation_guide.md`](auth/ai_auth_implementation_guide.md) |
+| Typography | [`typography_text_guidelines.md`](typography_text_guidelines.md) |
 
-**Статус:** каталоги созданы, содержимое — по мере scaffold приложения.
+## Cursor rules (`.cursor/rules/`)
+
+| Rule | Scope |
+|------|--------|
+| `pulse-project-context.mdc` | Always applied — stack, invariants |
+| `product-docs-alignment.mdc` | Always applied — doc sync on behavior change |
+| `typescript-monorepo-types.mdc` | Always applied — monorepo types |
+| `ai-dry-deduplication.mdc` | Always applied — DRY for agents |
+| `data-server-actions-and-api.mdc` | DAL, Actions vs Route Handlers |
+| `policy-packages.mdc` | `@pulse/policy-*` boundaries |
+| `auth-security.mdc` | Auth.js, defense in depth |
+| `nextjs-vercel-app-router.mdc` | Next.js **16.2.6** + Vercel + **`proxy.ts`** |
+| `app-router-streaming-loading.mdc` | Suspense, `loading.tsx` |
+| `vercel-blob-uploads.mdc` | FileAsset + Vercel Blob |
+| `admin-forms-layout.mdc` | Admin forms layout |
+| `patterns-tables-dnd.mdc` | Responsive tables |
+| `react-ui-components.mdc` | RSC/client, components |
+| `react-one-component-per-file.mdc` | One component; ≤140 lines |
+| `react-logic-presentation.mdc` | Logic vs presentation; shared UI |
+| `react-naming-conventions.mdc` | Naming best practices |
+| `ui-warm-forest-shadcn.mdc` | Design tokens, shadcn |
+| `ui-mobile-first.mdc` | Mobile-first responsive |
+| `ui-prototype-fidelity.mdc` | Prototype visual parity |
+| `ui-semantics-a11y.mdc` | Semantic markup, WCAG 2.1 AA |
+| `ui-toast-mutations.mdc` | Sonner after mutations |
+| `ui-mutation-pending.mdc` | Busy/pending controls |
+| `ui-optimistic-mutations.mdc` | `useOptimistic` toggles |
+| `ui-messages-and-copy.mdc` | `@/lib/messages` |
+| `ui-icons-lucide.mdc` | lucide-react icons |
+
+## Reference (lampto)
+
+[`docs/examples/lampto/docs/guidelines/`](../examples/lampto/docs/guidelines/) — дополнительные паттерны (DnD, bundle analyze) переносятся по необходимости.
+
+**Principle:** если Pulse guideline молчит — следовать lampto **architecture** с учётом ADR-001/ADR-002. **Pulse Cursor Rules override lampto reference code** — см. [`lampto_project_reference.md`](../reference/lampto_project_reference.md) §Priority.
