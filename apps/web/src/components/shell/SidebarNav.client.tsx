@@ -1,0 +1,44 @@
+"use client";
+
+import { ContentText } from "@/components/atoms";
+import { NavItem } from "@/components/shell/NavItem";
+import {
+  resolveBadgeCount,
+  type AdminNavBadges,
+  type NavItemConfig,
+} from "@/lib/nav/nav-config";
+
+type SidebarNavProps = {
+  items: NavItemConfig[];
+  sectionTitle: string;
+  badges?: AdminNavBadges;
+};
+
+export function SidebarNav({ items, sectionTitle, badges }: SidebarNavProps) {
+  return (
+    <nav
+      aria-label="Боковая навигация"
+      className="hidden w-52 shrink-0 flex-col border-r border-border bg-background md:sticky md:top-16 md:flex md:max-h-[calc(100dvh-4rem)] md:overflow-y-auto lg:w-60"
+    >
+      <ContentText
+        variant="statusLabel"
+        as="p"
+        className="px-4 pb-2 pt-4 font-mono uppercase tracking-wider text-muted-foreground"
+      >
+        {sectionTitle}
+      </ContentText>
+      <div className="flex flex-col gap-1 px-2 pb-4">
+        {items.map((item) => (
+          <NavItem
+            key={item.href}
+            label={item.label}
+            href={item.href}
+            iconKey={item.iconKey}
+            badgeCount={resolveBadgeCount(item.badgeKey, badges)}
+            layout="sidebar"
+          />
+        ))}
+      </div>
+    </nav>
+  );
+}

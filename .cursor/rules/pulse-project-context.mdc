@@ -76,4 +76,4 @@ Full list: [`docs/guidelines/README.md`](docs/guidelines/README.md).
 
 ## Repository status
 
-`apps/web` — initial Next.js shell (P01). `packages/` and workers — **not scaffolded yet**. Do not expand implementation beyond the current phase task and contract.
+**Текущая фаза:** P03 complete (design system & app shell). `packages/{domain,db,policy}` scaffolded; `apps/workers` — ещё не создан. Следующая фаза: **P04** (public landing). Не расширять реализацию без явной фазы и contract.

@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P02 complete (auth & request guards). Auth.js Credentials + JWT `role`, `proxy.ts`, policy packages, `/auth/login` + `/auth/register`. Следующая фаза: **P03** (design system & app shell).  
+**Текущая фаза:** P03 complete (design system & app shell). App shell, six route groups, `@/lib/messages`, nav config, placeholder dashboards, minimal landing hero. Следующая фаза: **P04** (public landing).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

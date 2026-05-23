@@ -126,11 +126,11 @@ N/A — read-only shell phase.
 
 ## Definition of done
 
-- [ ] Shell per global_shell_spec
-- [ ] All route groups + placeholder pages
-- [ ] Messages + toast wired
-- [ ] Design Lab QA passed
-- [ ] `typecheck` + lint pass
+- [x] Shell per global_shell_spec
+- [x] All route groups + placeholder pages
+- [x] Messages + toast wired
+- [x] Design Lab QA passed
+- [x] `typecheck` + lint pass
 
 ---
 
@@ -152,5 +152,5 @@ N/A — read-only shell phase.
 
 ## Acceptance criteria
 
-- [ ] Shell renders all roles
-- [ ] No feature catalog/booking UI in PR
+- [x] Shell renders all roles
+- [x] No feature catalog/booking UI in PR

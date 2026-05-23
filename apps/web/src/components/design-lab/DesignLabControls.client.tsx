@@ -1,11 +1,9 @@
 "use client";
 
-import { MoonIcon, SunIcon } from "lucide-react";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/shell/ThemeToggle.client";
 import { Container } from "@/components/ui/container";
 import { cn } from "@/lib/utils";
 import { LAB_SECTIONS, VIEWPORT_WIDTHS } from "@/lib/design-lab/matrices";
@@ -15,11 +13,8 @@ type DesignLabShellProps = {
 };
 
 export function DesignLabShell({ children }: DesignLabShellProps) {
-  const { setTheme, resolvedTheme } = useTheme();
   const [viewport, setViewport] =
     useState<(typeof VIEWPORT_WIDTHS)[number]>(390);
-
-  const isDark = resolvedTheme === "dark";
 
   return (
     <div className="min-h-full bg-background">
@@ -66,21 +61,7 @@ export function DesignLabShell({ children }: DesignLabShellProps) {
                 </button>
               ))}
             </div>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              suppressHydrationWarning
-              aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-              onClick={() => setTheme(isDark ? "light" : "dark")}
-            >
-              {isDark ? (
-                <SunIcon aria-hidden className="size-4" />
-              ) : (
-                <MoonIcon aria-hidden className="size-4" />
-              )}
-              {isDark ? "Light" : "Dark"}
-            </Button>
+            <ThemeToggle showLabel size="sm" />
           </div>
         </Container>
       </nav>
