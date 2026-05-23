@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P07 complete (booking wizard `/book/[trainerId]` + `createBooking` → `pending`, redirect `/client/bookings/[id]?booked=1` + toast, Class B iOS Safari transport). Wizard: 3 steps (Service → Slot → Confirm), `generateAvailableSlots`, FM-001 Serializable transaction, minimal booking detail page. Следующая фаза: **P08** (client bookings hub).  
+**Текущая фаза:** P08 complete (client hub `/client/dashboard`, `/client/bookings`, `/client/bookings/[id]`, `/client/profile`; `cancelBooking` + policy `assertCanReadBooking`/`assertCanCancelBooking`; tabs Upcoming/Past/Cancelled; cancel dialog + toast + pending UI). Следующая фаза: **P09** (client reviews).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

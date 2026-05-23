@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { ClientBookingDetailActions } from "@/components/client/ClientBookingDetailActions.client";
 import { ClientBookingDetailPanel } from "@/components/client/ClientBookingDetailPanel";
 import { requireClientBookingDetail } from "@/data/client/get-client-booking-detail.server";
 import { MESSAGES } from "@/lib/messages";
@@ -20,5 +21,16 @@ export default async function ClientBookingDetailPage({
   const { id } = await params;
   const booking = await requireClientBookingDetail(id);
 
-  return <ClientBookingDetailPanel booking={booking} />;
+  return (
+    <ClientBookingDetailPanel
+      booking={booking}
+      actions={
+        <ClientBookingDetailActions
+          bookingId={booking.id}
+          canCancel={booking.canCancel}
+          canLeaveReview={booking.canLeaveReview}
+        />
+      }
+    />
+  );
 }

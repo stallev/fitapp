@@ -1,40 +1,38 @@
-import Link from "next/link";
-import { CalendarIcon } from "lucide-react";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
-import { Heading } from "@/components/atoms";
-import { Button } from "@/components/ui/button";
+import { auth } from "@/auth";
+import { ClientDashboardCategories } from "@/components/client/ClientDashboardCategories";
+import { ClientDashboardGreeting } from "@/components/client/ClientDashboardGreeting";
 import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
-import { MESSAGES } from "@/lib/messages";
+  ClientDashboardSearchEntry,
+  ClientNextSessionCard,
+} from "@/components/client/ClientNextSessionCard";
+import { ClientDashboardTipCard } from "@/components/client/ClientDashboardTipCard";
+import { getClientNextSession } from "@/data/client/get-client-bookings.server";
 
-export default function ClientDashboardPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: "Главная — Pulse",
+  };
+}
+
+export default async function ClientDashboardPage() {
+  const session = await auth();
+  const displayName = session?.user?.name?.trim() || "Клиент";
+  const nextSession = await getClientNextSession();
+
+  if (!session?.user) {
+    redirect("/auth/login");
+  }
+
   return (
-    <>
-      <Heading as="h1" visualLevel="h3">
-        {MESSAGES.dashboard.clientTitle}
-      </Heading>
-      <Empty className="mt-6 border-border bg-card">
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <CalendarIcon aria-hidden />
-          </EmptyMedia>
-          <EmptyTitle>{MESSAGES.empty.clientDashboard.title}</EmptyTitle>
-          <EmptyDescription>
-            {MESSAGES.empty.clientDashboard.description}
-          </EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          <Button asChild>
-            <Link href="/trainers">{MESSAGES.empty.clientDashboard.cta}</Link>
-          </Button>
-        </EmptyContent>
-      </Empty>
-    </>
+    <div className="mx-auto w-full max-w-3xl space-y-6 pb-6 md:max-w-none md:space-y-6 lg:max-w-4xl">
+      <ClientDashboardGreeting name={displayName} />
+      <ClientDashboardSearchEntry />
+      <ClientNextSessionCard session={nextSession} />
+      <ClientDashboardTipCard />
+      <ClientDashboardCategories />
+    </div>
   );
 }
