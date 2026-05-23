@@ -1,0 +1,60 @@
+import type { LucideIcon } from "lucide-react";
+import {
+  DumbbellIcon,
+  FlameIcon,
+  Flower2Icon,
+  StretchHorizontalIcon,
+  TargetIcon,
+} from "lucide-react";
+
+import { ContentText, SectionTitle } from "@/components/atoms";
+import { CustomLink } from "@/components/ui/CustomLink";
+
+import { MESSAGES } from "@/lib/messages";
+import { cn } from "@/lib/utils";
+
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  yoga: Flower2Icon,
+  pilates: TargetIcon,
+  strength: DumbbellIcon,
+  hiit: FlameIcon,
+  stretching: StretchHorizontalIcon,
+};
+
+export function ClientDashboardCategories() {
+  return (
+    <section className="space-y-3">
+      <SectionTitle as="h2" className="mx-0 max-w-none text-left text-base">
+        {MESSAGES.dashboard.client.categoriesTitle}
+      </SectionTitle>
+      <div className="flex flex-wrap gap-2.5">
+        {MESSAGES.landing.categories.items.map((item) => {
+          const Icon = CATEGORY_ICONS[item.slug] ?? Flower2Icon;
+
+          return (
+            <CustomLink
+              key={item.slug}
+              href={`/trainers?specializations=${item.slug}`}
+              className={cn(
+                "group flex aspect-square w-[100px] max-w-[100px] shrink-0 flex-col items-center justify-center gap-1.5 rounded-2xl border border-border bg-card p-2 text-center shadow-sm",
+                "transition-[transform,background-color,border-color,box-shadow] duration-200",
+                "hover:border-primary/25 hover:bg-primary-container/35 hover:shadow-md",
+                "active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              )}
+            >
+              <span className="inline-flex size-9 items-center justify-center rounded-xl bg-primary-container text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                <Icon className="size-4" aria-hidden strokeWidth={1.75} />
+              </span>
+              <ContentText
+                as="span"
+                className="line-clamp-2 text-[11px] leading-tight font-medium text-foreground"
+              >
+                {item.label}
+              </ContentText>
+            </CustomLink>
+          );
+        })}
+      </div>
+    </section>
+  );
+}

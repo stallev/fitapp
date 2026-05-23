@@ -71,6 +71,10 @@ export {
   type CreateBookingInput,
 } from "./schemas/create-booking";
 export {
+  cancelBookingInputSchema,
+  type CancelBookingInput,
+} from "./schemas/cancel-booking";
+export {
   bookingOverlapsExisting,
   buildBookingSnapshots,
   isSlotAllowed,
@@ -80,6 +84,14 @@ export {
   type BookingSnapshots,
   type CreateBookingValidationError,
 } from "./booking/create-booking";
+export {
+  CLIENT_CANCELLATION_WINDOW_MS,
+  canClientCancelBooking,
+  isClientCancellationWindowOpen,
+  validateClientCancelBooking,
+  type CancelBookingValidationError,
+  type ClientCancelBookingFacts,
+} from "./booking/cancel-booking";
 export {
   type BookingOverlapInput,
   type DateRange,

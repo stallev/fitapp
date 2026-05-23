@@ -2,8 +2,12 @@ import "server-only";
 
 import { notFound } from "next/navigation";
 
-import { BOOKING_STATUS } from "@pulse/domain";
+import {
+  BOOKING_STATUS,
+  canClientCancelBooking,
+} from "@pulse/domain";
 import { getPrisma } from "@pulse/db";
+import { assertCanReadBooking, PolicyError } from "@pulse/policy-server";
 
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
@@ -19,6 +23,8 @@ export type ClientBookingDetail = {
   trainerName: string;
   trainerPhotoUrl: string | null;
   trainerTimezone: string;
+  canCancel: boolean;
+  canLeaveReview: boolean;
 };
 
 export async function getClientBookingDetail(
@@ -27,6 +33,16 @@ export async function getClientBookingDetail(
   const ctx = await getPolicySessionContext();
   if (!ctx) {
     return null;
+  }
+
+  try {
+    await assertCanReadBooking(ctx, bookingId);
+  } catch (error) {
+    if (error instanceof PolicyError) {
+      return null;
+    }
+
+    throw error;
   }
 
   const prisma = getPrisma();
@@ -44,6 +60,7 @@ export async function getClientBookingDetail(
       priceCents: true,
       currency: true,
       clientMessage: true,
+      review: { select: { id: true } },
       trainerProfile: {
         select: {
           timezone: true,
@@ -58,11 +75,13 @@ export async function getClientBookingDetail(
     return null;
   }
 
+  const startsAtUtc = booking.startsAt.toISOString();
+
   return {
     id: booking.id,
     status: booking.status,
     serviceNameSnapshot: booking.serviceNameSnapshot,
-    startsAtUtc: booking.startsAt.toISOString(),
+    startsAtUtc,
     durationMinutes: booking.durationMinutes,
     priceCents: booking.priceCents,
     currency: booking.currency,
@@ -70,6 +89,12 @@ export async function getClientBookingDetail(
     trainerName: booking.trainerProfile.user.fullName,
     trainerPhotoUrl: booking.trainerProfile.photoUrl,
     trainerTimezone: booking.trainerProfile.timezone,
+    canCancel: canClientCancelBooking({
+      status: booking.status,
+      startsAtUtc,
+    }),
+    canLeaveReview:
+      booking.status === BOOKING_STATUS.COMPLETED && booking.review === null,
   };
 }
 

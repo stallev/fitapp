@@ -18,30 +18,30 @@
 
 ## 1. Domain
 
-- [ ] `cancelBooking` in `@pulse/domain`
-- [ ] Policy: `assertCanViewBooking`, `assertCanCancelBooking`
+- [x] `cancelBooking` in `@pulse/domain`
+- [x] Policy: `assertCanReadBooking`, `assertCanCancelBooking`
 
 ## 2. Client dashboard & bookings
 
-- [ ] `/client/dashboard` — welcome, next session, shortcuts
-- [ ] `/client/bookings` — tabs Upcoming / Past / Cancelled
-- [ ] `/client/bookings/[id]` — detail, cancel, review link when eligible
-- [ ] `BookingListItem` component
-- [ ] Cancel confirm dialog + toasts + pending UI
+- [x] `/client/dashboard` — welcome, next session, shortcuts
+- [x] `/client/bookings` — tabs Upcoming / Past / Cancelled
+- [x] `/client/bookings/[id]` — detail, cancel, review link when eligible
+- [x] `BookingListItem` component
+- [x] Cancel confirm dialog + toasts + pending UI
 
 ## 3. Client profile
 
-- [ ] `/client/profile` — name, email, sign-out
-- [ ] **MUST NOT** password reset email UI (post-MVP)
+- [x] `/client/profile` — name, email, sign-out
+- [x] **MUST NOT** password reset email UI (post-MVP)
 
 ## 4. Verification
 
-- [ ] `npm run typecheck`
-- [ ] `npm run lint`
+- [x] `npm run typecheck`
+- [x] `npm run lint`
 - [ ] Smoke: cancel happy path
 - [ ] Smoke: IDOR other user's booking → denied
 - [ ] Smoke: empty bookings state
-- [ ] **MUST NOT** review form (→ P09)
+- [x] **MUST NOT** review form (→ P09)
 
 ---
 

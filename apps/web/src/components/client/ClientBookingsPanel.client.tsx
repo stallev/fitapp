@@ -1,0 +1,124 @@
+"use client";
+
+import { useState } from "react";
+import { CalendarIcon } from "lucide-react";
+import { toast } from "sonner";
+
+import { BookingListItem } from "@/components/booking/BookingListItem";
+import { ClientBookingCancelDialog } from "@/components/client/ClientBookingCancelDialog.client";
+import { Button } from "@/components/ui/button";
+import { CustomLink } from "@/components/ui/CustomLink";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import type { ClientBookingListEntry } from "@/data/client/get-client-bookings.server";
+import {
+  CLIENT_BOOKING_TABS,
+  groupBookingsByTab,
+  type ClientBookingTab,
+} from "@/lib/booking/booking-tab-utils";
+import { MESSAGES } from "@/lib/messages";
+import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
+
+const TAB_LABELS: Record<ClientBookingTab, string> = {
+  upcoming: MESSAGES.booking.list.tabs.upcoming,
+  past: MESSAGES.booking.list.tabs.past,
+  cancelled: MESSAGES.booking.list.tabs.cancelled,
+};
+
+const EMPTY_COPY: Record<
+  ClientBookingTab,
+  { title: string; description: string }
+> = {
+  upcoming: MESSAGES.booking.list.empty.upcoming,
+  past: MESSAGES.booking.list.empty.past,
+  cancelled: MESSAGES.booking.list.empty.cancelled,
+};
+
+export type ClientBookingsPanelProps = {
+  bookings: ClientBookingListEntry[];
+};
+
+export function ClientBookingsPanel({ bookings }: ClientBookingsPanelProps) {
+  const grouped = groupBookingsByTab(bookings);
+  const [cancelBookingId, setCancelBookingId] = useState<string | null>(null);
+  const [cancelOpen, setCancelOpen] = useState(false);
+
+  const handleCancelClick = (bookingId: string) => {
+    setCancelBookingId(bookingId);
+    setCancelOpen(true);
+  };
+
+  const handleJoinClick = () => {
+    toast.info(MESSAGES.placeholders.sessionVideo, {
+      duration: PRODUCT_TOAST_DURATION_MS,
+    });
+  };
+
+  return (
+    <>
+      <Tabs defaultValue="upcoming" className="space-y-4">
+        <TabsList variant="pill" aria-label={MESSAGES.booking.list.title}>
+          {CLIENT_BOOKING_TABS.map((tab) => (
+            <TabsTrigger key={tab} value={tab}>
+              {TAB_LABELS[tab]}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {CLIENT_BOOKING_TABS.map((tab) => {
+          const items = grouped[tab];
+          const emptyCopy = EMPTY_COPY[tab];
+
+          return (
+            <TabsContent key={tab} value={tab} className="space-y-2.5">
+              {items.length === 0 ? (
+                <Empty className="border-border bg-card md:col-span-2">
+                  <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                      <CalendarIcon aria-hidden />
+                    </EmptyMedia>
+                    <EmptyTitle>{emptyCopy.title}</EmptyTitle>
+                    <EmptyDescription>{emptyCopy.description}</EmptyDescription>
+                  </EmptyHeader>
+                  <EmptyContent>
+                    <Button asChild>
+                      <CustomLink href="/trainers">
+                        {MESSAGES.booking.list.empty.cta}
+                      </CustomLink>
+                    </Button>
+                  </EmptyContent>
+                </Empty>
+              ) : (
+                <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
+                  {items.map((booking) => (
+                    <BookingListItem
+                      key={booking.id}
+                      booking={booking}
+                      tab={tab}
+                      onCancelClick={() => handleCancelClick(booking.id)}
+                      onJoinClick={handleJoinClick}
+                    />
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+          );
+        })}
+      </Tabs>
+
+      <ClientBookingCancelDialog
+        bookingId={cancelBookingId}
+        open={cancelOpen}
+        onOpenChange={setCancelOpen}
+      />
+    </>
+  );
+}

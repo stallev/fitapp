@@ -8,10 +8,8 @@ function policyStub(_ctx: PolicySessionContext, ..._rest: unknown[]): void {
   assertNotImplemented();
 }
 
-export const assertCanReadBooking = policyStub;
 export const assertCanConfirmBooking = policyStub;
 export const assertCanCompleteBooking = policyStub;
-export const assertCanCancelBooking = policyStub;
 export const assertCanMutateTrainerProfile = policyStub;
 export const assertCanMutateTrainerService = policyStub;
 export const assertCanMutateSchedule = policyStub;

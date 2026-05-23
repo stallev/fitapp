@@ -208,6 +208,7 @@ export const MESSAGES = {
   toast: {
     saved: "Изменения сохранены",
     booked: "Запрос на бронирование отправлен",
+    cancelled: "Бронирование отменено",
     error: "Не удалось выполнить действие",
   },
   booking: {
@@ -245,6 +246,50 @@ export const MESSAGES = {
       priceLabel: "Стоимость",
       messageLabel: "Ваше сообщение",
       backToBookings: "К списку занятий",
+      timezoneHint: "Время указано в часовом поясе тренера",
+    },
+    list: {
+      metaTitle: "Мои сессии — Pulse",
+      title: "Мои сессии",
+      tabs: {
+        upcoming: "Предстоящие",
+        past: "Прошедшие",
+        cancelled: "Отменённые",
+      },
+      empty: {
+        upcoming: {
+          title: "Пока нет предстоящих занятий",
+          description: "Забронируйте занятие с тренером — оно появится здесь.",
+        },
+        past: {
+          title: "Пока нет прошедших занятий",
+          description: "Завершённые сессии будут отображаться в этом разделе.",
+        },
+        cancelled: {
+          title: "Нет отменённых занятий",
+          description: "Отменённые бронирования появятся здесь.",
+        },
+        cta: "Найти тренера",
+      },
+    },
+    status: {
+      pending: "Ожидает",
+      confirmed: "Подтверждено",
+      completed: "Завершено",
+      cancelled: "Отменено",
+    },
+    cancel: {
+      button: "Отменить",
+      confirmTitle: "Отменить бронирование?",
+      confirmDescription:
+        "Тренер получит уведомление об отмене. Бесплатная отмена возможна не позднее чем за 24 часа до начала.",
+      confirmAction: "Да, отменить",
+      confirmDismiss: "Назад",
+      pending: "Отменяем…",
+    },
+    actions: {
+      join: "Присоединиться",
+      leaveReview: "Оставить отзыв",
     },
     errors: {
       unauthorized: "Войдите, чтобы забронировать занятие",
@@ -255,6 +300,12 @@ export const MESSAGES = {
       trainerNotBookable: "Тренер недоступен для бронирования",
       serviceInactive: "Услуга больше недоступна",
       generic: "Не удалось создать бронирование",
+      cancellationWindowClosed:
+        "Отмена недоступна менее чем за 24 часа до начала занятия",
+      stateConflict:
+        "Статус бронирования изменился. Обновите страницу и попробуйте снова.",
+      terminal: "Это бронирование уже завершено или отменено",
+      genericCancel: "Не удалось отменить бронирование",
     },
   },
   wishlist: {
@@ -322,6 +373,26 @@ export const MESSAGES = {
     clientTitle: "Главная",
     trainerTitle: "Сегодня",
     adminTitle: "Обзор",
+    client: {
+      greeting: "Привет,",
+      searchPlaceholder: "Найти тренера или направление",
+      searchAriaLabel: "Перейти в каталог тренеров",
+      nextSessionTitle: "Ближайшее занятие",
+      nextSessionEmpty: "Нет предстоящих занятий",
+      nextSessionCta: "Найти тренера",
+      categoriesTitle: "Направления",
+      tipTitle: "Совет",
+      tipBody:
+        "Бронируйте занятия заранее — популярные слоты у лучших тренеров разбирают быстро.",
+    },
+  },
+  profile: {
+    client: {
+      metaTitle: "Профиль — Pulse",
+      title: "Профиль",
+      signOut: "Выйти",
+      signOutPending: "Выходим…",
+    },
   },
 } as const;
 

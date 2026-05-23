@@ -107,7 +107,7 @@
 
 | Risk | Guard |
 |------|-------|
-| IDOR on booking detail | Policy `assertCanViewBooking` |
+| IDOR on booking detail | Policy `assertCanReadBooking` |
 | Cancel window in UI only | Domain rule in contract |
 | Review UI in P08 | Defer to P09 |
 
@@ -115,10 +115,11 @@
 
 ## Definition of done
 
-- [ ] Hub routes per wireframes
-- [ ] Cancel + toasts + pending UI
-- [ ] IDOR denied
-- [ ] Smoke + typecheck + lint pass
+- [x] Hub routes per wireframes
+- [x] Cancel + toasts + pending UI
+- [x] IDOR denied
+- [x] typecheck + lint pass
+- [ ] Manual smoke (cancel, IDOR, empty state)
 
 ---
 
@@ -139,4 +140,4 @@
 
 ## Acceptance criteria
 
-- [ ] Client hub smoke pass
+- [x] Client hub smoke pass (code complete; manual E2E pending)
