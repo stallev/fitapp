@@ -64,9 +64,9 @@
 | `/client/bookings` | `(client)/client/bookings/page.tsx` | client | ✅ | Upcoming / Past / Cancelled |
 | `/client/bookings/[id]` | `(client)/client/bookings/[id]/page.tsx` | client | ✅ | Booking detail |
 | `/client/reviews/[bookingId]` | `(client)/client/reviews/[bookingId]/page.tsx` | client | ✅ | Post-session review |
-| `/client/profile` | *(planned — nav item exists in flows)* | client | ⚠️ | Referenced in bottom nav; add to P02/P03 if not in pages spec tree |
+| `/client/profile` | `(client)/client/profile/page.tsx` | client | ✅ | Profile stub — full settings P09+ |
 
-> **Note:** Client bottom nav lists Profile — route `/client/profile` implied by user flows. Confirm in wireframe phase; may map to settings sub-routes.
+> **Note:** Client bottom nav lists Profile — route `/client/profile` stub added in P03; full settings in later phases.
 
 ---
 

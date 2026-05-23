@@ -91,13 +91,19 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         data-loading={loading || undefined}
         {...props}
       >
-        {loading && (
-          <span
-            className="h-4 w-4 rounded-full border-2 border-current border-r-transparent animate-spin"
-            aria-hidden="true"
-          />
+        {asChild ? (
+          children
+        ) : (
+          <>
+            {loading ? (
+              <span
+                className="h-4 w-4 rounded-full border-2 border-current border-r-transparent animate-spin"
+                aria-hidden="true"
+              />
+            ) : null}
+            {children}
+          </>
         )}
-        {children}
       </Comp>
     );
   },
