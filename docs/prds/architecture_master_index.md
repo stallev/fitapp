@@ -205,7 +205,7 @@ For a new AI agent session on Pulse:
 fitapp/
 ├── AGENTS.md
 ├── apps/
-│   ├── web/                 — Next.js 16.2.6 (not scaffolded yet)
+│   ├── web/                 — Next.js 16.2.6 (initial shell; see apps/web/AGENTS.md)
 │   └── workers/               — job entrypoints (planned)
 ├── packages/
 │   ├── domain/

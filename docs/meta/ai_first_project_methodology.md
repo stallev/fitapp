@@ -156,7 +156,7 @@ AI-агент — **не поисковик и не генератор кода*
 ### 2.3 Точка входа: AGENTS.md
 
 [`AGENTS.md`](../../AGENTS.md) в корне monorepo — **конституция** для агента.  
-`apps/web/AGENTS.md` — правила уровня web-приложения (создаётся при scaffold).
+[`apps/web/AGENTS.md`](../../apps/web/AGENTS.md) — операционный гайд web-приложения (Next.js, структура каталогов, UI pointers, dev checklist).
 
 ### 2.4 Cursor Rules: живые ограничения
 
@@ -351,7 +351,7 @@ docs/
 
 **Для первой сессии реализации (следующие задачи):**
 
-- [ ] `apps/web/AGENTS.md`
+- [x] `apps/web/AGENTS.md`
 - [ ] `docs/implementation/mvp/phases_tasks_descriptions/P01_phase_description.md`
 - [ ] `docs/implementation/mvp/tasks/P01_tasks.md`
 - [ ] Monorepo scaffold (package.json, workspaces)

@@ -75,4 +75,4 @@ Full list: [`docs/guidelines/README.md`](docs/guidelines/README.md).
 
 ## Repository status
 
-Application code under `apps/` and `packages/` is **not scaffolded yet**. Do not add implementation code unless a phase task explicitly requires it.
+`apps/web` — initial Next.js shell (P01). `packages/` and workers — **not scaffolded yet**. Do not expand implementation beyond the current phase task and contract.
