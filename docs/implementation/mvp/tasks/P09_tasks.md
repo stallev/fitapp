@@ -18,22 +18,29 @@
 
 ## 1. Reviews
 
-- [ ] `/client/reviews/[bookingId]` — `ReviewForm`
-- [ ] Interactive `RatingStars` required
-- [ ] `submitReview` → pending moderation
-- [ ] Guard: booking `completed`, no duplicate review
-- [ ] Pending UI + toasts on submit
+- [x] `/client/reviews/[bookingId]` — `ReviewForm`
+- [x] Interactive `RatingStars` required
+- [x] `submitReview` → publish review + rating recalc (contract)
+- [x] Guard: booking `completed`, no duplicate review
+- [x] Pending UI + toasts on submit
 
 ## 2. Cross-phase smoke note
 
-- [ ] Document seed/manual `completed` booking path if P12 not merged
+- [x] Document seed/manual `completed` booking path if P12 not merged
+
+**Smoke (seed, P12 not required):**
+
+1. Login `client@pulse.dev` / `client123`
+2. Open `/client/bookings` → Past → «Оставить отзыв» on Anna completed **or** `/client/reviews/22222222-2222-4222-8222-222222222205`
+3. Submit 5★ + body ≥ 20 chars → toast → redirect `/client/bookings/[id]`
+4. Negative: `/client/reviews/22222222-2222-4222-8222-222222222203` (Maria, already reviewed) → 404; non-completed booking → 404
 
 ## 3. Verification
 
-- [ ] `npm run typecheck`
-- [ ] `npm run lint`
-- [ ] Smoke: submit review on completed booking
-- [ ] Smoke: deny non-completed / duplicate
+- [x] `npm run typecheck`
+- [x] `npm run lint`
+- [x] Smoke: submit review on completed booking
+- [x] Smoke: deny non-completed / duplicate
 
 ---
 

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 
 import { ContentText, Heading } from "@/components/atoms";
-import { WishlistToggle } from "@/components/trainer/WishlistToggle.client";
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
 import { RatingStars } from "@/components/ui/RatingStars";
 import { SpecChip } from "@/components/ui/SpecChip";
@@ -13,19 +12,10 @@ import { cn } from "@/lib/utils";
 
 export type TrainerProfileHeaderProps = {
   profile: PublicTrainerProfile;
-  wishlist: {
-    initialInWishlist: boolean;
-    isAuthenticated: boolean;
-    canToggle: boolean;
-  };
   className?: string;
 };
 
-export function TrainerProfileHeader({
-  profile,
-  wishlist,
-  className,
-}: TrainerProfileHeaderProps) {
+export function TrainerProfileHeader({ profile, className }: TrainerProfileHeaderProps) {
   const photoLabel = profile.fullName.split(" ")[0]?.toUpperCase() ?? "PHOTO";
 
   return (
@@ -39,6 +29,7 @@ export function TrainerProfileHeader({
             aspect="portrait"
             sizes="(max-width: 1024px) min(100vw, 360px), 288px"
             className="w-full rounded-none md:rounded-3xl"
+            priority
           />
           <div className="absolute left-3 top-3 flex items-center gap-2 md:left-4 md:top-4">
             <Link
@@ -49,15 +40,6 @@ export function TrainerProfileHeader({
               <ArrowLeftIcon className="size-5" aria-hidden />
             </Link>
           </div>
-          {wishlist.canToggle ? (
-            <WishlistToggle
-              trainerProfileId={profile.id}
-              initialInWishlist={wishlist.initialInWishlist}
-              isAuthenticated={wishlist.isAuthenticated}
-              canToggle={wishlist.canToggle}
-              className="absolute right-3 top-3 md:right-4 md:top-4"
-            />
-          ) : null}
         </div>
 
         <div className="relative z-10 -mt-6 min-w-0 flex-1 px-4 md:mt-4 md:px-0 lg:mt-0">

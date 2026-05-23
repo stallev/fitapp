@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P08 complete (client hub `/client/dashboard`, `/client/bookings`, `/client/bookings/[id]`, `/client/profile`; `cancelBooking` + policy `assertCanReadBooking`/`assertCanCancelBooking`; tabs Upcoming/Past/Cancelled; cancel dialog + toast + pending UI). Следующая фаза: **P09** (client reviews).  
+**Текущая фаза:** P09 complete (client review form `/client/reviews/[bookingId]`; `submitReviewAction` + `publishReviewMutation` + `assertCanPublishReview`; guards completed + no duplicate; FM-006 P2002; rating recalc in tx; seed `bookingCompletedNoReview` for smoke). Следующая фаза: **P10** (trainer onboarding).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

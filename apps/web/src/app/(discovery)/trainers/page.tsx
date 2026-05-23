@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 
 import { ContentText } from "@/components/atoms";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { Container } from "@/components/ui/container";
 import { CatalogTrainerGridSkeleton } from "@/components/catalog/CatalogTrainerGridSkeleton";
 import { CatalogTrainerGrid } from "@/components/catalog/CatalogTrainerGrid.server";
 import { CatalogActiveFilterChips } from "@/components/catalog/filters/CatalogActiveFilterChips.client";
@@ -28,7 +27,7 @@ export default async function TrainersPage({ searchParams }: TrainersPageProps) 
   const filterOptions = await getCatalogFilterOptions();
 
   return (
-    <Container as="main" variant="page" className="space-y-4">
+    <div className="space-y-4">
       <PageHeader title={MESSAGES.catalog.title} />
 
       <div className="lg:grid lg:grid-cols-[280px_1fr] lg:gap-6">
@@ -60,6 +59,6 @@ export default async function TrainersPage({ searchParams }: TrainersPageProps) 
           </Suspense>
         </div>
       </div>
-    </Container>
+    </div>
   );
 }

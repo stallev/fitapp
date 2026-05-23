@@ -80,7 +80,7 @@ export function ClientBookingsPanel({ bookings }: ClientBookingsPanelProps) {
           return (
             <TabsContent key={tab} value={tab} className="space-y-2.5">
               {items.length === 0 ? (
-                <Empty className="border-border bg-card md:col-span-2">
+                <Empty className="border-border bg-card lg:col-span-2">
                   <EmptyHeader>
                     <EmptyMedia variant="icon">
                       <CalendarIcon aria-hidden />
@@ -97,12 +97,13 @@ export function ClientBookingsPanel({ bookings }: ClientBookingsPanelProps) {
                   </EmptyContent>
                 </Empty>
               ) : (
-                <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
+                <div className="grid grid-cols-1 items-stretch gap-2.5 lg:grid-cols-2">
                   {items.map((booking) => (
                     <BookingListItem
                       key={booking.id}
                       booking={booking}
                       tab={tab}
+                      className="h-full"
                       onCancelClick={() => handleCancelClick(booking.id)}
                       onJoinClick={handleJoinClick}
                     />

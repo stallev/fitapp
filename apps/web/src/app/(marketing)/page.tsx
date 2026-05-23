@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { FeaturedTrainersSkeleton } from "@/components/landing/FeaturedTrainersSkeleton";
+import { LandingAuthenticatedRedirect } from "@/components/landing/LandingAuthenticatedRedirect.server";
 import { LandingCategoryChips } from "@/components/landing/LandingCategoryChips";
 import { LandingFeaturedTrainers } from "@/components/landing/LandingFeaturedTrainers.server";
 import { LandingHero } from "@/components/landing/LandingHero";
@@ -19,7 +20,10 @@ export function generateMetadata(): Metadata {
 
 export default function HomePage() {
   return (
-    <main>
+    <>
+      <Suspense fallback={null}>
+        <LandingAuthenticatedRedirect />
+      </Suspense>
       <Container variant="page" className="space-y-12 py-8 md:py-12">
         <LandingHero />
         <LandingValueProps />
@@ -29,6 +33,7 @@ export default function HomePage() {
         </Suspense>
       </Container>
       <SiteFooter />
-    </main>
+    </>
   );
 }
+

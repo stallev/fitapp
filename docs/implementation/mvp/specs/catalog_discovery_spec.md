@@ -12,7 +12,9 @@
 
 ## Purpose
 
-Implementation-spec **публичного каталога тренеров** (`/trainers`) и **профиля** (`/trainers/[id]`): фильтры, сортировка, карточки, wishlist toggle, табы профиля, sticky CTA, переход в booking wizard. UX + Server Action / RSC touchpoints без дублирования race logic из contracts.
+Implementation-spec **публичного каталога тренеров** (`/trainers`) и **профиля** (`/trainers/[id]`): фильтры, сортировка, карточки, табы профиля, sticky CTA, переход в booking wizard. UX + RSC touchpoints без дублирования race logic из contracts.
+
+> **Wishlist (heart toggle):** deferred post-MVP — см. [`post_mvp_deferrals.md`](../../../prds/01_product_scope/post_mvp_deferrals.md); контракт [`wishlist_contract.md`](../contracts/wishlist_contract.md) сохранён для re-enable.
 
 **Аудитория:** AI-агенты P04–P06; frontend + data fetching.
 
@@ -20,9 +22,9 @@ Implementation-spec **публичного каталога тренеров** (
 
 ## Scope / Out of scope
 
-**In scope:** Catalog list, filters, trainer profile tabs, wishlist heart, schedule preview on profile, navigation to `/book/[trainerId]`.
+**In scope:** Catalog list, filters, trainer profile tabs, schedule preview on profile, navigation to `/book/[trainerId]`.
 
-**Out of scope:** Booking wizard internals (→ `booking_wizard_spec.md`); admin moderation; payment UI; post-MVP map/geo filters.
+**Out of scope:** Wishlist heart (post-MVP); booking wizard internals (→ `booking_wizard_spec.md`); admin moderation; payment UI; post-MVP map/geo filters.
 
 ---
 
@@ -31,7 +33,6 @@ Implementation-spec **публичного каталога тренеров** (
 | Term | Meaning |
 |------|---------|
 | **Approved-only catalog** | Query `trainer_profile.status = approved` — INV-03 |
-| **Wishlist toggle** | Optimistic heart — [`wishlist_contract.md`](../contracts/wishlist_contract.md) |
 | **Filter state** | URL searchParams — see [Filter URL contract](#filter-url-contract) |
 
 ### Filter URL contract

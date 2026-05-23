@@ -95,7 +95,6 @@ Pulse — онлайн-маркетплейс, соединяющий клиен
 - Dashboard: приветствие, next session, search, категории, топ тренеры
 - Каталог `/trainers`: фильтры (специализация, цена, рейтинг), сортировка, пагинация
 - Профиль тренера `/trainers/[id]`: hero, tabs (About / Services / Schedule / Reviews), sticky CTA
-- Wishlist: toggle с optimistic UI
 - Inline weekly schedule → booking wizard `/book/[trainerId]`
 - 3 шага: Service → Time slot → Confirm (+ optional message)
 - Booking создаётся со статусом **`pending`** (без оплаты)
@@ -167,7 +166,7 @@ flowchart LR
 | Trainer not `approved` | Нет публичного listing; booking может быть заблокирован — contract |
 | Slot taken (race) | Ошибка при submit; toast.error; не двойная бронь — contract |
 | Cancel inside 24h window | Отказ с объяснением — lifecycle PRD |
-| Empty catalog / wishlist | Empty state + CTA (Zero Dead Ends) |
+| Empty catalog | Empty state + CTA (Zero Dead Ends) |
 | Invalid credentials | Login error без утечки «user exists» |
 
 Детали security/race — [`failure_modes_catalog.md`](../02_domain_model/failure_modes_catalog.md) (W3).

@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 
 import type { CatalogTrainersQuery } from "@pulse/domain";
 
-import { SectionTitle } from "@/components/atoms";
-import { Button } from "@/components/ui/button";
+import { Heading } from "@/components/atoms";
 import { PulseCard } from "@/components/ui/card";
 import type { CatalogFilterOptions } from "@/data/catalog/get-catalog-filter-options.server";
 import { buildCatalogHref } from "@/lib/catalog/build-catalog-search-params";
@@ -45,14 +44,18 @@ export function CatalogFilterSidebar({
 
   return (
     <aside className={cn("hidden lg:block", className)}>
-      <PulseCard className="sticky top-24 p-4">
-        <div className="mb-4 flex items-center justify-between gap-2">
-          <SectionTitle as="h2" className="text-left text-base">
+      <PulseCard variant="catalog" className="sticky top-24 space-y-4 p-4">
+        <div className="flex items-center justify-between gap-2">
+          <Heading as="h2" visualLevel="h3" className="text-left">
             {MESSAGES.catalog.filtersTitle}
-          </SectionTitle>
-          <Button type="button" variant="ghost" size="sm" onClick={handleClear}>
+          </Heading>
+          <button
+            type="button"
+            onClick={handleClear}
+            className="text-[12px] font-medium text-primary transition-colors hover:text-primary/80"
+          >
             {MESSAGES.catalog.clearFilters}
-          </Button>
+          </button>
         </div>
         <CatalogFilterFields
           draft={query}

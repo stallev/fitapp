@@ -20,6 +20,7 @@ function renderNavIcon(iconKey: NavIconKey, className: string) {
   return createElement(getNavIcon(iconKey), {
     "aria-hidden": true,
     className,
+    strokeWidth: 1.75,
   });
 }
 
@@ -40,7 +41,7 @@ export function NavItem({
         href={href}
         aria-current={isActive ? "page" : undefined}
         className={cn(
-          "flex min-h-11 items-center gap-3 rounded-full px-4 py-2 text-sm font-medium transition-colors",
+          "flex h-11 items-center gap-3 rounded-full px-3 text-sm font-medium transition-colors",
           isActive
             ? "bg-primary-container text-on-primary-container"
             : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -64,23 +65,34 @@ export function NavItem({
     <Link
       href={href}
       aria-current={isActive ? "page" : undefined}
-      className={cn(
-        "relative flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 rounded-2xl px-2 py-1 text-[11px] font-medium transition-colors",
-        isActive
-          ? "bg-primary-container text-on-primary-container"
-          : "text-muted-foreground",
-      )}
+      className="group relative flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 py-2.5"
     >
-      {renderNavIcon(iconKey, "size-5 shrink-0")}
-      <span className="max-w-full truncate">{label}</span>
-      {showBadge ? (
-        <span
-          aria-label={`${badgeCount} в очереди`}
-          className="absolute right-1 top-1 inline-flex size-4 items-center justify-center rounded-full bg-destructive text-[9px] font-semibold text-destructive-foreground"
-        >
-          {badgeCount > 9 ? "9+" : badgeCount}
-        </span>
-      ) : null}
+      <span
+        className={cn(
+          "relative flex h-7 w-12 items-center justify-center rounded-full transition-colors",
+          isActive
+            ? "bg-primary-container text-on-primary-container"
+            : "text-muted-foreground group-hover:text-foreground",
+        )}
+      >
+        {renderNavIcon(iconKey, "size-5 shrink-0")}
+        {showBadge ? (
+          <span
+            aria-label={`${badgeCount} в очереди`}
+            className="absolute -top-0.5 right-1.5 inline-flex size-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[9px] font-bold text-destructive-foreground"
+          >
+            {badgeCount > 9 ? "9+" : badgeCount}
+          </span>
+        ) : null}
+      </span>
+      <span
+        className={cn(
+          "max-w-full truncate text-[10.5px] font-medium",
+          isActive ? "text-foreground" : "text-muted-foreground",
+        )}
+      >
+        {label}
+      </span>
     </Link>
   );
 }

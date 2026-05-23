@@ -120,6 +120,13 @@ export const pulseCardVariants = cva(
           "p-[var(--card-p-sm)]",
           "flex min-w-0 items-start gap-3",
         ],
+        catalog: [
+          "rounded-2xl",
+          "shadow-[var(--shadow-card)]",
+          "ring-1 ring-border/60",
+          "overflow-hidden",
+          "p-0",
+        ],
         kpi: [
           "rounded-[var(--card-radius-md)]",
           "shadow-[var(--shadow-card)]",

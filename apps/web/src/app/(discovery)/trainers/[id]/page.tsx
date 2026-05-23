@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
-import { Container } from "@/components/ui/container";
 import {
   Tabs,
   TabsContent,
@@ -18,7 +17,6 @@ import { TrainerProfileServicesTab } from "@/components/trainer/TrainerProfileSe
 import { TrainerProfileStickyBar } from "@/components/trainer/TrainerProfileStickyBar.client";
 import { TrainerSchedulePreviewSkeleton } from "@/components/trainer/TrainerSchedulePreviewSkeleton";
 import { getPublicTrainerProfile } from "@/data/trainer/get-public-trainer-profile.server";
-import { getWishlistUiContext } from "@/data/wishlist/get-wishlist-ui-context.server";
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 import { MESSAGES } from "@/lib/messages";
 
@@ -44,26 +42,16 @@ export async function generateMetadata({
 export default async function TrainerProfilePage({ params }: TrainerProfilePageProps) {
   const { id } = await params;
   const profile = await getPublicTrainerProfile(id);
-  const [wishlistContext, session] = await Promise.all([
-    getWishlistUiContext([id]),
-    getPolicySessionContext(),
-  ]);
+  const session = await getPolicySessionContext();
 
   const slotDurationMinutes =
     profile.services[0]?.durationMinutes ?? 60;
 
   return (
-    <Container as="main" variant="page" className="space-y-4 pb-28 md:pb-8">
+    <div className="space-y-4 pb-28 md:pb-8">
       <div className="md:grid md:grid-cols-[minmax(0,1fr)_360px] md:items-start md:gap-6">
         <div className="min-w-0 space-y-4">
-          <TrainerProfileHeader
-            profile={profile}
-            wishlist={{
-              initialInWishlist: wishlistContext.wishlistedIds.has(id),
-              isAuthenticated: wishlistContext.isAuthenticated,
-              canToggle: wishlistContext.canToggle,
-            }}
-          />
+          <TrainerProfileHeader profile={profile} />
 
           <Tabs defaultValue="about" className="px-0">
             <div className="-mx-4 overflow-x-auto overscroll-x-contain px-4 no-scrollbar md:mx-0 md:overflow-visible md:px-0">
@@ -117,7 +105,8 @@ export default async function TrainerProfilePage({ params }: TrainerProfilePageP
       <TrainerProfileStickyBar
         profile={profile}
         isAuthenticated={Boolean(session)}
+        withBottomNavOffset={Boolean(session)}
       />
-    </Container>
+    </div>
   );
 }

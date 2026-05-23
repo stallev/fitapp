@@ -6,6 +6,8 @@ type PageContainerProps = {
   className?: string;
   variant?: "page" | "narrow";
   withBottomNav?: boolean;
+  /** When true, main lives inside AppShellCanvas (no duplicate max-w-[1400px]) */
+  inShellCanvas?: boolean;
 };
 
 export function PageContainer({
@@ -13,15 +15,16 @@ export function PageContainer({
   className,
   variant = "page",
   withBottomNav = true,
+  inShellCanvas = false,
 }: PageContainerProps) {
   return (
     <Container
       as="main"
-      variant="page"
+      variant={inShellCanvas ? "shellMain" : "page"}
       className={cn(
-        "min-w-0 flex-1",
+        !inShellCanvas && "min-w-0 flex-1",
         withBottomNav ? "pb-24 md:pb-6" : "pb-6",
-        variant === "narrow" && "max-w-2xl",
+        variant === "narrow" && !inShellCanvas && "max-w-2xl",
         className,
       )}
     >

@@ -2,19 +2,18 @@
 
 import {
   CATALOG_MIN_RATINGS,
-  isSpecializationSlug,
   type CatalogMinRating,
   type CatalogTrainersQuery,
-  type SpecializationSlug,
 } from "@pulse/domain";
 
-import { ContentText, SectionTitle } from "@/components/atoms";
-import { FilterChip } from "@/components/ui/FilterChip";
+import { ContentText } from "@/components/atoms";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import type { CatalogFilterOptions } from "@/data/catalog/get-catalog-filter-options.server";
 import { MESSAGES } from "@/lib/messages";
+
+import { CatalogSpecialtyList } from "./CatalogSpecialtyList.client";
 
 export type CatalogFilterDraft = Pick<
   CatalogTrainersQuery,
@@ -50,9 +49,12 @@ export function CatalogFilterFields({
   const ceilingDollars = Math.max(1, Math.round(options.maxPriceCeilingCents / 100));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       <div className="space-y-3">
-        <Label htmlFor="catalog-max-price">
+        <Label
+          htmlFor="catalog-max-price"
+          className="text-[13px] font-medium text-muted-foreground"
+        >
           {MESSAGES.catalog.maxPriceLabel}: ${maxPriceDollars}
         </Label>
         <Slider
@@ -68,12 +70,20 @@ export function CatalogFilterFields({
             });
           }}
         />
+        <div className="flex justify-between">
+          <ContentText variant="hint" as="span" className="font-mono">
+            $0
+          </ContentText>
+          <ContentText variant="hint" as="span" className="font-mono">
+            ${ceilingDollars}
+          </ContentText>
+        </div>
       </div>
 
       <div className="space-y-3">
-        <SectionTitle as="h3" className="text-left text-sm">
+        <ContentText variant="blockLabel" as="p" className="text-muted-foreground">
           {MESSAGES.catalog.ratingLabel}
-        </SectionTitle>
+        </ContentText>
         <RadioGroup
           value={draft.minRating?.toString() ?? "any"}
           onValueChange={(value) => {
@@ -82,13 +92,18 @@ export function CatalogFilterFields({
                 value === "any" ? undefined : (Number(value) as CatalogMinRating),
             });
           }}
-          className="grid grid-cols-2 gap-2"
+          className="grid grid-cols-2 gap-1.5"
         >
-          <RadioGroupItem variant="tile" value="any">
+          <RadioGroupItem variant="tile" value="any" className="h-9 text-[12px]">
             {MESSAGES.catalog.ratingAny}
           </RadioGroupItem>
           {CATALOG_MIN_RATINGS.map((rating) => (
-            <RadioGroupItem key={rating} variant="tile" value={String(rating)}>
+            <RadioGroupItem
+              key={rating}
+              variant="tile"
+              value={String(rating)}
+              className="h-9 text-[12px]"
+            >
               {MESSAGES.catalog.ratingTier.replace("{value}", String(rating))}
             </RadioGroupItem>
           ))}
@@ -96,38 +111,14 @@ export function CatalogFilterFields({
       </div>
 
       <div className="space-y-3">
-        <SectionTitle as="h3" className="text-left text-sm">
+        <ContentText variant="blockLabel" as="p" className="text-muted-foreground">
           {MESSAGES.catalog.specialtyLabel}
-        </SectionTitle>
-        <div className="flex flex-wrap gap-2">
-          {options.specializations.map((item) => {
-            if (!isSpecializationSlug(item.slug)) {
-              return null;
-            }
-
-            const slug = item.slug;
-            const selected = draft.specializations.includes(slug);
-            return (
-              <FilterChip
-                key={slug}
-                selected={selected}
-                onClick={() => {
-                  const next: SpecializationSlug[] = selected
-                    ? draft.specializations.filter((value) => value !== slug)
-                    : [...draft.specializations, slug];
-                  onDraftChange({ specializations: next });
-                }}
-              >
-                {item.name}
-              </FilterChip>
-            );
-          })}
-        </div>
-        {draft.specializations.length === 0 ? (
-          <ContentText variant="mutedMicro" as="p">
-            {MESSAGES.catalog.specialtyAll}
-          </ContentText>
-        ) : null}
+        </ContentText>
+        <CatalogSpecialtyList
+          draft={draft}
+          options={options}
+          onDraftChange={onDraftChange}
+        />
       </div>
     </div>
   );

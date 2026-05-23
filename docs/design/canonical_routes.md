@@ -17,7 +17,8 @@
 
 | Group | Layout behavior |
 |-------|-----------------|
-| `(public)` | Top bar, no role nav |
+| `(marketing)` | Top bar, no role nav — landing, auth |
+| `(discovery)` | Hybrid shell: role nav when authenticated; Top bar only for guests |
 | `(booking)` | Stripped header, no sidebar — booking wizard focus |
 | `(session)` | Minimal — session placeholder MVP |
 | `(client)` | Shell: top bar + bottom nav (mobile) / sidebar (md+) |
@@ -30,12 +31,12 @@
 
 | Path | Route file (target) | Role | MVP | Notes |
 |------|----------------------|------|-----|-------|
-| `/` | `(public)/page.tsx` | public | ✅ | Landing |
-| `/trainers` | `(public)/trainers/page.tsx` | public | ✅ | Catalog + filters |
-| `/trainers/[id]` | `(public)/trainers/[id]/page.tsx` | public | ✅ | Trainer public profile |
-| `/auth/login` | `(public)/auth/login/page.tsx` | public | ✅ | Credentials login |
-| `/auth/register` | `(public)/auth/register/page.tsx` | public | ✅ | Role selection + client reg |
-| `/auth/register/trainer` | `(public)/auth/register/trainer/page.tsx` | public | ✅ | Trainer multi-step onboarding |
+| `/` | `(marketing)/page.tsx` | public | ✅ | Landing; auth users → role home via redirect |
+| `/trainers` | `(discovery)/trainers/page.tsx` | public | ✅ | Catalog + filters; shell when authenticated |
+| `/trainers/[id]` | `(discovery)/trainers/[id]/page.tsx` | public | ✅ | Trainer public profile; shell when authenticated |
+| `/auth/login` | `(marketing)/auth/login/page.tsx` | public | ✅ | Credentials login |
+| `/auth/register` | `(marketing)/auth/register/page.tsx` | public | ✅ | Role selection + client reg |
+| `/auth/register/trainer` | `(marketing)/auth/register/trainer/page.tsx` | public | ✅ | Trainer multi-step onboarding |
 
 ---
 

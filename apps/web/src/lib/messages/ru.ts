@@ -108,7 +108,7 @@ export const MESSAGES = {
     maxPriceLabel: "Макс. цена",
     ratingLabel: "Рейтинг",
     ratingAny: "Любой",
-    ratingTier: "от {value}★",
+    ratingTier: "★ {value}+",
     specialtyLabel: "Направление",
     specialtyAll: "Все",
     resultsCount: "{count} тренеров",
@@ -209,6 +209,7 @@ export const MESSAGES = {
     saved: "Изменения сохранены",
     booked: "Запрос на бронирование отправлен",
     cancelled: "Бронирование отменено",
+    reviewPublished: "Отзыв опубликован",
     error: "Не удалось выполнить действие",
   },
   booking: {
@@ -317,6 +318,26 @@ export const MESSAGES = {
     forbidden: "Избранное доступно только клиентам",
     trainerNotBookable: "Тренер недоступен для добавления",
     validationError: "Некорректный запрос",
+  },
+  review: {
+    metaTitle: "Оставить отзыв — Pulse",
+    heading: "Оставить отзыв",
+    ratingLabel: "Оценка",
+    ratingRequired: "Выберите оценку от 1 до 5",
+    bodyLabel: "Комментарий",
+    bodyPlaceholder: "Расскажите о занятии — что понравилось и что можно улучшить",
+    charCount: "{count} / {max}",
+    submit: "Отправить отзыв",
+    submitting: "Отправляем…",
+    disclaimer: "После публикации отзыв нельзя изменить",
+    errors: {
+      unauthorized: "Войдите, чтобы оставить отзыв",
+      forbidden: "Отзывы доступны только клиентам",
+      validation: "Проверьте оценку и текст отзыва (от 20 до 500 символов)",
+      notReviewable: "Отзыв можно оставить только после завершённого занятия",
+      alreadyExists: "Вы уже оставили отзыв на это бронирование",
+      generic: "Не удалось опубликовать отзыв",
+    },
   },
   trainer: {
     profile: {

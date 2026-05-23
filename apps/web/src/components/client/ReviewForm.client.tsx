@@ -1,0 +1,126 @@
+"use client";
+
+import { useActionState, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+import { ContentText } from "@/components/atoms";
+import { submitReviewAction } from "@/actions/client/publish-review";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { RatingStars } from "@/components/ui/RatingStars";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  REVIEW_MUTATION_ERROR_CODES,
+  type MutationResult,
+} from "@pulse/domain";
+
+import { MESSAGES } from "@/lib/messages";
+import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
+
+const BODY_MAX = 500;
+
+export type ReviewFormProps = {
+  bookingId: string;
+};
+
+export function ReviewForm({ bookingId }: ReviewFormProps) {
+  const router = useRouter();
+  const [rating, setRating] = useState(0);
+  const [bodyLength, setBodyLength] = useState(0);
+  const [ratingError, setRatingError] = useState<string | null>(null);
+  const [state, formAction, pending] = useActionState<
+    MutationResult<{ reviewId: string; bookingId: string }> | null,
+    FormData
+  >(submitReviewAction, null);
+  const lastHandledState = useRef<typeof state>(null);
+
+  useEffect(() => {
+    if (!state || state === lastHandledState.current) {
+      return;
+    }
+
+    lastHandledState.current = state;
+
+    if (state.ok) {
+      toast.success(MESSAGES.toast.reviewPublished, {
+        duration: PRODUCT_TOAST_DURATION_MS,
+      });
+      router.push(`/client/bookings/${bookingId}`);
+      return;
+    }
+
+    toast.error(state.message, {
+      duration: PRODUCT_TOAST_DURATION_MS,
+    });
+
+    if (state.code === REVIEW_MUTATION_ERROR_CODES.REVIEW_ALREADY_EXISTS) {
+      router.push(`/client/bookings/${bookingId}`);
+    }
+  }, [bookingId, router, state]);
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    if (rating < 1) {
+      event.preventDefault();
+      setRatingError(MESSAGES.review.ratingRequired);
+      return;
+    }
+
+    setRatingError(null);
+  }
+
+  return (
+    <form action={formAction} onSubmit={handleSubmit} aria-busy={pending} className="space-y-6">
+      <input type="hidden" name="bookingId" value={bookingId} />
+      <input type="hidden" name="rating" value={rating > 0 ? String(rating) : ""} />
+
+      <Field data-invalid={Boolean(ratingError)}>
+        <FieldLabel>{MESSAGES.review.ratingLabel}</FieldLabel>
+        <RatingStars
+          interactive
+          value={rating}
+          size="lg"
+          onChange={(value) => {
+            setRating(value);
+            setRatingError(null);
+          }}
+          aria-label={MESSAGES.review.ratingLabel}
+        />
+        {ratingError ? <FieldError>{ratingError}</FieldError> : null}
+      </Field>
+
+      <Field>
+        <FieldLabel htmlFor="review-body">{MESSAGES.review.bodyLabel}</FieldLabel>
+        <Textarea
+          id="review-body"
+          name="body"
+          required
+          minLength={20}
+          maxLength={BODY_MAX}
+          rows={5}
+          disabled={pending}
+          placeholder={MESSAGES.review.bodyPlaceholder}
+          onChange={(event) => setBodyLength(event.target.value.length)}
+        />
+        <ContentText
+          variant="mutedMicro"
+          as="p"
+          className="mt-1 text-right font-mono"
+        >
+          {MESSAGES.review.charCount
+            .replace("{count}", String(bodyLength))
+            .replace("{max}", String(BODY_MAX))}
+        </ContentText>
+      </Field>
+
+      <div className="space-y-3">
+        <Button type="submit" className="w-full" disabled={pending} aria-busy={pending}>
+          {pending ? MESSAGES.review.submitting : MESSAGES.review.submit}
+        </Button>
+        <ContentText variant="mutedMicro" as="p" className="text-center">
+          {MESSAGES.review.disclaimer}
+        </ContentText>
+      </div>
+    </form>
+  );
+}

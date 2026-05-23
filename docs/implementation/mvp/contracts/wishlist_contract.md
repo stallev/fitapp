@@ -1,7 +1,7 @@
 # Wishlist Contract — Pulse MVP
 
 **Тип:** Contract  
-**Статус:** Canonical  
+**Статус:** Deferred (post-MVP) — schema и `@pulse/domain` / `@pulse/policy-server` stubs сохранены; UI и `/api/client/wishlist` **не входят в MVP**.  
 **Версия:** 1.0  
 **Дата:** 2026-05-23  
 **Волна:** W8  

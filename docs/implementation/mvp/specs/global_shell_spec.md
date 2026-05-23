@@ -43,12 +43,13 @@ Implementation-spec **глобального app shell** Pulse: route groups, la
 ```text
 apps/web/src/app/
 ├── layout.tsx                    # fonts, ThemeProvider, Toaster, globals
-├── (public)/layout.tsx           # TopBar only
+├── (marketing)/layout.tsx        # PublicChrome — TopBar only
+├── (discovery)/layout.tsx        # HybridAppShellGate — shell when auth
 ├── (booking)/layout.tsx          # StrippedBookingHeader
 ├── (session)/layout.tsx          # Minimal session header
-├── (client)/layout.tsx           # AppShell role=client
-├── (trainer)/layout.tsx          # AppShell role=trainer + review banner slot
-├── (admin)/layout.tsx            # AppShell role=admin
+├── (client)/layout.tsx           # RoleAppShellGate role=client
+├── (trainer)/layout.tsx          # RoleAppShellGate role=trainer + review banner slot
+├── (admin)/layout.tsx            # RoleAppShellGate role=admin
 └── ...
 ```
 
@@ -61,10 +62,10 @@ apps/web/src/app/
 ### 1. Client mobile session
 
 1. Authenticated client navigates to `/client/dashboard`.
-2. `(client)/layout.tsx` renders `AppShell` with `role="client"`.
+2. `(client)/layout.tsx` renders `RoleAppShellGate` → `AppShell` with `role="client"`.
 3. `TopBar` sticky; `BottomNav` visible (`md:hidden`); `SidebarNav` hidden.
-4. `PageContainer` wraps `{children}` with `pb-6` above bottom nav safe area.
-5. User taps «Trainers» → `/trainers` (public group) — public layout replaces shell; bottom nav hidden on catalog until return to `/client/*`.
+4. `PageContainer` wraps `{children}` with `pb-24 md:pb-6` above bottom nav safe area.
+5. User taps «Trainers» → `/trainers` (`(discovery)` group) — **`HybridAppShellGate` preserves shell**; active nav item «Trainers». Guest on same URL sees `PublicChrome` (Top bar only).
 
 ### 2. Trainer desktop session
 
@@ -143,11 +144,15 @@ Role prefix enforcement: [`auth_runtime_spec.md`](../../../prds/05_runtime/auth_
 
 | Component | Responsibility |
 |-----------|----------------|
-| `AppShell` | Compose TopBar + nav + PageContainer; props: `role`, `children` |
+| `AppShell` | Compose TopBar + `AppShellCanvas` + BottomNav; props: `role`, `children` |
+| `AppShellCanvas` | `Container variant="shell"` flex row on md+ — sidebar + main share one `max-w-[1400px]` canvas (prototype parity) |
+| `PublicChrome` | TopBar + `<main>` wrapper for guest/marketing routes |
+| `RoleAppShellGate` | Auth guard + role-specific shell (banner, badges) |
+| `HybridAppShellGate` | Session-aware: `RoleAppShellGate` when auth, else `PublicChrome` — `(discovery)` routes |
 | `TopBar` | Logo, theme toggle, notifications popover (placeholder MVP), avatar `hidden md:inline-flex` on mobile |
-| `BottomNav` | `md:hidden`, safe-area padding, `aria-current="page"` |
-| `SidebarNav` | `hidden md:flex`, same items as BottomNav |
-| `PageContainer` | `mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8` |
+| `BottomNav` | `sticky bottom-0`, `md:hidden`, icon-only active pill, safe-area padding, `aria-current="page"` |
+| `SidebarNav` | `hidden md:flex`, inside `AppShellCanvas`, same items as BottomNav |
+| `PageContainer` | Standalone: `max-w-[1400px]`; in shell: `inShellCanvas` — width from `AppShellCanvas`, main column gutters only |
 | `StrippedBookingHeader` | Back + step progress; no role nav |
 | `getNavItems(role)` | Single module — DRY per [`responsive_navigation_contract.md`](../../../design/responsive_navigation_contract.md) |
 

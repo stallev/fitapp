@@ -29,6 +29,8 @@ export type PhotoSlotProps = React.ComponentProps<"div"> &
     icon?: React.ReactNode;
     /** Passed to next/image — tune per layout (TrainerCard square ≈ 96px). */
     sizes?: string;
+    /** When true, preloads image for LCP (maps to next/image `priority`). */
+    priority?: boolean;
   };
 
 export function PhotoSlot({
@@ -38,6 +40,7 @@ export function PhotoSlot({
   aspect,
   icon,
   sizes = "(max-width: 768px) 96px, 400px",
+  priority = false,
   className,
   ...props
 }: PhotoSlotProps) {
@@ -54,6 +57,7 @@ export function PhotoSlot({
           alt={alt ?? label}
           fill
           sizes={sizes}
+          priority={priority}
           className="object-cover"
         />
       ) : (

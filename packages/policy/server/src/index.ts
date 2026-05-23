@@ -13,7 +13,6 @@ export {
   assertCanMutateTrainerProfile,
   assertCanMutateTrainerService,
   assertCanProcessRefund,
-  assertCanPublishReview,
   assertCanReadPrivateDoc,
 } from "./stubs";
 export { assertCanCreateBooking } from "./booking/assert-can-create-booking";
@@ -22,4 +21,5 @@ export {
   assertCanReadBooking,
   type BookingPolicyFacts,
 } from "./booking/assert-can-read-booking";
+export { assertCanPublishReview } from "./review/assert-can-publish-review";
 export { assertCanToggleWishlist } from "./wishlist/assert-can-toggle-wishlist";

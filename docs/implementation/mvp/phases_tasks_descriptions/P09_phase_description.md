@@ -108,9 +108,9 @@
 
 ## Definition of done
 
-- [ ] Review form per wireframe
-- [ ] Guards on status + duplicate
-- [ ] Smoke + typecheck + lint pass
+- [x] Review form per wireframe
+- [x] Guards on status + duplicate
+- [x] Smoke + typecheck + lint pass
 
 ---
 
@@ -132,4 +132,4 @@
 
 ## Acceptance criteria
 
-- [ ] Review submit smoke pass
+- [x] Review submit smoke pass

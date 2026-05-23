@@ -14,6 +14,9 @@ export const containerVariants = cva("mx-auto w-full", {
   variants: {
     variant: {
       shell: "max-w-[1400px] px-4 md:px-6 lg:px-8",
+      /** Main column inside AppShellCanvas — width from parent shell container */
+      shellMain:
+        "min-w-0 flex-1 px-4 pt-4 md:px-6 md:pt-6 lg:px-8",
       page: "max-w-[1400px] px-4 md:px-6 lg:px-8 pt-4 md:pt-6 pb-6",
       narrow: "max-w-md",
       form: "md:max-w-2xl",

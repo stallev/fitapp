@@ -7,12 +7,13 @@ import { CatalogError } from "@/components/catalog/CatalogError";
 import { CatalogPagination } from "@/components/catalog/filters/CatalogPagination.client";
 import { CatalogSortSelect } from "@/components/catalog/filters/CatalogSortSelect.client";
 import { getCatalogTrainers } from "@/data/catalog/get-catalog-trainers.server";
-import { getWishlistUiContext } from "@/data/wishlist/get-wishlist-ui-context.server";
 import { formatCatalogResultsCount } from "@/lib/catalog/catalog-filter-utils";
 
 export type CatalogTrainerGridProps = {
   query: CatalogTrainersQuery;
 };
+
+const ABOVE_FOLD_IMAGE_COUNT = 2;
 
 export async function CatalogTrainerGrid({ query }: CatalogTrainerGridProps) {
   let result;
@@ -27,10 +28,6 @@ export async function CatalogTrainerGrid({ query }: CatalogTrainerGridProps) {
     return <CatalogEmpty />;
   }
 
-  const wishlistContext = await getWishlistUiContext(
-    result.items.map((trainer) => trainer.id),
-  );
-
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -40,17 +37,13 @@ export async function CatalogTrainerGrid({ query }: CatalogTrainerGridProps) {
         <CatalogSortSelect query={result.appliedQuery} />
       </div>
 
-      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-        {result.items.map((trainer) => (
+      <div className="grid grid-cols-1 items-stretch gap-2.5 lg:grid-cols-2">
+        {result.items.map((trainer, index) => (
           <TrainerCard
             key={trainer.id}
             trainer={trainer}
-            className="min-w-0"
-            wishlist={{
-              initialInWishlist: wishlistContext.wishlistedIds.has(trainer.id),
-              isAuthenticated: wishlistContext.isAuthenticated,
-              canToggle: wishlistContext.canToggle,
-            }}
+            className="h-full min-w-0"
+            imagePriority={index < ABOVE_FOLD_IMAGE_COUNT}
           />
         ))}
       </div>
