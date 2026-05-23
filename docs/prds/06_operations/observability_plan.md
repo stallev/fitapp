@@ -14,7 +14,7 @@
 
 План **наблюдаемости** Pulse MVP: что логировать, как обнаруживать ошибки, минимальные метрики для Vercel + Neon, расширение post-MVP (email jobs, Sentry). Баланс между ops-реальностью MVP и guardrails для AI-агентов.
 
-**Аудитория:** разработчики P01–P07, on-call (когда появится), AI-агенты при добавлении error boundaries и job handlers.
+**Аудитория:** разработчики P01–P14, on-call (когда появится), AI-агенты при добавлении error boundaries и job handlers.
 
 ---
 
@@ -22,7 +22,7 @@
 
 **In scope:** Vercel logs, Next.js error boundaries, structured server logging conventions, Neon health signals, post-MVP job/delivery observability, PII redaction rules.
 
-**Out of scope:** Full APM vendor selection ADR, custom metrics dashboard build, AWS CloudWatch (deferred), detailed Sentry setup YAML (integrate when adopted in P07+).
+**Out of scope:** Full APM vendor selection ADR, custom metrics dashboard build, AWS CloudWatch (deferred), detailed Sentry setup YAML (integrate when adopted in P14+).
 
 ---
 
@@ -57,7 +57,7 @@ flowchart TB
 |-------|-----|----------|
 | Vercel function logs | ✅ | ✅ |
 | `error.tsx` / `global-error.tsx` | ✅ per route group | ✅ |
-| Sentry (or equivalent) | SHOULD P07 | ✅ |
+| Sentry (or equivalent) | SHOULD P14 | ✅ |
 | Custom metrics | ❌ | MAY |
 | Email delivery audit | ❌ runtime | ✅ `delivery_log` |
 | Cron run audit | ❌ | ✅ `job_execution` |
@@ -126,7 +126,7 @@ Aligns with [`ui_states_contract.md`](../../design/ui_states_contract.md).
 | Neon connection timeout | Prisma P1001 in logs | Retry transient; show error.tsx on reads |
 | Missing env var at boot | Build/runtime fail fast | Vercel env audit |
 | Prisma schema drift | Runtime query errors post-deploy | migrate deploy checklist |
-| Resend API failure (P06) | `delivery_log.status=failed` | Retry policy in cron_jobs_registry |
+| Resend API failure (P15) | `delivery_log.status=failed` | Retry policy in cron_jobs_registry |
 | Log volume spike | Vercel log rate | Reduce debug logging in prod |
 
 ---
@@ -153,8 +153,8 @@ Aligns with [`ui_states_contract.md`](../../design/ui_states_contract.md).
 
 | Risk | Guard |
 |------|-------|
-| Silent mutation failures (no toast) | ui-toast-mutations rule + P07 smoke |
-| Email sent but no delivery_log (P06) | Contract test + FM-011 check |
+| Silent mutation failures (no toast) | ui-toast-mutations rule + P14 smoke |
+| Email sent but no delivery_log (P15) | Contract test + FM-011 check |
 | Debug `console.log` left in Actions | ESLint / review |
 | Lampto Netlify log patterns | Vercel dashboard only for MVP |
 
@@ -167,15 +167,15 @@ Aligns with [`ui_states_contract.md`](../../design/ui_states_contract.md).
 | Deploy failure | Vercel | Fix before merge to main |
 | 5xx rate spike | Vercel logs filter | Investigate last deploy |
 | DB connectivity | Neon dashboard | Check pool limits |
-| Cron miss (P06) | Vercel Cron history | Alert when jobs enabled |
+| Cron miss (P15) | Vercel Cron history | Alert when jobs enabled |
 
-**SHOULD (P07):** integrate error tracking (e.g. Sentry) for unhandled server exceptions with release tagging.
+**SHOULD (P14):** integrate error tracking (e.g. Sentry) for unhandled server exceptions with release tagging.
 
 ---
 
 ## Post-MVP job observability
 
-When P06 enables email ([`email_notifications_contract.md`](../../implementation/mvp/contracts/email_notifications_contract.md)):
+When P15 enables email ([`email_notifications_contract.md`](../../implementation/mvp/contracts/email_notifications_contract.md)):
 
 | Query | Purpose |
 |-------|---------|
@@ -193,7 +193,7 @@ Retry policy — [`cron_jobs_registry.md`](./cron_jobs_registry.md).
 2. **MUST** — production logs exclude secrets and minimize PII.
 3. **MUST** — `error.tsx` for async route segments with data fetching.
 4. **SHOULD** — correlate job logs with `idempotency_key` post-MVP.
-5. **MAY** — Vercel Analytics for Web Vitals (P07 alignment).
+5. **MAY** — Vercel Analytics for Web Vitals (P14 alignment).
 
 ---
 
@@ -216,7 +216,7 @@ Retry policy — [`cron_jobs_registry.md`](./cron_jobs_registry.md).
 | [`cron_jobs_registry.md`](./cron_jobs_registry.md) | Job retry + audit |
 | [`email_notifications_contract.md`](../../implementation/mvp/contracts/email_notifications_contract.md) | delivery_log |
 | [`ui_states_contract.md`](../../design/ui_states_contract.md) | Error UX |
-| [`P07_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P07_phase_description.md) | Hardening/a11y |
+| [`P14_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P14_phase_description.md) | Hardening/a11y |
 | [`../06_operations/README.md`](./README.md) | Ops index |
 
 **Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — wave W12-03

@@ -1,65 +1,50 @@
-# P03 Tasks — Client Booking & Reviews
+# P03 Tasks — Design System & App Shell
 
 **Тип:** Tasks  
 **Статус:** Canonical  
-**Версия:** 1.0  
+**Версия:** 2.0  
 **Дата:** 2026-05-23  
-**Волна:** W11  
+**Волна:** W16  
 **Зависит от:** [`P03_phase_description.md`](../phases_tasks_descriptions/P03_phase_description.md)  
-**Связанные документы:** [`booking_wizard_spec.md`](../specs/booking_wizard_spec.md)
+**Связанные документы:** [`global_shell_spec.md`](../specs/global_shell_spec.md), [`design_system_lab_spec.md`](../specs/design_system_lab_spec.md)
 
 ---
 
 ## Purpose
 
-Чеклист **P03** — booking wizard, client bookings, reviews, profile.
+Чеклист **P03** — shell, route groups, messages, toast, Design Lab QA, placeholders.
 
 ---
 
-## 1. Domain & contracts
+## 1. Global shell
 
-- [ ] `createBooking`, `cancelBooking` in `@pulse/domain`
-- [ ] `GenerateAvailableSlots` per [`schedule_slots_contract.md`](../contracts/schedule_slots_contract.md)
-- [ ] Policy: `assertCanCreateBooking`, `assertCanViewBooking`, `assertCanCancelBooking`
-- [ ] UNIQUE / transaction for slot conflict ([FM-002](../../../prds/02_domain_model/failure_modes_catalog.md))
+- [ ] Root layout: fonts, ThemeProvider, Toaster
+- [ ] Route groups: `(public)`, `(client)`, `(trainer)`, `(admin)`, `(booking)`, `(session)`
+- [ ] `AppShell`, `TopBar`, `BottomNav`, `SidebarNav`, `PageContainer`
+- [ ] Nav config — role → items ([`global_shell_spec.md`](../specs/global_shell_spec.md))
+- [ ] Warm Forest tokens in `globals.css`
+- [ ] `@/lib/messages` + `product-toast.ts`
 
-## 2. Booking wizard `/book/[trainerId]`
+## 2. Design System Lab
 
-- [ ] `(booking)` layout — stripped header
-- [ ] Steps: Service → Slot → Confirm
-- [ ] `ScheduleGrid` + trainer TZ labels
-- [ ] Optional message field (max 500)
-- [ ] `createBooking` Server Action — pending status
-- [ ] Redirect `?booked=1` + `RedirectToast` client component
-- [ ] Pending: `disabled`, `aria-busy` on submit
+- [x] Typography atoms in `components/atoms/`
+- [x] `Button`, `CustomLink`, `PulseCard` in `components/ui/`
+- [x] Dev-only `/design-system` + canonical_routes entry
+- [ ] Visual QA: light + dark, 390px, prototype anchors
 
-## 3. Client dashboard & bookings
+## 3. Placeholder pages
 
-- [ ] `/client/dashboard` — welcome, next session, shortcuts
-- [ ] `/client/bookings` — tabs Upcoming / Past / Cancelled
-- [ ] `/client/bookings/[id]` — detail, cancel action, link to review when eligible
-- [ ] Cancel confirm dialog + `toast.success` / `toast.error`
+- [ ] Role dashboards with empty states
+- [ ] `(booking)` / `(session)` layouts — stub children
+- [ ] `/` — minimal hero (full content P04)
 
-## 4. Reviews
-
-- [ ] `/client/reviews/[bookingId]` form per wireframe
-- [ ] `submitReview` → status pending moderation
-- [ ] Guard: booking `completed`, no duplicate review
-
-## 5. Client profile
-
-- [ ] `/client/profile` — name, email display, sign-out
-- [ ] **MUST NOT** password reset email UI (post-MVP)
-
-## 6. Verification
+## 4. Verification
 
 - [ ] `npm run typecheck`
 - [ ] `npm run lint -w web`
-- [ ] Smoke: full booking happy path
-- [ ] Smoke: slot conflict → error toast
-- [ ] Smoke: IDOR other user's booking → denied
-- [ ] Smoke: empty bookings state
-- [ ] No Stripe/Resend code
+- [ ] Smoke: role shells render with nav
+- [ ] Smoke: `/design-system` 390px/md
+- [ ] **MUST NOT** import `design-lab/` in product routes
 
 ---
 
@@ -68,6 +53,6 @@
 | Document | Relationship |
 |----------|--------------|
 | [`P03_phase_description.md`](../phases_tasks_descriptions/P03_phase_description.md) | DoD |
-| [`P04_tasks.md`](./P04_tasks.md) | Next |
+| [`P04_tasks.md`](./P04_tasks.md) | Next — landing |
 
-**Registry:** [`documentation_creation_registry.md`](../../../meta/documentation_creation_registry.md) — W11-06
+**Registry:** W16

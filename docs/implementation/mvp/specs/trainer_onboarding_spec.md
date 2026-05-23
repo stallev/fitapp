@@ -160,6 +160,18 @@ Per [`forms_and_validation_ux.md`](../../../design/forms_and_validation_ux.md):
 
 ---
 
+## UI Catalog (by screen)
+
+**Phase:** P10 · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
+
+| Screen | CREATE | USE |
+|--------|--------|-----|
+| `/auth/register/trainer` (5 steps) | Onboarding step components | `WizardHeader`, `Progress`, `PhotoSlot`, `FileUploadZone`, `Field`, `Checkbox` |
+
+**Upload contract:** [`file_upload_contract.md`](../contracts/file_upload_contract.md) — PhotoSlot, FileUploadZone.
+
+---
+
 ## Related documents
 
 | Document | Relationship |

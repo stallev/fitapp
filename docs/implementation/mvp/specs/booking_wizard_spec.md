@@ -159,6 +159,18 @@ sequenceDiagram
 
 ---
 
+## UI Catalog (by screen)
+
+**Phase:** P07 · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
+
+| Screen | CREATE | USE |
+|--------|--------|-----|
+| `/book/[trainerId]` | `BookingWizard`, schedule grid wrapper | `WizardHeader`, `ChoiceCard`, `SummaryCard`, `SchedulePicker`, `TimeSlotButton`, `Progress`, `MetaRow`, `Textarea` |
+
+**Policy note (ADR-005):** no payment UI in this phase — see [`booking_lifecycle_contract.md`](../contracts/booking_lifecycle_contract.md).
+
+---
+
 ## Related documents
 
 | Document | Relationship |

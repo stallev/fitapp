@@ -161,6 +161,18 @@ sequenceDiagram
 
 ---
 
+## UI Catalog (by screen)
+
+**Phase:** P13 · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
+
+| Screen | CREATE | USE |
+|--------|--------|-----|
+| `/admin/trainers` | `ModerationQueueRow` | `PageHeader`, `StatusBadge`, `Tabs` |
+| `/admin/trainers/[id]` | — | Admin forms layout, confirm dialogs |
+| `/admin/complaints`, `/admin/refunds`, `/admin/reviews` | Admin table rows | `IconBadge` on nav |
+
+---
+
 ## Related documents
 
 | Document | Relationship |

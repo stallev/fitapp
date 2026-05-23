@@ -216,8 +216,9 @@ Purpose: **layer walkthroughs** for AI onboarding — how contracts map to `apps
 
 | Path | Purpose |
 |------|---------|
-| [`implementation/mvp/phases_tasks_descriptions/`](../../implementation/mvp/phases_tasks_descriptions/) | **Canonical** — P01–P07 phase goals (W11) |
-| [`implementation/mvp/tasks/`](../../implementation/mvp/tasks/) | **Canonical** — P01–P07 agent checklists (W11) |
+| [`implementation/mvp/phases_tasks_descriptions/`](../../implementation/mvp/phases_tasks_descriptions/) | **Canonical** — P01–P15 phase goals (W16) |
+| [`implementation/mvp/tasks/`](../../implementation/mvp/tasks/) | **Canonical** — P01–P15 agent checklists (W16) |
+| [`implementation/mvp/ui_component_phase_matrix.md`](../../implementation/mvp/ui_component_phase_matrix.md) | Phase × Component × Route (W16) |
 | [`implementation/mvp/contracts/`](../../implementation/mvp/contracts/) | **Canonical** — cross-module contracts (W8) |
 | `implementation/mvp/specs/` | **Canonical** — complex flow specs (W9) |
 | [`implementation/mvp/guides/`](../../implementation/mvp/guides/) | **Canonical** — local dev, Vercel deploy, Neon migrate, seed, cron (W12) |
@@ -226,7 +227,7 @@ Purpose: **layer walkthroughs** for AI onboarding — how contracts map to `apps
 
 **W9 specs (Canonical):** [`global_shell_spec.md`](../../implementation/mvp/specs/global_shell_spec.md), [`password_reset_spec.md`](../../implementation/mvp/specs/password_reset_spec.md), [`catalog_discovery_spec.md`](../../implementation/mvp/specs/catalog_discovery_spec.md), [`trainer_onboarding_spec.md`](../../implementation/mvp/specs/trainer_onboarding_spec.md), [`booking_wizard_spec.md`](../../implementation/mvp/specs/booking_wizard_spec.md), [`trainer_schedule_spec.md`](../../implementation/mvp/specs/trainer_schedule_spec.md), [`admin_verification_spec.md`](../../implementation/mvp/specs/admin_verification_spec.md), [`complaint_refund_spec.md`](../../implementation/mvp/specs/complaint_refund_spec.md).
 
-**W11 phases (Canonical):** [`P01_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) … [`P07_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P07_phase_description.md) + matching `tasks/P0N_tasks.md`.
+**W16 phases (Canonical):** [`P01_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) … [`P15_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P15_phase_description.md) + matching `tasks/P0N_tasks.md`. Migration: [`_migration_P01-P07_to_P01-P15.md`](../../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md).
 
 Lampto reference: [`docs/examples/lampto/docs/implementation/mvp/`](../examples/lampto/docs/implementation/mvp/).
 

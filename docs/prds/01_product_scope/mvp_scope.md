@@ -14,7 +14,7 @@
 
 ## Purpose
 
-Канонический объём **MVP** маркетплейса фитнес-тренеров Pulse: роли, ключевые возможности, стек, границы «в продукте / вне продукта». Читают PM, дизайн, разработчики и AI-агенты перед фазами P01–P07.
+Канонический объём **MVP** маркетплейса фитнес-тренеров Pulse: роли, ключевые возможности, стек, границы «в продукте / вне продукта». Читают PM, дизайн, разработчики и AI-агенты перед фазами **P01–P13** (feature) + **P14** (quality gate). **P15** — post-MVP email.
 
 ---
 
@@ -195,7 +195,7 @@ flowchart LR
 
 ## Requirements (MVP MUST)
 
-1. **MUST** — все MVP маршруты из [`canonical_routes.md`](../../design/canonical_routes.md) реализуемы в фазах P01–P05.
+1. **MUST** — все MVP маршруты из [`canonical_routes.md`](../../design/canonical_routes.md) реализуемы в фазах **P01–P13**; hardening — **P14**.
 2. **MUST** — `TrainerProfile.timezone` для расписания и отображения времени.
 3. **MUST** — публичный профиль и приём броней только при `TrainerProfile.status = approved`.
 4. **MUST** — переходы статусов booking только через domain use-cases (не прямой PATCH из UI).
@@ -246,7 +246,7 @@ flowchart LR
 - Interim `default_docs/fitness-platform-mvp.md` — read-only; при конфликте побеждает **этот** файл.
 - «Middleware» в старых черновиках = **`proxy.ts`** для Pulse.
 - Не расширять MVP без обновления этого PRD и registry wave.
-- Пустые `job_execution` / `delivery_log` на MVP — норма; не добавлять Resend «на будущее» в P01–P05.
+- Пустые `job_execution` / `delivery_log` на MVP — норма; не добавлять Resend «на будущее» в **P01–P13**.
 
 ---
 

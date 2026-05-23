@@ -1,73 +1,48 @@
-# P07 Tasks — Hardening & Accessibility
+# P07 Tasks — Booking Wizard
 
 **Тип:** Tasks  
 **Статус:** Canonical  
-**Версия:** 1.0  
+**Версия:** 2.0  
 **Дата:** 2026-05-23  
-**Волна:** W11  
+**Волна:** W16  
 **Зависит от:** [`P07_phase_description.md`](../phases_tasks_descriptions/P07_phase_description.md)  
-**Связанные документы:** [`accessibility_requirements.md`](../../../design/accessibility_requirements.md)
+**Связанные документы:** [`booking_wizard_spec.md`](../specs/booking_wizard_spec.md)
 
 ---
 
 ## Purpose
 
-Чеклист **P07** — a11y, UI states audit, quality gate.
+Чеклист **P07** — booking wizard only.
 
 ---
 
-## 1. Accessibility pass
+## 1. Domain & contracts
 
-- [ ] Keyboard navigation all primary flows
-- [ ] Focus visible on interactive elements
-- [ ] Touch targets ≥ 44px mobile (nav, icons, toggles)
-- [ ] Form labels + `aria-invalid` on errors
-- [ ] Light/dark contrast check (A1-MUST-1…3)
-- [ ] `prefers-reduced-motion` respected
-- [ ] Skip link `#main-content` on authenticated layouts (A2-SHOULD-1)
-- [ ] Modals/sheets: focus trap + Esc
+- [ ] `createBooking` in `@pulse/domain`
+- [ ] `GenerateAvailableSlots` per schedule_slots_contract
+- [ ] Policy: `assertCanCreateBooking`
+- [ ] UNIQUE / transaction for slot conflict ([FM-002](../../../prds/02_domain_model/failure_modes_catalog.md))
 
-## 2. UI states audit
+## 2. Booking wizard `/book/[trainerId]`
 
-- [ ] Cross-check routes vs [`ui_states_contract.md`](../../../design/ui_states_contract.md)
-- [ ] empty | loading | error | forbidden for each async region
-- [ ] Zero Dead Ends CTAs on empty/error
-- [ ] Forbidden route UI (not raw 403 text)
+- [ ] `(booking)` layout — stripped header, no bottom nav
+- [ ] Steps: Service → Slot → Confirm
+- [ ] `BookingWizard` + schedule grid wrapper
+- [ ] Trainer TZ labels on slots
+- [ ] Optional message field (max 500)
+- [ ] `createBooking` — pending status
+- [ ] Redirect `?booked=1` + `RedirectToast`
+- [ ] Pending: `disabled`, `aria-busy` on submit
+- [ ] **MUST NOT** payment UI (ADR-005)
 
-## 3. Mutation UX audit
-
-- [ ] All mutations: pending + `aria-busy`
-- [ ] Success/error toasts per rules
-- [ ] Optimistic flows: rollback + `toast.error`
-
-## 4. Copy & semantics
-
-- [ ] User strings from `@/lib/messages`
-- [ ] One `h1` per page
-- [ ] Landmark structure (`main`, `nav`)
-
-## 5. Performance smoke
-
-- [ ] Lighthouse a11y ≥ 90 on `/`, `/trainers`, `/client/dashboard`
-- [ ] No layout shift regressions on shell
-
-## 6. Doc sync
-
-- [ ] Route tree matches [`canonical_routes.md`](../../../design/canonical_routes.md)
-- [ ] Update specs if behavior fixed during P07
-- [ ] Phase DoD checklists P01–P05 re-verified
-
-## 7. Optional CI
-
-- [ ] axe-core or Playwright smoke script (if user requests)
-- [ ] Document manual QA steps in PR
-
-## 8. Final verification
+## 3. Verification
 
 - [ ] `npm run typecheck`
 - [ ] `npm run lint -w web`
-- [ ] Manual keyboard smoke recorded
-- [ ] Known issues = 0 or logged in PR
+- [ ] Smoke: full booking happy path
+- [ ] Smoke: slot conflict → error toast
+- [ ] Smoke: guest → login redirect
+- [ ] Smoke: double submit → one booking
 
 ---
 
@@ -76,5 +51,6 @@
 | Document | Relationship |
 |----------|--------------|
 | [`P07_phase_description.md`](../phases_tasks_descriptions/P07_phase_description.md) | DoD |
+| [`P08_tasks.md`](./P08_tasks.md) | Next — client hub |
 
-**Registry:** [`documentation_creation_registry.md`](../../../meta/documentation_creation_registry.md) — W11-14
+**Registry:** W16

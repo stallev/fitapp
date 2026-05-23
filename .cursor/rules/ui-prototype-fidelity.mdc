@@ -30,9 +30,10 @@ alwaysApply: false
 ## Workflow для агента
 
 1. Открыть соответствующий экран в **HTML prototype** + секцию в **design system**.
-2. Сверить **структуру DOM**, class names / token mapping, порядок секций.
-3. Реализовать через **shared components** (`components/ui/`, `components/atoms/`, feature folders) — не one-off стили на route.
-4. Responsive: mobile значения из прототипа = base; desktop — через `md:` / `lg:` per design system §2.
+2. Сверить вариант на **Design Lab** `/design-system` — импорт только из каталога `@/components/atoms`, `@/components/ui/*` (**ui-warm-forest-shadcn** §Design Lab catalog).
+3. Сверить **структуру DOM**, class names / token mapping, порядок секций.
+4. Реализовать через **shared components** (`components/ui/`, `components/atoms/`, feature folders) — не one-off стили на route.
+5. Responsive: mobile значения из прототипа = base; desktop — через `md:` / `lg:` per design system §2.
 
 ## Исключения
 

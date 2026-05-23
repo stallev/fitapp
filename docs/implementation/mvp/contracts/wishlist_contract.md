@@ -170,6 +170,7 @@ Success toast **optional** if visual change sufficient.
 
 ## Agent notes
 
+- **UI phase P06:** optimistic heart on profile/catalog — `useOptimistic` + `toast.error` on rollback ([`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) P06).
 - Heart icon on catalog cards — same Action as profile page.
 - Do not use wishlist for «follow» notifications on MVP.
 - List page `/client/dashboard` may show wishlist subset — read use-case only.

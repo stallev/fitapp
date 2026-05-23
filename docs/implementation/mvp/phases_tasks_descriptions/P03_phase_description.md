@@ -1,20 +1,37 @@
-# P03 — Client: Booking Wizard, Bookings & Reviews
+# P03 — Design System & App Shell
 
 **Тип:** Phase Description  
 **Статус:** Canonical  
-**Версия:** 1.0  
+**Версия:** 2.0  
 **Дата:** 2026-05-23  
-**Волна:** W11  
-**Зависит от:** [`P02_phase_description.md`](./P02_phase_description.md), [`booking_wizard_spec.md`](../specs/booking_wizard_spec.md), [`booking_lifecycle_contract.md`](../contracts/booking_lifecycle_contract.md), [`schedule_slots_contract.md`](../contracts/schedule_slots_contract.md), [`review_moderation_contract.md`](../contracts/review_moderation_contract.md), client wireframes W10-08…15  
-**Связанные документы:** [`P03_tasks.md`](../tasks/P03_tasks.md), [`adr_005_mvp_booking_without_payment.md`](../../../prds/07_governance/adr_005_mvp_booking_without_payment.md)
+**Волна:** W16  
+**Зависит от:** [`P02_phase_description.md`](./P02_phase_description.md), [`global_shell_spec.md`](../specs/global_shell_spec.md), [`design_system_lab_spec.md`](../specs/design_system_lab_spec.md)  
+**Связанные документы:** [`P03_tasks.md`](../tasks/P03_tasks.md)
 
 ---
 
 ## Purpose
 
-Фаза **P03** — **client contour**: 3-step booking wizard, список/деталь бронирований, отмена, отзыв после `completed`, client profile. Бронирование создаётся в статусе **`pending`** без оплаты (ADR-005).
+Фаза **P03** — app shell, route groups, `@/lib/messages`, toast wiring, Design Lab QA, placeholder dashboards. **Значительная часть L2 UI уже в коде** — фаза = верификация + shell + placeholders, не rebuild.
 
 **Аудитория:** AI-агенты после P02.
+
+---
+
+## Agent context budget
+
+| # | Document | Why |
+|---|----------|-----|
+| 1 | [`P03_tasks.md`](../tasks/P03_tasks.md) | Checklist |
+| 2 | [`global_shell_spec.md`](../specs/global_shell_spec.md) | Layout tree |
+| 3 | [`design_system_lab_spec.md`](../specs/design_system_lab_spec.md) | Lab + inventory |
+| 4 | [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) | P03 row |
+| 5 | [`canonical_routes.md`](../../../design/canonical_routes.md) | Route groups |
+| 6 | [`fitness-platform-design-system.md`](../../../default_docs/fitness-platform-design-system.md) | Tokens |
+
+**Wireframe:** shell regions per global_shell_spec.
+
+**MUST NOT read** P04+ feature phase docs.
 
 ---
 
@@ -22,52 +39,55 @@
 
 ### In scope
 
-| Area | Routes |
-|------|--------|
-| Booking wizard | `/book/[trainerId]`, `/book/[trainerId]/confirm` (if split) |
-| Client hub | `/client/dashboard`, `/client/bookings`, `/client/bookings/[id]` |
-| Reviews | `/client/reviews/[bookingId]` |
-| Profile | `/client/profile` — settings, sign-out |
-| Domain | `createBooking`, `cancelBooking`, slot generation, review submit |
+| Area | Deliverable |
+|------|-------------|
+| Shell | `AppShell`, TopBar, BottomNav, SidebarNav, `PageContainer` |
+| Route groups | `(public)`, `(client)`, `(trainer)`, `(admin)`, `(booking)`, `(session)` |
+| Providers | ThemeProvider, Toaster, fonts |
+| Messages | `@/lib/messages`, `product-toast.ts` |
+| Placeholders | Role dashboards empty states |
+| Design Lab | `/design-system` QA 390px/md/light/dark |
 
 ### Out of scope
 
-- Trainer confirm/cancel booking actions (→ **P04** trainer client detail)
-- Stripe checkout, Resend email E-06
-- Video session `/sessions/[sessionId]/room`
-- Complaint/refund filing (partially P05 admin; client entry may stub)
+- Landing/catalog content (→ **P04–P06**)
+- Booking/trainer feature UI (→ **P07+**)
 
 ---
 
-## Prerequisites
+## UI Catalog (this phase)
 
-- P01 + P02 complete
-- Approved trainer with services + schedule in seed
-- Read: [`booking_lifecycle_contract.md`](../contracts/booking_lifecycle_contract.md), [`schedule_slots_contract.md`](../contracts/schedule_slots_contract.md)
+| Action | Component | Notes |
+|--------|-----------|-------|
+| **CREATE** | `AppShell`, `TopBar`, `BottomNav`, `SidebarNav`, `NavItem` | `components/shell/` |
+| **USE** | Atoms, `Button`, `PulseCard`, `CustomLink`, shadcn baseline | Verify existing |
+| **MUST NOT** | Import `@/components/design-lab/**` in product | Lab-only |
+| **MUST NOT** | Domain molecules (`TrainerCard`, etc.) | → P04+ |
 
 ---
 
-## Contracts & specs to read
+## Cross-phase dependencies
 
-| Document | Why |
-|----------|-----|
-| [`booking_wizard_spec.md`](../specs/booking_wizard_spec.md) | Wizard UX steps |
-| [`booking_lifecycle_contract.md`](../contracts/booking_lifecycle_contract.md) | Mutations, races |
-| [`schedule_slots_contract.md`](../contracts/schedule_slots_contract.md) | `GenerateAvailableSlots` |
-| [`review_moderation_contract.md`](../contracts/review_moderation_contract.md) | Client review submit |
-| [`client_flow.md`](../../../prds/01_product_scope/user_flows/users_mvp/client_flow.md) | Journeys |
+| Dependency | Blocker? | Notes |
+|------------|----------|-------|
+| **P02** auth + proxy | Yes | Protected groups |
+| Existing L2 in repo | No | Verify, don't rewrite |
+
+---
+
+## In-scope routes
+
+Shell + placeholders per [`canonical_routes.md`](../../../design/canonical_routes.md). Landing `/` — minimal hero (full **P04**).
 
 ---
 
 ## Happy path smoke
 
-1. Client on profile → «Book now» → wizard step 1 service → 2 slot → 3 confirm.
-2. Submit → booking `pending` → redirect `/client/bookings/[id]?booked=1` + toast via query pattern.
-3. `/client/bookings` — Upcoming tab shows new booking.
-4. Cancel booking (>24h rule per contract) → toast + status `cancelled`.
-5. Trainer marks completed (P04) → client sees review prompt → `/client/reviews/[bookingId]` → submit review `pending` moderation.
-
-*(Step 5 cross-phase: seed or manual DB update acceptable for P03 smoke if P04 incomplete.)*
+1. Login as client → shell visible (TopBar + BottomNav `< md`).
+2. Trainer pending → banner slot on dashboard.
+3. Admin → sidebar nav `≥ md`.
+4. `/design-system` — Lab loads; production guard.
+5. Theme toggle + Sonner on test path.
 
 ---
 
@@ -75,11 +95,7 @@
 
 | Scenario | Expected |
 |----------|----------|
-| Slot taken between pick and submit | `toast.error`; no double booking ([**FM-002**](../../../prds/02_domain_model/failure_modes_catalog.md)) |
-| Book unapproved trainer | Blocked at policy/wizard preload |
-| Cancel inside 24h window | Business error + message |
-| Review on non-completed booking | Deny |
-| Empty bookings list | Empty state + CTA to catalog |
+| Missing fonts/tokens | Visual regression vs prototype |
 
 ---
 
@@ -87,29 +103,34 @@
 
 | Check | Expected |
 |-------|----------|
-| Client A views Client B booking ID | 403 / notFound |
-| Guest accesses `/book/[trainerId]` | Redirect login |
-| IDOR on `createBooking` trainerId tampering | Policy deny if trainer not bookable |
+| `/design-system` in production | Guarded/disabled per spec |
 
 ---
 
 ## Concurrency & race check
 
-| Scenario | Expected |
-|----------|----------|
-| Double submit confirm | One booking; UNIQUE slot constraint ([**FM-002**](../../../prds/02_domain_model/failure_modes_catalog.md)) |
-| Parallel slot generation + book | Transaction/isolation per contract |
+N/A — read-only shell phase.
+
+---
+
+## Drift risks & guards
+
+| Risk | Guard |
+|------|-------|
+| design-lab imports in product | Grep CI |
+| Prototype drift | Lab spot-check |
+| Rebuild existing Button/PulseCard | P03 = verify only |
+| Duplicate nav route lists | Nav config module only |
 
 ---
 
 ## Definition of done
 
-- [ ] Wizard + bookings list/detail + review form per specs/wireframes
-- [ ] All booking transitions via `@pulse/domain` use-cases
-- [ ] `(booking)` stripped chrome — no bottom nav
-- [ ] Mutation pending UI + toasts on all writes
-- [ ] Smoke + race check passed
-- [ ] No payment UI
+- [ ] Shell per global_shell_spec
+- [ ] All route groups + placeholder pages
+- [ ] Messages + toast wired
+- [ ] Design Lab QA passed
+- [ ] `typecheck` + lint pass
 
 ---
 
@@ -118,22 +139,18 @@
 | Document | Relationship |
 |----------|--------------|
 | [`P03_tasks.md`](../tasks/P03_tasks.md) | Checklist |
-| [`P04_phase_description.md`](./P04_phase_description.md) | Trainer contour |
-| [`documentation_creation_registry.md`](../../../meta/documentation_creation_registry.md) | W11-05 |
+| [`P04_phase_description.md`](./P04_phase_description.md) | Next — landing |
 
 ---
 
 ## Agent notes
 
-- Redirect toast: query param + client `useSearchParams` — не toast из Server Action перед redirect.
-- Slot race UX только в spec; resolution — contract.
-- `TrainerProfile.timezone` для отображения слотов клиенту.
+- **Одна сессия = P03 only.**
+- Mark existing Lab checklist items done where already implemented.
 
 ---
 
 ## Acceptance criteria
 
-- [ ] Happy booking E2E without payment
-- [ ] Negative: slot race + cancel window
-- [ ] Security: IDOR booking detail
-- [ ] FM-002 referenced in implementation comments or tests
+- [ ] Shell renders all roles
+- [ ] No feature catalog/booking UI in PR

@@ -14,7 +14,7 @@
 
 Implementation-spec **публичного каталога тренеров** (`/trainers`) и **профиля** (`/trainers/[id]`): фильтры, сортировка, карточки, wishlist toggle, табы профиля, sticky CTA, переход в booking wizard. UX + Server Action / RSC touchpoints без дублирования race logic из contracts.
 
-**Аудитория:** AI-агенты P02; frontend + data fetching.
+**Аудитория:** AI-агенты P04–P06; frontend + data fetching.
 
 ---
 
@@ -167,6 +167,18 @@ Matrix: [`authorization_matrix.md`](../../../prds/04_authorization_privacy/autho
 - [ ] UI states matrix for grid, profile, wishlist
 - [ ] Wireframes linked
 - [ ] No race resolution duplicated from wishlist contract
+
+---
+
+## UI Catalog (by screen)
+
+**Phases:** P04–P06 · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
+
+| Screen | CREATE | USE |
+|--------|--------|-----|
+| `/` (landing) | Landing section modules | `SectionTitle`, `PulseCard`, `Button`, `SpecChip`, `TrainerCard` preview |
+| `/trainers` | `TrainerCard`, filter surfaces | `FilterChip`, `Sheet`, `Pagination`, `Empty`, `Skeleton` |
+| `/trainers/[id]` | Profile tab panels, wishlist heart | `Tabs`, `RatingStars`, `StatusBadge`, `Button` |
 
 ---
 

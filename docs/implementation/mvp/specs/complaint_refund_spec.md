@@ -184,6 +184,17 @@ sequenceDiagram
 
 ---
 
+## UI Catalog (by screen)
+
+**Phase:** P13 · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
+
+| Screen | CREATE | USE |
+|--------|--------|-----|
+| `/admin/complaints`, `/admin/refunds` | Admin queue/detail rows | `PageHeader`, confirm dialogs |
+| Client booking detail (if P08) | Complaint/refund entry actions | `Button`, `Dialog` |
+
+---
+
 ## Related documents
 
 | Document | Relationship |

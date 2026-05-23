@@ -28,7 +28,8 @@ alwaysApply: false
 
 - Explicit **props interfaces**; **no `React.FC`** for new components.
 - Arrow components `const X = (props: Props) => …` (exceptions: `page.tsx`, `layout.tsx`, `'use server'`).
-- Primitives in `components/ui/`; features in dedicated folders.
+- Primitives in `components/ui/`; typography atoms in `components/atoms/`; features in dedicated folders.
+- **Design Lab catalog:** product UI **MUST** import from paths listed on `/design-system` — `@/components/atoms`, `@/components/ui/*` — not from `@/components/design-lab/**` (showcase-only). See **ui-warm-forest-shadcn** §Design Lab catalog.
 
 ## Styling
 
@@ -38,7 +39,7 @@ alwaysApply: false
 ## Structure
 
 - **One feature component per file:** **react-one-component-per-file** (≤ **140 lines** target)
-- **Maximize shared components** — search `components/ui/`, `components/atoms/`, domain folders before inline JSX; extract on 2+ routes (**react-logic-presentation**)
+- **Maximize shared components** — search Design Lab (`/design-system`) + `components/ui/`, `components/atoms/`, domain folders before inline JSX; extract on 2+ routes (**react-logic-presentation**)
 - Named exports for shared components; avoid deep barrel chains.
 
 ## Forms & mutations

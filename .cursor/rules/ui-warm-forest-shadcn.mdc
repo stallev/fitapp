@@ -41,4 +41,19 @@ Design explicitly: **empty**, **loading**, **error**, **forbidden**.
 
 shadcn: Card, Button, Tabs, Dialog, Sheet, Table, Form/Field/Label, Alert, Skeleton — install via shadcn MCP, then tokenize.
 
+## Design Lab catalog (product UI — MUST)
+
+Product screens **MUST** compose UI from the **canonical shared catalog** visualized on the dev-only **Design Lab** at `/design-system` (`apps/web/src/app/(dev)/design-system/`). Spec: [`design_system_lab_spec.md`](docs/implementation/mvp/specs/design_system_lab_spec.md).
+
+| Layer | Catalog path | Import alias | Examples |
+|-------|--------------|--------------|----------|
+| Typography atoms | `apps/web/src/components/atoms/` | `@/components/atoms` | `Heading`, `SectionTitle`, `ContentText`, `AlertText` |
+| Tokenized primitives | `apps/web/src/components/ui/` | `@/components/ui/*` | `Button`, `CustomLink`, `PulseCard`, `Card`, `Container`, shadcn primitives |
+| Design tokens | `apps/web/src/app/globals.css` | semantic Tailwind classes | `bg-primary`, `text-muted-foreground`, elevation/radius vars |
+| L3 composed patterns | Design Lab L3 sections + [`styleguide.md`](docs/design/styleguide.md) | reuse recipes from catalog | KPI card, empty state, section header |
+
+**MUST NOT:** import showcase wrappers from `@/components/design-lab/**` in product routes; duplicate primitive markup already on Design Lab — extend CVA/atom variant and add a Lab section first.
+
+**Workflow:** open `/design-system` locally → pick catalog import → verify variant on 390px and `md`.
+
 Reference: lampto `ui-calm-editorial-shadcn.mdc` — Warm Forest adaptation.
