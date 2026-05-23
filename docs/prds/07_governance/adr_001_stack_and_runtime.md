@@ -1,0 +1,105 @@
+# ADR-001: Stack, Hosting and Runtime Policy
+
+**Дата:** 2026-05-23  
+**Статус:** ACCEPTED  
+**Проект:** Pulse (fitapp)
+
+---
+
+## Контекст
+
+Pulse — MVP маркetplace фитнес-тренеров. Продуктовые требования зафиксированы в [`docs/default_docs/`](../../default_docs/).
+
+Архитектурные **подходы** (monorepo, AI-first docs, двухконтурная модель, layered packages) наследуются из референсного проекта **lampto** (BSFY), где принят стек Netlify + Next.js 16 + AWS SAM.
+
+Необходимо зафиксировать **отличия стека Pulse**, чтобы агенты не копировали Netlify/AWS-паттерны lampto слепо.
+
+---
+
+## Решение
+
+### Web contour
+
+| Компонент | Выбор |
+|-----------|-------|
+| Framework | **Next.js 15.x** App Router, TypeScript |
+| Hosting | **Vercel** (preview per PR, region fra1) |
+| Bundler | Turbopack (default) |
+| UI | shadcn/ui + Tailwind CSS v4, Warm Forest tokens |
+| Auth | **Auth.js v5**, Credentials provider, JWT sessions, role in token |
+| ORM | **Prisma v7** |
+| Database | **Neon PostgreSQL 17** — pooled `DATABASE_URL`, `DIRECT_URL` for migrations |
+| File storage | **Vercel Blob** — profile photos, certificates |
+| Transactional email | **Resend** |
+| Toasts | Sonner |
+
+### Jobs contour (MVP)
+
+| Компонент | Выбор |
+|-----------|-------|
+| Scheduling | **Vercel Cron** |
+| Execution | Vercel Serverless Functions (dedicated route handlers or `apps/workers`) |
+| Idempotency | `idempotency_key` + `delivery_log` table (pattern from lampto) |
+
+### Monorepo layout
+
+Identical **structure** to lampto:
+
+`apps/web`, `apps/workers`, `packages/domain`, `packages/policy/{edge,server}`, `packages/db`
+
+### Deferred (Post-MVP)
+
+| Feature | Technology | Notes |
+|---------|------------|-------|
+| Video sessions | Daily.co | Nullable fields in schema from day one |
+| Payments | Stripe Connect | Nullable fields; webhooks later |
+| OAuth Google | Auth.js provider | Credentials sufficient for MVP |
+| AWS SAM workers | EventBridge + SQS + Lambda | When email/queue volume exceeds Vercel Cron limits |
+
+---
+
+## Обоснование
+
+1. **Product docs explicitly specify Vercel** — optimized for Next.js, preview deployments, Blob storage co-location.
+2. **Credentials auth** matches MVP (email/password, bcrypt) — no Google OAuth dependency for launch.
+3. **Resend** — simpler transactional email than AWS SES for MVP team size; aligns with Vercel ecosystem.
+4. **Vercel Cron** — sufficient for 24h reminders and low-volume batch jobs at MVP scale; lampto idempotency pattern still applies.
+5. **Structural parity with lampto** — agents reuse documented patterns (domain/policy/db, phases, contracts) without relearning architecture.
+
+---
+
+## Отклонённые альтернативы
+
+| Альтернатива | Почему отклонена |
+|--------------|------------------|
+| Netlify + Next.js 16 (lampto stack) | Product spec targets Vercel; would contradict PRD and prototype deployment assumptions |
+| AWS SAM jobs on day one | Higher ops cost for MVP email volume; defer until proven need |
+| Supabase Auth | Product spec requires Auth.js v5 + Credentials + role in JWT |
+| Single-app (no monorepo) | Conflicts with lampto reference architecture and future workers split |
+
+---
+
+## Последствия
+
+- Guidelines ported from lampto **must be adapted** for Vercel runtime (not Netlify).
+- ADR-026 (lampto Netlify policy) is **not applicable** to Pulse; this ADR supersedes for fitapp repo.
+- Agents reading lampto docs must check this ADR for hosting/auth/email differences.
+- When migrating jobs to AWS, add **ADR-00N** — mechanical extraction, not domain rewrite.
+
+---
+
+## Связанные документы
+
+- [`docs/meta/ai_first_project_methodology.md`](../../meta/ai_first_project_methodology.md)
+- [`docs/reference/lampto_project_reference.md`](../../reference/lampto_project_reference.md)
+- [`docs/default_docs/fitness-platform-mvp.md`](../../default_docs/fitness-platform-mvp.md)
+- Lampto ADR reference: [`docs/examples/lampto/docs/prds/07_governance/adr_026_next16_netlify_runtime_policy.md`](../../examples/lampto/docs/prds/07_governance/adr_026_next16_netlify_runtime_policy.md)
+
+---
+
+## Checklist for agents
+
+- [ ] Do not configure Netlify for Pulse
+- [ ] Use Vercel env vars pattern (`DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `AUTH_URL`)
+- [ ] Use Resend for email, not SES
+- [ ] Follow lampto **package boundaries**, not lampto **hosting** config

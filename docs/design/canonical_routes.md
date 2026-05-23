@@ -1,0 +1,149 @@
+# Canonical Routes — Pulse MVP
+
+**Status:** Canonical — единственный полный перечень маршрутов  
+**Version:** 1.0  
+**Date:** 2026-05-23
+
+> Не дублировать этот список в других документах. Ссылайтесь на этот файл.  
+> Детальная page spec: [`docs/default_docs/fitness-platform-pages.md`](../default_docs/fitness-platform-pages.md)  
+> User flows: [`docs/default_docs/user-flow-*.md`](../default_docs/)
+
+---
+
+## Route groups (App Router)
+
+| Group | Layout behavior |
+|-------|-----------------|
+| `(public)` | Top bar, no role nav |
+| `(booking)` | Stripped header, no sidebar — booking wizard focus |
+| `(session)` | Minimal — session placeholder MVP |
+| `(client)` | Shell: top bar + bottom nav (mobile) / sidebar (md+) |
+| `(trainer)` | Shell: top bar + bottom nav / sidebar |
+| `(admin)` | Shell: top bar + bottom nav / sidebar |
+
+---
+
+## Public routes
+
+| Path | Route file (target) | Role | MVP | Notes |
+|------|----------------------|------|-----|-------|
+| `/` | `(public)/page.tsx` | public | ✅ | Landing |
+| `/trainers` | `(public)/trainers/page.tsx` | public | ✅ | Catalog + filters |
+| `/trainers/[id]` | `(public)/trainers/[id]/page.tsx` | public | ✅ | Trainer public profile |
+| `/auth/login` | `(public)/auth/login/page.tsx` | public | ✅ | Credentials login |
+| `/auth/register` | `(public)/auth/register/page.tsx` | public | ✅ | Role selection + client reg |
+| `/auth/register/trainer` | `(public)/auth/register/trainer/page.tsx` | public | ✅ | Trainer multi-step onboarding |
+
+---
+
+## Booking routes
+
+| Path | Route file | Role | MVP | Notes |
+|------|-----------|------|-----|-------|
+| `/book/[trainerId]` | `(booking)/book/[trainerId]/page.tsx` | client | ✅ | 3-step wizard (service → slot → confirm) |
+| `/book/[trainerId]/confirm` | `(booking)/book/[trainerId]/confirm/page.tsx` | client | ✅ | Optional confirm step if split from wizard |
+
+---
+
+## Session routes
+
+| Path | Route file | Role | MVP | Notes |
+|------|-----------|------|-----|-------|
+| `/sessions/[sessionId]` | `(session)/sessions/[sessionId]/page.tsx` | client | ✅ | Placeholder — video post-MVP |
+
+---
+
+## Client routes
+
+| Path | Route file | Role | MVP | Notes |
+|------|-----------|------|-----|-------|
+| `/client/dashboard` | `(client)/client/dashboard/page.tsx` | client | ✅ | Home, search, next session |
+| `/client/bookings` | `(client)/client/bookings/page.tsx` | client | ✅ | Upcoming / Past / Cancelled |
+| `/client/bookings/[id]` | `(client)/client/bookings/[id]/page.tsx` | client | ✅ | Booking detail |
+| `/client/reviews/[bookingId]` | `(client)/client/reviews/[bookingId]/page.tsx` | client | ✅ | Post-session review |
+| `/client/profile` | *(planned — nav item exists in flows)* | client | ⚠️ | Referenced in bottom nav; add to P02/P03 if not in pages spec tree |
+
+> **Note:** Client bottom nav lists Profile — route `/client/profile` implied by user flows. Confirm in wireframe phase; may map to settings sub-routes.
+
+---
+
+## Trainer routes
+
+| Path | Route file | Role | MVP | Notes |
+|------|-----------|------|-----|-------|
+| `/trainer/dashboard` | `(trainer)/trainer/dashboard/page.tsx` | trainer | ✅ | KPI, today, reviews |
+| `/trainer/profile` | `(trainer)/trainer/profile/page.tsx` | trainer | ✅ | Edit public profile |
+| `/trainer/services` | `(trainer)/trainer/services/page.tsx` | trainer | ✅ | CRUD services |
+| `/trainer/schedule` | `(trainer)/trainer/schedule/page.tsx` | trainer | ✅ | Weekly + exceptions |
+| `/trainer/clients` | `(trainer)/trainer/clients/page.tsx` | trainer | ✅ | Client list |
+| `/trainer/clients/[id]` | `(trainer)/trainer/clients/[id]/page.tsx` | trainer | ✅ | Client detail + notes |
+| `/trainer/income` | `(trainer)/trainer/income/page.tsx` | trainer | ✅ | Income history (no Stripe MVP) |
+
+---
+
+## Admin routes
+
+| Path | Route file | Role | MVP | Notes |
+|------|-----------|------|-----|-------|
+| `/admin/dashboard` | `(admin)/admin/dashboard/page.tsx` | admin | ✅ | Overview KPI |
+| `/admin/trainers` | `(admin)/admin/trainers/page.tsx` | admin | ✅ | Verification queue |
+| `/admin/trainers/[id]` | `(admin)/admin/trainers/[id]/page.tsx` | admin | ✅ | Application detail |
+| `/admin/complaints` | `(admin)/admin/complaints/page.tsx` | admin | ✅ | Complaints list |
+| `/admin/complaints/[id]` | `(admin)/admin/complaints/[id]/page.tsx` | admin | ✅ | Complaint detail |
+| `/admin/refunds` | `(admin)/admin/refunds/page.tsx` | admin | ✅ | Manual refunds |
+| `/admin/reviews` | `(admin)/admin/reviews/page.tsx` | admin | ✅ | Review moderation |
+
+---
+
+## API / Auth routes (Next.js conventions)
+
+| Path | Purpose | MVP |
+|------|---------|-----|
+| `/api/auth/[...nextauth]` | Auth.js handlers | ✅ |
+| `/api/jobs/*` | Cron-triggered job endpoints (planned) | ✅ |
+| `/api/upload` | Vercel Blob presigned flow (planned) | ✅ |
+
+---
+
+## Middleware protection matrix (summary)
+
+| Prefix | Required role |
+|--------|---------------|
+| `/`, `/trainers`, `/auth/*` | public |
+| `/book/*` | client |
+| `/client/*` | client |
+| `/trainer/*` | trainer |
+| `/admin/*` | admin |
+| `/sessions/*` | client (owner of booking) |
+
+Full matrix: planned `authorization_matrix.md`.
+
+Public path allowlist pattern — see [`fitness-platform-pages.md`](../default_docs/fitness-platform-pages.md) § Middleware.
+
+---
+
+## Post-MVP routes (reserved, not implemented)
+
+| Path | Feature |
+|------|---------|
+| `/sessions/[sessionId]/room` | Daily.co video room |
+| `/trainer/payouts` | Stripe Connect dashboard |
+| `/client/payments` | Payment methods |
+
+Do not implement until ADR and contract exist. Schema fields may be nullable placeholders.
+
+---
+
+## Wireframe index (planned)
+
+When wireframes are authored: `docs/design/wireframes/route_index.md` maps each row above → markdown wireframe file.
+
+Template: [`docs/examples/lampto/docs/design/wireframes/_page_template.md`](../examples/lampto/docs/design/wireframes/_page_template.md)
+
+---
+
+## Change log
+
+| Date | Change |
+|------|--------|
+| 2026-05-23 | Initial canonical list from fitness-platform-pages.md |

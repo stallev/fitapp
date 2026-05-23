@@ -1,0 +1,66 @@
+---
+description: Pulse project context — stack, reference project lampto, document precedence
+alwaysApply: true
+---
+
+# Pulse — project context
+
+## Product
+
+**Pulse** — маркетплейс фитнес-тренеров. Роли: **client**, **trainer**, **admin**.  
+MVP: discovery, booking (без оплаты), trainer onboarding, admin moderation.
+
+## Reference project (mandatory patterns)
+
+Architectural and AI-first patterns inherit from **lampto** (BSFY):
+
+- Reference code/docs: [`docs/examples/lampto/`](docs/examples/lampto/)
+- Pulse summary: [`docs/reference/lampto_project_reference.md`](docs/reference/lampto_project_reference.md)
+- Pulse methodology: [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md)
+
+When Pulse docs are silent — follow lampto. Document Pulse-specific deviations in ADR or contracts.
+
+## Stack (baseline)
+
+- **Next.js** 15.x (App Router), **TypeScript**
+- **Hosting:** Vercel · **UI:** shadcn/ui + Tailwind CSS v4 (Warm Forest tokens)
+- **Database:** Neon **PostgreSQL 17** + **Prisma v7** (pooled `DATABASE_URL`, `DIRECT_URL` for migrations)
+- **Auth:** Auth.js v5, **Credentials** (email + password), JWT sessions, role in token
+- **Email:** Resend · **Storage:** Vercel Blob
+- **Monorepo:** `apps/web`, `apps/workers` (planned), `packages/{domain,policy,db}`
+
+Runtime policy: [ADR-001](docs/prds/07_governance/adr_001_stack_and_runtime.md).
+
+## Source-of-truth order when documents conflict
+
+1. **Cursor Rules** (`.cursor/rules/*.mdc`)
+2. **[`AGENTS.md`](AGENTS.md)** — monorepo entry
+3. **Contracts** (`docs/implementation/mvp/contracts/`)
+4. **PRD** (`docs/prds/`) — when created; interim: [`docs/default_docs/`](docs/default_docs/)
+5. **[`docs/design/canonical_routes.md`](docs/design/canonical_routes.md)** — single route inventory
+6. **Guidelines** (`docs/guidelines/`) — adapt from lampto when scaffolded
+7. **HTML prototype** — visual reference only, subordinate to canonical docs
+
+## Domain invariants (do not break)
+
+1. **`TrainerProfile.timezone`** — source of truth for schedule, slots, reminders, display
+2. **Booking state machine** — transitions only via documented use-cases (see future lifecycle PRD)
+3. **Trainer verification** — public profile live only when `status = approved`
+4. **Background jobs** — `idempotency_key` + `delivery_log`; no duplicate emails/notifications
+5. **Post-MVP columns** — Stripe/Daily.co fields stay nullable until feature ships
+
+## Where to find norms
+
+| Area | Document |
+|------|----------|
+| Methodology | [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md) |
+| Architecture map | [`docs/prds/architecture_master_index.md`](docs/prds/architecture_master_index.md) |
+| Agent onboarding | [`docs/architecture_learning_pack/01_architecture_overview.md`](docs/architecture_learning_pack/01_architecture_overview.md) |
+| MVP scope (interim) | [`docs/default_docs/fitness-platform-mvp.md`](docs/default_docs/fitness-platform-mvp.md) |
+| Pages spec | [`docs/default_docs/fitness-platform-pages.md`](docs/default_docs/fitness-platform-pages.md) |
+| Design system | [`docs/default_docs/fitness-platform-design-system.md`](docs/default_docs/fitness-platform-design-system.md) |
+| Lampto reference | [`docs/reference/lampto_project_reference.md`](docs/reference/lampto_project_reference.md) |
+
+## Repository status
+
+Application code under `apps/` and `packages/` is **not scaffolded yet**. Do not add implementation code unless a phase task explicitly requires it.
