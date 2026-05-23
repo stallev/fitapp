@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { createElement } from "react";
 
 import { cn } from "@/lib/utils";
 import { isNavItemActive, type NavIconKey } from "@/lib/nav/nav-config";
@@ -15,6 +16,13 @@ type NavItemProps = {
   layout?: "bottom" | "sidebar";
 };
 
+function renderNavIcon(iconKey: NavIconKey, className: string) {
+  return createElement(getNavIcon(iconKey), {
+    "aria-hidden": true,
+    className,
+  });
+}
+
 export function NavItem({
   label,
   href,
@@ -22,7 +30,6 @@ export function NavItem({
   badgeCount = 0,
   layout = "bottom",
 }: NavItemProps) {
-  const Icon = getNavIcon(iconKey);
   const pathname = usePathname();
   const isActive = isNavItemActive(pathname, href);
   const showBadge = badgeCount > 0;
@@ -39,7 +46,7 @@ export function NavItem({
             : "text-muted-foreground hover:bg-muted hover:text-foreground",
         )}
       >
-        <Icon aria-hidden className="size-4 shrink-0" />
+        {renderNavIcon(iconKey, "size-4 shrink-0")}
         <span className="truncate">{label}</span>
         {showBadge ? (
           <span
@@ -64,7 +71,7 @@ export function NavItem({
           : "text-muted-foreground",
       )}
     >
-      <Icon aria-hidden className="size-5 shrink-0" />
+      {renderNavIcon(iconKey, "size-5 shrink-0")}
       <span className="max-w-full truncate">{label}</span>
       {showBadge ? (
         <span

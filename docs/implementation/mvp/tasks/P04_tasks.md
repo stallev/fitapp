@@ -18,21 +18,21 @@
 
 ## 1. Landing `/`
 
-- [ ] Hero, value props, category chips per wireframe W10-02
-- [ ] Featured trainers section (approved only or fixture)
-- [ ] Primary CTA → `/trainers`
-- [ ] Landing section components (≤140 lines/file)
-- [ ] Responsive: mobile-first
-- [ ] `loading.tsx` skeleton where async
-- [ ] Copy from `@/lib/messages`
+- [x] Hero, value props, category chips per wireframe W10-02
+- [x] Featured trainers section (approved only or fixture)
+- [x] Primary CTA → `/trainers`
+- [x] Landing section components (≤140 lines/file)
+- [x] Responsive: mobile-first
+- [x] `loading.tsx` skeleton where async
+- [x] Copy from `@/lib/messages`
 
 ## 2. Verification
 
-- [ ] `npm run typecheck`
-- [ ] `npm run lint`
-- [ ] Smoke: CTA → `/trainers`
-- [ ] One primary CTA on page
-- [ ] **MUST NOT** implement `/trainers` catalog in this PR
+- [x] `npm run typecheck`
+- [x] `npm run lint`
+- [x] Smoke: CTA → `/trainers`
+- [x] One primary CTA on page
+- [x] **MUST NOT** implement `/trainers` catalog in this PR
 
 ---
 
