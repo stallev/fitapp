@@ -72,6 +72,7 @@
 | I2-MUST-1 | Toast из Server Action **не сработает** после `redirect()` — использовать query-параметр на целевом URL |
 | I2-MUST-2 | Клиентский компонент `RedirectToast` (или аналог): `useSearchParams` → `toast.success` → `router.replace` без query |
 | I2-MUST-3 | Query keys — константы в `@/lib/ui/...`, не magic strings (`saved`, `booked`, `approved`) |
+| I2-SHOULD-1 | **Class B** critical submit на iOS Safari: fallback Route Handler сохраняет тот же redirect + query toast — см. [`ios-safari-mutation-transport-pattern.md`](../incidents/ios-safari-mutation-transport-pattern.md) |
 
 **Pulse-примеры:**
 

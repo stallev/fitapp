@@ -35,7 +35,7 @@
 ## 3. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: wishlist toggle + rollback
 - [ ] Smoke: pending trainer 404
 - [ ] **MUST NOT** booking wizard (→ P07)

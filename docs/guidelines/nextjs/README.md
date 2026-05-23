@@ -38,8 +38,8 @@ Per official Next.js 16 upgrade guide (Context7 `/vercel/next.js/v16.2.2`):
 
 | Document | Topic |
 |----------|--------|
-| [ai_nextjs_db_data_handle.md](./ai_nextjs_db_data_handle.md) | Server Actions vs Route Handlers, DAL |
-| [ai_loading_patterns.md](./ai_loading_patterns.md) | `loading.tsx`, Suspense, streaming |
+| [ai_nextjs_db_data_handle.md](./ai_nextjs_db_data_handle.md) | Server Actions vs Route Handlers, DAL, iOS Safari §7 |
+| [ai_loading_patterns.md](./ai_loading_patterns.md) | `loading.tsx`, Suspense, streaming shell, page performance; **`'use cache'`** (not `unstable_cache`) |
 | [ai_vercel_runtime_compatibility.md](./ai_vercel_runtime_compatibility.md) | Vercel + Next 16 baseline |
 | [ai_admin_interface_requirements.md](./ai_admin_interface_requirements.md) | Admin forms layout |
 | [blob-upload-agent-instruction.md](./blob-upload-agent-instruction.md) | Vercel Blob + `file_asset` |
@@ -50,9 +50,10 @@ Per official Next.js 16 upgrade guide (Context7 `/vercel/next.js/v16.2.2`):
 
 1. **Next.js 16.2.6 + Vercel** per ADR-001/ADR-002; async Request APIs.
 2. **`proxy.ts`** for request interception; split Auth.js config.
-3. **Cache invalidation:** `updateTag` (Server Actions) / `revalidateTag` / `revalidatePath`.
-4. **No `unstable_after`** for jobs — Vercel Cron + `delivery_log`.
-5. **Server Components by default** — thin BFF to `packages/`.
+3. **Cache reads:** **`'use cache'`** + `cacheTag()` / `cacheLife()` for cross-request data — not `unstable_cache`; **`cacheComponents: true`** when enabled.
+4. **Cache invalidation:** `updateTag` (Server Actions) / `revalidateTag` / `revalidatePath`.
+5. **No `unstable_after`** for jobs — Vercel Cron + `delivery_log`.
+6. **Server Components by default** — thin BFF to `packages/`.
 
 ---
 
@@ -62,7 +63,7 @@ Per official Next.js 16 upgrade guide (Context7 `/vercel/next.js/v16.2.2`):
 2. Use MCP **Context7** (`/vercel/next.js/v16.2.2`) for API wording after ADR-002.
 3. React: [React guidelines](../react/README.md).
 
-**Cursor rules:** `nextjs-vercel-app-router.mdc`, `data-server-actions-and-api.mdc`, `app-router-streaming-loading.mdc`, `vercel-blob-uploads.mdc`, `admin-forms-layout.mdc`
+**Cursor rules:** `nextjs-vercel-app-router.mdc`, `data-server-actions-and-api.mdc`, `ios-safari-mutation-transport.mdc`, `app-router-streaming-loading.mdc`, `vercel-blob-uploads.mdc`, `admin-forms-layout.mdc`
 
 ---
 

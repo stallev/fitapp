@@ -41,6 +41,7 @@ Next.js 16 renames `middleware.ts` → **`proxy.ts`** (Context7 / official v16 u
 - **Server Components by default** — `'use client'` only for hooks/browser APIs
 - **Thin BFF:** handlers/actions → `packages/domain` + DAL `src/data/**`
 - **Cache invalidation:** `updateTag` (Server Actions, read-your-own-writes), `revalidateTag`, `revalidatePath` — see ADR-002
+- **Cross-request reads:** **`'use cache'`** + `cacheTag()` + `cacheLife()` — **not** `unstable_cache`; requires `cacheComponents: true` — see [`ai_loading_patterns.md`](docs/guidelines/nextjs/ai_loading_patterns.md) §8
 - **Background work:** Vercel Cron + jobs — **not** `unstable_after`
 - **Bundler:** Turbopack default
 

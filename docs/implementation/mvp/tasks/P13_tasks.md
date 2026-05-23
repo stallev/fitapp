@@ -48,7 +48,7 @@
 ## 6. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: approve → visible in `/trainers`
 - [ ] Smoke: non-admin denied
 - [ ] MVP routes vs [`canonical_routes.md`](../../../design/canonical_routes.md)

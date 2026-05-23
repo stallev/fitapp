@@ -38,6 +38,7 @@
 |------|---------|
 | **Dev seed** | `npx prisma db seed` — safe for local + ephemeral CI DB |
 | **Fixture user** | Known email/password for manual login smoke |
+| **Local credentials JSON** | Machine-readable dev file at `apps/text_data/dev-users.json` — subset of fixture users; gitignored |
 | **Idempotent seed** | Re-run produces same logical state; uses `upsert` / delete-and-recreate scoped subsets |
 
 ---
@@ -71,6 +72,34 @@
 Password hashing: **bcrypt cost 12** — matches [`adr_003_auth_credentials_jwt_rbac.md`](../07_governance/adr_003_auth_credentials_jwt_rbac.md).
 
 **MUST NOT** commit production secrets; passwords above are **documented dev fixtures only**.
+
+### Local credentials JSON (`apps/text_data/dev-users.json`)
+
+**SHOULD** — каждый разработчик держит локальную копию machine-readable credentials для smoke login, E2E и ручного QA. Каталог **`apps/text_data/`** в `.gitignore` (`/apps/**/text_data/`) — файл **не коммитится**.
+
+| Property | Rule |
+|----------|------|
+| **Канон** | Таблица §Fixture credentials выше — единственный источник истины для email/password |
+| **Содержимое JSON** | Подмножество: по одному пользователю на роль `admin`, `client`, `trainer` |
+| **Синхронизация** | Значения в JSON **MUST** совпадать с seed; при изменении fixtures — обновить JSON локально |
+| **Seed script** | **MUST NOT** читать этот файл — seed использует `packages/db/prisma/seed/fixtures.ts` (или inline constants) |
+
+**Формат:**
+
+```json
+{
+  "description": "Dev fixture credentials (local/CI only). Canon: docs/prds/03_data_model/seed_data_spec.md",
+  "users": [
+    { "role": "admin", "email": "admin@pulse.dev", "password": "admin123" },
+    { "role": "client", "email": "client@pulse.dev", "password": "client123" },
+    { "role": "trainer", "email": "anna@pulse.dev", "password": "trainer123" }
+  ]
+}
+```
+
+Полный seed graph (6 пользователей, bookings, reviews) — только через `npx prisma db seed`; JSON не заменяет seed.
+
+Operational how-to: [`seed_and_fixtures_guide.md`](../../implementation/mvp/guides/seed_and_fixtures_guide.md) §Local credentials JSON.
 
 ---
 
@@ -293,7 +322,7 @@ Seed is single-threaded CLI — no race concerns. **MUST NOT** run two seed proc
 | Risk | Guard |
 |------|-------|
 | Seed schema drift vs Prisma | CI step: seed after migrate in pipeline |
-| Fixture emails differ from docs | Single `fixtures.ts` source |
+| Fixture emails differ from docs | Single `fixtures.ts` source; `dev-users.json` mirrors §Fixture credentials only |
 | Pages spec expects data seed lacks | Cross-check smoke table above each phase |
 | Interim pages seed snippet outdated | This doc wins over `default_docs` |
 
@@ -320,7 +349,7 @@ Seed is single-threaded CLI — no race concerns. **MUST NOT** run two seed proc
 - [ ] Idempotent strategy explicit
 - [ ] Links to pages_functional_spec smoke routes
 - [ ] INV-12 respected (no delivery_log)
-- [ ] Migrated from interim seed called out
+- [ ] Local credentials JSON path and gitignore policy documented
 
 ---
 
@@ -336,6 +365,7 @@ Seed is single-threaded CLI — no race concerns. **MUST NOT** run two seed proc
 | [`authorization_matrix.md`](../04_authorization_privacy/authorization_matrix.md) | Role fixture matrix |
 | [`../../implementation/mvp/guides/seed_and_fixtures_guide.md`](../../implementation/mvp/guides/seed_and_fixtures_guide.md) | W12 seed how-to |
 | [`../../implementation/mvp/guides/local_dev_setup.md`](../../implementation/mvp/guides/local_dev_setup.md) | W12 local setup |
+| `apps/text_data/dev-users.json` | Local gitignored mirror — §Local credentials JSON |
 
 **Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — wave W6-03
 
@@ -347,6 +377,7 @@ Seed is single-threaded CLI — no race concerns. **MUST NOT** run two seed proc
 - Use `upsert` on natural keys (`email`, `slug`); for bookings use deterministic IDs or delete client bookings section before re-insert.
 - `pending@pulse.dev` is required for P05 admin smoke — do not approve in seed.
 - Photo URLs may be null; catalog cards use placeholder component.
+- `apps/text_data/dev-users.json` — local dev convenience only; seed **MUST NOT** import it; keep in sync with §Fixture credentials manually.
 
 ---
 
@@ -355,3 +386,4 @@ Seed is single-threaded CLI — no race concerns. **MUST NOT** run two seed proc
 | Date | Change |
 |------|--------|
 | 2026-05-23 | v1.0 — canonical dev seed specification |
+| 2026-05-23 | §Local credentials JSON — `apps/text_data/dev-users.json` |

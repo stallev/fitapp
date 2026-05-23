@@ -57,7 +57,9 @@ Enforceable details live in Cursor Rules — summary only:
 | Policy in proxy | `@pulse/policy-edge` only — **never** `@pulse/policy-server` |
 | Cache invalidation | `updateTag`, `revalidateTag`, `revalidatePath` — см. ADR-002 |
 | Background work | Vercel Cron + jobs — **not** `unstable_after` |
-| Data layer | [`docs/guidelines/nextjs/ai_nextjs_db_data_handle.md`](../../docs/guidelines/nextjs/ai_nextjs_db_data_handle.md) |
+| Data layer | [`ai_nextjs_db_data_handle.md`](../../docs/guidelines/nextjs/ai_nextjs_db_data_handle.md) §7 |
+| iOS Safari mutations | [`ios-safari-mutation-transport-pattern.md`](../../docs/incidents/ios-safari-mutation-transport-pattern.md) — rule: `ios-safari-mutation-transport.mdc` |
+| Forms | [`ai_form_handling_pattern.md`](../../docs/guidelines/react/ai_form_handling_pattern.md) §7 |
 
 ## UI & UX
 
@@ -79,6 +81,7 @@ Visual and interaction canon — **do not invent** ad-hoc styles:
 |------|-------|
 | `nextjs-vercel-app-router.mdc` | Next 16, Vercel, proxy, async APIs |
 | `data-server-actions-and-api.mdc` | DAL, Actions vs Route Handlers |
+| `ios-safari-mutation-transport.mdc` | iOS Safari `Load failed` — Class A/B |
 | `auth-security.mdc` | Auth.js, defense in depth |
 | `app-router-streaming-loading.mdc` | Suspense, `loading.tsx` |
 | `vercel-blob-uploads.mdc` | FileAsset + Vercel Blob |
@@ -106,7 +109,18 @@ npm run build    # production build
 npm run lint     # ESLint
 ```
 
-When `packages/` exist — also `npm run typecheck` from monorepo root.
+When `packages/` exist — from monorepo root before phase DoD:
+
+```bash
+npm run typecheck
+npm run lint        # web + all packages/*
+```
+
+From `apps/web/` only (mid-task UI shortcut):
+
+```bash
+npm run lint        # or npm run lint:web from root
+```
 
 ### Manual verification checklist (web)
 

@@ -11,7 +11,7 @@ alwaysApply: true
 ## Before finishing a task (after scaffold)
 
 1. **`npm run typecheck`** (root) or `npx tsc --noEmit` in each touched workspace (`apps/web`, `@pulse/domain`, `@pulse/db`, `@pulse/policy-server`, `@pulse/policy-edge`).
-2. **`npm run lint -w web`**; domain package lint when touched.
+2. **`npm run lint`** (root — `apps/web` + все `packages/*` с `lint`-скриптом).
 
 Web-only `tsc` **does not** replace package checks.
 

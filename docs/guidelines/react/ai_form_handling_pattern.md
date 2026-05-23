@@ -4,7 +4,7 @@ Client forms: **`Field`** / **`Label`** / **`Input`** from `@/components/ui`, **
 
 **Methodology:** [`docs/meta/ai_first_project_methodology.md`](../../meta/ai_first_project_methodology.md)  
 **Stack:** Next.js **16.2.6**, React 19, `@pulse/domain` `MutationResult`  
-**Cursor rules:** **ui-mutation-pending**, **ui-toast-mutations**
+**Cursor rules:** **ui-mutation-pending**, **ui-toast-mutations**, **ios-safari-mutation-transport** (Class B critical forms)
 
 ```mermaid
 flowchart TD
@@ -111,6 +111,44 @@ Wishlist toggle, service active — **`useOptimistic`** — see [`ai_optimistic_
 
 ---
 
+## 7. iOS Safari — critical submit transport (Class B)
+
+Mobile Safari can throw **`TypeError: Load failed`** on Server Action POST without a server error. **Mandatory** for conversion-critical forms on canonical routes.
+
+**Docs:** [`ios-safari-mutation-transport-pattern.md`](../../incidents/ios-safari-mutation-transport-pattern.md) · [`ai_nextjs_db_data_handle.md`](../nextjs/ai_nextjs_db_data_handle.md) §7
+
+### When required
+
+| Flow | Route | Class |
+|------|-------|-------|
+| Booking confirm | `/book/[trainerId]` | B |
+| Trainer onboarding step | `/auth/register/trainer` | B |
+| Admin approve/reject | `/admin/trainers` | B |
+| Profile save (single submit) | `/trainer/profile`, `/client/profile` | B |
+
+Toggles / wishlist → **Class A** (Route Handler primary) — [`ai_optimistic_ui_pattern.md`](./ai_optimistic_ui_pattern.md), not this section.
+
+### Rules
+
+1. **`useActionState`** / `<form action={…}>` stays the default UX on non-iOS browsers.
+2. On **`isIosSafari()`** (or after `Load failed` retry): call **`POST /api/...`** with **`resilientPostFetch`**, same **`MutationResult`** shape.
+3. **Pending UI unchanged** — `disabled`, `aria-busy`, gerund from `@/lib/messages` on both paths.
+4. **Toasts / redirect:** Action path uses `redirect` + query toast (I2); fallback path uses `router.push('/client/bookings/[id]?booked=1')` + client toast component.
+5. **Do not** fork validation — single DAL in `src/data/**`.
+
+### Hook sketch (transport selection)
+
+Wrap submit in `useTransition`; branch on `isIosSafari()` before calling Action vs `/api/...`. See full example in pattern doc § «Client fallback».
+
+### Checklist (Class B forms)
+
+- [ ] DAL shared between Action and Route Handler
+- [ ] iOS Safari fallback implemented or documented exception in PR
+- [ ] `submit_transport` Sentry tag (when Sentry enabled)
+- [ ] Verified pending + toast contract on both paths
+
+---
+
 ## Checklist
 
 1. **`'use client'`** on interactive forms
@@ -118,5 +156,6 @@ Wishlist toggle, service active — **`useOptimistic`** — see [`ai_optimistic_
 3. **Pending:** `disabled` + `aria-busy` + messages
 4. **Toasts** after completion (**ui-toast-mutations**)
 5. **Cache:** `updateTag` / `revalidatePath` in action after mutation (ADR-002)
+6. **Class B critical form:** iOS Safari fallback per §7 and **ios-safari-mutation-transport**
 
 **Reference:** lampto [`ai_form_handling_pattern.md`](../../examples/lampto/docs/guidelines/react/ai_form_handling_pattern.md)

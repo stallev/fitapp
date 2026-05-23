@@ -37,7 +37,7 @@ Implementation-spec для AI-агента: перенос **shared UI primitive
 | **ФАЗА** | P01 — не расширять scope за пределы spec без ADR/contract |
 | **КОНТРАКТ** | Этот документ + Cursor Rules (§ Enforcement ниже) |
 | **ЗАДАЧИ** | Чеклист § Implementation tasks (ordered) |
-| **ВЕРИФИКАЦИЯ** | § Acceptance criteria + `npm run lint -w web` + ручная сверка Design Lab на 390px и `md` |
+| **ВЕРИФИКАЦИЯ** | § Acceptance criteria + `npm run lint` + ручная сверка Design Lab на 390px и `md` |
 
 ---
 
@@ -527,7 +527,7 @@ Domain folders **MUST** compose only from `atoms/`, `ui/`, `shell/`. Lab пок�
 - [ ] Verified **390px** + **≥768px** + light + dark
 - [ ] FX-5: keyboard, labels, contrast; FX-6: touch targets
 - [ ] Product import path matches § Catalog layers (no `design-lab/` import)
-- [ ] `npm run lint -w web` + typecheck pass
+- [ ] `npm run lint` + typecheck pass
 
 ### Anti-patterns (MUST NOT)
 
@@ -721,7 +721,7 @@ apps/web/src/components/design-lab/
 
 ### Step 6 — Verification
 
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] `npm run typecheck` (root, when packages exist) or `npx tsc --noEmit` in `apps/web`
 - [ ] `npm run build -w web`
 - [ ] Manual: `/design-system` loads locally; `notFound` in production build (or with guard)

@@ -609,19 +609,19 @@ Package: `packages/db/prisma/schema.prisma` — единственное DDL в 
 ## 13) Wave 1 migration checklist
 
 ```
-[ ] All enums created
-[ ] user + password_reset_token
-[ ] trainer_profile + specializations + certificates + verification_document
-[ ] trainer_service
-[ ] trainer_weekly_interval + trainer_schedule_exception
-[ ] booking + wishlist
-[ ] review + trainer_client_note
-[ ] complaint + refund_request
-[ ] file_asset + FKs
-[ ] job_execution + delivery_log + audit_log
-[ ] Nullable Stripe/Daily.co columns present
-[ ] Seed: admin@pulse.dev, client@pulse.dev, 3 approved trainers (see fitness-platform-pages seed)
-[ ] prisma migrate deploy on Neon via DIRECT_URL
+[x] All enums created
+[x] user + password_reset_token
+[x] trainer_profile + specializations + certificates + verification_document
+[x] trainer_service
+[x] trainer_weekly_interval + trainer_schedule_exception
+[x] booking + wishlist
+[x] review + trainer_client_note
+[x] complaint + refund_request
+[x] file_asset + FKs
+[x] job_execution + delivery_log + audit_log
+[x] Nullable Stripe/Daily.co columns present
+[x] Seed: admin@pulse.dev, client@pulse.dev, 3 approved trainers + pending (see seed_data_spec.md)
+[x] prisma migrate deploy on Neon via DIRECT_URL
 ```
 
 ---

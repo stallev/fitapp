@@ -42,7 +42,7 @@
 ## 4. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: login client/trainer/admin
 - [ ] Smoke: invalid credentials — generic error
 - [ ] Smoke: client → `/admin/dashboard` denied

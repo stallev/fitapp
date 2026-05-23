@@ -29,7 +29,7 @@
 ## 2. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: filter URL shareable
 - [ ] Smoke: pending trainer not in list
 - [ ] Smoke: invalid params — no 500

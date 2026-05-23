@@ -31,7 +31,7 @@
 ## 3. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: submit review on completed booking
 - [ ] Smoke: deny non-completed / duplicate
 

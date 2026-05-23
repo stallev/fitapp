@@ -12,6 +12,7 @@
 | [`data_access_patterns.md`](./data_access_patterns.md) | **Canonical** — hot path queries |
 | [`indexing_strategy.md`](./indexing_strategy.md) | **Canonical** — indexes for catalog, bookings, admin |
 | [`seed_data_spec.md`](./seed_data_spec.md) | **Canonical** — dev/CI seed fixtures |
+| `apps/text_data/dev-users.json` | **Local only** (gitignored) — machine-readable subset of fixture credentials; see seed_data_spec §Local credentials JSON |
 
 **Implementation:** `packages/db/prisma/schema.prisma` (on scaffold) must match `database_schema_v1.md`.
 

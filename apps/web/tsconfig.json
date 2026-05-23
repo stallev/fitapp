@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@pulse/domain": ["../../packages/domain/src/index.ts"],
+      "@pulse/db": ["../../packages/db/src/index.ts"]
     }
   },
   "include": [

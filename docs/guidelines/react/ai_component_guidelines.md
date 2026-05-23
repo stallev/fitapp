@@ -71,7 +71,7 @@ When `reactCompiler: true`:
 
 - Do **not** add `memo` / `useCallback` / `useMemo` without measured need
 - Follow [Rules of React](https://react.dev/reference/rules) — violations disable optimization
-- Run `npm run lint -w web` before finishing UI work
+- Перед завершением **фазы** — `npm run lint` из корня monorepo (все `packages/*` + `web`). Внутри UI-задачи в `apps/web` достаточно `npm run lint:web`.
 
 ---
 

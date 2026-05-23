@@ -11,7 +11,8 @@ alwaysApply: false
 # Data access: Server Actions and API routes
 
 **Methodology:** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md)  
-**Normative doc:** [`docs/guidelines/nextjs/ai_nextjs_db_data_handle.md`](docs/guidelines/nextjs/ai_nextjs_db_data_handle.md)
+**Normative doc:** [`docs/guidelines/nextjs/ai_nextjs_db_data_handle.md`](docs/guidelines/nextjs/ai_nextjs_db_data_handle.md) (§7 iOS Safari)  
+**Incidents:** [`docs/incidents/ios-safari-mutation-transport-pattern.md`](docs/incidents/ios-safari-mutation-transport-pattern.md)
 
 ## Core behavior
 
@@ -22,10 +23,11 @@ alwaysApply: false
 
 | Scenario | Prefer |
 |----------|--------|
-| Form submit; list/detail refresh | **Server Action** |
+| Form submit; list/detail refresh | **Server Action** (+ iOS fallback on Class B — **ios-safari-mutation-transport**) |
 | Modal close updating parent | **Server Action** |
-| Optimistic toggle (wishlist, service active) | **Route Handler** or Action + minimal invalidation |
+| Optimistic toggle (wishlist, service active) | **Route Handler** primary (Class A) |
 | JSON/polling/external API | **Route Handler** |
+| Frequent / debounced save | **Route Handler** + `resilientPostFetch` — not Server Action |
 
 ## DAL and server-only
 
@@ -38,5 +40,6 @@ alwaysApply: false
 
 - Authorization in DAL via `auth()` + `@pulse/policy-server`.
 - Next.js 16.2.6: `await cookies()`, `await headers()`, `await params`.
+- **Class B critical submits** (`/book/*`, onboarding, admin approve): dual transport per **ios-safari-mutation-transport** — shared DAL, `MutationResult`, no logic fork.
 
 Reference: [`docs/examples/lampto/.cursor/rules/data-server-actions-and-api.mdc`](docs/examples/lampto/.cursor/rules/data-server-actions-and-api.mdc)

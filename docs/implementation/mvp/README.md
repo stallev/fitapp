@@ -4,9 +4,18 @@
 
 **Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — волны W8–W16 **complete**
 
-**Статус:** contracts (W8) + specs (W9) + wireframes (W10) + phases **P01–P15** (W16) + operations & guides (W12) + architecture learning pack (W13) + index sync (W14) — **Canonical**. Следующий шаг: **P01 implementation** (monorepo & data layer).
+**Статус:** contracts (W8) + specs (W9) + wireframes (W10) + phases **P01–P15** (W16) + operations & guides (W12) + architecture learning pack (W13) + index sync (W14) — **Canonical**. **P01 implementation complete** (monorepo & data layer). Следующий шаг: **P02** (auth & request guards).
 
 **Миграция W11→W16:** [`phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md`](phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md)
+
+**Верификация в конце каждой фазы (обязательно):**
+
+```bash
+npm run typecheck   # все workspaces
+npm run lint        # apps/web + все packages/* (не только web)
+```
+
+См. [`_phase_template.md`](phases_tasks_descriptions/_phase_template.md) §Definition of done.
 
 ---
 

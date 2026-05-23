@@ -34,7 +34,7 @@
 ## 3. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: submit → pending status
 - [ ] Smoke: missing timezone blocked
 - [ ] **MUST NOT** admin approve UI (→ P13)
