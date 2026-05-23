@@ -8,6 +8,7 @@ import {
   type Locale,
 } from "react-day-picker"
 
+import { CalendarCaptionGridDropdown } from "@/components/ui/calendar-caption-dropdown-grid.client"
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { ChevronLeftIcon, ChevronRightIcon, ChevronDownIcon } from "lucide-react"
@@ -21,11 +22,17 @@ function Calendar({
   locale,
   formatters,
   components,
+  captionDropdown = "native",
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"]
+  captionDropdown?: "native" | "grid"
 }) {
   const defaultClassNames = getDefaultClassNames()
+  const useGridCaptionDropdown =
+    captionDropdown === "grid" &&
+    typeof captionLayout === "string" &&
+    captionLayout.startsWith("dropdown")
 
   return (
     <DayPicker
@@ -172,6 +179,9 @@ function Calendar({
             </td>
           )
         },
+        ...(useGridCaptionDropdown
+          ? { Dropdown: CalendarCaptionGridDropdown }
+          : {}),
         ...components,
       }}
       {...props}

@@ -64,9 +64,15 @@
 |-------|----------|------|---------|
 | `admin@pulse.dev` | `admin123` | `admin` | Admin dashboard, moderation smoke |
 | `client@pulse.dev` | `client123` | `client` | Client dashboard, booking, wishlist |
+| `sofia@pulse.dev` | `client123` | `client` | Second client — with avatar |
+| `max@pulse.dev` | `client123` | `client` | Third client — no avatar (Lucide placeholder) |
+| `nina@pulse.dev` | `client123` | `client` | Fourth client — no avatar |
 | `anna@pulse.dev` | `trainer123` | `trainer` | Approved trainer — yoga/pilates |
 | `dmitry@pulse.dev` | `trainer123` | `trainer` | Approved trainer — strength/hiit |
 | `maria@pulse.dev` | `trainer123` | `trainer` | Approved trainer — pilates/stretching |
+| `ivan@pulse.dev` | `trainer123` | `trainer` | Approved trainer — hiit/strength |
+| `elena@pulse.dev` | `trainer123` | `trainer` | Approved trainer — yoga/stretching |
+| `sergey@pulse.dev` | `trainer123` | `trainer` | Approved trainer — strength |
 | `pending@pulse.dev` | `trainer123` | `trainer` | **Pending** verification queue |
 
 Password hashing: **bcrypt cost 12** — matches [`adr_003_auth_credentials_jwt_rbac.md`](../07_governance/adr_003_auth_credentials_jwt_rbac.md).
@@ -97,7 +103,7 @@ Password hashing: **bcrypt cost 12** — matches [`adr_003_auth_credentials_jwt_
 }
 ```
 
-Полный seed graph (6 пользователей, bookings, reviews) — только через `npx prisma db seed`; JSON не заменяет seed.
+Полный seed graph (12 пользователей, bookings, reviews) — только через `npx prisma db seed`; JSON не заменяет seed.
 
 Operational how-to: [`seed_and_fixtures_guide.md`](../../implementation/mvp/guides/seed_and_fixtures_guide.md) §Local credentials JSON.
 
@@ -119,14 +125,20 @@ Operational how-to: [`seed_and_fixtures_guide.md`](../../implementation/mvp/guid
 
 ### 2. Users & trainer profiles
 
-| User | Profile status | timezone | specializations |
-|------|----------------|----------|-----------------|
-| admin@pulse.dev | — (no trainer profile) | — | — |
-| client@pulse.dev | — | — | — |
-| anna@pulse.dev | `approved` | `Europe/Moscow` | yoga, pilates |
-| dmitry@pulse.dev | `approved` | `Europe/Moscow` | strength, hiit |
-| maria@pulse.dev | `approved` | `America/New_York` | pilates, stretching |
-| pending@pulse.dev | `pending` | `Europe/Moscow` | yoga |
+| User | Profile status | timezone | specializations | photo_url |
+|------|----------------|----------|-----------------|-----------|
+| admin@pulse.dev | — (no trainer profile) | — | — | — |
+| client@pulse.dev | — | — | — | avatar (seed URL) |
+| sofia@pulse.dev | — | — | — | avatar (seed URL) |
+| max@pulse.dev | — | — | — | null |
+| nina@pulse.dev | — | — | — | null |
+| anna@pulse.dev | `approved` | `Europe/Moscow` | yoga, pilates | seed URL |
+| dmitry@pulse.dev | `approved` | `Europe/Moscow` | strength, hiit | null |
+| maria@pulse.dev | `approved` | `America/New_York` | pilates, stretching | seed URL |
+| ivan@pulse.dev | `approved` | `Europe/Moscow` | hiit, strength | null |
+| elena@pulse.dev | `approved` | `Europe/Berlin` | yoga, stretching | seed URL |
+| sergey@pulse.dev | `approved` | `Europe/Moscow` | strength | null |
+| pending@pulse.dev | `pending` | `Europe/Moscow` | yoga | null |
 
 **Approved trainers MUST have:**
 
@@ -148,6 +160,9 @@ Operational how-to: [`seed_and_fixtures_guide.md`](../../implementation/mvp/guid
 | Anna | «Hatha Yoga 60», «Pilates Core 45» | 60 / 45 | 3500 / 4000 |
 | Dmitry | «Strength Basics 60», «HIIT 30» | 60 / 30 | 4500 / 3000 |
 | Maria | «Pilates 50», «Stretch & Recover 40» | 50 / 40 | 3800 / 3200 |
+| Ivan | «CrossFit WOD 45», «HIIT Blast 30» | 45 / 30 | 4200 / 3100 |
+| Elena | «Morning Yoga 60», «Mobility Flow 45» | 60 / 45 | 3600 / 3300 |
+| Sergey | «Powerlifting 90», «Strength Fundamentals 60» | 90 / 60 | 5500 / 4800 |
 
 All `is_active: true`, `currency: USD`.
 

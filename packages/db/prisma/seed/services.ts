@@ -1,8 +1,8 @@
 import type { PrismaClient } from "../../src/generated/client";
-import type { SeededTrainerProfiles } from "./trainers";
+import { APPROVED_TRAINER_KEYS, type ApprovedTrainerKey, type SeededTrainerProfiles } from "./trainers";
 
 type ServiceFixture = {
-  trainerKey: keyof Pick<SeededTrainerProfiles, "anna" | "dmitry" | "maria">;
+  trainerKey: ApprovedTrainerKey;
   name: string;
   durationMinutes: number;
   priceCents: number;
@@ -16,6 +16,12 @@ const SERVICE_FIXTURES: ServiceFixture[] = [
   { trainerKey: "dmitry", name: "HIIT 30", durationMinutes: 30, priceCents: 3000, sortOrder: 1 },
   { trainerKey: "maria", name: "Pilates 50", durationMinutes: 50, priceCents: 3800, sortOrder: 0 },
   { trainerKey: "maria", name: "Stretch & Recover 40", durationMinutes: 40, priceCents: 3200, sortOrder: 1 },
+  { trainerKey: "ivan", name: "CrossFit WOD 45", durationMinutes: 45, priceCents: 4200, sortOrder: 0 },
+  { trainerKey: "ivan", name: "HIIT Blast 30", durationMinutes: 30, priceCents: 3100, sortOrder: 1 },
+  { trainerKey: "elena", name: "Morning Yoga 60", durationMinutes: 60, priceCents: 3600, sortOrder: 0 },
+  { trainerKey: "elena", name: "Mobility Flow 45", durationMinutes: 45, priceCents: 3300, sortOrder: 1 },
+  { trainerKey: "sergey", name: "Powerlifting 90", durationMinutes: 90, priceCents: 5500, sortOrder: 0 },
+  { trainerKey: "sergey", name: "Strength Fundamentals 60", durationMinutes: 60, priceCents: 4800, sortOrder: 1 },
 ];
 
 export type SeededServices = Record<string, { id: string; name: string; durationMinutes: number; priceCents: number }>;
@@ -70,7 +76,7 @@ export async function seedWeeklySchedule(
   prisma: PrismaClient,
   trainers: SeededTrainerProfiles,
 ) {
-  const approvedTrainerIds = [trainers.anna.id, trainers.dmitry.id, trainers.maria.id];
+  const approvedTrainerIds = APPROVED_TRAINER_KEYS.map((key) => trainers[key].id);
 
   for (const trainerProfileId of approvedTrainerIds) {
     for (let dayOfWeek = 0; dayOfWeek <= 4; dayOfWeek += 1) {
@@ -108,7 +114,8 @@ export async function seedScheduleExceptions(
   exceptionDate.setUTCDate(exceptionDate.getUTCDate() + 7);
   exceptionDate.setUTCHours(0, 0, 0, 0);
 
-  for (const trainerProfileId of [trainers.anna.id, trainers.dmitry.id, trainers.maria.id]) {
+  for (const key of APPROVED_TRAINER_KEYS) {
+    const trainerProfileId = trainers[key].id;
     await prisma.trainerScheduleException.upsert({
       where: {
         trainerProfileId_exceptionDate: {

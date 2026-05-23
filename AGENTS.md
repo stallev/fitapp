@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P04 complete (public landing). Full landing `/`: hero, value props, category chips, featured trainers (approved-only, `'use cache'` + `trainers:catalog`), footer. Следующая фаза: **P05** (catalog `/trainers`).  
+**Текущая фаза:** P05 complete (catalog `/trainers`). Каталог: URL filters (`q`, `maxPrice`, `minRating`, `specializations`, `sort`, `page`), approved-only DAL, `'use cache'` tag `trainers:catalog`, mobile Filter Sheet / desktop sidebar `lg:`. Landing `/` (P04): hero, chips → catalog deep links, featured trainers. Следующая фаза: **P06** (profile `/trainers/[id]` + wishlist).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

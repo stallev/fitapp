@@ -4,10 +4,6 @@ import { ClockIcon, FilterIcon, ShieldIcon } from "lucide-react";
 import { useState } from "react";
 
 import { ContentText } from "@/components/atoms";
-import {
-  Avatar,
-  AvatarFallback,
-} from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { ChoiceCard } from "@/components/ui/ChoiceCard";
 import { IconBadge } from "@/components/ui/IconBadge";
@@ -18,6 +14,7 @@ import { SchedulePicker } from "@/components/ui/SchedulePicker.client";
 import { SearchTrigger } from "@/components/ui/SearchTrigger";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SummaryCard } from "@/components/ui/SummaryCard";
+import { UserAvatar } from "@/components/ui/UserAvatar";
 import { WizardHeader } from "@/components/ui/WizardHeader";
 import {
   DesignLabSection,
@@ -123,9 +120,7 @@ export function DesignLabCatalogPatterns() {
           <SummaryCard
             header={
               <div className="flex items-center gap-3">
-                <Avatar size="md">
-                  <AvatarFallback>AR</AvatarFallback>
-                </Avatar>
+                <UserAvatar name="Anna Romanova" size="md" />
                 <div className="min-w-0">
                   <ContentText variant="smallEmphasis" as="p" className="truncate">
                     Anna Romanova

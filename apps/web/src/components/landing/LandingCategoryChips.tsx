@@ -14,7 +14,7 @@ export function LandingCategoryChips() {
         {MESSAGES.landing.categories.items.map((item) => (
           <Link
             key={item.slug}
-            href="/trainers"
+            href={`/trainers?specializations=${item.slug}`}
             className="inline-flex min-h-11 shrink-0 items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             <SpecChip>{item.label}</SpecChip>

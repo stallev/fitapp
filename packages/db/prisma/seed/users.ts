@@ -15,12 +15,14 @@ export async function seedUsers(prisma: PrismaClient): Promise<SeededUsers> {
         fullName: fixture.fullName,
         role: fixture.role as UserRole,
         passwordHash,
+        avatarUrl: fixture.avatarUrl,
       },
       create: {
         email: fixture.email,
         fullName: fixture.fullName,
         role: fixture.role as UserRole,
         passwordHash,
+        avatarUrl: fixture.avatarUrl,
       },
     });
     result[key as keyof typeof FIXTURE_USERS] = { id: user.id, email: user.email };

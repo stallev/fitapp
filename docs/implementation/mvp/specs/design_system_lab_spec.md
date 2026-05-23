@@ -452,6 +452,7 @@ Status/domain maps, elevation?       → lib/ui/ or @pulse/domain (no JSX)
 | `Empty` | `empty.tsx` | ✅ L3 demo | empty lists | FX-8 mandatory CTA |
 | `FileUploadZone` | `FileUploadZone.client.tsx` | 3 | cert upload P04 | FX-4 uploading/error; per-file errors |
 | `Calendar` | `calendar.tsx` | 3 | schedule exceptions | FX-6 day cells ≥44px; blocked/today states |
+| `DatePickerField` | `DatePickerField.client.tsx` | 3 | onboarding birth date, booking | Popover + grid month/year dropdown; hidden ISO input; `disableFuture` / `disablePast` |
 | `DayPill` | `DayPill.tsx` | 2c | `ScheduleGrid` | Horizontal scroll; selected primary |
 | `TimeSlotButton` | `TimeSlotButton.tsx` | 2c | booking step 2 | Disabled + line-through; FX-6 h-11 |
 | `SchedulePicker` | `SchedulePicker.client.tsx` | 2c | `c.book` step 2 | Compose DayPill + TimeSlot; timezone label |

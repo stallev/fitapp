@@ -121,10 +121,10 @@ N/A.
 
 ## Definition of done
 
-- [ ] Catalog per spec + wireframe
-- [ ] URL-shareable filters
-- [ ] Approved-only enforced
-- [ ] Smoke + typecheck + lint pass
+- [x] Catalog per spec + wireframe
+- [x] URL-shareable filters
+- [x] Approved-only enforced
+- [x] Smoke + typecheck + lint pass
 
 ---
 
@@ -145,5 +145,5 @@ N/A.
 
 ## Acceptance criteria
 
-- [ ] Catalog smoke pass
-- [ ] No profile route in PR
+- [x] Catalog smoke pass
+- [x] No profile route in PR
