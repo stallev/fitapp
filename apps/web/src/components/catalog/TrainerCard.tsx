@@ -6,12 +6,12 @@ import { PhotoSlot } from "@/components/ui/PhotoSlot";
 import { RatingStars } from "@/components/ui/RatingStars";
 import { SpecChip } from "@/components/ui/SpecChip";
 import { VerifiedBadge } from "@/components/ui/VerifiedBadge";
-import type { FeaturedTrainerCard } from "@/data/catalog/get-featured-trainers.server";
+import type { CatalogTrainerCard } from "@/lib/catalog/catalog-trainer-card";
 import { MESSAGES } from "@/lib/messages";
 import { cn } from "@/lib/utils";
 
 export type TrainerCardProps = {
-  trainer: FeaturedTrainerCard;
+  trainer: CatalogTrainerCard;
   className?: string;
 };
 
@@ -23,7 +23,7 @@ function formatTrainerPrice(cents: number, currency: string): string {
   }).format(cents / 100);
 }
 
-function getTrainerTagline(trainer: FeaturedTrainerCard): string {
+function getTrainerTagline(trainer: CatalogTrainerCard): string {
   if (trainer.bio?.trim()) {
     return trainer.bio.trim();
   }
@@ -43,7 +43,13 @@ export function TrainerCard({ trainer, className }: TrainerCardProps) {
       className={cn("block min-w-[280px] shrink-0 md:min-w-0", className)}
     >
       <PulseCard variant="row" interactive className="h-full">
-        <PhotoSlot label={photoLabel} aspect="square" className="w-24 shrink-0" />
+        <PhotoSlot
+          label={photoLabel}
+          src={trainer.photoUrl}
+          alt={trainer.fullName}
+          aspect="square"
+          className="w-24 shrink-0"
+        />
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
             <div className="min-w-0">

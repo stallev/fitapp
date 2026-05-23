@@ -92,6 +92,50 @@ export const MESSAGES = {
       cta: "Открыть очередь",
     },
   },
+  catalog: {
+    meta: {
+      title: "Каталог тренеров — Pulse",
+      description:
+        "Найдите проверенного тренера по направлению, рейтингу и цене.",
+    },
+    title: "Каталог",
+    searchPlaceholder: "Поиск по имени или направлению",
+    filtersButton: "Фильтры",
+    filtersTitle: "Фильтры",
+    clearFilters: "Сбросить",
+    applyFilters: "Применить",
+    clearAllFilters: "Сбросить все",
+    maxPriceLabel: "Макс. цена",
+    ratingLabel: "Рейтинг",
+    ratingAny: "Любой",
+    ratingTier: "от {value}★",
+    specialtyLabel: "Направление",
+    specialtyAll: "Все",
+    resultsCount: "{count} тренеров",
+    resultsCountOne: "{count} тренер",
+    sortLabel: "Сортировка",
+    sort: {
+      rating: "По рейтингу",
+      newest: "Сначала новые",
+      price: "По цене",
+    },
+    empty: {
+      title: "Нет тренеров",
+      description: "По вашим фильтрам ничего не найдено. Попробуйте изменить условия.",
+      cta: "Сбросить фильтры",
+    },
+    error: {
+      title: "Не удалось загрузить каталог",
+      description: "Проверьте подключение и попробуйте снова.",
+      retry: "Повторить",
+      retrying: "Загружаем…",
+    },
+    pagination: {
+      previous: "Назад",
+      next: "Вперёд",
+      pageLabel: "Страница {page} из {total}",
+    },
+  },
   landing: {
     meta: {
       title: "Pulse — маркетплейс фитнес-тренеров",

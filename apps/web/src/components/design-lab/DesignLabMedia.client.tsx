@@ -4,11 +4,6 @@ import { FilterIcon } from "lucide-react";
 import { useState } from "react";
 
 import { ContentText } from "@/components/atoms";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar";
 import { IconBadge } from "@/components/ui/IconBadge";
 import { FilterChip } from "@/components/ui/FilterChip";
 import { PhotoSlot } from "@/components/ui/PhotoSlot";
@@ -16,6 +11,7 @@ import { RatingStars } from "@/components/ui/RatingStars";
 import { SpecChip } from "@/components/ui/SpecChip";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { UserAvatar } from "@/components/ui/UserAvatar";
 import { VerifiedBadge } from "@/components/ui/VerifiedBadge";
 import {
   DesignLabSection,
@@ -84,22 +80,30 @@ export function DesignLabMedia() {
         </div>
 
         <div>
-          <VariantLabel>PhotoSlot — aspect variants</VariantLabel>
+          <VariantLabel>PhotoSlot — with photo / Lucide placeholder</VariantLabel>
           <div className="grid gap-3 sm:grid-cols-3">
-            <PhotoSlot label="Photo · Anna" aspect="square" />
-            <PhotoSlot label="Cover · Trainer" aspect="cover" />
+            <PhotoSlot
+              label="Photo · Anna"
+              aspect="square"
+              src="https://picsum.photos/seed/pulse-trainer-anna/400/400"
+              alt="Anna Yoga"
+            />
+            <PhotoSlot label="No photo · Dmitry" aspect="cover" />
             <PhotoSlot label="Banner · Hero" aspect="banner" className="sm:col-span-1" />
           </div>
         </div>
 
         <div>
-          <VariantLabel>Avatar — size matrix</VariantLabel>
+          <VariantLabel>UserAvatar — photo / UserRound placeholder</VariantLabel>
           <div className="flex flex-wrap items-end gap-3">
+            <UserAvatar
+              name="Alex Client"
+              src="https://picsum.photos/seed/pulse-client-alex/400/400"
+              size="lg"
+            />
+            <UserAvatar name="Max Client" size="lg" />
             {AVATAR_SIZES.map((size) => (
-              <Avatar key={size} size={size}>
-                <AvatarImage src="" alt="" />
-                <AvatarFallback>AR</AvatarFallback>
-              </Avatar>
+              <UserAvatar key={size} name="Nina Client" size={size} />
             ))}
           </div>
         </div>

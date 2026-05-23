@@ -1,42 +1,96 @@
 import type { PrismaClient } from "../../src/generated/client";
+import { SEED_PHOTO_URLS } from "./fixtures";
 import type { SeededUsers } from "./users";
 
-export type SeededTrainerProfiles = {
-  anna: { id: string };
-  dmitry: { id: string };
-  maria: { id: string };
-  pending: { id: string };
+export const APPROVED_TRAINER_KEYS = [
+  "anna",
+  "dmitry",
+  "maria",
+  "ivan",
+  "elena",
+  "sergey",
+] as const;
+
+export type ApprovedTrainerKey = (typeof APPROVED_TRAINER_KEYS)[number];
+
+export type SeededTrainerProfiles = Record<
+  ApprovedTrainerKey | "pending",
+  { id: string }
+>;
+
+type ApprovedTrainerFixture = {
+  key: ApprovedTrainerKey;
+  timezone: string;
+  bio: string;
+  experienceYears: number;
+  ratingAvg: number;
+  ratingCount: number;
+  photoUrl: string | null;
+  specializationSlugs: readonly string[];
 };
 
-const APPROVED_TRAINER_FIXTURES = [
+const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
   {
-    key: "anna" as const,
+    key: "anna",
     timezone: "Europe/Moscow",
     bio: "Certified yoga and pilates instructor with 8 years of experience.",
     experienceYears: 8,
     ratingAvg: 4.8,
     ratingCount: 32,
+    photoUrl: SEED_PHOTO_URLS.anna,
     specializationSlugs: ["yoga", "pilates"],
   },
   {
-    key: "dmitry" as const,
+    key: "dmitry",
     timezone: "Europe/Moscow",
     bio: "Strength and HIIT coach focused on functional fitness.",
     experienceYears: 10,
     ratingAvg: 4.7,
     ratingCount: 24,
+    photoUrl: null,
     specializationSlugs: ["strength", "hiit"],
   },
   {
-    key: "maria" as const,
+    key: "maria",
     timezone: "America/New_York",
     bio: "Pilates and stretching specialist for recovery and mobility.",
     experienceYears: 6,
     ratingAvg: 4.9,
     ratingCount: 18,
+    photoUrl: SEED_PHOTO_URLS.maria,
     specializationSlugs: ["pilates", "stretching"],
   },
-] as const;
+  {
+    key: "ivan",
+    timezone: "Europe/Moscow",
+    bio: "CrossFit and HIIT coach for high-intensity group and solo sessions.",
+    experienceYears: 7,
+    ratingAvg: 4.6,
+    ratingCount: 21,
+    photoUrl: null,
+    specializationSlugs: ["hiit", "strength"],
+  },
+  {
+    key: "elena",
+    timezone: "Europe/Berlin",
+    bio: "Mobility and yoga instructor helping clients restore balance and flexibility.",
+    experienceYears: 5,
+    ratingAvg: 4.8,
+    ratingCount: 15,
+    photoUrl: SEED_PHOTO_URLS.elena,
+    specializationSlugs: ["yoga", "stretching"],
+  },
+  {
+    key: "sergey",
+    timezone: "Europe/Moscow",
+    bio: "Powerlifting and strength coach for progressive overload programs.",
+    experienceYears: 12,
+    ratingAvg: 4.9,
+    ratingCount: 28,
+    photoUrl: null,
+    specializationSlugs: ["strength"],
+  },
+];
 
 const PENDING_TRAINER_FIXTURE = {
   key: "pending" as const,
@@ -65,6 +119,7 @@ export async function seedTrainerProfiles(
         experienceYears: fixture.experienceYears,
         ratingAvg: fixture.ratingAvg,
         ratingCount: fixture.ratingCount,
+        photoUrl: fixture.photoUrl,
         submittedAt,
         reviewedAt: submittedAt,
       },
@@ -76,6 +131,7 @@ export async function seedTrainerProfiles(
         experienceYears: fixture.experienceYears,
         ratingAvg: fixture.ratingAvg,
         ratingCount: fixture.ratingCount,
+        photoUrl: fixture.photoUrl,
         submittedAt,
         reviewedAt: submittedAt,
       },
@@ -110,6 +166,7 @@ export async function seedTrainerProfiles(
       timezone: PENDING_TRAINER_FIXTURE.timezone,
       bio: PENDING_TRAINER_FIXTURE.bio,
       experienceYears: PENDING_TRAINER_FIXTURE.experienceYears,
+      photoUrl: null,
       submittedAt,
       reviewedAt: null,
       rejectionReason: null,

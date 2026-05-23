@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { DatePickerField } from "@/components/ui/DatePickerField.client";
 import {
   DesignLabSection,
   VariantLabel,
@@ -103,6 +104,60 @@ export function DesignLabForms() {
               aria-label="Toggle service visibility"
             />
           </Field>
+        </div>
+
+        <div>
+          <VariantLabel>DatePickerField — birth date (past only)</VariantLabel>
+          <DatePickerField
+            id="lab-birth-date"
+            name="birthDate"
+            label="Date of birth"
+            placeholder="Select date"
+            disableFuture
+            className="max-w-xl"
+          />
+        </div>
+
+        <div>
+          <VariantLabel>DatePickerField — booking (future only)</VariantLabel>
+          <DatePickerField
+            id="lab-booking-date"
+            name="bookingDate"
+            label="Session date"
+            placeholder="Pick a day"
+            disablePast
+            startMonth={new Date()}
+            endMonth={new Date(new Date().getFullYear() + 1, 11)}
+            className="max-w-xl"
+          />
+        </div>
+
+        <div>
+          <VariantLabel>DatePickerField — error</VariantLabel>
+          <DatePickerField
+            id="lab-date-error"
+            name="dateError"
+            label="Date of birth"
+            placeholder="Select date"
+            disableFuture
+            invalid
+            error="Enter a valid date of birth."
+            className="max-w-xl"
+          />
+        </div>
+
+        <div>
+          <VariantLabel>DatePickerField — disabled</VariantLabel>
+          <DatePickerField
+            id="lab-date-disabled"
+            name="dateDisabled"
+            label="Date of birth"
+            placeholder="Select date"
+            defaultValue="1990-06-15"
+            disableFuture
+            disabled
+            className="max-w-xl"
+          />
         </div>
 
         <div>

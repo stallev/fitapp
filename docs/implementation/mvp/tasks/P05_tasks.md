@@ -18,22 +18,22 @@
 
 ## 1. Catalog `/trainers`
 
-- [ ] RSC loader: approved trainers + aggregates
-- [ ] Filters: `q`, `maxPrice`, `minRating`, `specializations[]` in URL
-- [ ] Mobile: filter Sheet; desktop: sidebar `lg:`
-- [ ] Sort + pagination
-- [ ] `TrainerCard` component
-- [ ] Empty state when no results
-- [ ] Cache tag `trainers` if using tags policy
+- [x] RSC loader: approved trainers + aggregates
+- [x] Filters: `q`, `maxPrice`, `minRating`, `specializations[]` in URL
+- [x] Mobile: filter Sheet; desktop: sidebar `lg:`
+- [x] Sort + pagination
+- [x] `TrainerCard` component
+- [x] Empty state when no results
+- [x] Cache tag `trainers` if using tags policy
 
 ## 2. Verification
 
-- [ ] `npm run typecheck`
-- [ ] `npm run lint`
+- [x] `npm run typecheck`
+- [x] `npm run lint`
 - [ ] Smoke: filter URL shareable
 - [ ] Smoke: pending trainer not in list
 - [ ] Smoke: invalid params — no 500
-- [ ] **MUST NOT** implement profile or wishlist (→ P06)
+- [x] **MUST NOT** implement profile or wishlist (→ P06)
 
 ---
 

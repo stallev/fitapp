@@ -1,41 +1,98 @@
 export const BCRYPT_COST = 12;
 
+/** Stable placeholder URLs for dev seed — plain `<img>` / Avatar, not Vercel Blob. */
+export const SEED_PHOTO_URLS = {
+  anna: "https://picsum.photos/seed/pulse-trainer-anna/400/400",
+  maria: "https://picsum.photos/seed/pulse-trainer-maria/400/400",
+  elena: "https://picsum.photos/seed/pulse-trainer-elena/400/400",
+  clientAlex: "https://picsum.photos/seed/pulse-client-alex/400/400",
+  clientSofia: "https://picsum.photos/seed/pulse-client-sofia/400/400",
+} as const;
+
 export const FIXTURE_USERS = {
   admin: {
     email: "admin@pulse.dev",
     password: "admin123",
     fullName: "Pulse Admin",
     role: "admin" as const,
+    avatarUrl: null,
   },
   client: {
     email: "client@pulse.dev",
     password: "client123",
     fullName: "Alex Client",
     role: "client" as const,
+    avatarUrl: SEED_PHOTO_URLS.clientAlex,
+  },
+  clientSofia: {
+    email: "sofia@pulse.dev",
+    password: "client123",
+    fullName: "Sofia Client",
+    role: "client" as const,
+    avatarUrl: SEED_PHOTO_URLS.clientSofia,
+  },
+  clientMax: {
+    email: "max@pulse.dev",
+    password: "client123",
+    fullName: "Max Client",
+    role: "client" as const,
+    avatarUrl: null,
+  },
+  clientNina: {
+    email: "nina@pulse.dev",
+    password: "client123",
+    fullName: "Nina Client",
+    role: "client" as const,
+    avatarUrl: null,
   },
   anna: {
     email: "anna@pulse.dev",
     password: "trainer123",
     fullName: "Anna Yoga",
     role: "trainer" as const,
+    avatarUrl: SEED_PHOTO_URLS.anna,
   },
   dmitry: {
     email: "dmitry@pulse.dev",
     password: "trainer123",
     fullName: "Dmitry Strength",
     role: "trainer" as const,
+    avatarUrl: null,
   },
   maria: {
     email: "maria@pulse.dev",
     password: "trainer123",
     fullName: "Maria Pilates",
     role: "trainer" as const,
+    avatarUrl: SEED_PHOTO_URLS.maria,
+  },
+  ivan: {
+    email: "ivan@pulse.dev",
+    password: "trainer123",
+    fullName: "Ivan CrossFit",
+    role: "trainer" as const,
+    avatarUrl: null,
+  },
+  elena: {
+    email: "elena@pulse.dev",
+    password: "trainer123",
+    fullName: "Elena Stretch",
+    role: "trainer" as const,
+    avatarUrl: SEED_PHOTO_URLS.elena,
+  },
+  sergey: {
+    email: "sergey@pulse.dev",
+    password: "trainer123",
+    fullName: "Sergey Power",
+    role: "trainer" as const,
+    avatarUrl: null,
   },
   pending: {
     email: "pending@pulse.dev",
     password: "trainer123",
     fullName: "Pending Trainer",
     role: "trainer" as const,
+    avatarUrl: null,
   },
 } as const;
 

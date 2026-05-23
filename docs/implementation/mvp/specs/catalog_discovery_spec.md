@@ -2,7 +2,7 @@
 
 **Тип:** Spec  
 **Статус:** Canonical  
-**Версия:** 1.0  
+**Версия:** 1.1  
 **Дата:** 2026-05-23  
 **Волна:** W9  
 **Зависит от:** [`pages_functional_spec.md`](../../../prds/01_product_scope/pages_functional_spec.md), [`wishlist_contract.md`](../contracts/wishlist_contract.md)  
@@ -32,7 +32,23 @@ Implementation-spec **публичного каталога тренеров** (
 |------|---------|
 | **Approved-only catalog** | Query `trainer_profile.status = approved` — INV-03 |
 | **Wishlist toggle** | Optimistic heart — [`wishlist_contract.md`](../contracts/wishlist_contract.md) |
-| **Filter state** | URL searchParams: `q`, `maxPrice`, `minRating`, `specializations[]` |
+| **Filter state** | URL searchParams — see [Filter URL contract](#filter-url-contract) |
+
+### Filter URL contract
+
+| Param | Key | Default | Notes |
+|-------|-----|---------|-------|
+| Search | `q` | `""` | trim, max 120 chars |
+| Max price | `maxPrice` | none | integer USD dollars; server maps to cents |
+| Min rating | `minRating` | none | `3`, `4`, or `4.5` |
+| Specializations | `specializations` | `[]` | repeat param; whitelist slugs from `@pulse/domain` |
+| Sort | `sort` | `rating` | `rating` \| `newest` \| `price` |
+| Page | `page` | `1` | 1-based |
+| Page size | `pageSize` | `12` | max 24 |
+
+Invalid values **MUST** coerce to defaults (Zod in `@pulse/domain`) — no 500.
+
+**P05 deliverables:** `/trainers` catalog only (grid, filters, sort, pagination). Profile + wishlist → P06.
 
 ---
 
@@ -211,3 +227,4 @@ Matrix: [`authorization_matrix.md`](../../../prds/04_authorization_privacy/autho
 | Date | Change |
 |------|--------|
 | 2026-05-23 | v1.0 — catalog & discovery spec (W9-03) |
+| 2026-05-23 | v1.1 — Filter URL contract (`sort`, `page`, `pageSize`); P05 catalog-only note |
