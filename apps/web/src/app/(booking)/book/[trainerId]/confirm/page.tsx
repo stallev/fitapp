@@ -1,11 +1,17 @@
-import { RoutePlaceholder } from "@/components/shell/RoutePlaceholder";
-import { MESSAGES } from "@/lib/messages";
+import { redirect } from "next/navigation";
 
-export default function BookConfirmPage() {
-  return (
-    <RoutePlaceholder
-      title="Подтверждение"
-      description={MESSAGES.placeholders.bookingConfirm}
-    />
-  );
+type BookTrainerConfirmPageProps = {
+  params: Promise<{ trainerId: string }>;
+  searchParams: Promise<{ serviceId?: string }>;
+};
+
+export default async function BookTrainerConfirmPage({
+  params,
+  searchParams,
+}: BookTrainerConfirmPageProps) {
+  const { trainerId } = await params;
+  const query = await searchParams;
+  const serviceQuery = query.serviceId ? `&serviceId=${query.serviceId}` : "";
+
+  redirect(`/book/${trainerId}?step=3${serviceQuery}`);
 }

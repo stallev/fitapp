@@ -2,7 +2,7 @@
 
 **Тип:** Tasks  
 **Статус:** Canonical  
-**Версия:** 2.0  
+**Версия:** 2.1  
 **Дата:** 2026-05-23  
 **Волна:** W16  
 **Зависит от:** [`P07_phase_description.md`](../phases_tasks_descriptions/P07_phase_description.md)  
@@ -18,27 +18,27 @@
 
 ## 1. Domain & contracts
 
-- [ ] `createBooking` in `@pulse/domain`
-- [ ] `GenerateAvailableSlots` per schedule_slots_contract
-- [ ] Policy: `assertCanCreateBooking`
-- [ ] UNIQUE / transaction for slot conflict ([FM-002](../../../prds/02_domain_model/failure_modes_catalog.md))
+- [x] `createBooking` in `@pulse/domain`
+- [x] `GenerateAvailableSlots` per schedule_slots_contract
+- [x] Policy: `assertCanCreateBooking`
+- [x] Serializable transaction for slot conflict ([FM-001](../../../prds/02_domain_model/failure_modes_catalog.md))
 
 ## 2. Booking wizard `/book/[trainerId]`
 
-- [ ] `(booking)` layout — stripped header, no bottom nav
-- [ ] Steps: Service → Slot → Confirm
-- [ ] `BookingWizard` + schedule grid wrapper
-- [ ] Trainer TZ labels on slots
-- [ ] Optional message field (max 500)
-- [ ] `createBooking` — pending status
-- [ ] Redirect `?booked=1` + `RedirectToast`
-- [ ] Pending: `disabled`, `aria-busy` on submit
-- [ ] **MUST NOT** payment UI (ADR-005)
+- [x] `(booking)` layout — stripped header, no bottom nav
+- [x] Steps: Service → Slot → Confirm
+- [x] `BookingWizard` + schedule grid wrapper
+- [x] Trainer TZ labels on slots
+- [x] Optional message field (max 500)
+- [x] `createBooking` — pending status
+- [x] Redirect `?booked=1` + `RedirectToast`
+- [x] Pending: `disabled`, `aria-busy` on submit
+- [x] **MUST NOT** payment UI (ADR-005)
 
 ## 3. Verification
 
-- [ ] `npm run typecheck`
-- [ ] `npm run lint`
+- [x] `npm run typecheck`
+- [x] `npm run lint`
 - [ ] Smoke: full booking happy path
 - [ ] Smoke: slot conflict → error toast
 - [ ] Smoke: guest → login redirect

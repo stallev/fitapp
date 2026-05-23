@@ -1,7 +1,5 @@
 import "server-only";
 
-import { cacheLife, cacheTag } from "next/cache";
-
 import {
   formatTrainerTimezoneLabel,
   getLocalDateRangeFromToday,
@@ -13,33 +11,30 @@ import {
   getUtcRangeForLocalDates,
   loadTrainerBookingsForRange,
   loadTrainerScheduleFacts,
+  WIZARD_SLOT_DAY_COUNT,
 } from "@/data/trainer/load-trainer-schedule-facts.server";
-import { CACHE_TAGS } from "@/lib/cache/tags";
 
-const PREVIEW_DAY_COUNT = 7;
-
-export type TrainerSchedulePreview = {
+export type BookingWizardSlots = {
   timezone: string;
   timezoneLabel: string;
   slots: SlotDto[];
   slotDurationMinutes: number;
 };
 
-export async function getTrainerSchedulePreview(
+export async function getBookingWizardSlots(
   trainerProfileId: string,
   slotDurationMinutes: number,
-): Promise<TrainerSchedulePreview | null> {
-  "use cache";
-  cacheTag(CACHE_TAGS.trainer(trainerProfileId));
-  cacheLife("minutes");
-
+): Promise<BookingWizardSlots | null> {
   const facts = await loadTrainerScheduleFacts(trainerProfileId);
 
   if (!facts) {
     return null;
   }
 
-  const range = getLocalDateRangeFromToday(facts.timezone, PREVIEW_DAY_COUNT);
+  const range = getLocalDateRangeFromToday(
+    facts.timezone,
+    WIZARD_SLOT_DAY_COUNT,
+  );
   const { rangeStart, rangeEnd } = getUtcRangeForLocalDates(
     range.fromLocalDate,
     range.toLocalDate,
@@ -55,7 +50,7 @@ export async function getTrainerSchedulePreview(
     facts,
     bookings,
     slotDurationMinutes,
-    PREVIEW_DAY_COUNT,
+    WIZARD_SLOT_DAY_COUNT,
   );
 
   return {

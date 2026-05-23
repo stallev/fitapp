@@ -11,6 +11,8 @@ export type WizardHeaderProps = {
   step: number;
   totalSteps: number;
   stepLabel: string;
+  stepCaption?: React.ReactNode;
+  backAriaLabel?: string;
   totalLabel?: React.ReactNode;
   onBack?: () => void;
   className?: string;
@@ -20,11 +22,19 @@ export function WizardHeader({
   step,
   totalSteps,
   stepLabel,
+  stepCaption,
+  backAriaLabel = "Go back",
   totalLabel,
   onBack,
   className,
 }: WizardHeaderProps) {
   const progress = Math.round((step / totalSteps) * 100);
+  const caption =
+    stepCaption ?? (
+      <>
+        Step {step} of {totalSteps}
+      </>
+    );
 
   return (
     <div className={cn("border-b border-border bg-background/95 backdrop-blur-md", className)}>
@@ -33,14 +43,14 @@ export function WizardHeader({
           type="button"
           variant="ghost"
           size="icon-sm"
-          aria-label="Go back"
+          aria-label={backAriaLabel}
           onClick={onBack}
         >
           <ChevronLeftIcon aria-hidden className="size-5" />
         </Button>
         <div className="min-w-0 flex-1">
           <ContentText variant="mutedMicro" as="p" className="font-mono uppercase">
-            Step {step} of {totalSteps}
+            {caption}
           </ContentText>
           <ContentText variant="smallEmphasis" as="p">
             {stepLabel}

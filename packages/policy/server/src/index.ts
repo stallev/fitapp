@@ -7,7 +7,6 @@ export {
   assertCanCancelBooking,
   assertCanCompleteBooking,
   assertCanConfirmBooking,
-  assertCanCreateBooking,
   assertCanInitiateUpload,
   assertCanManageComplaint,
   assertCanModerateReview,
@@ -19,4 +18,5 @@ export {
   assertCanReadBooking,
   assertCanReadPrivateDoc,
 } from "./stubs";
+export { assertCanCreateBooking } from "./booking/assert-can-create-booking";
 export { assertCanToggleWishlist } from "./wishlist/assert-can-toggle-wishlist";

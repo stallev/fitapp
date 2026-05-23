@@ -21,10 +21,25 @@ export const WISHLIST_MUTATION_ERROR_CODES = {
 export type WishlistMutationErrorCode =
   (typeof WISHLIST_MUTATION_ERROR_CODES)[keyof typeof WISHLIST_MUTATION_ERROR_CODES];
 
+/** Booking mutation error codes. */
+export const BOOKING_MUTATION_ERROR_CODES = {
+  UNAUTHORIZED: "UNAUTHORIZED",
+  FORBIDDEN: "FORBIDDEN",
+  VALIDATION: "VALIDATION",
+  SLOT_UNAVAILABLE: "SLOT_UNAVAILABLE",
+  TRAINER_NOT_BOOKABLE: "TRAINER_NOT_BOOKABLE",
+  SERVICE_INACTIVE: "SERVICE_INACTIVE",
+  SLOT_IN_PAST: "SLOT_IN_PAST",
+} as const;
+
+export type BookingMutationErrorCode =
+  (typeof BOOKING_MUTATION_ERROR_CODES)[keyof typeof BOOKING_MUTATION_ERROR_CODES];
+
 /** All known mutation error codes — extend as domains ship. */
 export const MUTATION_ERROR_CODES = {
   ...AUTH_MUTATION_ERROR_CODES,
   ...WISHLIST_MUTATION_ERROR_CODES,
+  ...BOOKING_MUTATION_ERROR_CODES,
 } as const;
 
 export type MutationErrorCode =

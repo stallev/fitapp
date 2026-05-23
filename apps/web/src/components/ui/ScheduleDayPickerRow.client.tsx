@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -7,6 +8,7 @@ import {
   type KeyboardEvent,
 } from "react";
 
+import { ContentText } from "@/components/atoms";
 import { DayPill } from "@/components/ui/DayPill";
 import { cn } from "@/lib/utils";
 
@@ -18,6 +20,7 @@ export type ScheduleDayPickerRowProps = {
   days: ReadonlyArray<ScheduleDay>;
   activeDayId: string;
   onDayChange: (dayId: string) => void;
+  swipeHint?: string;
   className?: string;
 };
 
@@ -28,10 +31,15 @@ function getScrollBehavior(source: ScrollSource): ScrollBehavior {
   return "smooth";
 }
 
+function isScrollableRow(scroller: HTMLDivElement): boolean {
+  return scroller.scrollWidth > scroller.clientWidth + 1;
+}
+
 export function ScheduleDayPickerRow({
   days,
   activeDayId,
   onDayChange,
+  swipeHint,
   className,
 }: ScheduleDayPickerRowProps) {
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -44,8 +52,11 @@ export function ScheduleDayPickerRow({
   }, [activeDayId]);
 
   const scrollDayIntoView = useCallback((dayId: string, source: ScrollSource) => {
+    const scroller = scrollerRef.current;
     const pill = pillRefs.current.get(dayId);
-    pill?.scrollIntoView({
+    if (!scroller || !pill || !isScrollableRow(scroller)) return;
+
+    pill.scrollIntoView({
       behavior: getScrollBehavior(source),
       inline: "center",
       block: "nearest",
@@ -54,7 +65,9 @@ export function ScheduleDayPickerRow({
 
   const syncSelectionFromScroll = useCallback(() => {
     const scroller = scrollerRef.current;
-    if (!scroller || scrollSourceRef.current === "tap") return;
+    if (!scroller || scrollSourceRef.current === "tap" || !isScrollableRow(scroller)) {
+      return;
+    }
 
     const center = scroller.scrollLeft + scroller.clientWidth / 2;
     let closestId = activeDayIdRef.current;
@@ -122,23 +135,32 @@ export function ScheduleDayPickerRow({
   };
 
   return (
-    <div className={cn("relative -mx-4", className)}>
-      <div
+    <div className={cn("relative min-w-0 w-full -mx-5 md:mx-0", className)}>
+      <ChevronLeftIcon
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-card via-card/80 to-transparent"
+        className="pointer-events-none absolute left-1 top-[calc(50%-0.625rem)] z-20 size-4 -translate-y-1/2 text-muted-foreground/45 md:hidden"
+      />
+      <ChevronRightIcon
+        aria-hidden
+        className="pointer-events-none absolute right-1 top-[calc(50%-0.625rem)] z-20 size-4 -translate-y-1/2 text-muted-foreground/45 md:hidden"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-card via-card/80 to-transparent"
+        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-card via-card/80 to-transparent md:hidden"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-card via-card/80 to-transparent md:hidden"
       />
       <div
         ref={scrollerRef}
         role="tablist"
         aria-label="Select day"
         className={cn(
-          "flex gap-2 overflow-x-auto overflow-y-hidden px-4 pb-1 no-scrollbar",
-          "snap-x snap-mandatory scroll-px-4",
-          "touch-pan-x overscroll-x-contain [-webkit-overflow-scrolling:touch]",
+          "flex w-full min-w-0 max-w-full gap-2.5 px-5 pb-1 md:grid md:grid-cols-7 md:gap-2 md:overflow-visible md:px-0",
+          "max-md:overflow-x-auto max-md:overflow-y-hidden max-md:no-scrollbar",
+          "max-md:snap-x max-md:snap-mandatory max-md:scroll-px-5",
+          "max-md:touch-pan-x max-md:overscroll-x-contain max-md:[-webkit-overflow-scrolling:touch]",
         )}
       >
         {days.map((day, index) => {
@@ -162,11 +184,20 @@ export function ScheduleDayPickerRow({
                 onDayChange(day.id);
               }}
               onKeyDown={(event) => handleDayKeyDown(event, index)}
-              className="snap-center"
+              className="max-md:snap-center max-md:shrink-0 md:w-full md:min-w-0"
             />
           );
         })}
       </div>
+      {swipeHint ? (
+        <ContentText
+          variant="mutedMicro"
+          as="p"
+          className="mt-2.5 px-5 text-center md:hidden"
+        >
+          {swipeHint}
+        </ContentText>
+      ) : null}
     </div>
   );
 }
