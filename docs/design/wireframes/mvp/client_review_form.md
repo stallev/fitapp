@@ -19,7 +19,7 @@
 1. **Context** — booking summary (trainer, session date).
 2. **Rating** — 1–5 stars (required).
 3. **Comment** — optional text, max length.
-4. **Submit** — toast + redirect bookings list.
+4. **Submit** — toast + redirect booking detail (`/client/bookings/[bookingId]`).
 
 ## Guardrails
 

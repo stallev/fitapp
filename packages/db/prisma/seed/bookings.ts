@@ -38,6 +38,14 @@ const BOOKING_FIXTURES: BookingFixture[] = [
     completedAt: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000),
   },
   {
+    id: SEED_IDS.bookingCompletedNoReview,
+    status: "completed",
+    trainerKey: "anna",
+    serviceKey: "anna:Hatha Yoga 60",
+    daysOffset: -10,
+    completedAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000),
+  },
+  {
     id: SEED_IDS.bookingCancelled,
     status: "cancelled",
     trainerKey: "anna",

@@ -18,16 +18,16 @@ export function SidebarNav({ items, sectionTitle, badges }: SidebarNavProps) {
   return (
     <nav
       aria-label="Боковая навигация"
-      className="hidden w-52 shrink-0 flex-col border-r border-border bg-background md:sticky md:top-16 md:flex md:max-h-[calc(100dvh-4rem)] md:overflow-y-auto lg:w-60"
+      className="hidden w-52 shrink-0 flex-col border-r border-border/60 bg-background px-3 py-6 md:sticky md:top-16 md:flex md:max-h-[calc(100dvh-4rem)] md:self-start md:overflow-y-auto lg:w-60"
     >
       <ContentText
         variant="statusLabel"
         as="p"
-        className="px-4 pb-2 pt-4 font-mono uppercase tracking-wider text-muted-foreground"
+        className="mb-2 px-4 font-mono uppercase tracking-[0.08em] text-muted-foreground"
       >
         {sectionTitle}
       </ContentText>
-      <div className="flex flex-col gap-1 px-2 pb-4">
+      <div className="flex flex-col gap-1">
         {items.map((item) => (
           <NavItem
             key={item.href}

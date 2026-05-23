@@ -178,7 +178,7 @@ All `is_active: true`, `currency: USD`.
 |--------|-------|-------|
 | `pending` | 1 | With Anna, starts_at +3 days |
 | `confirmed` | 1 | With Dmitry, starts_at +5 days |
-| `completed` | 1 | With Maria, starts_at −7 days |
+| `completed` | 2 | Maria (−7 days, **with review**); Anna (−10 days, **no review** — P09 smoke) |
 | `cancelled` | 1 | With Anna, past |
 
 **MUST** — snapshot fields on booking (`service_name_snapshot`, `price_cents`, `duration_minutes`) match service at seed time.
@@ -189,7 +189,9 @@ All `is_active: true`, `currency: USD`.
 
 ### 7. Review
 
-**MUST** — one visible review on **completed** booking (client → Maria, rating 5, body ≥ 20 chars).
+**MUST** — one visible review on **completed** booking (client → Maria, `SEED_IDS.bookingCompleted`, rating 5, body ≥ 20 chars).
+
+**MUST** — one **completed booking without review** (client → Anna, `SEED_IDS.bookingCompletedNoReview`) for P09 review-form smoke before P12 `CompleteBooking`.
 
 Recalc trainer `rating_avg` / `rating_count` consistent with reviews.
 
@@ -287,7 +289,8 @@ After seed + migrate, manual smoke **SHOULD** succeed without extra setup:
 | `/trainers` | guest | ≥ 3 approved trainers |
 | `/trainers/[anna-id]` | guest | Services + schedule preview |
 | `/auth/login` | client@pulse.dev | Client dashboard |
-| `/client/bookings` | client | 4 bookings across tabs |
+| `/client/bookings` | client | 5 bookings across tabs |
+| `/client/reviews/22222222-2222-4222-8222-222222222205` | client | Review form (Anna completed, no review) |
 | `/book/[trainerId]` | client | Available slots from weekly schedule |
 | `/trainer/dashboard` | anna@pulse.dev | Today/upcoming sessions |
 | `/admin/trainers` | admin | pending@pulse.dev in queue |

@@ -39,11 +39,24 @@ export const BOOKING_MUTATION_ERROR_CODES = {
 export type BookingMutationErrorCode =
   (typeof BOOKING_MUTATION_ERROR_CODES)[keyof typeof BOOKING_MUTATION_ERROR_CODES];
 
+/** Review mutation error codes. */
+export const REVIEW_MUTATION_ERROR_CODES = {
+  UNAUTHORIZED: "UNAUTHORIZED",
+  FORBIDDEN: "FORBIDDEN",
+  VALIDATION: "VALIDATION",
+  BOOKING_NOT_REVIEWABLE: "BOOKING_NOT_REVIEWABLE",
+  REVIEW_ALREADY_EXISTS: "REVIEW_ALREADY_EXISTS",
+} as const;
+
+export type ReviewMutationErrorCode =
+  (typeof REVIEW_MUTATION_ERROR_CODES)[keyof typeof REVIEW_MUTATION_ERROR_CODES];
+
 /** All known mutation error codes — extend as domains ship. */
 export const MUTATION_ERROR_CODES = {
   ...AUTH_MUTATION_ERROR_CODES,
   ...WISHLIST_MUTATION_ERROR_CODES,
   ...BOOKING_MUTATION_ERROR_CODES,
+  ...REVIEW_MUTATION_ERROR_CODES,
 } as const;
 
 export type MutationErrorCode =

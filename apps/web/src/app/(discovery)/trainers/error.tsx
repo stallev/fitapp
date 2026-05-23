@@ -4,7 +4,6 @@ import { AlertCircleIcon } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { MESSAGES } from "@/lib/messages";
 
@@ -14,7 +13,7 @@ export default function TrainersError({
   reset: () => void;
 }) {
   return (
-    <Container as="main" variant="page" className="space-y-4">
+    <div className="space-y-4">
       <PageHeader title={MESSAGES.catalog.title} />
       <Alert variant="destructive">
         <AlertCircleIcon aria-hidden />
@@ -26,6 +25,6 @@ export default function TrainersError({
           </Button>
         </AlertDescription>
       </Alert>
-    </Container>
+    </div>
   );
 }

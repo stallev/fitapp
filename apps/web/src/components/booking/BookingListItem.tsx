@@ -45,14 +45,16 @@ export function BookingListItem({
   className,
 }: BookingListItemProps) {
   const status = booking.status;
+  const showUpcomingActions = tab === "upcoming" && booking.canCancel;
+  const showReviewAction = tab === "past" && !booking.hasReview;
 
   return (
-    <PulseCard className={cn("p-4", className)}>
+    <PulseCard className={cn("flex h-full flex-col p-4", className)}>
       <CustomLink
         href={`/client/bookings/${booking.id}`}
         className="flex items-start gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        <Avatar size="md">
+        <Avatar size="md" className="shrink-0">
           {booking.trainerPhotoUrl ? (
             <AvatarImage
               src={booking.trainerPhotoUrl}
@@ -63,14 +65,17 @@ export function BookingListItem({
         </Avatar>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
-            <ContentText as="p" className="truncate text-[15px] font-medium">
+            <ContentText as="p" className="min-w-0 flex-1 truncate text-[15px] font-medium">
               {booking.trainerName}
             </ContentText>
-            <StatusBadge status={getBookingStatusBadgeVariant(status)}>
+            <StatusBadge
+              status={getBookingStatusBadgeVariant(status)}
+              className="shrink-0"
+            >
               {getBookingStatusLabel(status)}
             </StatusBadge>
           </div>
-          <ContentText variant="mutedMicro" as="p" className="mt-0.5">
+          <ContentText variant="mutedMicro" as="p" className="mt-0.5 line-clamp-1">
             {booking.serviceNameSnapshot}
           </ContentText>
           <ContentText
@@ -87,8 +92,8 @@ export function BookingListItem({
         />
       </CustomLink>
 
-      {tab === "upcoming" && booking.canCancel ? (
-        <div className="mt-3 flex gap-2">
+      {showUpcomingActions ? (
+        <div className="mt-auto flex gap-2 pt-3">
           <Button
             type="button"
             size="sm"
@@ -102,7 +107,7 @@ export function BookingListItem({
             type="button"
             size="sm"
             variant="outline"
-            className="min-h-11"
+            className="min-h-11 shrink-0"
             onClick={onCancelClick}
           >
             {MESSAGES.booking.cancel.button}
@@ -110,8 +115,8 @@ export function BookingListItem({
         </div>
       ) : null}
 
-      {tab === "past" && !booking.hasReview ? (
-        <div className="mt-3">
+      {showReviewAction ? (
+        <div className="mt-auto pt-3">
           <Button asChild size="sm" variant="secondary" className="min-h-11 w-full">
             <CustomLink href={`/client/reviews/${booking.id}`}>
               {MESSAGES.booking.actions.leaveReview}

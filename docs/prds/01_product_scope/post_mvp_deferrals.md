@@ -49,6 +49,7 @@
 | **Subscription plans** | Business validation post-PMF | — | — | Product ADR |
 | **Multi-currency** | Single currency USD on MVP | `currency` column exists; MVP fixed USD | — | Pricing ADR |
 | **Trainer analytics (advanced)** | Post-PMF | — | — | Data warehouse / BI |
+| **Client wishlist** | Снижение scope discovery; schema и domain готовы | `wishlist` table (composite PK) | — | [`wishlist_contract.md`](../../implementation/mvp/contracts/wishlist_contract.md); re-enable UI + `/api/client/wishlist` |
 | **AWS SAM / SQS jobs** | Vercel Cron enough until volume grows | `job_execution`, `delivery_log` — schema on MVP, **no email cron** | — | Volume ADR amending ADR-001 |
 
 ---

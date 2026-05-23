@@ -14,7 +14,6 @@ export const assertCanMutateTrainerProfile = policyStub;
 export const assertCanMutateTrainerService = policyStub;
 export const assertCanMutateSchedule = policyStub;
 export const assertCanToggleWishlist = policyStub;
-export const assertCanPublishReview = policyStub;
 export const assertCanModerateReview = policyStub;
 export const assertCanApproveTrainer = policyStub;
 export const assertCanInitiateUpload = policyStub;

@@ -22,7 +22,7 @@
 
 ## Scope / Out of scope
 
-**In scope:** layout groups `(public)`, `(client)`, `(trainer)`, `(admin)`, `(booking)`, `(session)`; nav items per role; responsive visibility classes; container widths.
+**In scope:** layout groups `(marketing)`, `(discovery)`, `(client)`, `(trainer)`, `(admin)`, `(booking)`, `(session)`; nav items per role; responsive visibility classes; container widths.
 
 **Out of scope:** auth route guards (→ `pages_functional_spec` + W5 auth spec); icon set (→ `ui-icons-lucide`); implementation components (→ W9 `global_shell_spec`).
 
@@ -52,7 +52,8 @@
 
 | Group | Top bar | Role nav | Notes |
 |-------|---------|----------|-------|
-| `(public)` | ✅ sticky blur | ❌ | Logo + utilities (theme, lang post-MVP optional) |
+| `(marketing)` | ✅ sticky blur | ❌ | Landing, auth — logo + utilities; auth on `/` redirects to role dashboard |
+| `(discovery)` | ✅ | ✅ when auth | `/trainers`, `/trainers/[id]` — `HybridAppShellGate`; guest: Top bar only |
 | `(booking)` | ✅ minimal | ❌ | Wizard focus — no sidebar/bottom nav distraction |
 | `(session)` | ✅ minimal | ❌ | Placeholder MVP |
 | `(client)` | ✅ | Bottom + Sidebar | Full shell |
@@ -99,7 +100,7 @@
 
 | ID | Rule |
 |----|------|
-| NAV-MUST-1 | Active item — `bg-primary-container` pill + label emphasis (prototype pattern) |
+| NAV-MUST-1 | Active item — icon pill `bg-primary-container` (bottom nav) or full-row pill (sidebar); label emphasis per design system |
 | NAV-MUST-2 | `paddingBottom: env(safe-area-inset-bottom)` on nav element |
 | NAV-MUST-3 | Badge counts on admin items when queue &gt; 0 |
 | NAV-SHOULD-1 | `aria-current="page"` on active link/button |
@@ -116,6 +117,7 @@
 | Requirement | Rule |
 |-------------|------|
 | Items | Same paths/labels as Bottom Nav for role |
+| Placement | Inside `AppShellCanvas` (`max-w-[1400px]`), not viewport edge on ultra-wide |
 | Section title | «Client» / «Trainer» / «Administrator» — mono uppercase caption |
 | Active state | `rounded-full`, `bg-primary-container` |
 | Badges | Same as Bottom Nav for admin |
@@ -126,8 +128,9 @@
 ## Page container
 
 ```text
-PageContainer: mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8
-Main content: pb-6 minimum above bottom UI
+AppShellCanvas (md+): mx-auto max-w-[1400px] px-4 md:px-6 lg:px-8 — sidebar + main in one row (prototype parity)
+PageContainer (in shell): flex-1 main column inside canvas; pb-24 md:pb-6 above bottom UI
+PageContainer (standalone): mx-auto max-w-[1400px] — booking/session stripped layouts
 Booking wizard: max-w narrower acceptable — centered column md+
 ```
 
@@ -161,7 +164,7 @@ Booking wizard: max-w narrower acceptable — centered column md+
 
 ## Happy paths
 
-1. Client mobile: open app → Bottom Nav «Trainers» → catalog → profile → «Book» → wizard (no bottom nav) → complete → return to shell on `/client/bookings/[id]`.
+1. Client mobile: open app → Bottom Nav «Trainers» → catalog **shell preserved** → profile → «Book» → wizard (no bottom nav) → complete → return to shell on `/client/bookings/[id]`.
 2. Trainer tablet: sidebar «Schedule» → weekly grid; rotate to mobile → Bottom Nav «Schedule» same route.
 3. Admin desktop: sidebar badge «3» on Trainers → queue list.
 
@@ -171,6 +174,7 @@ Booking wizard: max-w narrower acceptable — centered column md+
 
 | Scenario | UX |
 |----------|-----|
+| Authenticated user opens `/` | Redirect to role home (`/client/dashboard`, `/trainer/dashboard`, or `/admin/dashboard`) — landing for guests only |
 | Deep link to protected route | After login, land on `callbackUrl`; nav reflects role |
 | Unknown route | 404 page with link to role home |
 | Trainer pending approval | Shell visible; banner in content — nav unchanged |
@@ -232,7 +236,7 @@ Nav badge counts may lag behind server — **SHOULD** refresh on focus or after 
 
 ## Agent notes
 
-- Catalog nav item «Trainers» points to **public** `/trainers`, not `/client/*` — matches prototype `c.catalog`.
+- Catalog nav item «Trainers» points to **public** `/trainers` — matches prototype `c.catalog`. `(discovery)` layout renders role shell when session exists; guests see Top bar only.
 - `(booking)` group intentionally omits Bottom Nav — do not «fix» by adding nav mid-wizard.
 - Admin `/admin/reviews` in canonical routes but not in prototype nav — add to implementation nav config in P05.
 
