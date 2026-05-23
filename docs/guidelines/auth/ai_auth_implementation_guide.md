@@ -38,11 +38,11 @@ Browser
 // NO Prisma, NO bcrypt, edge-safe providers/callbacks for JWT
 
 // auth.ts — server only
-// PrismaAdapter, Credentials authorize(), full callbacks
+// getPrisma() + bcrypt in Credentials authorize()
 // Used by Route Handlers, Server Actions, RSC — NOT by proxy via full import
 ```
 
-Per Auth.js v5 (Context7): `@auth/prisma-adapter`, JWT `session: { strategy: "jwt" }`.
+Per Auth.js v5 (Context7): JWT `session: { strategy: "jwt" }` — **no** `@auth/prisma-adapter` on MVP (see ADR-003, `database_schema_v1.md` §0.D).
 
 ---
 

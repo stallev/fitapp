@@ -31,6 +31,7 @@ Monorepo: **Next.js 16.2.6** App Router + Vercel + Neon PostgreSQL.
 
 - `apps/*` handlers = тонкие адаптеры. Логика живёт в `packages/`
 - **Запрещено** импортировать `packages/policy/server` из request interception layer (`proxy.ts`, `middleware.ts`) и Edge runtime
+- **Domain literals и коды ошибок** — только из `@pulse/domain` (`USER_ROLE`, `AUTH_MUTATION_ERROR_CODES`, …); user-visible текст — `@/lib/messages`. Cursor Rule: **domain-literals-and-codes**
 - **`TrainerProfile.timezone`** — источник истины для расписания, слотов, напоминаний и отображения времени
 - **Post-MVP:** каждый email job — **`idempotency_key` + `delivery_log`** (таблицы в schema с MVP, отправка позже — см. [`mvp_scope.md`](docs/prds/01_product_scope/mvp_scope.md))
 - Долгие операции (email batch, напоминания) — **не в request path** → workers/cron (**post-MVP**)
@@ -83,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P01 complete (monorepo & data layer). `@pulse/domain` + `@pulse/db` scaffolded: Prisma schema v1, initial migration, dev seed. Следующая фаза: **P02** (auth & request guards).  
+**Текущая фаза:** P02 complete (auth & request guards). Auth.js Credentials + JWT `role`, `proxy.ts`, policy packages, `/auth/login` + `/auth/register`. Следующая фаза: **P03** (design system & app shell).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 
@@ -92,4 +93,5 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 - [ ] Изменения согласуются с [`ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md)
 - [ ] Отличия от lampto явно задокументированы (ADR или contract)
 - [ ] Маршруты не дублируются вне [`canonical_routes.md`](docs/design/canonical_routes.md)
+- [ ] Нет inline domain/mutation codes — константы из `@pulse/domain` (**domain-literals-and-codes**)
 - [ ] Domain invariants не нарушены (timezone, booking state machine, trainer verification)

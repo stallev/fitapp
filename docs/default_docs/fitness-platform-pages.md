@@ -193,15 +193,15 @@ Badge:
 ### Auth.js v5 + Prisma v7 + Neon
 
 ```typescript
-// auth.ts
+// auth.ts — split: auth.config.ts holds JWT callbacks; auth.ts adds authorize()
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import { prisma } from '@/lib/prisma'
+import { getPrisma } from '@pulse/db'
 import bcrypt from 'bcryptjs'
+import authConfig from '@/auth.config'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  ...authConfig,
   providers: [
     Credentials({
       credentials: {
@@ -209,8 +209,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
+        const user = await getPrisma().user.findUnique({
+          where: { email: (credentials.email as string).toLowerCase() },
         })
         if (!user?.passwordHash) return null
         const valid = await bcrypt.compare(
@@ -222,18 +222,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    jwt({ token, user }) {
-      if (user) token.role = (user as any).role
-      return token
-    },
-    session({ session, token }) {
-      if (session.user) session.user.role = token.role as string
-      return session
-    },
-  },
-  pages: { signIn: '/auth/login', error: '/auth/login' },
-  session: { strategy: 'jwt' },
 })
 ```
 

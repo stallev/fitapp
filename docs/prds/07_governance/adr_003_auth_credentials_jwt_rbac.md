@@ -43,7 +43,7 @@ Auth.js v5 (Context7 `/websites/authjs_dev`, verified 2026-05-23):
 
 - Credentials `authorize()` возвращает user object или `null` при invalid credentials.
 - JWT strategy: `session: { strategy: "jwt" }` с `jwt` / `session` callbacks для persistence `role`.
-- Split config: `auth.config.ts` (edge-safe) + `auth.ts` (PrismaAdapter, bcrypt, full callbacks) — pattern из migration guide v5.
+- Split config: `auth.config.ts` (edge-safe) + `auth.ts` (Credentials `authorize()` via `getPrisma()`, bcrypt, full callbacks) — pattern из migration guide v5.
 
 Три роли определяют route groups `/client/*`, `/trainer/*`, `/admin/*` ([`canonical_routes.md`](../../design/canonical_routes.md)).
 
@@ -65,18 +65,25 @@ Auth.js v5 (Context7 `/websites/authjs_dev`, verified 2026-05-23):
 | Policy | Value |
 |--------|-------|
 | Strategy | **`jwt`** — не database sessions для MVP |
-| Adapter | `@auth/prisma-adapter` в `auth.ts` для User linkage; session data в JWT |
+| User lookup | `getPrisma()` в `authorize()` и DAL — **без** `@auth/prisma-adapter` (нет `Account`/`Session` в DDL — см. [`database_schema_v1.md`](../03_data_model/database_schema_v1.md) §0.D) |
 | Role in token | `jwt` callback: `if (user) token.role = user.role`; `session` callback: `session.user.role = token.role` |
 | Env | `AUTH_SECRET`, `AUTH_URL` (Vercel) |
 
 Context7 verified pattern:
 
 ```typescript
-// auth.ts (server only)
+// auth.ts (server only) — no PrismaAdapter on MVP
 export const { auth, handlers, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   ...authConfig,
+  providers: [
+    Credentials({
+      authorize: async (credentials) => {
+        const user = await getPrisma().user.findUnique({ where: { email } });
+        // bcrypt.compare → return { id, email, name, role } or null
+      },
+    }),
+  ],
 });
 ```
 
@@ -169,6 +176,7 @@ Dev password change: seed / admin — not email flow.
 | Role only in DB, not JWT | Extra DB read in proxy; violates Layer 1 design |
 | Supabase Auth | ADR-001 — Auth.js v5 required |
 | Edge `middleware.ts` as canon | ADR-002 — `proxy.ts` + nodejs |
+| `@auth/prisma-adapter` on MVP | DDL has no `Account`/`Session` tables — [`database_schema_v1.md`](../03_data_model/database_schema_v1.md) §0.D; Credentials + JWT use `getPrisma()` directly |
 
 ---
 

@@ -36,7 +36,8 @@ alwaysApply: true
 
 ## Domain literals
 
-- Roles/statuses — **`@pulse/domain`** constants, не inline `"trainer"` / `"pending"`.
+- Roles/statuses — **`@pulse/domain`** constants (`USER_ROLE`, `BOOKING_STATUSES`, …), не inline `"trainer"` / `"pending"`.
+- Mutation error codes — **`AUTH_MUTATION_ERROR_CODES`**, **`MUTATION_ERROR_CODES`** из `@pulse/domain`; см. **domain-literals-and-codes**.
 - User-visible strings — **`@/lib/messages`**.
 
 ## Антипаттерны

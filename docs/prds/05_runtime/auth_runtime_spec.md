@@ -152,18 +152,18 @@ Visual: Warm Forest forms per [`visual_identity_contract.md`](../../design/visua
 | File | Role |
 |------|------|
 | `apps/web/src/auth.config.ts` | Providers, JWT/session callbacks — **proxy-safe** |
-| `apps/web/src/auth.ts` | PrismaAdapter, Credentials `authorize()`, exports `auth`, `handlers` |
+| `apps/web/src/auth.ts` | Credentials `authorize()` via `getPrisma()` + bcrypt; exports `auth`, `handlers` |
 | `apps/web/src/proxy.ts` | Layer 1 — imports auth.config only |
 | `apps/web/src/app/api/auth/[...nextauth]/route.ts` | `handlers` export |
 
 Context7 verified (Auth.js v5):
 
 ```typescript
-// auth.ts — server only
+// auth.ts — server only (no PrismaAdapter — JWT MVP per database_schema_v1 §0.D)
 export const { auth, handlers, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma),
   session: { strategy: "jwt" },
   ...authConfig,
+  providers: [Credentials({ authorize: /* getPrisma + bcrypt */ })],
 });
 ```
 

@@ -26,6 +26,7 @@
 | `pulse-project-context.mdc` | Always applied — stack, invariants |
 | `product-docs-alignment.mdc` | Always applied — doc sync on behavior change |
 | `typescript-monorepo-types.mdc` | Always applied — monorepo types |
+| `domain-literals-and-codes.mdc` | Always applied — mutation codes, domain literals |
 | `ai-dry-deduplication.mdc` | Always applied — DRY for agents |
 | `data-server-actions-and-api.mdc` | DAL, Actions vs Route Handlers |
 | `ios-safari-mutation-transport.mdc` | iOS Safari `Load failed` — Class A/B dual transport |

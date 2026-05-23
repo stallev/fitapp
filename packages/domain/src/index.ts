@@ -1,4 +1,10 @@
 export {
+  AUTH_MUTATION_ERROR_CODES,
+  MUTATION_ERROR_CODES,
+  type AuthMutationErrorCode,
+  type MutationErrorCode,
+} from "./constants/mutation-error-codes";
+export {
   BOOKING_STATUSES,
   type BookingStatus,
 } from "./types/booking-status";
@@ -14,7 +20,7 @@ export {
   TRAINER_STATUSES,
   type TrainerStatus,
 } from "./types/trainer-status";
-export { USER_ROLES, type UserRole } from "./types/user-role";
+export { USER_ROLE, USER_ROLES, type UserRole } from "./types/user-role";
 
 export { isBookingStatus } from "./guards/is-booking-status";
 export { isTrainerStatus } from "./guards/is-trainer-status";
