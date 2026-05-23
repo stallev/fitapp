@@ -18,5 +18,5 @@ export {
   assertCanPublishReview,
   assertCanReadBooking,
   assertCanReadPrivateDoc,
-  assertCanToggleWishlist,
 } from "./stubs";
+export { assertCanToggleWishlist } from "./wishlist/assert-can-toggle-wishlist";

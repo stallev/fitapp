@@ -1,8 +1,10 @@
 export {
   AUTH_MUTATION_ERROR_CODES,
   MUTATION_ERROR_CODES,
+  WISHLIST_MUTATION_ERROR_CODES,
   type AuthMutationErrorCode,
   type MutationErrorCode,
+  type WishlistMutationErrorCode,
 } from "./constants/mutation-error-codes";
 export {
   CATALOG_MIN_RATINGS,
@@ -21,6 +23,7 @@ export {
 } from "./constants/specialization-slugs";
 export {
   BOOKING_STATUSES,
+  BOOKING_STATUS,
   type BookingStatus,
 } from "./types/booking-status";
 export {
@@ -56,3 +59,21 @@ export {
   parseCatalogTrainersQuery,
   type CatalogTrainersQuery,
 } from "./schemas/catalog-trainers-query";
+export {
+  toggleWishlistActionSchema,
+  toggleWishlistInputSchema,
+  type ToggleWishlistInput,
+} from "./schemas/toggle-wishlist";
+export {
+  type BookingOverlapInput,
+  type DateRange,
+  type GenerateAvailableSlotsInput,
+  type ScheduleExceptionInput,
+  type SlotDto,
+  type WeeklyIntervalInput,
+} from "./types/slot-dto";
+export {
+  generateAvailableSlots,
+  getLocalDateRangeFromToday,
+} from "./scheduling/generate-available-slots";
+export { formatTrainerTimezoneLabel } from "./scheduling/format-timezone-label";

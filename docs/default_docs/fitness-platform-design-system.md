@@ -42,10 +42,10 @@ xl:  1280px   // wide desktop
 | **Навигация** | Bottom Nav sticky | Sidebar sticky | Sidebar wider (w-60) |
 | **Контент** | 1 колонка | 2 колонки | 2–4 колонки |
 | **Каталог** | chips scroll + Filter sheet | chips + Filter sheet | sidebar filters |
-| **Trainer profile** | edge-to-edge cover, bottom CTA | split layout, sidebar | split, bigger sidebar |
+| **Trainer profile** | edge-to-edge portrait photo, bottom CTA | split layout, sidebar | split, bigger sidebar |
 | **Booking** | full-screen wizard | wizard + sidebar | wizard + sidebar |
 | **Modals/Sheets** | bottom sheet (slide up) | centered dialog | centered dialog |
-| **Cover photo** | aspect 4/3, `rounded-none` | aspect 16/6, `rounded-3xl` | aspect 16/6, `rounded-3xl` |
+| **Profile photo** | aspect 3/4, `rounded-none` | aspect 3/4, `w-72`, `rounded-3xl` | aspect 3/4, `w-72`, `rounded-3xl` |
 | **Page title** | `text-[26–30px]` | `text-[36–40px]` | `text-[36–44px]` |
 | **KPI grid** | `grid-cols-2` | `grid-cols-2` | `grid-cols-4` |
 
@@ -520,8 +520,9 @@ relative overflow-hidden rounded-2xl bg-surface-variant
 
 Aspect ratios:
   "1/1"  → trainer card photo
-  "4/3"  → profile cover mobile
-  "16/6" → profile cover desktop
+  "3/4"  → trainer profile portrait (mobile edge-to-edge, desktop w-72)
+  "4/3"  → generic cover placeholder
+  "16/6" → banner / hero strip
 ```
 
 ---

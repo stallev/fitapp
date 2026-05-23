@@ -12,6 +12,7 @@ const photoSlotVariants = cva(
     variants: {
       aspect: {
         square: "aspect-square",
+        portrait: "aspect-[3/4]",
         cover: "aspect-[4/3]",
         banner: "aspect-[16/6]",
       },

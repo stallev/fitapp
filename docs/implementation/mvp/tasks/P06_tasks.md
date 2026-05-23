@@ -2,7 +2,7 @@
 
 **Тип:** Tasks  
 **Статус:** Canonical  
-**Версия:** 2.0  
+**Версия:** 2.1  
 **Дата:** 2026-05-23  
 **Волна:** W16  
 **Зависит от:** [`P06_phase_description.md`](../phases_tasks_descriptions/P06_phase_description.md)  
@@ -18,27 +18,27 @@
 
 ## 1. Profile `/trainers/[id]`
 
-- [ ] 404 for non-approved / missing
-- [ ] Tabs: About, Services, Schedule preview, Reviews
-- [ ] Sticky CTA mobile / sidebar card desktop
-- [ ] Schedule preview — trainer timezone label
-- [ ] Reviews list (approved only)
-- [ ] Primary CTA «Book now» → `/book/[trainerId]`
+- [x] 404 for non-approved / missing
+- [x] Tabs: About, Services, Schedule preview, Reviews
+- [x] Sticky CTA mobile / sidebar card desktop
+- [x] Schedule preview — trainer timezone label
+- [x] Reviews list (approved only)
+- [x] Primary CTA «Book now» → `/book/[trainerId]`
 
 ## 2. Wishlist
 
-- [ ] `toggleWishlist` Server Action per [`wishlist_contract.md`](../contracts/wishlist_contract.md)
-- [ ] `useOptimistic` + `useTransition` on heart
-- [ ] `toast.error` on failure
-- [ ] Guest: redirect login on tap
+- [x] `toggleWishlist` DAL + `POST /api/client/wishlist` (Class A transport per [`ios-safari-mutation-transport.mdc`](../../../../.cursor/rules/ios-safari-mutation-transport.mdc); semantics per [`wishlist_contract.md`](../contracts/wishlist_contract.md))
+- [x] `useOptimistic` + `useTransition` on heart (profile + catalog card)
+- [x] `toast.error` on failure
+- [x] Guest: redirect login on tap
 
 ## 3. Verification
 
-- [ ] `npm run typecheck`
-- [ ] `npm run lint`
+- [x] `npm run typecheck`
+- [x] `npm run lint`
 - [ ] Smoke: wishlist toggle + rollback
 - [ ] Smoke: pending trainer 404
-- [ ] **MUST NOT** booking wizard (→ P07)
+- [x] **MUST NOT** booking wizard (→ P07)
 
 ---
 

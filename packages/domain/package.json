@@ -14,6 +14,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@js-temporal/polyfill": "^0.5.1",
     "zod": "^3.25.76"
   },
   "devDependencies": {

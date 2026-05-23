@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P05 complete (catalog `/trainers`). Каталог: URL filters (`q`, `maxPrice`, `minRating`, `specializations`, `sort`, `page`), approved-only DAL, `'use cache'` tag `trainers:catalog`, mobile Filter Sheet / desktop sidebar `lg:`. Landing `/` (P04): hero, chips → catalog deep links, featured trainers. Следующая фаза: **P06** (profile `/trainers/[id]` + wishlist).  
+**Текущая фаза:** P06 complete (profile `/trainers/[id]` + wishlist). Профиль: tabs About/Services/Schedule/Reviews, sticky CTA, schedule preview с TZ label через `generateAvailableSlots` в `@pulse/domain`. Wishlist: optimistic heart (каталог + профиль), Class A transport `POST /api/client/wishlist` + shared DAL `toggleWishlist`. Каталог P05: URL filters, `'use cache'` tag `trainers:catalog`. Следующая фаза: **P07** (booking wizard).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

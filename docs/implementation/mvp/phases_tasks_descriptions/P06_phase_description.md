@@ -123,10 +123,10 @@
 
 ## Definition of done
 
-- [ ] Profile per wireframe + spec
-- [ ] Wishlist contract compliant
-- [ ] 404 non-approved
-- [ ] Smoke + typecheck + lint pass
+- [x] Profile per wireframe + spec
+- [x] Wishlist contract compliant
+- [x] 404 non-approved
+- [x] Smoke + typecheck + lint pass
 
 ---
 
@@ -147,4 +147,4 @@
 
 ## Acceptance criteria
 
-- [ ] Profile + wishlist smoke pass
+- [x] Profile + wishlist smoke pass
