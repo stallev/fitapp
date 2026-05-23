@@ -18,35 +18,35 @@
 
 ## 1. Policy packages
 
-- [ ] `@pulse/policy-edge` — JWT decode, route role matrix (no Prisma)
-- [ ] `@pulse/policy-server` — `PolicySessionContext`, stub `assertCan*`
-- [ ] Verify forbidden import: `policy-server` **not** in `proxy.ts`
+- [x] `@pulse/policy-edge` — JWT decode, route role matrix (no Prisma)
+- [x] `@pulse/policy-server` — `PolicySessionContext`, stub `assertCan*`
+- [x] Verify forbidden import: `policy-server` **not** in `proxy.ts`
 
 ## 2. Auth.js
 
-- [ ] `auth.ts` — Credentials provider, bcrypt verify
-- [ ] JWT callback persists `role`; session exposes `session.user.role`
-- [ ] Type augmentation for `Session` / `JWT` in `apps/web`
-- [ ] Server Actions: `signIn`, `signOut`, `registerClient`
-- [ ] `/auth/login` — form, pending UI, generic error
-- [ ] `/auth/register` — client form; terms checkbox
-- [ ] **MUST NOT** `/auth/register/trainer` (→ P10)
+- [x] `auth.ts` — Credentials provider, bcrypt verify
+- [x] JWT callback persists `role`; session exposes `session.user.role`
+- [x] Type augmentation for `Session` / `JWT` in `apps/web`
+- [x] Server Actions: `signIn`, `signOut`, `registerClient`
+- [x] `/auth/login` — form, pending UI, generic error
+- [x] `/auth/register` — client form; terms checkbox
+- [x] **MUST NOT** `/auth/register/trainer` (→ P10)
 
 ## 3. proxy.ts
 
-- [ ] `apps/web/src/proxy.ts` with matcher per auth_runtime_spec
-- [ ] Unauthenticated → protected: redirect login + `callbackUrl`
-- [ ] Role mismatch → role home or 403
-- [ ] Uses `@pulse/policy-edge` only
+- [x] `apps/web/src/proxy.ts` with matcher per auth_runtime_spec
+- [x] Unauthenticated → protected: redirect login + `callbackUrl`
+- [x] Role mismatch → role home or 403
+- [x] Uses `@pulse/policy-edge` only
 
 ## 4. Verification
 
-- [ ] `npm run typecheck`
-- [ ] `npm run lint`
-- [ ] Smoke: login client/trainer/admin
-- [ ] Smoke: invalid credentials — generic error
-- [ ] Smoke: client → `/admin/dashboard` denied
-- [ ] Smoke: duplicate register email — error
+- [x] `npm run typecheck`
+- [x] `npm run lint`
+- [x] Smoke: login client/trainer/admin
+- [x] Smoke: invalid credentials — generic error
+- [x] Smoke: client → `/admin/dashboard` denied
+- [x] Smoke: duplicate register email — error
 
 ---
 

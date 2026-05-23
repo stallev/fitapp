@@ -57,8 +57,8 @@ export type PolicySessionContext = {
 ## 3. Domain literals
 
 - Prisma enums in schema are **persistence** source.
-- **`@pulse/domain`** exports canonical unions (`UserRole`, `BookingStatus`, `TrainerStatus`, …).
-- No inline `"pending"` / `"client"` at call sites — import constants or type guards.
+- **`@pulse/domain`** exports canonical unions (`UserRole`, `BookingStatus`, `TrainerStatus`, …) and **named constant objects** (`USER_ROLE`, `AUTH_MUTATION_ERROR_CODES`, …).
+- No inline `"pending"` / `"client"` / `"INVALID_CREDENTIALS"` at call sites — import constants or type guards.
 - After whitelist check — **type guard** (`isUserRole`), not `as UserRole`.
 
 ---
@@ -69,9 +69,11 @@ Use one discriminated union from `@pulse/domain`:
 
 ```ts
 export type MutationOk<T = void> = T extends void ? { ok: true } : { ok: true; data: T };
-export type MutationErr = { ok: false; code: string; message?: string };
+export type MutationErr = { ok: false; code: MutationErrorCode; message?: string };
 export type MutationResult<T = void> = MutationOk<T> | MutationErr;
 ```
+
+**Error codes:** define in `@pulse/domain` (`AUTH_MUTATION_ERROR_CODES`, `MUTATION_ERROR_CODES`) — see **domain-literals-and-codes** Cursor Rule. Do not use bare `code: string` or inline SCREAMING_SNAKE literals in actions/DAL/UI.
 
 Do not introduce new `{ ok: false; errorMessage: string }` variants.
 

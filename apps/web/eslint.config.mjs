@@ -28,6 +28,36 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     "node_modules/**",
   ]),
+  {
+    files: ["src/proxy.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "@pulse/policy-server",
+              message: "FM-003: policy-server must not be imported in proxy.ts",
+            },
+            {
+              name: "@pulse/db",
+              message: "PKG-02: db must not be imported in proxy.ts",
+            },
+            {
+              name: "@/auth",
+              message: "Use auth.config.ts only in proxy.ts",
+            },
+          ],
+          patterns: [
+            {
+              group: ["**/auth"],
+              message: "Use auth.config.ts only in proxy.ts",
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

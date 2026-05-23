@@ -14,6 +14,7 @@ export async function seedUsers(prisma: PrismaClient): Promise<SeededUsers> {
       update: {
         fullName: fixture.fullName,
         role: fixture.role as UserRole,
+        passwordHash,
       },
       create: {
         email: fixture.email,

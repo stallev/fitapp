@@ -101,8 +101,8 @@ Protected segments wired in proxy; pages MAY be stubs until P03.
 
 | Scenario | Expected |
 |----------|----------|
-| Invalid credentials | Generic error; no enumeration |
-| Duplicate register email | Validation error ([**FM-001**](../../../prds/02_domain_model/failure_modes_catalog.md)) |
+| Invalid credentials | Generic error; no enumeration ([**FM-008**](../../../prds/02_domain_model/failure_modes_catalog.md)) |
+| Duplicate register email | Field validation error; DB UNIQUE on `user.email` |
 
 ---
 
@@ -137,10 +137,10 @@ Protected segments wired in proxy; pages MAY be stubs until P03.
 
 ## Definition of done
 
-- [ ] Auth.js login + client register working
-- [ ] `proxy.ts` live; no `middleware.ts` as canonical
-- [ ] Policy packages stubbed; import graph valid
-- [ ] Smoke passed; `typecheck` + lint pass
+- [x] Auth.js login + client register working
+- [x] `proxy.ts` live; no `middleware.ts` as canonical
+- [x] Policy packages stubbed; import graph valid
+- [x] Smoke passed; `typecheck` + lint pass
 
 ---
 
@@ -162,5 +162,5 @@ Protected segments wired in proxy; pages MAY be stubs until P03.
 
 ## Acceptance criteria
 
-- [ ] Auth + proxy smoke pass
-- [ ] No trainer wizard or full shell in PR
+- [x] Auth + proxy smoke pass
+- [x] No trainer wizard or full shell in PR

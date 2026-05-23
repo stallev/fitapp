@@ -28,10 +28,12 @@ Web-only `tsc` **does not** replace package checks.
 ## Domain literals
 
 - Roles/statuses from `@pulse/domain` or typed constants — no inline `"trainer"` / `"pending"`.
+- **Mutation error codes** — import from `@pulse/domain` (`AUTH_MUTATION_ERROR_CODES`, `MUTATION_ERROR_CODES`); no inline `"INVALID_CREDENTIALS"` / `"DUPLICATE_EMAIL"`. Full contract: **domain-literals-and-codes**.
 - Use type guards after string validation, not unsafe `as`.
 
 ## Related rules
 
+- [domain-literals-and-codes.mdc](domain-literals-and-codes.mdc)
 - [data-server-actions-and-api.mdc](data-server-actions-and-api.mdc)
 - [auth-security.mdc](auth-security.mdc)
 - [policy-packages.mdc](policy-packages.mdc)

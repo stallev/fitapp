@@ -13,6 +13,7 @@
 
 # testing
 /apps/**/coverage/
+/.playwright-mcp/
 
 # next.js
 /apps/**/.next/

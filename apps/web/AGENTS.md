@@ -60,6 +60,7 @@ Enforceable details live in Cursor Rules — summary only:
 | Data layer | [`ai_nextjs_db_data_handle.md`](../../docs/guidelines/nextjs/ai_nextjs_db_data_handle.md) §7 |
 | iOS Safari mutations | [`ios-safari-mutation-transport-pattern.md`](../../docs/incidents/ios-safari-mutation-transport-pattern.md) — rule: `ios-safari-mutation-transport.mdc` |
 | Forms | [`ai_form_handling_pattern.md`](../../docs/guidelines/react/ai_form_handling_pattern.md) §7 |
+| Domain literals & error codes | `@pulse/domain` constants — rule: `domain-literals-and-codes.mdc` |
 
 ## UI & UX
 
@@ -89,6 +90,7 @@ Visual and interaction canon — **do not invent** ad-hoc styles:
 | `react-one-component-per-file.mdc` | One component per file |
 | `react-logic-presentation.mdc` | Logic vs presentation split |
 | `react-naming-conventions.mdc` | Naming |
+| `domain-literals-and-codes.mdc` | Mutation codes, roles, domain strings |
 | `ui-warm-forest-shadcn.mdc` | Design system tokens |
 | `ui-mobile-first.mdc` | Responsive, bottom nav / sidebar |
 | `ui-prototype-fidelity.mdc` | Prototype visual parity |
@@ -130,6 +132,7 @@ npm run lint        # or npm run lint:web from root
 - [ ] Routes match [`canonical_routes.md`](../../docs/design/canonical_routes.md)
 - [ ] UI follows Warm Forest tokens — no arbitrary Tailwind color strings for product UI
 - [ ] Product UI uses Design Lab catalog imports (`@/components/atoms`, `@/components/ui/*`) — no `@/components/design-lab/**` in routes
+- [ ] Mutation/error codes and roles from `@pulse/domain` — no inline magic strings (**domain-literals-and-codes**)
 - [ ] Mutations: pending UI + toast per mutation rules
 
 ## Do NOT
