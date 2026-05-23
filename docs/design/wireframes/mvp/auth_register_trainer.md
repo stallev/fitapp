@@ -16,8 +16,8 @@ Progress bar, `Form`, `PhotoSlot`, `Textarea`, multi-select chips, certificate r
 
 ## Regions (5 steps)
 
-1. **Personal** — photo, city, timezone (required).
-2. **Professional** — bio, specializations, experience, languages.
+1. **Personal** — photo, timezone (required).
+2. **Professional** — bio, specializations, experience.
 3. **Certificates** — repeater + file upload slots.
 4. **Services** — ≥1 service (name, duration, price).
 5. **Preview** — summary + submit → pending status.

@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { CalendarIcon } from "lucide-react";
+import { Suspense } from "react";
 
 import { Heading } from "@/components/atoms";
+import { TrainerDashboardSubmittedToast } from "@/components/trainer/TrainerDashboardSubmittedToast.client";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
@@ -16,6 +18,9 @@ import { MESSAGES } from "@/lib/messages";
 export default function TrainerDashboardPage() {
   return (
     <>
+      <Suspense fallback={null}>
+        <TrainerDashboardSubmittedToast />
+      </Suspense>
       <Heading as="h1" visualLevel="h3">
         {MESSAGES.dashboard.trainerTitle}
       </Heading>

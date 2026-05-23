@@ -30,11 +30,14 @@ Implementation-spec **регистрации и onboarding тренера**: rol
 
 | Step | Fields (summary) |
 |------|------------------|
-| 1 Personal | photo, city, **timezone** (required — INV-01) |
-| 2 Professional | bio, specializations, experience, languages |
+| 0 Credentials | email, name, password, terms (guest only; not counted in 1–5) |
+| 1 Personal | photo, **timezone** (required — INV-01) |
+| 2 Professional | bio (optional), specializations, experience |
 | 3 Certificates | repeatable rows + file upload |
 | 4 Services | ≥0 services; skip allowed |
 | 5 Preview | read-only summary + terms + submit |
+
+**Note:** `city` and `languages` deferred — no DDL columns in [`database_schema_v1.md`](../../../prds/03_data_model/database_schema_v1.md) (P11+ if added).
 
 ---
 

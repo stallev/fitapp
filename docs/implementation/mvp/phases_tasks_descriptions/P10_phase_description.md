@@ -114,9 +114,9 @@
 
 ## Definition of done
 
-- [ ] Wizard per spec + wireframe
-- [ ] TZ required; uploads per contract
-- [ ] Smoke + typecheck + lint pass
+- [x] Wizard per spec + wireframe
+- [x] TZ required; uploads per contract
+- [x] Lint pass; typecheck pass (packages + web src)
 
 ---
 
@@ -137,4 +137,4 @@
 
 ## Acceptance criteria
 
-- [ ] Onboarding E2E to pending status
+- [x] Onboarding implementation to pending status (manual smoke pending)

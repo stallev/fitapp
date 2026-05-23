@@ -56,9 +56,9 @@ Runtime-спецификация **auth flows** Pulse MVP: login, registration, 
 
 ### Trainer registration
 
-1. `/auth/register/trainer` — multi-step wizard (~5 steps).
-2. Final submit: transaction creates `user` (`role=trainer`) + `trainer_profile` (`status=pending`, timezone required).
-3. Redirect `/trainer/dashboard` with «Under review» banner.
+1. `/auth/register/trainer` — step 0 (credentials, guest): `RegisterTrainer` creates `user` (`role=trainer`) + auto sign-in.
+2. Steps 1–5 (authenticated wizard): step 1 creates `trainer_profile` with **timezone required** (INV-01); steps 2–4 auto-save draft; step 5 `SubmitTrainerApplication` sets `submitted_at`.
+3. Redirect `/trainer/dashboard?submitted=1` with «Under review» banner (shell).
 4. Public listing **not** available until admin approve ([INV-03](../02_domain_model/domain_invariants.md)).
 
 ```mermaid
@@ -93,7 +93,7 @@ sequenceDiagram
 | Terms not accepted | Submit blocked | Inline hint |
 | `callbackUrl` external | Ignore; use role home | Open redirect prevention |
 | Session expired mid-form | Redirect login on next protected nav | — |
-| Trainer wizard incomplete | Save draft per step (planned P04) | — |
+| Trainer wizard incomplete | Save draft per step (P10) | Per-step Server Action |
 
 **MUST** — mutation pending: `disabled`, `aria-busy`, gerund label (ui-mutation-pending).
 

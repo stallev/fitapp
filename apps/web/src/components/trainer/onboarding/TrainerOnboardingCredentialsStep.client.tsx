@@ -2,14 +2,11 @@
 
 import { useActionState, useState } from "react";
 import { Loader2Icon } from "lucide-react";
-import { useRouter } from "next/navigation";
 
-import { AUTH_MUTATION_ERROR_CODES } from "@pulse/domain";
+import { TRAINER_MUTATION_ERROR_CODES } from "@pulse/domain";
 
 import { AlertText, ContentText } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
-import { ChoiceCard } from "@/components/ui/ChoiceCard";
-import { CustomLink } from "@/components/ui/CustomLink";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Field,
@@ -19,21 +16,32 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
-  registerClientAction,
-  type RegisterClientFormState,
-} from "@/actions/auth/register-client";
+  registerTrainerAction,
+  type RegisterTrainerFormState,
+} from "@/actions/auth/register-trainer";
 import { MESSAGES } from "@/lib/messages";
 
-export const RegisterClientForm = () => {
-  const router = useRouter();
+export type TrainerOnboardingCredentialsStepProps = {
+  onSuccess: () => void;
+};
+
+export function TrainerOnboardingCredentialsStep({
+  onSuccess,
+}: TrainerOnboardingCredentialsStepProps) {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [state, formAction, pending] = useActionState<
-    RegisterClientFormState,
+    RegisterTrainerFormState,
     FormData
-  >(registerClientAction, null);
+  >(async (prev, formData) => {
+    const result = await registerTrainerAction(prev, formData);
+    if (result?.ok) {
+      onSuccess();
+    }
+    return result;
+  }, null);
 
   const emailError =
-    state && !state.ok && state.code === AUTH_MUTATION_ERROR_CODES.DUPLICATE_EMAIL
+    state && !state.ok && state.code === TRAINER_MUTATION_ERROR_CODES.DUPLICATE_EMAIL
       ? state.message
       : undefined;
 
@@ -44,24 +52,11 @@ export const RegisterClientForm = () => {
         name="acceptedTerms"
         value={termsAccepted ? "on" : ""}
       />
-      <div className="grid gap-3">
-        <ChoiceCard
-          selected
-          title={MESSAGES.auth.register.clientTileTitle}
-          meta={MESSAGES.auth.register.clientTileDescription}
-          trailing="🧍"
-          disabled
-          aria-pressed
-        />
-        <ChoiceCard
-          title={MESSAGES.auth.register.trainerTileTitle}
-          meta={MESSAGES.auth.register.trainerTileDescription}
-          trailing="🏋"
-          onClick={() => router.push("/auth/register/trainer")}
-        />
-      </div>
+      <ContentText variant="muted" as="p">
+        {MESSAGES.trainer.onboarding.credentialsTitle}
+      </ContentText>
 
-      {state && !state.ok && state.message && state.code !== AUTH_MUTATION_ERROR_CODES.DUPLICATE_EMAIL ? (
+      {state && !state.ok && state.message && !emailError ? (
         <AlertText>{state.message}</AlertText>
       ) : null}
 
@@ -70,19 +65,10 @@ export const RegisterClientForm = () => {
           <FieldLabel htmlFor="fullName">
             {MESSAGES.auth.register.fullNameLabel}
           </FieldLabel>
-          <Input
-            id="fullName"
-            name="fullName"
-            autoComplete="name"
-            required
-            disabled={pending}
-          />
+          <Input id="fullName" name="fullName" autoComplete="name" required disabled={pending} />
         </Field>
-
         <Field data-invalid={emailError ? true : undefined}>
-          <FieldLabel htmlFor="email">
-            {MESSAGES.auth.register.emailLabel}
-          </FieldLabel>
+          <FieldLabel htmlFor="email">{MESSAGES.auth.register.emailLabel}</FieldLabel>
           <Input
             id="email"
             name="email"
@@ -94,7 +80,6 @@ export const RegisterClientForm = () => {
           />
           {emailError ? <FieldError>{emailError}</FieldError> : null}
         </Field>
-
         <Field>
           <FieldLabel htmlFor="password">
             {MESSAGES.auth.register.passwordLabel}
@@ -105,11 +90,9 @@ export const RegisterClientForm = () => {
             type="password"
             autoComplete="new-password"
             required
-            minLength={8}
             disabled={pending}
           />
         </Field>
-
         <Field>
           <FieldLabel htmlFor="confirmPassword">
             {MESSAGES.auth.register.confirmPasswordLabel}
@@ -120,46 +103,30 @@ export const RegisterClientForm = () => {
             type="password"
             autoComplete="new-password"
             required
-            minLength={8}
             disabled={pending}
           />
         </Field>
-
         <Field orientation="horizontal">
           <Checkbox
-            id="acceptedTerms"
+            id="terms"
             checked={termsAccepted}
-            onCheckedChange={(value) => setTermsAccepted(value === true)}
+            onCheckedChange={(checked) => setTermsAccepted(checked === true)}
             disabled={pending}
           />
-          <FieldLabel htmlFor="acceptedTerms" className="font-normal">
-            {MESSAGES.auth.register.termsLabel}
-          </FieldLabel>
+          <FieldLabel htmlFor="terms">{MESSAGES.auth.register.termsLabel}</FieldLabel>
         </Field>
       </FieldGroup>
 
-      <Button
-        type="submit"
-        className="h-12 w-full"
-        disabled={pending}
-        aria-busy={pending}
-      >
+      <Button type="submit" className="w-full" disabled={pending || !termsAccepted} aria-busy={pending}>
         {pending ? (
           <>
-            <Loader2Icon className="size-4 animate-spin" aria-hidden />
+            <Loader2Icon aria-hidden className="size-4 animate-spin" />
             {MESSAGES.auth.register.submitting}
           </>
         ) : (
-          MESSAGES.auth.register.submit
+          MESSAGES.trainer.onboarding.next
         )}
       </Button>
-
-      <ContentText variant="small" className="text-center">
-        {MESSAGES.auth.register.hasAccount}{" "}
-        <CustomLink href="/auth/login">
-          {MESSAGES.auth.register.loginLink}
-        </CustomLink>
-      </ContentText>
     </form>
   );
-};
+}
