@@ -86,16 +86,15 @@ Waiting screen: "Application submitted"
   Mobile: sheet снизу с опцией камеры / галереи
   Desktop: стандартный file input
 
-[Город]            [Timezone dropdown]
+[Timezone dropdown]  ← required (INV-01)
 [← Back]           [Next →]
 ```
 
 **Шаг 2: Профессиональные данные**
 ```
-Bio  ← Textarea, 100–1000 символов, counter
+Bio  ← Textarea, 100–1000 символов (optional), counter
 Specializations  ← Multi-select chips (Yoga · Strength · HIIT...)
 Years of experience  ← number input
-Languages  ← Multi-select
 
 [← Back]           [Next →]
 ```

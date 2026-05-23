@@ -1,13 +1,17 @@
 export {
   AUTH_MUTATION_ERROR_CODES,
   BOOKING_MUTATION_ERROR_CODES,
+  FILE_UPLOAD_MUTATION_ERROR_CODES,
   MUTATION_ERROR_CODES,
   REVIEW_MUTATION_ERROR_CODES,
+  TRAINER_MUTATION_ERROR_CODES,
   WISHLIST_MUTATION_ERROR_CODES,
   type AuthMutationErrorCode,
   type BookingMutationErrorCode,
+  type FileUploadMutationErrorCode,
   type MutationErrorCode,
   type ReviewMutationErrorCode,
+  type TrainerMutationErrorCode,
   type WishlistMutationErrorCode,
 } from "./constants/mutation-error-codes";
 export {
@@ -25,6 +29,19 @@ export {
   isSpecializationSlug,
   type SpecializationSlug,
 } from "./constants/specialization-slugs";
+export {
+  TRAINER_TIMEZONES,
+  TRAINER_TIMEZONE_SET,
+  isTrainerTimezone,
+  type TrainerTimezone,
+} from "./constants/trainer-timezones";
+export {
+  FILE_UPLOAD_PURPOSE,
+  FILE_UPLOAD_PURPOSES,
+  FILE_UPLOAD_PURPOSE_SET,
+  isFileUploadPurpose,
+  type FileUploadPurpose,
+} from "./constants/file-upload-purpose";
 export {
   BOOKING_STATUSES,
   BOOKING_STATUS,
@@ -57,6 +74,40 @@ export {
   registerClientSchema,
   type RegisterClientInput,
 } from "./schemas/register-client";
+export {
+  registerTrainerSchema,
+  type RegisterTrainerInput,
+} from "./schemas/register-trainer";
+export {
+  saveOnboardingStep1Schema,
+  type SaveOnboardingStep1Input,
+} from "./schemas/save-onboarding-step-1";
+export {
+  saveOnboardingStep2Schema,
+  type SaveOnboardingStep2Input,
+} from "./schemas/save-onboarding-step-2";
+export {
+  onboardingCertificateRowSchema,
+  saveOnboardingStep3Schema,
+  type OnboardingCertificateRow,
+  type SaveOnboardingStep3Input,
+} from "./schemas/save-onboarding-step-3";
+export {
+  onboardingServiceRowSchema,
+  saveOnboardingStep4Schema,
+  type OnboardingServiceRow,
+  type SaveOnboardingStep4Input,
+} from "./schemas/save-onboarding-step-4";
+export {
+  submitTrainerApplicationSchema,
+  type SubmitTrainerApplicationInput,
+} from "./schemas/submit-trainer-application";
+export {
+  confirmUploadInputSchema,
+  initiateUploadInputSchema,
+  type ConfirmUploadInput,
+  type InitiateUploadInput,
+} from "./schemas/initiate-upload";
 export {
   catalogTrainersQuerySchema,
   defaultCatalogTrainersQuery,
@@ -117,3 +168,19 @@ export {
   listLocalDatesFromToday,
 } from "./scheduling/generate-available-slots";
 export { formatTrainerTimezoneLabel } from "./scheduling/format-timezone-label";
+export {
+  validateApplicationComplete,
+  validateAssetReadyForLink,
+  validateSubmitTrainerApplication,
+  validateTrainerTimezone,
+  type ApplicationCompleteFacts,
+  type SubmitTrainerApplicationFacts,
+  type SubmitTrainerApplicationValidationError,
+} from "./trainer/submit-trainer-application";
+export {
+  getAllowedMimeTypes,
+  getMaxUploadSizeBytes,
+  validateFileAssetReadyForLink,
+  validateUploadRequest,
+  type UploadRequestValidationError,
+} from "./file-upload/validate-upload-request";

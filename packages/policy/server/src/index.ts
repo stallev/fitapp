@@ -6,15 +6,15 @@ export {
   assertCanApproveTrainer,
   assertCanCompleteBooking,
   assertCanConfirmBooking,
-  assertCanInitiateUpload,
   assertCanManageComplaint,
   assertCanModerateReview,
   assertCanMutateSchedule,
-  assertCanMutateTrainerProfile,
   assertCanMutateTrainerService,
   assertCanProcessRefund,
   assertCanReadPrivateDoc,
 } from "./stubs";
+export { assertCanInitiateUpload } from "./file-upload/assert-can-initiate-upload";
+export { assertCanMutateTrainerProfile } from "./trainer/assert-can-mutate-trainer-profile";
 export { assertCanCreateBooking } from "./booking/assert-can-create-booking";
 export {
   assertCanCancelBooking,

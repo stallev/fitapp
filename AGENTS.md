@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P09 complete (client review form `/client/reviews/[bookingId]`; `submitReviewAction` + `publishReviewMutation` + `assertCanPublishReview`; guards completed + no duplicate; FM-006 P2002; rating recalc in tx; seed `bookingCompletedNoReview` for smoke). Следующая фаза: **P10** (trainer onboarding).  
+**Текущая фаза:** P10 complete (trainer onboarding `/auth/register/trainer` — 5-step wizard, Blob uploads, `SubmitTrainerApplication`, review banner). Следующая фаза: **P11** (trainer profile & services).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

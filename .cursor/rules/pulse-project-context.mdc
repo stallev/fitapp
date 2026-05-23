@@ -76,4 +76,4 @@ Full list: [`docs/guidelines/README.md`](docs/guidelines/README.md).
 
 ## Repository status
 
-**Текущая фаза:** P09 complete (client review form `/client/reviews/[bookingId]`; `submitReview` + guards). Следующая фаза: **P10** (trainer onboarding). Не расширять реализацию без явной фазы и contract.
+**Текущая фаза:** P10 complete (trainer onboarding `/auth/register/trainer`). Следующая фаза: **P11** (trainer profile & services). Не расширять реализацию без явной фазы и contract.
