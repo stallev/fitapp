@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { Loader2Icon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 import { AlertText, ContentText } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
@@ -22,7 +23,9 @@ type LoginFormProps = {
   callbackUrl?: string;
 };
 
-export const LoginForm = ({ callbackUrl }: LoginFormProps) => {
+export const LoginForm = ({ callbackUrl: callbackUrlProp }: LoginFormProps) => {
+  const searchParams = useSearchParams();
+  const callbackUrl = callbackUrlProp ?? searchParams.get("callbackUrl") ?? undefined;
   const [state, formAction, pending] = useActionState<
     LoginFormState,
     FormData

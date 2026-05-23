@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P03 complete (design system & app shell). App shell, six route groups, `@/lib/messages`, nav config, placeholder dashboards, minimal landing hero. Следующая фаза: **P04** (public landing).  
+**Текущая фаза:** P04 complete (public landing). Full landing `/`: hero, value props, category chips, featured trainers (approved-only, `'use cache'` + `trainers:catalog`), footer. Следующая фаза: **P05** (catalog `/trainers`).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

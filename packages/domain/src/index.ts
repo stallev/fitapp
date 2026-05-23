@@ -17,6 +17,7 @@ export {
   type PolicySessionContext,
 } from "./types/policy-session-context";
 export {
+  TRAINER_STATUS,
   TRAINER_STATUSES,
   type TrainerStatus,
 } from "./types/trainer-status";

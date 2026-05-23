@@ -120,10 +120,10 @@ N/A.
 
 ## Definition of done
 
-- [ ] Landing matches wireframe + spec
-- [ ] CTA → `/trainers`
-- [ ] One primary CTA; responsive 390px/md
-- [ ] Smoke + typecheck + lint pass
+- [x] Landing matches wireframe + spec
+- [x] CTA → `/trainers`
+- [x] One primary CTA; responsive 390px/md
+- [x] Smoke + typecheck + lint pass
 
 ---
 
@@ -144,5 +144,5 @@ N/A.
 
 ## Acceptance criteria
 
-- [ ] Landing smoke pass
-- [ ] No `/trainers` implementation in PR
+- [x] Landing smoke pass
+- [x] No `/trainers` implementation in PR

@@ -9,7 +9,7 @@
 | Field | Value |
 |-------|--------|
 | **Primary CTA** | «Найти тренера» → `/trainers` |
-| **Secondary CTA** | «Стать тренером» → `/auth/register/trainer` |
+| **Secondary CTA** | «Стать тренером» → `/auth/register` (role tiles; `/auth/register/trainer` — P08 onboarding) |
 | **Spec** | pages_functional_spec § Public |
 
 ## Components
@@ -20,8 +20,9 @@
 
 1. **Hero** — `font-heading` headline, subcopy, dual CTAs (stack mobile / row md+).
 2. **Value props** — 3 cards grid (`grid-cols-1 md:grid-cols-3`).
-3. **Featured trainers** — horizontal scroll mobile / 3-col grid md+ (approved only).
-4. **Footer** — links Login, Register, legal placeholders.
+3. **Category chips** — horizontal scroll mobile (`SpecChip` → `/trainers`).
+4. **Featured trainers** — horizontal scroll mobile / 3-col grid md+ (approved only).
+5. **Footer** — links Login, Register, legal placeholders.
 
 ## Data dependencies
 
@@ -37,7 +38,7 @@ Optional: `featuredTrainers` (approved, limit 6). Static marketing copy from `@/
 | State | Description |
 |-------|-------------|
 | happy | Hero + featured trainers |
-| empty | Featured section hidden if zero trainers |
+| empty | Featured `Empty` + CTA → `/trainers` |
 | loading | Featured row skeleton cards |
 | error | Featured section Alert + Retry; hero static |
 | forbidden | N/A |

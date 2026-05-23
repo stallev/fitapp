@@ -76,4 +76,4 @@ Full list: [`docs/guidelines/README.md`](docs/guidelines/README.md).
 
 ## Repository status
 
-**Текущая фаза:** P03 complete (design system & app shell). `packages/{domain,db,policy}` scaffolded; `apps/workers` — ещё не создан. Следующая фаза: **P04** (public landing). Не расширять реализацию без явной фазы и contract.
+**Текущая фаза:** P04 complete (public landing). `packages/{domain,db,policy}` scaffolded; `apps/workers` — ещё не создан. Следующая фаза: **P05** (catalog `/trainers`). Не расширять реализацию без явной фазы и contract.
