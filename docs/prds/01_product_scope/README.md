@@ -8,8 +8,11 @@
 
 | Document | Status |
 |----------|--------|
+| [`mvp_scope.md`](mvp_scope.md) | **Canonical** — MVP scope (migrated from `default_docs`) |
+| [`post_mvp_deferrals.md`](post_mvp_deferrals.md) | **Canonical** — Post-MVP deferrals + schema readiness |
+| [`pages_functional_spec.md`](pages_functional_spec.md) | **Canonical** — Page-level functional spec |
+| [`email_notifications_matrix.md`](email_notifications_matrix.md) | **Canonical** — Post-MVP email spec (DDL ready on MVP) |
 | [`user_flows/users_mvp/`](user_flows/users_mvp/) | **Migrated** — client, trainer, admin flows |
-| `mvp_scope.md` | Planned — migration from `default_docs/fitness-platform-mvp.md` |
 
 ## Interim archive (read-only until full migration)
 

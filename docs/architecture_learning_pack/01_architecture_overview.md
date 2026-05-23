@@ -39,13 +39,13 @@
 ### Контур B — Jobs
 
 На MVP:
-- **Vercel Cron** + serverless handlers
-- email через **Resend** (напоминания 24h, регистрация, booking confirmed)
-- обязательные **`idempotency_key`** + **`delivery_log`**
+- Таблицы **`job_execution`**, **`delivery_log`** в schema (готовность к email)
+- **Без** Resend, Cron email и записей delivery на MVP — см. [`mvp_scope.md`](../prds/01_product_scope/mvp_scope.md)
 
-Post-MVP при росте: очередь (SQS или аналог) — см. [ADR-001](../prds/07_governance/adr_001_stack_and_runtime.md).
+Post-MVP:
+- **Vercel Cron** + Resend + `idempotency_key` + `delivery_log` — [`email_notifications_matrix.md`](../prds/01_product_scope/email_notifications_matrix.md)
 
-**Правило:** никакой batch email / reminder logic в request path пользователя.
+**Правило:** никакой batch email / reminder logic в request path (актуально при включении post-MVP email).
 
 ---
 
@@ -73,7 +73,13 @@ packages/db       → Prisma, repositories
 
 Эталон реализации слоёв в lampto: account deletion flow — [`15_reference_account_deletion_layers_ru.md`](../examples/lampto/docs/architecture_learning_pack/15_reference_account_deletion_layers_ru.md).
 
-**Для Pulse:** booking lifecycle и trainer verification должны быть первыми flows с такой же структурой.
+**Для Pulse:** layer walkthroughs — learning pack W13:
+
+| Документ | Flow |
+|----------|------|
+| [`02_booking_lifecycle_layers.md`](./02_booking_lifecycle_layers.md) | Create / Confirm / Complete / Cancel booking |
+| [`03_trainer_verification_layers.md`](./03_trainer_verification_layers.md) | Submit / approve / reject / revoke trainer |
+| [`04_email_jobs_layers.md`](./04_email_jobs_layers.md) | Enqueue vs Cron worker (MVP schema-ready) |
 
 ---
 
@@ -85,7 +91,7 @@ packages/db       → Prisma, repositories
 Client UI → apps/web (BFF) → policy/server → domain (CreateBooking) → db → Neon
 ```
 
-Статус booking на MVP: **`pending`** (без оплаты). Email client + trainer через Resend job.
+Статус booking на MVP: **`pending`** (без оплаты). Обратная связь: **toast + in-app**; email E-06 — post-MVP.
 
 ### 5.2 Trainer schedule → Available slots
 
@@ -103,12 +109,14 @@ Register (multi-step) → TrainerProfile status=pending
 Admin approves → status=approved → public listing + booking enabled
 ```
 
-### 5.4 Email reminders (24h)
+### 5.4 Email reminders (24h) — post-MVP
 
 ```
 Vercel Cron → workers handler → domain (EnqueueReminders)
   → idempotency_key per booking+type → Resend → delivery_log
 ```
+
+Не реализуется на MVP; DDL `delivery_log` уже в schema.
 
 ---
 
@@ -144,15 +152,15 @@ MVP строится так, чтобы шаг был **механическим
 
 ---
 
-## 9) Следующие шаги (документация)
+## 9) Architecture Learning Pack (W13)
 
 | Документ | Задача |
 |----------|--------|
-| `prds/01_product_scope/mvp_scope.md` | Миграция MVP PRD |
-| `prds/03_data_model/database_schema_v1.md` | Канон схемы |
-| `prds/02_domain_model/lifecycle_models.md` | State machines |
-| `implementation/mvp/P01_*` | Scaffold monorepo |
-| Guidelines port | Из lampto с адаптацией Vercel |
+| [`02_booking_lifecycle_layers.md`](./02_booking_lifecycle_layers.md) | Слои booking mutations (P03) |
+| [`03_trainer_verification_layers.md`](./03_trainer_verification_layers.md) | Слои trainer moderation (P04–P05) |
+| [`04_email_jobs_layers.md`](./04_email_jobs_layers.md) | Web vs jobs contour (P06 post-MVP) |
+
+Дальше: [`implementation/mvp/phases_tasks_descriptions/P01_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) + contracts для активной фазы.
 
 ---
 
@@ -164,8 +172,12 @@ MVP строится так, чтобы шаг был **механическим
 | Карта архитектуры | [`architecture_master_index.md`](../prds/architecture_master_index.md) |
 | Agent entry | [`AGENTS.md`](../../AGENTS.md) |
 | Lampto reference | [`lampto_project_reference.md`](../reference/lampto_project_reference.md) |
-| ADR стека | [`adr_001_stack_and_runtime.md`](../prds/07_governance/adr_001_stack_and_runtime.md) |
+| [`authorization_matrix.md`](../prds/04_authorization_privacy/authorization_matrix.md) | Access control |
+| [`backend_requirements.md`](../prds/05_runtime/backend_requirements.md) | Runtime detail |
+| [`02_booking_lifecycle_layers.md`](./02_booking_lifecycle_layers.md) | Booking layer map |
+| [`03_trainer_verification_layers.md`](./03_trainer_verification_layers.md) | Verification layer map |
+| [`04_email_jobs_layers.md`](./04_email_jobs_layers.md) | Email jobs layer map |
 
 ---
 
-*Первый документ Architecture Learning Pack для Pulse. Обновлять при существенных архитектурных изменениях.*
+*Architecture Learning Pack для Pulse (01 overview + W13 layer walkthroughs). Обновлять при существенных архитектурных изменениях.*

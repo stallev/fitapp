@@ -559,3 +559,17 @@ Card — settings list:
 ### Feedback
 - Все мутации (бронирование, отзыв, отмена) → toast уведомление
 - Toast позиция: `fixed bottom-24 left-1/2 -translate-x-1/2` (выше Bottom Nav)
+
+---
+
+## Related documents
+
+| Document | Relationship |
+|----------|--------------|
+| [`pages_functional_spec.md`](../../pages_functional_spec.md) | Page-level behavior |
+| [`catalog_discovery_spec.md`](../../../../implementation/mvp/specs/catalog_discovery_spec.md) | Catalog & profile UX (W9) |
+| [`booking_wizard_spec.md`](../../../../implementation/mvp/specs/booking_wizard_spec.md) | Booking wizard UX (W9) |
+| [`global_shell_spec.md`](../../../../implementation/mvp/specs/global_shell_spec.md) | Client shell (W9) |
+| [`canonical_routes.md`](../../../../design/canonical_routes.md) | Route inventory |
+
+**Registry:** [`documentation_creation_registry.md`](../../../../meta/documentation_creation_registry.md) — user flow client

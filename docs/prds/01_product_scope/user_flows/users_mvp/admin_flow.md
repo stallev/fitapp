@@ -361,3 +361,17 @@ Admin преимущественно работает с desktop. Mobile — д�
 - Нет жалоб → зелёный «All clear» с CheckCircle
 - Нет pending trainers → нейтральный с объяснением
 - Нет pending refunds → позитивный
+
+---
+
+## Related documents
+
+| Document | Relationship |
+|----------|--------------|
+| [`pages_functional_spec.md`](../../pages_functional_spec.md) | Page-level behavior |
+| [`admin_verification_spec.md`](../../../../implementation/mvp/specs/admin_verification_spec.md) | Trainer queue UX (W9) |
+| [`complaint_refund_spec.md`](../../../../implementation/mvp/specs/complaint_refund_spec.md) | Complaints & refunds UX (W9) |
+| [`global_shell_spec.md`](../../../../implementation/mvp/specs/global_shell_spec.md) | Admin shell & badges (W9) |
+| [`canonical_routes.md`](../../../../design/canonical_routes.md) | Route inventory |
+
+**Registry:** [`documentation_creation_registry.md`](../../../../meta/documentation_creation_registry.md) — user flow admin

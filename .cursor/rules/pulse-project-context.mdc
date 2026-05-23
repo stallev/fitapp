@@ -28,7 +28,7 @@ When Pulse docs are silent — follow lampto **architecture and methodology**, a
 - **Hosting:** Vercel · **UI:** shadcn/ui + Tailwind CSS v4 (Warm Forest tokens)
 - **Database:** Neon **PostgreSQL 17** + **Prisma v7** (pooled `DATABASE_URL`, `DIRECT_URL` for migrations)
 - **Auth:** Auth.js v5, **Credentials** (email + password), JWT sessions, role in token
-- **Email:** Resend · **Storage:** Vercel Blob
+- **Email:** Resend — **post-MVP** (MVP: schema `job_execution`/`delivery_log` only) · **Storage:** Vercel Blob
 - **Monorepo:** `apps/web`, `apps/workers` (planned), `packages/{domain,policy,db}`
 
 Runtime policy: [ADR-001](docs/prds/07_governance/adr_001_stack_and_runtime.md), [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md).
@@ -48,7 +48,7 @@ Runtime policy: [ADR-001](docs/prds/07_governance/adr_001_stack_and_runtime.md),
 1. **`TrainerProfile.timezone`** — source of truth for schedule, slots, reminders, display
 2. **Booking state machine** — transitions only via documented use-cases (see future lifecycle PRD)
 3. **Trainer verification** — public profile live only when `status = approved`
-4. **Background jobs** — `idempotency_key` + `delivery_log`; no duplicate emails/notifications
+4. **Background jobs (post-MVP email)** — `idempotency_key` + `delivery_log`; MVP: tables in schema, no Resend/Cron sends
 5. **Post-MVP columns** — Stripe/Daily.co fields stay nullable until feature ships
 
 ## Where to find norms

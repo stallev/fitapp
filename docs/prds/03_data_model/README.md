@@ -7,8 +7,11 @@
 | Document | Status |
 |----------|--------|
 | [`database_schema_v1.md`](./database_schema_v1.md) | **Canonical** — DDL contract for Wave 1 MVP |
-| `data_access_patterns.md` | Planned |
-| `indexing_strategy.md` | Planned |
+| [`../02_domain_model/lifecycle_models.md`](../02_domain_model/lifecycle_models.md) | **Canonical** — state machines aligned with schema enums |
+| [`../02_domain_model/domain_invariants.md`](../02_domain_model/domain_invariants.md) | **Canonical** — INV rules including timezone |
+| [`data_access_patterns.md`](./data_access_patterns.md) | **Canonical** — hot path queries |
+| [`indexing_strategy.md`](./indexing_strategy.md) | **Canonical** — indexes for catalog, bookings, admin |
+| [`seed_data_spec.md`](./seed_data_spec.md) | **Canonical** — dev/CI seed fixtures |
 
 **Implementation:** `packages/db/prisma/schema.prisma` (on scaffold) must match `database_schema_v1.md`.
 

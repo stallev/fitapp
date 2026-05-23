@@ -95,7 +95,7 @@ monorepo/
 | `packages/domain` | `packages/db` | ❌ запрещено (domain — чистый) |
 | `packages/*` | `apps/*` | ❌ запрещено (одностороннее направление) |
 
-Детали: [`docs/examples/lampto/docs/implementation/mvp/monorepo_boundaries.md`](../examples/lampto/docs/implementation/mvp/monorepo_boundaries.md) — при scaffold Pulse создаётся локальная копия с адаптацией имён пакетов.
+Детали: [`monorepo_boundaries_contract.md`](../implementation/mvp/contracts/monorepo_boundaries_contract.md) (канон Pulse W8); паттерн — [`docs/examples/lampto/docs/implementation/mvp/monorepo_boundaries.md`](../examples/lampto/docs/implementation/mvp/monorepo_boundaries.md).
 
 ### 1.3 Ключевые инварианты системы Pulse
 
@@ -107,7 +107,7 @@ monorepo/
 
 3. **Trainer verification** — публичный профиль и приём бронирований только при `TrainerProfile.status = approved`. Pending/rejected — ограниченный UX (banner, no public listing).
 
-4. **Фоновые задачи идемпотентны**: повторный запуск по тому же `idempotency_key` молча пропускается (`delivery_log`).
+4. **Фоновые задачи идемпотентны (post-MVP email)**: повторный запуск по тому же `idempotency_key` молча пропускается (`delivery_log`). **MVP:** DDL `job_execution` / `delivery_log` без отправки писем.
 
 5. **Post-MVP readiness**: поля Stripe Connect и Daily.co в схеме — **nullable с первого дня**. Включение оплаты или video не должно требовать breaking DDL.
 
@@ -195,31 +195,35 @@ docs/implementation/mvp/
     └── P{N}_tasks.md
 ```
 
-Шаблон Phase Description — идентичен lampto (см. оригинал §2.5).
+Шаблон Phase Description — идентичен lampto (см. оригинал §2.5). **Канон фаз P01–P07:** [`documentation_creation_registry.md`](documentation_creation_registry.md) волна W11.
 
-**Планируемые фазы Pulse (черновик, уточняется в roadmap):**
+**Фазы Pulse (canonical):**
 
-| Фаза | Фокус |
-|------|-------|
-| P01 | Monorepo scaffold, Prisma, Auth.js, shell UI |
-| P02 | Public zone: landing, catalog, trainer profile |
-| P03 | Client: booking flow, bookings, reviews |
-| P04 | Trainer: profile, services, schedule, clients |
-| P05 | Admin: verification, complaints, refunds, reviews |
-| P06 | Email jobs (Resend), reminders, delivery_log |
-| P07+ | Hardening, guidelines port from lampto |
+| Фаза | Фокус | Phase doc | Tasks |
+|------|-------|-----------|-------|
+| P01 | Monorepo scaffold, Prisma, Auth.js, shell UI | [`P01_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) | [`P01_tasks.md`](../implementation/mvp/tasks/P01_tasks.md) |
+| P02 | Public zone: landing, catalog, trainer profile | [`P02_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P02_phase_description.md) | [`P02_tasks.md`](../implementation/mvp/tasks/P02_tasks.md) |
+| P03 | Client: booking flow, bookings, reviews | [`P03_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P03_phase_description.md) | [`P03_tasks.md`](../implementation/mvp/tasks/P03_tasks.md) |
+| P04 | Trainer: onboarding, profile, services, schedule, clients | [`P04_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P04_phase_description.md) | [`P04_tasks.md`](../implementation/mvp/tasks/P04_tasks.md) |
+| P05 | Admin: verification, complaints, refunds, reviews | [`P05_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P05_phase_description.md) | [`P05_tasks.md`](../implementation/mvp/tasks/P05_tasks.md) |
+| P06 | Email jobs (Resend), `delivery_log` — **post-MVP runtime** | [`P06_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P06_phase_description.md) | [`P06_tasks.md`](../implementation/mvp/tasks/P06_tasks.md) |
+| P07 | Hardening, a11y, UI states quality gate | [`P07_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P07_phase_description.md) | [`P07_tasks.md`](../implementation/mvp/tasks/P07_tasks.md) |
 
 ### 2.6 Contracts: язык между фазами
 
-Приоритетные contracts Pulse (создаются в следующих задачах):
+Канонические contracts Pulse (волна W8 — [`documentation_creation_registry.md`](documentation_creation_registry.md)):
 
-- `booking_lifecycle_contract.md`
-- `trainer_verification_contract.md`
-- `schedule_slots_contract.md`
-- `authorization_policy_contract.md`
-- `email_notifications_contract.md`
+- [`monorepo_boundaries_contract.md`](../implementation/mvp/contracts/monorepo_boundaries_contract.md)
+- [`authorization_policy_contract.md`](../implementation/mvp/contracts/authorization_policy_contract.md)
+- [`schedule_slots_contract.md`](../implementation/mvp/contracts/schedule_slots_contract.md)
+- [`booking_lifecycle_contract.md`](../implementation/mvp/contracts/booking_lifecycle_contract.md)
+- [`wishlist_contract.md`](../implementation/mvp/contracts/wishlist_contract.md)
+- [`trainer_verification_contract.md`](../implementation/mvp/contracts/trainer_verification_contract.md)
+- [`file_upload_contract.md`](../implementation/mvp/contracts/file_upload_contract.md)
+- [`review_moderation_contract.md`](../implementation/mvp/contracts/review_moderation_contract.md)
+- [`email_notifications_contract.md`](../implementation/mvp/contracts/email_notifications_contract.md)
 
-Формат — см. lampto §2.6 и §4.3.
+Формат — §2.3.4 реестра и lampto §4.3.
 
 ### 2.7 Guidelines: нормы реализации
 
@@ -259,7 +263,7 @@ docs/
 ├── guidelines/
 ├── design/
 │   ├── canonical_routes.md
-│   ├── styleguide.md              — (planned) из design system
+│   ├── styleguide.md              — Warm Forest component recipes (W7)
 │   └── wireframes/mvp/
 │
 ├── implementation/mvp/
@@ -271,8 +275,11 @@ docs/
 │
 ├── architecture_learning_pack/
 └── meta/
-    └── ai_first_project_methodology.md  — этот документ
+    ├── ai_first_project_methodology.md  — этот документ
+    └── documentation_creation_registry.md — порядок создания docs, волны, UX/UI, требования для агентов
 ```
+
+**План создания документов:** [`documentation_creation_registry.md`](./documentation_creation_registry.md) — канонический реестр волн W0–W14, backlinks, UX/UI contracts. Агент создаёт PRD/specs/contracts **строго по реестру**.
 
 ### 3.2 Иерархия источников истины
 
@@ -318,7 +325,8 @@ docs/
 
 | Тип | Pulse |
 |-----|-------|
-| PRD (interim) | [`fitness-platform-mvp.md`](../default_docs/fitness-platform-mvp.md) |
+| PRD MVP scope (canonical) | [`mvp_scope.md`](../prds/01_product_scope/mvp_scope.md) |
+| PRD (interim archive) | [`fitness-platform-mvp.md`](../default_docs/fitness-platform-mvp.md) |
 | User flows (canonical) | [`user_flows/users_mvp/client_flow.md`](../01_product_scope/user_flows/users_mvp/client_flow.md) и др. |
 | User flows (interim archive) | [`user-flow-client.md`](../default_docs/user-flow-client.md) и др. |
 | Design system (interim) | [`fitness-platform-design-system.md`](../default_docs/fitness-platform-design-system.md) |
@@ -335,6 +343,7 @@ docs/
 **Фундамент (до первой строки кода):**
 
 - [x] `docs/meta/ai_first_project_methodology.md` — этот документ
+- [x] `docs/meta/documentation_creation_registry.md` — реестр создания документации (волны, UX/UI, agent requirements)
 - [x] `docs/reference/lampto_project_reference.md` — референс lampto
 - [x] `docs/prds/architecture_master_index.md` — карта архитектуры
 - [x] `docs/prds/07_governance/adr_001_stack_and_runtime.md` — выбор стека (Vercel, Neon, …)
@@ -344,16 +353,34 @@ docs/
 - [x] `AGENTS.md` — точка входа monorepo
 - [x] `.cursor/rules/pulse-project-context.mdc` — always-applied контекст
 - [x] Структура каталогов monorepo + docs
-- [ ] `docs/prds/01_product_scope/mvp_scope.md` — миграция из default_docs
+- [x] `docs/prds/01_product_scope/mvp_scope.md` — миграция из default_docs (W1)
+- [x] `docs/prds/01_product_scope/post_mvp_deferrals.md` — post-MVP deferrals (W1)
+- [x] `docs/prds/01_product_scope/pages_functional_spec.md` — pages spec (W1)
+- [x] `docs/prds/01_product_scope/email_notifications_matrix.md` — email matrix (W1)
+- [x] `docs/prds/07_governance/adr_index.md` — ADR registry (W1)
+- [x] `docs/prds/07_governance/decision_process.md` — ADR process (W1)
 - [x] `docs/prds/03_data_model/database_schema_v1.md`
 - [x] `docs/prds/01_product_scope/user_flows/users_mvp/` — client, trainer, admin flows
-- [ ] `docs/prds/04_authorization_privacy/authorization_matrix.md`
+- [x] `docs/prds/02_domain_model/` — lifecycle, FM catalog, invariants, use cases (W3)
+- [x] `docs/prds/04_authorization_privacy/authorization_matrix.md` — role × resource (W5)
+- [x] `docs/prds/04_authorization_privacy/` + `05_runtime/` — full runtime/auth PRD (W5)
+- [x] `docs/prds/03_data_model/data_access_patterns.md` + supplements (W6)
+- [x] `docs/prds/07_governance/adr_003`–`adr_007` — domain ADRs (W4)
+- [x] UX contracts W2 + W7 — `docs/design/ux_ui_principles.md` … `styleguide.md`
+- [x] `docs/implementation/mvp/contracts/` — 9 core contracts (W8)
+- [x] `docs/implementation/mvp/specs/` — 8 implementation specs (W9)
+- [x] `docs/design/wireframes/mvp/` — 28 MVP wireframes (W10)
+- [x] `docs/prds/06_operations/` + implementation guides (W12)
+- [x] `docs/architecture_learning_pack/02`–`04` — layer walkthroughs (W13)
+- [x] **W14 final index sync** — `architecture_master_index`, PRD/design README, this checklist
 
-**Для первой сессии реализации (следующие задачи):**
+**Документация MVP-complete (2026-05-23).** Следующий шаг — **P01 implementation**, не новые PRD без явного scope change.
+
+**Для первой сессии реализации (P01):**
 
 - [x] `apps/web/AGENTS.md`
-- [ ] `docs/implementation/mvp/phases_tasks_descriptions/P01_phase_description.md`
-- [ ] `docs/implementation/mvp/tasks/P01_tasks.md`
+- [x] `docs/implementation/mvp/phases_tasks_descriptions/P01_phase_description.md` — P01–P07 (W11)
+- [x] `docs/implementation/mvp/tasks/P01_tasks.md` — P01–P07 task checklists (W11)
 - [ ] Monorepo scaffold (package.json, workspaces)
 
 **Guidelines (baseline ported):**
