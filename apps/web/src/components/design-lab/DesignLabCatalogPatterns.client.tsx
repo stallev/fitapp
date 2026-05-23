@@ -112,6 +112,7 @@ export function DesignLabCatalogPatterns() {
             days={SCHEDULE_DAYS_FIXTURE}
             slots={SCHEDULE_SLOTS_FIXTURE}
             activeDayId={activeDay}
+            selectedSlotId="t1"
             onDayChange={setActiveDay}
           />
         </PatternBlock>

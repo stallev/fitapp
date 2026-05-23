@@ -125,10 +125,11 @@
 
 ## Definition of done
 
-- [ ] Wizard per spec; no payment UI
-- [ ] FM-002 handled
-- [ ] Pending UI + redirect toast
-- [ ] Smoke + typecheck + lint pass
+- [x] Wizard per spec; no payment UI
+- [x] FM-001 handled (Serializable transaction + overlap)
+- [x] Pending UI + redirect toast
+- [x] typecheck + lint pass
+- [ ] Manual smoke (happy path, slot conflict, guest, double submit)
 
 ---
 
@@ -149,4 +150,5 @@
 
 ## Acceptance criteria
 
-- [ ] Booking E2E without payment
+- [x] Booking create flow without payment (code complete)
+- [ ] Manual E2E smoke verified locally

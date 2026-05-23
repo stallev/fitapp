@@ -1,8 +1,10 @@
 export {
   AUTH_MUTATION_ERROR_CODES,
+  BOOKING_MUTATION_ERROR_CODES,
   MUTATION_ERROR_CODES,
   WISHLIST_MUTATION_ERROR_CODES,
   type AuthMutationErrorCode,
+  type BookingMutationErrorCode,
   type MutationErrorCode,
   type WishlistMutationErrorCode,
 } from "./constants/mutation-error-codes";
@@ -65,6 +67,20 @@ export {
   type ToggleWishlistInput,
 } from "./schemas/toggle-wishlist";
 export {
+  createBookingInputSchema,
+  type CreateBookingInput,
+} from "./schemas/create-booking";
+export {
+  bookingOverlapsExisting,
+  buildBookingSnapshots,
+  isSlotAllowed,
+  validateCreateBookingSlot,
+  validateSlotNotInPast,
+  type BookingServiceSnapshotSource,
+  type BookingSnapshots,
+  type CreateBookingValidationError,
+} from "./booking/create-booking";
+export {
   type BookingOverlapInput,
   type DateRange,
   type GenerateAvailableSlotsInput,
@@ -75,5 +91,6 @@ export {
 export {
   generateAvailableSlots,
   getLocalDateRangeFromToday,
+  listLocalDatesFromToday,
 } from "./scheduling/generate-available-slots";
 export { formatTrainerTimezoneLabel } from "./scheduling/format-timezone-label";

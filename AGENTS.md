@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P06 complete (profile `/trainers/[id]` + wishlist). Профиль: tabs About/Services/Schedule/Reviews, sticky CTA, schedule preview с TZ label через `generateAvailableSlots` в `@pulse/domain`. Wishlist: optimistic heart (каталог + профиль), Class A transport `POST /api/client/wishlist` + shared DAL `toggleWishlist`. Каталог P05: URL filters, `'use cache'` tag `trainers:catalog`. Следующая фаза: **P07** (booking wizard).  
+**Текущая фаза:** P07 complete (booking wizard `/book/[trainerId]` + `createBooking` → `pending`, redirect `/client/bookings/[id]?booked=1` + toast, Class B iOS Safari transport). Wizard: 3 steps (Service → Slot → Confirm), `generateAvailableSlots`, FM-001 Serializable transaction, minimal booking detail page. Следующая фаза: **P08** (client bookings hub).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

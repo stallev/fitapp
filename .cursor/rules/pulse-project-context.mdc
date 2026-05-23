@@ -76,4 +76,4 @@ Full list: [`docs/guidelines/README.md`](docs/guidelines/README.md).
 
 ## Repository status
 
-**Текущая фаза:** P06 complete (profile `/trainers/[id]` + wishlist). Следующая фаза: **P07** (booking wizard). Не расширять реализацию без явной фазы и contract.
+**Текущая фаза:** P07 complete (booking wizard `/book/[trainerId]` + createBooking → pending). Следующая фаза: **P08** (client bookings hub). Не расширять реализацию без явной фазы и contract.

@@ -180,3 +180,25 @@ export function getLocalDateRangeFromToday(
   };
 }
 
+export function listLocalDatesFromToday(
+  timezone: string,
+  dayCount: number,
+  now = new Date(),
+): string[] {
+  const { fromLocalDate, toLocalDate } = getLocalDateRangeFromToday(
+    timezone,
+    dayCount,
+    now,
+  );
+  const dates: string[] = [];
+  let cursor = Temporal.PlainDate.from(fromLocalDate);
+  const toDate = Temporal.PlainDate.from(toLocalDate);
+
+  while (Temporal.PlainDate.compare(cursor, toDate) <= 0) {
+    dates.push(cursor.toString());
+    cursor = cursor.add({ days: 1 });
+  }
+
+  return dates;
+}
+
