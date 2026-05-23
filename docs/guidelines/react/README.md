@@ -25,7 +25,7 @@ Patterns for **Next.js 16.2.6 App Router**, **React 19**, **TypeScript**, **Tail
 | Document | Topic |
 |----------|--------|
 | [copy_and_messages.md](./copy_and_messages.md) | `@/lib/messages`, i18n-ready copy |
-| [ai_form_handling_pattern.md](./ai_form_handling_pattern.md) | Forms, Server Actions, busy UI §4 |
+| [ai_form_handling_pattern.md](./ai_form_handling_pattern.md) | Forms, Server Actions, busy UI §4, iOS Safari §7 |
 | [ai_optimistic_ui_pattern.md](./ai_optimistic_ui_pattern.md) | Wishlist, service toggle |
 | [ai_react_hooks_guidelines.md](./ai_react_hooks_guidelines.md) | Hooks for mutations/data |
 | [ai_react_utilities_guidelines.md](./ai_react_utilities_guidelines.md) | Pure helpers, no magic strings |
@@ -76,6 +76,7 @@ Patterns for **Next.js 16.2.6 App Router**, **React 19**, **TypeScript**, **Tail
 | `ui-toast-mutations.mdc` | Sonner success/error |
 | `ui-mutation-pending.mdc` | Busy controls |
 | `ui-optimistic-mutations.mdc` | `useOptimistic` |
+| `ios-safari-mutation-transport.mdc` | iOS Safari `Load failed` — critical forms |
 | `ui-messages-and-copy.mdc` | Centralized copy |
 | `ui-icons-lucide.mdc` | Icons |
 

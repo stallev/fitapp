@@ -29,7 +29,7 @@
 ## 2. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: CTA → `/trainers`
 - [ ] One primary CTA on page
 - [ ] **MUST NOT** implement `/trainers` catalog in this PR

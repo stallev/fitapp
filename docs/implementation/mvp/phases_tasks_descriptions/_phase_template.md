@@ -135,7 +135,7 @@ flowchart TD
 ## Definition of done
 
 - [ ] …
-- [ ] `npm run typecheck` + `npm run lint -w web`
+- [ ] `npm run typecheck` + `npm run lint` (root — `apps/web` + все `packages/*`)
 - [ ] Smoke checklist above passed
 - [ ] Design Lab spot-check for new **CREATE** components (390px, md, light/dark)
 

@@ -76,6 +76,24 @@ Full entity graph — [`seed_data_spec.md`](../../../prds/03_data_model/seed_dat
 
 ---
 
+## Local credentials JSON
+
+Для быстрого доступа к логинам без просмотра PRD — локальный файл **`apps/text_data/dev-users.json`** (gitignored).
+
+1. Создайте каталог `apps/text_data/` (если ещё нет).
+2. Скопируйте структуру из [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md) §Local credentials JSON.
+3. После `prisma db seed` используйте любую запись из `users[]` на `/auth/login`.
+
+| Field | Meaning |
+|-------|---------|
+| `role` | `admin` \| `client` \| `trainer` |
+| `email` | Fixture email (must match seed) |
+| `password` | Plain dev password (bcrypt in DB only) |
+
+**MUST NOT** коммитить файл — только локальная копия. Канон значений — [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md) §Fixture credentials; JSON содержит **3 роли**, полный seed — **6 пользователей**.
+
+---
+
 ## Re-run seed (idempotent)
 
 **SHOULD** be safe to run multiple times locally:
@@ -173,7 +191,7 @@ From [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md) §Smok
 - [ ] Fixture table matches seed_data_spec
 - [ ] Production guard mentioned
 - [ ] Smoke matrix linked to phases
-- [ ] INV-12 no delivery_log in seed
+- [ ] Local credentials JSON documented
 
 ---
 
@@ -182,3 +200,4 @@ From [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md) §Smok
 | Date | Change |
 |------|--------|
 | 2026-05-23 | v1.0 — seed & fixtures guide |
+| 2026-05-23 | §Local credentials JSON — `apps/text_data/dev-users.json` |

@@ -39,7 +39,7 @@ fitapp/
 │   └── db/                  # @pulse/db
 ```
 
-**Current status (P01):** `apps/web` shell; `packages/*` **not scaffolded** — rules apply at first package PR.
+**Current status (P01):** `apps/web` shell; `@pulse/domain` + `@pulse/db` scaffolded with Prisma v1 schema, initial migration, dev seed. `@pulse/policy-*` — placeholder until P02.
 
 ---
 
@@ -155,7 +155,8 @@ Root `package.json` workspaces **MUST** include:
 Scripts (root):
 
 - `npm run typecheck` — all workspaces
-- `npm run lint -w web` — web app
+- `npm run lint` — all workspaces (`apps/web` + `packages/*`)
+- `npm run lint:web` — web app only (optional shortcut)
 
 ---
 

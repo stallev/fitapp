@@ -38,7 +38,7 @@
 ## 3. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: full booking happy path
 - [ ] Smoke: slot conflict → error toast
 - [ ] Smoke: guest → login redirect

@@ -83,8 +83,8 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P01 (monorepo & data layer). W16 docs restructure complete — см. [`_migration_P01-P07_to_P01-P15.md`](docs/implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md).  
-`apps/web` — начальный Next.js shell; `packages/` и workers — ещё не созданы.  
+**Текущая фаза:** P01 complete (monorepo & data layer). `@pulse/domain` + `@pulse/db` scaffolded: Prisma schema v1, initial migration, dev seed. Следующая фаза: **P02** (auth & request guards).  
+`apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 
 ### Manual verification checklist (monorepo)

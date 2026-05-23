@@ -97,7 +97,8 @@ flowchart TD
 ## Happy path smoke
 
 1. `npm run typecheck` (root) — pass.
-2. `npx prisma migrate status` — applied.
+2. `npm run lint` (root — `apps/web` + все `packages/*`) — pass.
+3. `npx prisma migrate status` — applied.
 3. `npm run db:seed` (or equivalent) — admin, client, pending trainer rows.
 4. `@pulse/domain` imports work from `apps/web` typecheck (no runtime auth yet).
 
@@ -148,6 +149,7 @@ flowchart TD
 - [ ] Seed runs with all roles
 - [ ] Post-MVP columns present, unused in app
 - [ ] `npm run typecheck` pass
+- [ ] `npm run lint` pass (root — all workspaces)
 - [ ] Smoke checklist passed
 
 ---

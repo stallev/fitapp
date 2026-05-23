@@ -41,7 +41,7 @@
 ## 4. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: role shells render with nav
 - [ ] Smoke: `/design-system` 390px/md
 - [ ] **MUST NOT** import `design-lab/` in product routes

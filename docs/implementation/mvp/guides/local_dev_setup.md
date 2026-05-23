@@ -109,13 +109,15 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ### 6. Smoke login
 
-Use dev credentials from [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md):
+Use dev credentials from [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md) or локальный **`apps/text_data/dev-users.json`** (gitignored, см. [`seed_and_fixtures_guide.md`](./seed_and_fixtures_guide.md) §Local credentials JSON):
 
 | Email | Password | Role |
 |-------|----------|------|
 | `client@pulse.dev` | `client123` | client |
 | `admin@pulse.dev` | `admin123` | admin |
 | `anna@pulse.dev` | `trainer123` | trainer |
+
+**SHOULD** — создать `apps/text_data/dev-users.json` один раз после первого seed; значения **MUST** совпадать с seed_data_spec.
 
 **Expected:** redirect to role dashboard; no Prisma connection errors in terminal.
 
@@ -188,3 +190,4 @@ After setup, confirm:
 | Date | Change |
 |------|--------|
 | 2026-05-23 | v1.0 — local dev setup guide |
+| 2026-05-23 | Smoke login — ссылка на `apps/text_data/dev-users.json` |

@@ -17,6 +17,7 @@
 | **UI component catalog (Design Lab)** | [`../implementation/mvp/specs/design_system_lab_spec.md`](../implementation/mvp/specs/design_system_lab_spec.md) — `/design-system` |
 | UX interaction & style (canon) | [`../design/interaction_design_contract.md`](../design/interaction_design_contract.md), [`ui_states_contract.md`](../design/ui_states_contract.md), [`styleguide.md`](../design/styleguide.md) |
 | Accessibility (canon) | [`../design/accessibility_requirements.md`](../design/accessibility_requirements.md) |
+| **Incidents (mitigation patterns)** | [`../incidents/`](../incidents/) — iOS Safari Server Actions |
 
 ## Cursor rules (`.cursor/rules/`)
 
@@ -27,10 +28,11 @@
 | `typescript-monorepo-types.mdc` | Always applied — monorepo types |
 | `ai-dry-deduplication.mdc` | Always applied — DRY for agents |
 | `data-server-actions-and-api.mdc` | DAL, Actions vs Route Handlers |
+| `ios-safari-mutation-transport.mdc` | iOS Safari `Load failed` — Class A/B dual transport |
 | `policy-packages.mdc` | `@pulse/policy-*` boundaries |
 | `auth-security.mdc` | Auth.js, defense in depth |
 | `nextjs-vercel-app-router.mdc` | Next.js **16.2.6** + Vercel + **`proxy.ts`** |
-| `app-router-streaming-loading.mdc` | Suspense, `loading.tsx` |
+| `app-router-streaming-loading.mdc` | Suspense, `loading.tsx`, page performance (§4–§18) |
 | `vercel-blob-uploads.mdc` | FileAsset + Vercel Blob |
 | `admin-forms-layout.mdc` | Admin forms layout |
 | `patterns-tables-dnd.mdc` | Responsive tables |

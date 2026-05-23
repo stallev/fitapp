@@ -41,7 +41,7 @@
 ## 4. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: schedule save + invalid interval
 - [ ] Smoke: cross-trainer client denied
 - [ ] Smoke: complete booking → review eligible

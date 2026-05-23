@@ -2,13 +2,21 @@
 
 Shared monorepo packages — границы как в lampto.
 
-| Package | Назначение |
-|---------|------------|
-| `domain/` | Pure business rules, use-cases, ports |
-| `policy/edge/` | JWT-only checks for middleware |
-| `policy/server/` | Object-level ACL with Prisma |
-| `db/` | Prisma schema, repositories |
+| Package | Назначение | Статус |
+|---------|------------|--------|
+| `domain/` | Pure business rules, use-cases, ports | **P01** — types, guards, Zod DTOs |
+| `policy/edge/` | JWT-only checks for proxy | Placeholder (→ P02) |
+| `policy/server/` | Object-level ACL with Prisma | Placeholder (→ P02) |
+| `db/` | Prisma schema, client, seed | **P01** — schema v1, migrate, seed |
 
-**Статус:** каталоги зарезервированы, код не создан.
+**Reference:** [`docs/implementation/mvp/contracts/monorepo_boundaries_contract.md`](../docs/implementation/mvp/contracts/monorepo_boundaries_contract.md)
 
-**Reference:** [`docs/examples/lampto/docs/implementation/mvp/monorepo_boundaries.md`](../docs/examples/lampto/docs/implementation/mvp/monorepo_boundaries.md)
+**Commands (root):**
+
+```bash
+npm run db:migrate      # prisma migrate dev
+npm run db:seed         # dev fixtures
+npm run db:migrate:status
+npm run typecheck
+npm run lint
+```

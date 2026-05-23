@@ -18,24 +18,25 @@
 
 ## 1. Monorepo & packages
 
-- [ ] Root `package.json` workspaces: `apps/*`, `packages/*`
-- [ ] `@pulse/domain` — `UserRole`, `BookingStatus`, `MutationResult`, minimal Zod DTOs
-- [ ] `@pulse/db` — Prisma schema, client export, `directUrl` config
-- [ ] ESLint/tsconfig paths: `@pulse/*` aliases
+- [x] Root `package.json` workspaces: `apps/*`, `packages/*`
+- [x] `@pulse/domain` — `UserRole`, `BookingStatus`, `MutationResult`, minimal Zod DTOs
+- [x] `@pulse/db` — Prisma schema, client export, `directUrl` config
+- [x] ESLint/tsconfig paths: `@pulse/*` aliases
 
 ## 2. Database
 
-- [ ] Prisma schema matches [`database_schema_v1.md`](../../../prds/03_data_model/database_schema_v1.md)
-- [ ] `DATABASE_URL` (pooled) + `DIRECT_URL` in `.env.example`
-- [ ] Initial migration applied locally
-- [ ] Seed script: admin + client + pending trainer ([`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md))
-- [ ] Post-MVP columns present but **unused** in app code
+- [x] Prisma schema matches [`database_schema_v1.md`](../../../prds/03_data_model/database_schema_v1.md)
+- [x] `DATABASE_URL` (pooled) + `DIRECT_URL` in `.env.example`
+- [x] Initial migration applied locally
+- [x] Seed script: admin + client + pending trainer ([`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md))
+- [x] Post-MVP columns present but **unused** in app code
 
 ## 3. Verification
 
-- [ ] `npm run typecheck` (root)
-- [ ] Seed runs without duplicate email error ([FM-001](../../../prds/02_domain_model/failure_modes_catalog.md))
-- [ ] **MUST NOT** add Auth.js, proxy, or product routes in this PR
+- [x] `npm run typecheck` (root)
+- [x] `npm run lint` (root — `apps/web` + все `packages/*`)
+- [x] Seed runs without duplicate email error ([FM-001](../../../prds/02_domain_model/failure_modes_catalog.md))
+- [x] **MUST NOT** add Auth.js, proxy, or product routes in this PR
 
 ---
 

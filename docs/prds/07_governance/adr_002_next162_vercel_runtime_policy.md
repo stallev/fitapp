@@ -72,9 +72,11 @@ export default async function Page(props: {
 
 ---
 
-## 5. Decision — cache invalidation after mutations
+## 5. Decision — cache reads and invalidation (Next.js 16)
 
-Mutable flows must declare explicit invalidation (Next.js 16):
+**Cross-request cached reads:** use the **`'use cache'`** directive with **`cacheTag()`** and **`cacheLife()`** in `src/data/**`. **Do not add new `unstable_cache()`** — legacy API superseded in Next.js 16. Enable **`cacheComponents: true`** in `apps/web/next.config.ts` when implementing cached reads. Detail: [`ai_loading_patterns.md`](../../guidelines/nextjs/ai_loading_patterns.md) §8.
+
+**Post-mutation invalidation:**
 
 | API | When |
 |-----|------|
@@ -118,6 +120,7 @@ Do **not** use `unstable_after` for background email/jobs — use Vercel Cron + 
 - [ ] No `@pulse/policy-server` in `proxy.ts` / `middleware.ts`
 - [ ] Async `cookies` / `headers` / `params` / `searchParams`
 - [ ] Mutations use `updateTag` / `revalidateTag` / `revalidatePath` per scenario
+- [ ] New cross-request cached reads use **`'use cache'`** + `cacheTag()` — not `unstable_cache`
 - [ ] Background work → Cron/jobs, not `unstable_after`
 
 ---

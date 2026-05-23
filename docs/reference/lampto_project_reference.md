@@ -101,6 +101,15 @@ Queued account deletion (domain → db → policy → web composition):
 
 При переносе guideline — адаптировать примеры к Vercel, Credentials auth и Warm Forest design tokens.
 
+### Incidents (перенесено в Pulse)
+
+| Lampto | Pulse |
+|--------|-------|
+| [`docs/incidents/nextjs-server-actions-safari-load-failed.md`](../examples/lampto/docs/incidents/nextjs-server-actions-safari-load-failed.md) | [`docs/incidents/nextjs-server-actions-safari-load-failed.md`](../incidents/nextjs-server-actions-safari-load-failed.md) |
+| [`docs/incidents/safari-ios-load-failed-architecture-pattern.md`](../examples/lampto/docs/incidents/safari-ios-load-failed-architecture-pattern.md) | [`docs/incidents/ios-safari-mutation-transport-pattern.md`](../incidents/ios-safari-mutation-transport-pattern.md) |
+
+Cursor rule: **ios-safari-mutation-transport** · guidelines §7 in `ai_nextjs_db_data_handle.md` / `ai_form_handling_pattern.md`.
+
 ---
 
 ## Правило для AI-агентов

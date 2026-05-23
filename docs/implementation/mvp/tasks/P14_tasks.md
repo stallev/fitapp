@@ -45,7 +45,7 @@
 ## 5. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Manual keyboard smoke recorded
 
 ---

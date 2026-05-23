@@ -18,7 +18,7 @@
 /apps/**/.next/
 /apps/**/out/
 
-# text data
+# text data — local dev credentials (see seed_data_spec §Local credentials JSON)
 /apps/**/text_data/
 
 # production

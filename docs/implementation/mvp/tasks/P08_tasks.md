@@ -37,7 +37,7 @@
 ## 4. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: cancel happy path
 - [ ] Smoke: IDOR other user's booking → denied
 - [ ] Smoke: empty bookings state

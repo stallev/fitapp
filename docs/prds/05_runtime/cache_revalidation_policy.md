@@ -12,7 +12,7 @@
 
 ## Purpose
 
-Политика **кэширования и инвалидации** Pulse на Next.js 16.2.6: когда использовать `updateTag`, `revalidateTag`, `revalidatePath`; tag naming; связь с mutable flows и drift guards ([`domain_invariants.md`](../02_domain_model/domain_invariants.md) INV-03 catalog approval).
+Политика **кэширования и инвалидации** Pulse на Next.js 16.2.6: **`'use cache'`** + `cacheTag()` / `cacheLife()` для cross-request reads; `updateTag`, `revalidateTag`, `revalidatePath` после мутаций; tag naming; drift guards ([`domain_invariants.md`](../02_domain_model/domain_invariants.md) INV-03 catalog approval).
 
 Context7 verified (`/vercel/next.js/v16.2.2`): Server Actions use `updateTag` for read-your-own-writes; `revalidatePath` for route-scoped refresh; combine with tags for cross-route consistency.
 
@@ -20,9 +20,11 @@ Context7 verified (`/vercel/next.js/v16.2.2`): Server Actions use `updateTag` fo
 
 ## Scope / Out of scope
 
-**In scope:** App Router cache tags, post-mutation invalidation, public catalog caching strategy, stale trainer approval guard.
+**In scope:** App Router cache tags, **`'use cache'`** read functions with `cacheTag()` / `cacheLife()`, post-mutation invalidation, public catalog caching strategy, stale trainer approval guard.
 
-**Out of scope:** CDN edge config detail, `use cache` / PPR advanced patterns (future ADR), client-side SWR libraries.
+**Out of scope:** CDN edge config detail, full PPR layout composition recipes, client-side SWR libraries.
+
+**Legacy:** Do **not** introduce new **`unstable_cache()`** — Next.js 16 uses the **`'use cache'`** directive ([`ai_loading_patterns.md`](../../guidelines/nextjs/ai_loading_patterns.md) §8).
 
 ---
 
@@ -30,11 +32,16 @@ Context7 verified (`/vercel/next.js/v16.2.2`): Server Actions use `updateTag` fo
 
 | API | Semantics (Next.js 16) | Primary use in Pulse |
 |-----|------------------------|----------------------|
-| `updateTag(tag)` | Next request waits for fresh tagged data | Server Actions after own mutation |
-| `revalidateTag(tag)` | Stale-while-revalidate for tagged data | Route Handlers, background refresh |
-| `revalidatePath(path)` | Invalidate specific route segment | Redirect targets, layout-scoped lists |
+| **`'use cache'`** | Cross-request function/component cache (replaces `unstable_cache`) | Public catalog, trainer profile reads in `src/data/**` |
+| **`cacheTag(tag)`** | Tag cached `'use cache'` output | Inside cached read functions — must match tag registry below |
+| **`cacheLife(profile \| opts)`** | TTL / revalidate for `'use cache'` | Safety net; `updateTag` after mutations is primary |
+| **`updateTag(tag)`** | Next request waits for fresh tagged data | Server Actions after own mutation |
+| **`revalidateTag(tag)`** | Stale-while-revalidate for tagged data | Route Handlers, background refresh |
+| **`revalidatePath(path)`** | Invalidate specific route segment | Redirect targets, layout-scoped lists |
 
-**MUST NOT** use `unstable_after` for cache/email side effects ([ADR-002](../07_governance/adr_002_next162_vercel_runtime_policy.md)).
+**Config:** `cacheComponents: true` in `apps/web/next.config.ts` when using `'use cache'` (see [`ai_loading_patterns.md`](../../guidelines/nextjs/ai_loading_patterns.md) §8).
+
+**MUST NOT** use `unstable_after` for cache/email side effects ([ADR-002](../07_governance/adr_002_next162_vercel_runtime_policy.md)). **MUST NOT** add new **`unstable_cache()`** — use **`'use cache'`** instead.
 
 ---
 
@@ -144,7 +151,7 @@ User sees approved trainer on next navigation without stale catalog ([INV-03](..
 | Over-revalidate entire site | Prefer granular tags |
 | Cached pending trainer visible | Catalog query filter + tag bust on approval |
 
-Pair with [`ai_loading_patterns.md`](../../guidelines/nextjs/ai_loading_patterns.md): route loading via Suspense; cache separate from mutation pending UI.
+Pair with [`ai_loading_patterns.md`](../../guidelines/nextjs/ai_loading_patterns.md): route loading via Suspense; streaming shell and page performance (§4–§16); cache separate from mutation pending UI.
 
 ---
 
@@ -207,3 +214,4 @@ Pair with [`ai_loading_patterns.md`](../../guidelines/nextjs/ai_loading_patterns
 | Date | Change |
 |------|--------|
 | 2026-05-23 | v1.0 — MVP cache revalidation policy |
+| 2026-05-23 | v1.1 — `'use cache'` / `cacheTag()` / `cacheLife()` in scope; `unstable_cache` legacy ban |

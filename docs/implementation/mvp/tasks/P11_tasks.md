@@ -31,7 +31,7 @@
 ## 3. Verification
 
 - [ ] `npm run typecheck`
-- [ ] `npm run lint -w web`
+- [ ] `npm run lint`
 - [ ] Smoke: service CRUD
 - [ ] Smoke: MIME/size upload errors
 - [ ] **MUST NOT** schedule editor (→ P12)

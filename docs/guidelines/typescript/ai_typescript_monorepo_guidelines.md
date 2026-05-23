@@ -16,7 +16,7 @@
 
 ```bash
 npm run typecheck          # root — every workspace
-npm run lint -w web
+npm run lint               # root — apps/web + all packages/*
 npm run test:domain        # when touching @pulse/domain
 ```
 
