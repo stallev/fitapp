@@ -15,6 +15,10 @@ export const PROTOTYPE_REFS: Record<string, PrototypeRef> = {
   media: { screenId: "c.catalog", note: "RatingStars, chips, PhotoSlot, Avatar, Tabs pill" },
   patterns: { screenId: "mixed", note: "Composed blocks from styleguide" },
   "catalog-patterns": { screenId: "c.book", note: "SectionHeader, ChoiceCard, SchedulePicker, SummaryCard" },
+  marketing: {
+    screenId: "/",
+    note: "Pulse Landing Page standalone — P16 marketing patterns",
+  },
   "pattern-cta": { screenId: "c.book" },
   "pattern-kpi": { screenId: "t.home" },
   "pattern-booking": { screenId: "c.bookings" },

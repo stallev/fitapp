@@ -2,7 +2,7 @@
 
 **Тип:** Implementation matrix  
 **Статус:** Canonical  
-**Версия:** 2.0  
+**Версия:** 2.1  
 **Дата:** 2026-05-25  
 **Волна:** W22  
 **Источник:** [`design_system_lab_spec.md`](specs/design_system_lab_spec.md) § Component inventory  
@@ -225,24 +225,61 @@
 
 ## P16 — Public Landing v2
 
+**Composition rule:** `components/landing/*` = thin route modules; markup from catalog only. **Design Lab:** `/design-system` → `#marketing`.
+
+### CREATE — shared catalog (L3 Marketing)
+
 | Component | Action | Route | Notes |
 |-----------|--------|-------|-------|
-| `LandingNav` | CREATE | `/` | Fixed nav + scroll backdrop |
-| `LandingHero`, `LandingHeroFloatCard` | CREATE | `/` | Split hero; cards hidden `< lg` |
-| `LandingTrustBar` | CREATE | `/` | Animated stats; reduced-motion guard |
-| `LandingHowItWorks` | CREATE | `/` | `#how` |
-| `LandingSpecialtyPills` | CREATE | `/` | Links → `/trainers` |
-| `LandingFeaturedTrainers*` | CREATE | `/` | Suspense; approved-only |
-| `LandingTestimonials` | CREATE | `/` | Static MVP |
-| `LandingForTrainers` | CREATE | `/` | Dark section |
-| `LandingFaq` | CREATE | `/` | Accordion client |
-| `LandingFinalCta` | CREATE | `/` | Dual CTAs |
-| `LandingFooter` | CREATE | `/` | |
-| P04 `LandingHero`, `LandingValueProps`, `LandingCategoryChips`, legacy featured/footer | **DELETE** | — | Full replace per P16 |
-| `TweaksPanel` (prototype) | MUST NOT | — | Dev-only in HTML prototype |
-| `Button`, `CustomLink`, typography atoms, `Skeleton`, `Empty` | USE | `/` | Design Lab catalog |
+| `SectionEyebrow` | CREATE | catalog | `components/atoms/SectionEyebrow/` |
+| `Container` variant `marketing` | CREATE | catalog | `components/ui/container.tsx` |
+| `MarketingSectionHeader` | CREATE | catalog | Center / left align; optional `Reveal` |
+| `TrustFeaturePill` | CREATE | catalog | Hero micro-badges |
+| `StepCard` | CREATE | catalog | How-it-works |
+| `DiscoveryPill` | CREATE | catalog | Specialty links |
+| `TestimonialCard` | CREATE | catalog | Reviews |
+| `StatMetricCell`, `StatsBar` | CREATE | catalog | Trust bar; `useCountUp` |
+| `BenefitRow`, `DarkStatTile` | CREATE | catalog | For-trainers section |
+| `BrandSection`, `CtaBand` | CREATE | catalog | Dark band + final CTA |
+| `Reveal`, `MarketingAccordion` | CREATE | catalog | Motion + FAQ |
+| `FeaturedTrainerCard` | CREATE | catalog | `components/catalog/` — vertical marketing card (≠ `TrainerCard`) |
+| `DesignLabMarketing*` | CREATE | `/design-system` | Showcase only — **MUST NOT** import in product |
 
-**Spec:** [`public_landing_spec.md`](specs/public_landing_spec.md) · **Prototype:** [`Pulse Landing Page -Standalone-.html`](../../prototypes/Pulse Landing Page -Standalone-.html)
+### CREATE — route composition (`components/landing/`)
+
+| Component | Action | Route | Notes |
+|-----------|--------|-------|-------|
+| `LandingNav` | CREATE | `/` | Client; `useLandingScrolled`; fixed `h-[72px]` |
+| `LandingHero`, `LandingHeroFloatCard` | CREATE | `/` | Split hero; float cards hidden `< lg`; fixture `lib/landing/landing-hero-float-cards.ts` |
+| `LandingTrustBar` | CREATE | `/` | Wraps `StatsBar`; `lib/landing/landing-trust-metrics.ts` |
+| `LandingHowItWorks` | CREATE | `/` | `#how` |
+| `LandingSpecialtyPills` | CREATE | `/` | `DiscoveryPill` → `/trainers?specialty=` |
+| `LandingFeaturedTrainers` | CREATE | `/` | Server + Suspense; approved-only; limit 3 |
+| `LandingFeaturedTrainersSkeleton` | CREATE | `/` | Vertical featured-card skeleton |
+| `LandingFeaturedTrainersEmpty` | CREATE | `/` | `Empty` + CTA |
+| `LandingFeaturedTrainersError` | CREATE | `/` | `Alert` + retry |
+| `LandingFeaturedTrainersRetryButton` | CREATE | `/` | Client refresh |
+| `LandingTestimonials` | CREATE | `/` | `#reviews` |
+| `LandingForTrainers` | CREATE | `/` | Dark `BrandSection` |
+| `LandingFaq` | CREATE | `/` | Client; `MarketingAccordion` · `#faq` |
+| `LandingFinalCta` | CREATE | `/` | `CtaBand` dual CTAs |
+| `LandingFooter` | CREATE | `/` | |
+| `(marketing)/layout`, `(marketing)/auth/layout` | CREATE | layout | Minimal shell on `/`; `PublicChrome` on `/auth/*` |
+
+### USE / KEEP / DELETE
+
+| Component | Action | Route | Notes |
+|-----------|--------|-------|-------|
+| `Button`, `CustomLink`, typography atoms | USE | `/` | |
+| `RatingStars`, `VerifiedBadge`, `SpecChip`, `PhotoSlot`, `PulseCard` | USE | `/` | Featured + float cards |
+| `Skeleton`, `Empty`, `Alert` | USE | `/` | Featured states |
+| `LandingAuthenticatedRedirect` | KEEP | `/` | Role home redirect |
+| `LandingValueProps`, `LandingCategoryChips`, `SiteFooter` | **DELETE** | — | P04-only |
+| `FeaturedTrainersSkeleton`, `FeaturedTrainersRetryButton` | **DELETE** | — | Replaced by `LandingFeaturedTrainers*` |
+| `TweaksPanel` (prototype) | MUST NOT | — | Dev-only in HTML prototype |
+| `@/components/design-lab/**` | MUST NOT | product | Showcase only |
+
+**Spec:** [`public_landing_spec.md`](specs/public_landing_spec.md) · **Phase:** [`P16_phase_description.md`](phases_tasks_descriptions/P16_phase_description.md) · **Prototype:** [`Pulse Landing Page -Standalone-.html`](../../prototypes/Pulse Landing Page -Standalone-.html)
 
 ---
 
@@ -298,7 +335,7 @@ Available from P03 onward unless phase table says **MUST NOT**:
 
 | Layer | Examples |
 |-------|----------|
-| Atoms | `Heading`, `SectionTitle`, `ContentText`, `AlertText` |
+| Atoms | `Heading`, `SectionTitle`, `ContentText`, `AlertText`, `SectionEyebrow` (P16+) |
 | UI | `Button`, `CustomLink`, `PulseCard`, `Container`, `Skeleton`, `Empty` |
 | Shell | `AppShell`, nav components (P03+) |
 | Messages | `@/lib/messages`, `product-toast.ts` |

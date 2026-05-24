@@ -36,7 +36,7 @@ Implementation-spec экрана **`/trainer/schedule`**: weekly intervals edito
 | **Exceptions** | `UpsertScheduleException`, delete exception |
 | **Day switch** | Enable/disable all intervals for weekday |
 
-Display line: `UTC+3 · Moscow` from `trainer_profile.timezone` (local label helper).
+Display line: `UTC−5 · New York` from `trainer_profile.timezone` (local label helper).
 
 ---
 

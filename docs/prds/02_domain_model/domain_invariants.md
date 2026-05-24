@@ -40,7 +40,7 @@
 
 | ID | Rule | Enforcement | Drift guard |
 |----|------|-------------|-------------|
-| **INV-01** | **`TrainerProfile.timezone` (IANA)** — единственный источник истины для weekly schedule, slot generation, reminders (post-MVP), display клиенту | `packages/domain` slot functions; never `Intl` default server TZ | [`FM-009`](./failure_modes_catalog.md#fm-009); unit tests with `Europe/Moscow` vs `America/New_York` |
+| **INV-01** | **`TrainerProfile.timezone` (IANA)** — единственный источник истины для weekly schedule, slot generation, reminders (post-MVP), display клиенту | `packages/domain` slot functions; never `Intl` default server TZ | [`FM-009`](./failure_modes_catalog.md#fm-009); unit tests with `America/New_York` vs `Europe/Berlin` |
 | **INV-02** | Slot boundaries computed in trainer local calendar, stored as `timestamptz` UTC in `booking.starts_at` | Domain converts local → UTC on write; UTC → local on read | Compare golden fixtures in CI |
 
 ### Trainer verification & catalog

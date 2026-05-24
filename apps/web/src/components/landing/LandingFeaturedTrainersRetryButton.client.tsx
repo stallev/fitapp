@@ -6,7 +6,7 @@ import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { MESSAGES } from "@/lib/messages";
 
-export function FeaturedTrainersRetryButton() {
+export function LandingFeaturedTrainersRetryButton() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 

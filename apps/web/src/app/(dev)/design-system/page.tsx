@@ -3,6 +3,7 @@ import { DesignLabShell } from "@/components/design-lab/DesignLabControls.client
 import { DesignLabButtons } from "@/components/design-lab/DesignLabButtons";
 import { DesignLabCards } from "@/components/design-lab/DesignLabCards";
 import { DesignLabCatalogPatterns } from "@/components/design-lab/DesignLabCatalogPatterns.client";
+import { DesignLabMarketing } from "@/components/design-lab/DesignLabMarketing.client";
 import { DesignLabForms } from "@/components/design-lab/DesignLabForms.client";
 import { DesignLabLinks } from "@/components/design-lab/DesignLabLinks";
 import { DesignLabModals } from "@/components/design-lab/DesignLabModals.client";
@@ -31,6 +32,7 @@ export default function DesignSystemPage() {
         <DesignLabMedia />
         <DesignLabPatterns />
         <DesignLabCatalogPatterns />
+        <DesignLabMarketing />
       </Container>
     </DesignLabShell>
   );

@@ -132,13 +132,13 @@ Operational how-to: [`seed_and_fixtures_guide.md`](../../implementation/mvp/guid
 | sofia@pulse.dev | — | — | — | avatar (seed URL) |
 | max@pulse.dev | — | — | — | null |
 | nina@pulse.dev | — | — | — | null |
-| anna@pulse.dev | `approved` | `Europe/Moscow` | yoga, pilates | seed URL |
-| dmitry@pulse.dev | `approved` | `Europe/Moscow` | strength, hiit | null |
+| anna@pulse.dev | `approved` | `Europe/Berlin` | yoga, pilates | seed URL |
+| dmitry@pulse.dev | `approved` | `America/Chicago` | strength, hiit | null |
 | maria@pulse.dev | `approved` | `America/New_York` | pilates, stretching | seed URL |
-| ivan@pulse.dev | `approved` | `Europe/Moscow` | hiit, strength | null |
+| ivan@pulse.dev | `approved` | `Europe/London` | hiit, strength | null |
 | elena@pulse.dev | `approved` | `Europe/Berlin` | yoga, stretching | seed URL |
-| sergey@pulse.dev | `approved` | `Europe/Moscow` | strength | null |
-| pending@pulse.dev | `pending` | `Europe/Moscow` | yoga | null |
+| sergey@pulse.dev | `approved` | `America/Los_Angeles` | strength | null |
+| pending@pulse.dev | `pending` | `Europe/Paris` | yoga | null |
 
 **Approved trainers MUST have:**
 

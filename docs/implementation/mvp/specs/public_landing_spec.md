@@ -191,13 +191,13 @@ Typography: `font-heading` (DM Serif Display) for display titles; `font-sans` (D
 
 ## Acceptance criteria (spec-level)
 
-- [ ] PL-MUST-1: Section order matches §Section order
-- [ ] PL-MUST-2: All CTAs resolve to canonical routes
-- [ ] PL-MUST-3: Featured trainers approved-only
-- [ ] PL-MUST-4: P04 landing components removed
-- [ ] PL-MUST-5: RU copy via `@/lib/messages`
-- [ ] PL-MUST-6: No Tweaks Panel in production
-- [ ] PL-MUST-7: FAQ + motion meet **ui-semantics-a11y**
+- [x] PL-MUST-1: Section order matches §Section order
+- [x] PL-MUST-2: All CTAs resolve to canonical routes
+- [x] PL-MUST-3: Featured trainers approved-only (`TRAINER_STATUS.APPROVED`, limit 3)
+- [x] PL-MUST-4: P04 landing components removed
+- [x] PL-MUST-5: RU copy via `@/lib/messages`
+- [x] PL-MUST-6: No Tweaks Panel in production
+- [x] PL-MUST-7: FAQ + motion meet **ui-semantics-a11y** (`prefers-reduced-motion` on Reveal + StatsBar)
 
 ---
 
@@ -218,5 +218,6 @@ Typography: `font-heading` (DM Serif Display) for display titles; `font-sans` (D
 
 | Date | Change |
 |------|--------|
+| 2026-05-25 | v2.1 — PL-MUST acceptance criteria verified (P16 completion) |
 | 2026-05-25 | v2.0 — P16 landing v2 spec; standalone prototype as visual source |
 | 2026-05-23 | v1.0 — implicit in catalog_discovery_spec + P04 (superseded structurally) |

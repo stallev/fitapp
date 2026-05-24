@@ -160,7 +160,7 @@ Desktop: md:grid-cols-2 xl:grid-cols-3
 ```
 ┌────────────────────────────────────────────────┐
 │ [Avatar md]  Sergey Ivanov                     │
-│              sergey@mail.ru                    │
+│              sergey@pulse.dev                    │
 │              [Strength] [HIIT]  ← spec chips   │
 │                                                │
 │ Submitted: 5 days ago     ⏱ waiting 5 days    │
@@ -178,7 +178,7 @@ Desktop: md:grid-cols-2 xl:grid-cols-3
 Trainer application
 ─────────────────────────────────
 [Avatar lg]  Sergey Ivanov
-             sergey@mail.ru
+             sergey@pulse.dev
              [Pending review]  ← badge
 
 Documents

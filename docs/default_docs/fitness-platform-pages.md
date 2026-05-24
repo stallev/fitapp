@@ -475,7 +475,7 @@ Right (360px, sticky top-24):
 ```
 Все breakpoints — одна структура:
 
-[This week  UTC+3]
+[This week  UTC−5]
 
 Horizontal scroll days:
   [Mon]-[Tue]-[Wed]-[Thu]-[Fri]-[Sat]-[Sun]

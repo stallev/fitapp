@@ -420,11 +420,11 @@ const SPECS = [
 ];
 
 const TRAINERS = [
-  { id:"t1", name:"Anna Romanova",   tagline:"Hatha · Vinyasa · Mindfulness", specs:["Yoga","Pilates","Stretching"], rating:4.9, reviews:124, price:40, exp:8, verified:true, city:"Moscow", bio:"Certified yoga teacher (RYT-500). I work with posture, breathing and stress recovery. My approach is gentle, mindful, never forceful." },
+  { id:"t1", name:"Anna Romanova",   tagline:"Hatha · Vinyasa · Mindfulness", specs:["Yoga","Pilates","Stretching"], rating:4.9, reviews:124, price:40, exp:8, verified:true, city:"New York", bio:"Certified yoga teacher (RYT-500). I work with posture, breathing and stress recovery. My approach is gentle, mindful, never forceful." },
   { id:"t2", name:"Dmitry Sokolov", tagline:"Strength · Hypertrophy · Powerbuilding", specs:["Strength","HIIT","Functional"], rating:4.8, reviews:88,  price:55, exp:10, verified:true, city:"St. Petersburg", bio:"Strength coach. Powerlifting Master of Sport candidate. I help you build mass or prepare for competition. Programs strictly tailored to goals." },
   { id:"t3", name:"Maria Lebedeva",   tagline:"Pilates · Therapeutic training", specs:["Pilates","Stretching"], rating:4.95, reviews:201, price:50, exp:12, verified:true, city:"Kazan", bio:"Rehab specialist + Pilates instructor. I work with back pain, scoliosis, post-partum. We move slowly and precisely." },
-  { id:"t4", name:"Igor Severov",   tagline:"HIIT · Fat burning · CrossFit", specs:["HIIT","Cardio"], rating:4.7, reviews:65, price:35, exp:6, verified:true, city:"Moscow", bio:"High-intensity intervals, jump series, metabolic protocols. Best if you value short, dense workouts." },
-  { id:"t5", name:"Elena Timchenko",   tagline:"Barre · Stretching · Dance", specs:["Stretching","Pilates"], rating:4.85, reviews:142, price:45, exp:9, verified:false, city:"Moscow", bio:"Former ballerina. Barre, stretching, spine relief. I teach you to carry yourself beautifully and move with ease." },
+  { id:"t4", name:"Igor Severov",   tagline:"HIIT · Fat burning · CrossFit", specs:["HIIT","Cardio"], rating:4.7, reviews:65, price:35, exp:6, verified:true, city:"New York", bio:"High-intensity intervals, jump series, metabolic protocols. Best if you value short, dense workouts." },
+  { id:"t5", name:"Elena Timchenko",   tagline:"Barre · Stretching · Dance", specs:["Stretching","Pilates"], rating:4.85, reviews:142, price:45, exp:9, verified:false, city:"New York", bio:"Former ballerina. Barre, stretching, spine relief. I teach you to carry yourself beautifully and move with ease." },
   { id:"t6", name:"Artem Karpov",    tagline:"Boxing · Cardio · Combat sports", specs:["Cardio","HIIT"], rating:4.6, reviews:54, price:38, exp:7, verified:true, city:"Yekaterinburg", bio:"Boxing Master of Sport candidate. Punch technique, footwork, aerobic base. Sparring optional." },
 ];
 
@@ -444,9 +444,9 @@ const CLIENTS = [
 ];
 
 const APPLICATIONS = [
-  { id:"a1", name:"Sergey Ivanov",  email:"sergey@mail.ru",  submitted:"5 days ago", specs:["Strength","HIIT"] },
-  { id:"a2", name:"Yulia Orlova",    email:"yulia@mail.ru",   submitted:"3 days ago",   specs:["Yoga","Pilates"] },
-  { id:"a3", name:"Timur Bakiev",   email:"timur@mail.ru",   submitted:"yesterday",         specs:["Boxing","Cardio"] },
+  { id:"a1", name:"Sergey Ivanov",  email:"sergey@pulse.dev",  submitted:"5 days ago", specs:["Strength","HIIT"] },
+  { id:"a2", name:"Yulia Orlova",    email:"yulia@pulse.dev",   submitted:"3 days ago",   specs:["Yoga","Pilates"] },
+  { id:"a3", name:"Timur Bakiev",   email:"timur@pulse.dev",   submitted:"yesterday",         specs:["Boxing","Cardio"] },
 ];
 
 const COMPLAINTS = [
@@ -1176,7 +1176,7 @@ function ScheduleGrid({ onPick }) {
     <Card className="p-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-display text-[18px]">This week</h3>
-        <div className="text-[11px] text-ink-2 font-mono">UTC+3</div>
+        <div className="text-[11px] text-ink-2 font-mono">UTC−5</div>
       </div>
       <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-4 px-4 pb-1">
         {days.map((d,i) => (
@@ -1449,7 +1449,7 @@ function ClientProfileScreen() {
         <Avatar name="Alyona Sokolova" size="lg"/>
         <div className="flex-1">
           <div className="font-display text-[19px]">Alyona Sokolova</div>
-          <div className="text-[12px] text-ink-2">alyona@mail.ru</div>
+          <div className="text-[12px] text-ink-2">alyona@example.com</div>
         </div>
         <Button variant="outlined" size="icon-sm"><I.Edit size={16}/></Button>
       </Card>
@@ -1562,7 +1562,7 @@ function TrainerSchedule() {
     <div className="space-y-4 pb-6 md:max-w-4xl">
       <header>
         <h1 className="font-display text-[26px] md:text-[36px] leading-tight">Working schedule</h1>
-        <p className="text-[12.5px] text-ink-2 mt-1">UTC+3 · Moscow</p>
+        <p className="text-[12.5px] text-ink-2 mt-1">UTC−5 · New York</p>
       </header>
       <Tabs value={mode} onChange={setMode} tabs={[
         { value:"regular",   label:"Regular" },

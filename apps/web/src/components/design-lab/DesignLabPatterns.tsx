@@ -78,7 +78,7 @@ export function DesignLabPatterns() {
                 },
                 {
                   label: "Income",
-                  value: "₽48k",
+                  value: "$48k",
                   tone: "success" as const,
                   Icon: StarIcon,
                 },

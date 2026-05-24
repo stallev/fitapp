@@ -1,14 +1,20 @@
-import { TrainerCard } from "@/components/catalog/TrainerCard";
+import Link from "next/link";
+import { ArrowRightIcon } from "lucide-react";
+
+import { FeaturedTrainerCard } from "@/components/catalog/FeaturedTrainerCard";
 import { getFeaturedTrainers } from "@/data/catalog/get-featured-trainers.server";
-import { SectionHeader } from "@/components/ui/SectionHeader";
+import { Button } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
+import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
+import { Reveal } from "@/components/ui/Reveal.client";
 import { MESSAGES } from "@/lib/messages";
 
 import { LandingFeaturedTrainersEmpty } from "./LandingFeaturedTrainersEmpty";
 import { LandingFeaturedTrainersError } from "./LandingFeaturedTrainersError";
 
-const ABOVE_FOLD_IMAGE_COUNT = 3;
-
 export async function LandingFeaturedTrainers() {
+  const { featured } = MESSAGES.landing;
+
   let trainers;
 
   try {
@@ -22,23 +28,30 @@ export async function LandingFeaturedTrainers() {
   }
 
   return (
-    <section aria-labelledby="landing-featured-heading" className="space-y-4">
-      <SectionHeader
-        title={
-          <span id="landing-featured-heading">{MESSAGES.landing.featured.title}</span>
-        }
-        actionHref="/trainers"
-        actionLabel={MESSAGES.landing.featured.actionLabel}
-      />
-      <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 no-scrollbar md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0">
-        {trainers.map((trainer, index) => (
-          <TrainerCard
-            key={trainer.id}
-            trainer={trainer}
-            imagePriority={index < ABOVE_FOLD_IMAGE_COUNT}
-          />
-        ))}
-      </div>
+    <section id="trainers" className="bg-card py-24">
+      <Container variant="marketing">
+        <MarketingSectionHeader
+          label={featured.label}
+          title={featured.title}
+          subtitle={featured.subtitle}
+          animate
+        />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {trainers.slice(0, 3).map((trainer, index) => (
+            <Reveal key={trainer.id} delay={`${(index + 1) * 100}ms`}>
+              <FeaturedTrainerCard trainer={trainer} imagePriority={index === 0} />
+            </Reveal>
+          ))}
+        </div>
+        <Reveal className="mt-10 text-center">
+          <Button asChild variant="outline" size="lg" className="rounded-full px-8">
+            <Link href="/trainers">
+              {featured.browseAll}
+              <ArrowRightIcon aria-hidden className="size-[18px]" />
+            </Link>
+          </Button>
+        </Reveal>
+      </Container>
     </section>
   );
 }

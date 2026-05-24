@@ -12,7 +12,7 @@ import {
   type CatalogTrainerCard,
 } from "@/lib/catalog/catalog-trainer-card";
 
-const FEATURED_TRAINERS_LIMIT = 6;
+const FEATURED_TRAINERS_LIMIT = 3;
 
 async function fetchFeaturedTrainerRows() {
   return getPrisma().trainerProfile.findMany({

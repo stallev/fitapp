@@ -28,7 +28,7 @@
 
 | Term | Definition |
 |------|------------|
-| **Trainer local time** | Wall-clock in `trainer_profile.timezone` (IANA, e.g. `Europe/Moscow`) |
+| **Trainer local time** | Wall-clock in `trainer_profile.timezone` (IANA, e.g. `America/New_York`) |
 | **Instant** | Absolute moment — stored as `timestamptz` UTC in PostgreSQL |
 | **Slot** | Bookable interval `[starts_at, starts_at + duration)` in UTC |
 | **ISO weekday** | `day_of_week` 0 = Monday … 6 = Sunday (schema convention) |
@@ -96,7 +96,7 @@ Apps/web **MUST NOT** embed TZ math — call domain `GenerateAvailableSlots` / f
 
 | Surface | Display TZ | Notes |
 |---------|------------|-------|
-| Trainer schedule editor | Trainer local | Labels «Your time (Europe/Moscow)» |
+| Trainer schedule editor | Trainer local | Labels «Your time (America/New_York)» |
 | Client slot picker on trainer profile | **Trainer local** + optional hint «Times in trainer's timezone» | Avoid client assuming own TZ silently |
 | Client booking list `/client/bookings` | **Client device local** (browser `Intl`) | Show trainer TZ abbreviation in detail |
 | Admin views | UTC or trainer local (explicit toggle post-MVP); MVP: trainer local in detail |
@@ -173,7 +173,7 @@ Prisma: overlap SELECT inside `$transaction` (Context7 `/websites/prisma_io` int
 
 | Risk | Detection | Prevention |
 |------|-----------|------------|
-| FM-009 UTC bug | Golden fixture tests `Europe/Moscow` vs `America/New_York` | CI in `@pulse/domain` |
+| FM-009 UTC bug | Golden fixture tests `America/New_York` vs `Europe/Berlin` | CI in `@pulse/domain` |
 | `new Date()` local in server slot code | ESLint ban in apps for slot generation | Logic only in domain |
 | Schema vs domain weekday convention | Document 0=Monday in both | Shared constant in `@pulse/domain` |
 | Display without TZ label | UX review W7 | Copy contract |
