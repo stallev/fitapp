@@ -18,30 +18,30 @@
 
 ## 1. Schedule `/trainer/schedule`
 
-- [ ] Tabs Regular | Exceptions
-- [ ] Weekly intervals + day toggles
-- [ ] Exception calendar + block dates
-- [ ] TZ display from profile
-- [ ] `loading.tsx` skeleton
-- [ ] Save actions per contract
+- [x] Tabs Regular | Exceptions
+- [x] Weekly intervals + day toggles
+- [x] Exception calendar + block dates
+- [x] TZ display from profile
+- [x] `loading.tsx` skeleton
+- [x] Save actions per contract
 
 ## 2. Clients & income
 
-- [ ] `/trainer/clients` — `ClientListCard`, search
-- [ ] `/trainer/clients/[id]` — history, private notes auto-save
-- [ ] `/trainer/income` — DB snapshot, no Stripe
-- [ ] `/trainer/dashboard` KPI cards
+- [x] `/trainer/clients` — `ClientListCard`, search
+- [x] `/trainer/clients/[id]` — history, private notes auto-save
+- [x] `/trainer/income` — DB snapshot, no Stripe
+- [x] `/trainer/dashboard` KPI cards
 
 ## 3. Booking completion
 
-- [ ] Mark booking `completed` use-case
-- [ ] Policy: trainer owns booking
-- [ ] Enables P09 review smoke
+- [x] Mark booking `completed` use-case
+- [x] Policy: trainer owns booking
+- [x] Enables P09 review smoke
 
 ## 4. Verification
 
-- [ ] `npm run typecheck`
-- [ ] `npm run lint`
+- [x] `npm run typecheck`
+- [x] `npm run lint`
 - [ ] Smoke: schedule save + invalid interval
 - [ ] Smoke: cross-trainer client denied
 - [ ] Smoke: complete booking → review eligible

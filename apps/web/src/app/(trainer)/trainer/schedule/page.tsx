@@ -1,6 +1,5 @@
-import { RoutePlaceholder } from "@/components/shell/RoutePlaceholder";
-import { MESSAGES } from "@/lib/messages";
+import { TrainerScheduleEditorSection } from "@/components/trainer/schedule/TrainerScheduleEditor.server";
 
 export default function TrainerSchedulePage() {
-  return <RoutePlaceholder title={MESSAGES.nav.trainer.schedule} />;
+  return <TrainerScheduleEditorSection />;
 }

@@ -120,9 +120,10 @@
 
 ## Definition of done
 
-- [ ] All trainer ops routes per wireframes
-- [ ] TZ invariant; complete booking action
-- [ ] Smoke + typecheck + lint pass
+- [x] All trainer ops routes per wireframes
+- [x] TZ invariant; complete booking action
+- [x] typecheck + lint pass
+- [ ] Manual smoke (schedule, IDOR, complete → review)
 
 ---
 
@@ -144,4 +145,4 @@
 
 ## Acceptance criteria
 
-- [ ] Schedule + complete booking smoke pass
+- [ ] Schedule + complete booking smoke pass (manual — see P12_tasks §4)

@@ -4,7 +4,7 @@
 
 **Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — волны W8–W16 **complete**
 
-**Статус:** contracts (W8) + specs (W9) + wireframes (W10) + phases **P01–P15** (W16) + operations & guides (W12) + architecture learning pack (W13) + index sync (W14) — **Canonical**. **P08 implementation complete** (client hub + cancelBooking). Следующий шаг: **P09** (client reviews).
+**Статус:** contracts (W8) + specs (W9) + wireframes (W10) + phases **P01–P15** (W16) + operations & guides (W12) + architecture learning pack (W13) + index sync (W14) — **Canonical**. **P12 implementation complete** (trainer schedule, clients, income, dashboard, `CompleteBooking`). Следующий шаг: **P13** (admin moderation).
 
 **Миграция W11→W16:** [`phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md`](phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md)
 
