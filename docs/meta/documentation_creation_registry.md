@@ -442,7 +442,7 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 |----|------|-------|------------|
 | W10-00 | `docs/design/wireframes/_page_template.md` | — | ui_states_contract, styleguide |
 | W10-01 | `docs/design/wireframes/route_index.md` | index | canonical_routes, prototype_route_mapping |
-| W10-02 | `.../mvp/public_landing.md` | `/` | pages_functional_spec, prototype mapping |
+| W10-02 | `.../mvp/public_landing.md` | `/` | pages_functional_spec, prototype mapping; **v2 W22** → standalone landing prototype |
 | W10-03 | `.../mvp/public_trainers_catalog.md` | `/trainers` | catalog_discovery_spec |
 | W10-04 | `.../mvp/public_trainer_profile.md` | `/trainers/[id]` | pages_functional_spec |
 | W10-05 | `.../mvp/auth_login.md` | `/auth/login` | auth_runtime_spec |
@@ -517,6 +517,23 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 
 ---
 
+### Волна W22 — Phase renumbering + P16 Landing v2
+
+| ID | Файл | Зависит от | Обновить backlinks |
+|----|------|------------|-------------------|
+| W22-01 | `_migration_P15-P20_renumbering.md` | W16, W17 | AGENTS, README, methodology |
+| W22-02 | `P21_phase_description.md`, `P21_tasks.md` | was P15 | cron guide, deferrals, email contract |
+| W22-03 | `P17_phase_description.md`, `P17_tasks.md` | was P20 | ADR-008, complaint_refund_spec |
+| W22-04 | `P16_phase_description.md`, `P16_tasks.md` | standalone landing prototype | route_index, wireframe |
+| W22-05 | `specs/public_landing_spec.md` | pages_functional_spec, global_shell | catalog_discovery, design_system_lab |
+| W22-06 | `wireframes/mvp/public_landing.md` v2 | public_landing_spec | prototype_route_mapping |
+| W22-07 | `ui_component_phase_matrix.md` v2 | P16/P17/P18/P21 rows | phase docs |
+| W22-08 | Cross-ref sync | W22 | architecture_master_index, admin_flow, admin_people_ops P18, AGENTS, pulse-project-context |
+
+*(Полные пути: `docs/implementation/mvp/` + design wireframes)*
+
+---
+
 ### Волна W12 — Operations + guides
 
 | ID | Файл | Зависит от | Обновить backlinks |
@@ -524,12 +541,12 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 | W12-01 | `docs/prds/06_operations/README.md` | backend_requirements | architecture_master_index |
 | W12-02 | `docs/prds/06_operations/migration_runbook.md` | database_schema_v1, ADR-001, Context7 Prisma | database_schema_v1 |
 | W12-03 | `docs/prds/06_operations/observability_plan.md` | backend_requirements | backend_requirements |
-| W12-04 | `docs/prds/06_operations/cron_jobs_registry.md` | email_notifications_contract, P15 | adr_006 |
+| W12-04 | `docs/prds/06_operations/cron_jobs_registry.md` | email_notifications_contract, P21 | adr_006 |
 | W12-05 | `docs/implementation/mvp/guides/local_dev_setup.md` | migration_runbook, seed_data_spec | implementation/mvp/README |
 | W12-06 | `guides/vercel_deploy_guide.md` | ADR-001, auth_runtime_spec | ADR-001 |
 | W12-07 | `guides/neon_prisma_migrations_guide.md` | migration_runbook | migration_runbook |
 | W12-08 | `guides/seed_and_fixtures_guide.md` | seed_data_spec | seed_data_spec |
-| W12-09 | `guides/cron_jobs_setup_guide.md` | cron_jobs_registry, P15 | cron_jobs_registry |
+| W12-09 | `guides/cron_jobs_setup_guide.md` | cron_jobs_registry, P21 | cron_jobs_registry |
 
 ---
 
@@ -642,9 +659,9 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 
 **Следующий шаг:** **P01 implementation** (monorepo & data layer) — [`P01_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) + [`P01_tasks.md`](../implementation/mvp/tasks/P01_tasks.md).
 
-**Документация MVP-complete (W0–W16, 2026-05-23).** Фазы P01–P15 (W16). **P20** (Complaint Resolution v2, W17) — planned post-P14. **P16** (Admin People Ops, W18) — planned post-P14. P17–P19 reserved.
+**Документация MVP-complete (W0–W22).** Core MVP: P01–P14 (W16). **Post-P14:** **P16** (Public Landing v2), **P17** (Complaint Resolution v2), **P18** (Admin People Ops spec), **P21** (Email, post-MVP). **P19** reserved.
 
-**После завершения W16** документация готова к пофазной имплементации P01→P14 (+ P15 post-MVP email, + P20 post-P14).
+**После W22** имплементация post-P14: P16 landing replace, P17 complaints (in progress), P18 people ops, P21 email after deferral unlock.
 
 ---
 
@@ -652,8 +669,9 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 
 | Date | Change |
 |------|--------|
-| 2026-05-25 | **W18-01** — `admin_people_ops_spec.md` (P16 People Ops); wireframes W10-30…32; canonical routes `/admin/clients*` |
-| 2026-05-25 | **W17-01** — ADR-008, complaint_refund_spec v2, P20 phase/tasks (Complaint Resolution v2) |
+| 2026-05-25 | **W22 complete** — P16 landing v2 (`public_landing_spec`, phase/tasks, wireframe v2); renumber P15→P21, P20→P17; Admin People Ops P16→P18; `_migration_P15-P20_renumbering.md`; matrix + cross-ref sync |
+| 2026-05-25 | **W18-01** — `admin_people_ops_spec.md` (P18 People Ops); wireframes W10-30…32; canonical routes `/admin/clients*` |
+| 2026-05-25 | **W17-01** — ADR-008, complaint_refund_spec v2, P17 phase/tasks (was P20; Complaint Resolution v2) |
 | 2026-05-23 | **W16 complete** — P01–P15 phase restructure (30 phase/task files), `_phase_template.md`, `_migration_P01-P07_to_P01-P15.md`, `ui_component_phase_matrix.md`, UI Catalog sections in specs, cross-ref sync |
 | 2026-05-23 | **W15-01** — `design_system_lab_spec.md` (shared UI primitives + Design Lab page) |
 | 2026-05-23 | **W14 complete** — final index sync: `architecture_master_index`, `prds/README`, `design/README`, methodology checklist, `AGENTS.md`, `implementation/mvp/README` |

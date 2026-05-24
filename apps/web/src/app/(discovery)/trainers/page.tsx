@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 
-import { ContentText } from "@/components/atoms";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { CatalogTrainerGridSkeleton } from "@/components/catalog/CatalogTrainerGridSkeleton";
 import { CatalogTrainerGrid } from "@/components/catalog/CatalogTrainerGrid.server";
@@ -45,16 +44,7 @@ export default async function TrainersPage({ searchParams }: TrainersPageProps) 
             className="-mx-4 px-4"
           />
 
-          <Suspense
-            fallback={
-              <div className="space-y-4">
-                <ContentText variant="muted" as="p">
-                  {MESSAGES.catalog.title}
-                </ContentText>
-                <CatalogTrainerGridSkeleton />
-              </div>
-            }
-          >
+          <Suspense fallback={<CatalogTrainerGridSkeleton />}>
             <CatalogTrainerGrid query={query} />
           </Suspense>
         </div>

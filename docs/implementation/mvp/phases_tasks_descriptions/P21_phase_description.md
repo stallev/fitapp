@@ -1,20 +1,22 @@
-# P15 — Email & Jobs *(Post-MVP Runtime)*
+# P21 — Email & Jobs *(Post-MVP Runtime)*
 
 **Тип:** Phase Description  
 **Статус:** Canonical  
-**Версия:** 2.0  
-**Дата:** 2026-05-23  
-**Волна:** W16  
+**Версия:** 3.0  
+**Дата:** 2026-05-25  
+**Волна:** W22 *(renumbered from W16 P15)*  
 **Зависит от:** [`P14_phase_description.md`](./P14_phase_description.md), [`email_notifications_contract.md`](../contracts/email_notifications_contract.md), [`adr_006_idempotent_email_delivery.md`](../../../prds/07_governance/adr_006_idempotent_email_delivery.md)  
-**Связанные документы:** [`P15_tasks.md`](../tasks/P15_tasks.md), [`post_mvp_deferrals.md`](../../../prds/01_product_scope/post_mvp_deferrals.md)
+**Связанные документы:** [`P21_tasks.md`](../tasks/P21_tasks.md), [`post_mvp_deferrals.md`](../../../prds/01_product_scope/post_mvp_deferrals.md), [`_migration_P15-P20_renumbering.md`](./_migration_P15-P20_renumbering.md)
 
 **Context7 verified:** Prisma job queue via app tables; Resend outside Prisma core.
+
+**Former ID:** P15 (W16) — см. migration doc.
 
 ---
 
 ## Purpose
 
-Фаза **P15** — post-MVP transactional email: enqueue after domain mutations, Cron/worker, idempotency via `job_execution` + `delivery_log`, events E-01–E-09. **Не начинать**, пока P14 не deployed и deferral не снят.
+Фаза **P21** — post-MVP transactional email: enqueue after domain mutations, Cron/worker, idempotency via `job_execution` + `delivery_log`, events E-01–E-09. **Не начинать**, пока P14 не deployed и deferral не снят.
 
 **Аудитория:** AI-агенты post-MVP release train; ops.
 
@@ -24,7 +26,7 @@
 
 | # | Document | Why |
 |---|----------|-----|
-| 1 | [`P15_tasks.md`](../tasks/P15_tasks.md) | Checklist |
+| 1 | [`P21_tasks.md`](../tasks/P21_tasks.md) | Checklist |
 | 2 | [`email_notifications_contract.md`](../contracts/email_notifications_contract.md) | Enqueue + worker |
 | 3 | [`email_notifications_matrix.md`](../../../prds/01_product_scope/email_notifications_matrix.md) | Event mapping |
 | 4 | [`adr_006_idempotent_email_delivery.md`](../../../prds/07_governance/adr_006_idempotent_email_delivery.md) | Idempotency |
@@ -82,7 +84,7 @@
 | `/api/jobs/email` | Cron-authenticated batch |
 | `/auth/forgot-password` | Optional post-MVP |
 
-**MVP guard:** до P15 приложение **MUST NOT** write `job_execution` / `delivery_log` from request path.
+**MVP guard:** до P21 приложение **MUST NOT** write `job_execution` / `delivery_log` from request path.
 
 ---
 
@@ -125,7 +127,7 @@
 | Risk | Guard |
 |------|-------|
 | Enqueue before commit | After transaction only |
-| MVP writes job tables early | Feature flag until P15 |
+| MVP writes job tables early | Feature flag until P21 |
 | Email without deferral unlock | Gate §0 in tasks |
 
 ---
@@ -143,14 +145,14 @@
 
 | Document | Relationship |
 |----------|--------------|
-| [`P15_tasks.md`](../tasks/P15_tasks.md) | Checklist |
+| [`P21_tasks.md`](../tasks/P21_tasks.md) | Checklist |
 | [`04_email_jobs_layers.md`](../../../architecture_learning_pack/04_email_jobs_layers.md) | Layer map |
 
 ---
 
 ## Agent notes
 
-- **Одна сессия = P15 only.**
+- **Одна сессия = P21 only.**
 - Verify MVP works with `RESEND_API_KEY` unset in dev.
 
 ---

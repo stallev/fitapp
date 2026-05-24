@@ -70,6 +70,7 @@ export function ServiceCard({
           className="flex-1"
           onClick={() => onEdit(service)}
           disabled={disabled}
+          aria-busy={disabled}
         >
           {MESSAGES.trainer.services.edit}
         </Button>
@@ -78,6 +79,7 @@ export function ServiceCard({
           variant="outline"
           onClick={() => onDelete(service)}
           disabled={disabled}
+          aria-busy={disabled}
         >
           {MESSAGES.trainer.services.delete}
         </Button>

@@ -134,7 +134,13 @@ export function TrainerOnboardingServicesStep({
           <PlusIcon aria-hidden className="size-4" />
           {MESSAGES.trainer.onboarding.addService}
         </Button>
-        <Button type="button" variant="ghost" onClick={handleSkip} disabled={isPending}>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={handleSkip}
+          disabled={isPending}
+          aria-busy={isPending}
+        >
           {MESSAGES.trainer.onboarding.skipServices}
         </Button>
       </div>

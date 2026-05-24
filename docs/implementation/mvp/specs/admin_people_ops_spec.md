@@ -5,7 +5,7 @@
 **Версия:** 1.0  
 **Дата:** 2026-05-25  
 **Волна:** W18  
-**Фаза:** **P16 (planned)** — после P14 quality gate  
+**Фаза:** **P18 (planned)** — после P14 quality gate  
 **Зависит от:** [`admin_verification_spec.md`](./admin_verification_spec.md), [`trainer_verification_contract.md`](../contracts/trainer_verification_contract.md), [`complaint_refund_spec.md`](./complaint_refund_spec.md), [`authorization_matrix.md`](../../../prds/04_authorization_privacy/authorization_matrix.md)  
 **Связанные документы:** [`admin_flow.md`](../../../prds/01_product_scope/user_flows/users_mvp/admin_flow.md), [`ux_ui_faang_best_practices_for_agents.md`](../../../design/ux_ui_faang_best_practices_for_agents.md), [`privacy_data_handling.md`](../../../prds/04_authorization_privacy/privacy_data_handling.md)
 
@@ -15,7 +15,7 @@
 
 Implementation-spec **операционного управления участниками платформы** после MVP-очередей модерации (P13): post-approval профиль тренера, реестр клиентов, cross-links в complaints/refunds. Закрывает product gap «approved detail = dead end» и отсутствие admin surface для клиентов.
 
-**Аудитория:** AI-агенты P16; product/design при wireframes W10-30…32.
+**Аудитория:** AI-агенты P18; product/design при wireframes W10-30…32.
 
 **Не подменяет:** [`admin_verification_spec.md`](./admin_verification_spec.md) — очередь `pending` / first-time Approve|Reject остаётся там.
 
@@ -23,7 +23,7 @@ Implementation-spec **операционного управления участ
 
 ## Scope / Out of scope
 
-### In scope (P16)
+### In scope (P18)
 
 | Area | Deliverable |
 |------|-------------|
@@ -42,8 +42,8 @@ Implementation-spec **операционного управления участ
 | `user.account_status` (suspend/ban) | Post-MVP + ADR; schema change |
 | Admin role change UI | ADR-003 post-MVP admin user management |
 | Unified `/admin/people` search | Post-MVP when scale warrants |
-| Email on revoke | P15 email jobs |
-| Admin booking list route | Separate phase; context panels on complaint suffice for P16 |
+| Email on revoke | P21 email jobs |
+| Admin booking list route | Separate phase; context panels on complaint suffice for P18 |
 | Edit trainer profile fields by admin | Trainer self-service only |
 
 ---
@@ -68,7 +68,7 @@ Implementation-spec **операционного управления участ
 ### Client (MVP schema)
 
 - `User.role = client` — единственный «статус» клиента в MVP.
-- Admin **не меняет** role/status клиента в P16 — только read + navigation.
+- Admin **не меняет** role/status клиента в P18 — только read + navigation.
 
 ---
 
@@ -109,7 +109,7 @@ sequenceDiagram
 1. Admin on `/admin/clients/[id]` — header: name, email, member since.
 2. Tabs: **Бронирования** | **Жалобы** | **Возвраты** (FX-3 progressive disclosure).
 3. Each tab: read-only list with link to booking complaint/refund detail where applicable.
-4. **No primary mutation** on client detail in P16 — support/discovery surface.
+4. **No primary mutation** on client detail in P18 — support/discovery surface.
 
 ### D — Deep link from complaint
 
@@ -138,7 +138,7 @@ sequenceDiagram
 | Scenario | UX |
 |----------|-----|
 | Non-admin | proxy redirect — no PII leak |
-| Client registry export | Deny FM-005 — no CSV in P16 |
+| Client registry export | Deny FM-005 — no CSV in P18 |
 | Trainer private notes | **MUST NOT** show `trainer_client_note` on admin client detail (trainer-only per privacy) |
 | Verification docs on approved | Presigned download — admin session + policy (existing file_upload_contract) |
 
@@ -170,7 +170,7 @@ sequenceDiagram
 | PO-MUST-2 | Revoke — **destructive** + AlertDialog + required reason; **never** primary Button on page shell |
 | PO-MUST-3 | Reuse Approve/Reject transport pattern — Server Action + iOS Route Handler fallback (**ios-safari-mutation-transport**) |
 | PO-MUST-4 | `toast.success` / `toast.error` on revoke; revalidate catalog tags |
-| PO-MUST-5 | Deep links from complaints/refunds **SHOULD** land in P16 |
+| PO-MUST-5 | Deep links from complaints/refunds **SHOULD** land in P18 |
 | PO-MUST-6 | Client list — email visible (admin-only); no phone (not in schema MVP) |
 | PO-SHOULD-1 | Approved tab queue card → same `[id]` URL; mode derived from `status` server-side |
 | PO-SHOULD-2 | Activity counts — badge chips, not only text |
@@ -179,7 +179,7 @@ sequenceDiagram
 
 ## Routes (canonical)
 
-| Path | MVP P13 | P16 | Notes |
+| Path | MVP P13 | P18 | Notes |
 |------|---------|-----|-------|
 | `/admin/trainers/[id]` | ✅ pending review | ✅ + approved/rejected ops | Conditional regions |
 | `/admin/clients` | — | ✅ planned | Registry list |
@@ -210,7 +210,7 @@ Pending review wireframe unchanged: [`admin_trainer_application.md`](../../../de
 3. **MUST** — FM-014 guard before revoke mutation.
 4. **MUST** — client routes admin-only per authorization matrix.
 5. **MUST NOT** — introduce `account_status` without ADR + migration.
-6. **SHOULD** — complaint detail links to people pages when P16 ships.
+6. **SHOULD** — complaint detail links to people pages when P18 ships.
 
 ---
 
@@ -230,7 +230,7 @@ Pending review wireframe unchanged: [`admin_trainer_application.md`](../../../de
 
 ## UI Catalog (by screen)
 
-**Phase:** P16 · Matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) (update on implementation)
+**Phase:** P18 · Matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) (update on implementation)
 
 | Screen | CREATE | USE |
 |--------|--------|-----|
@@ -269,4 +269,4 @@ Pending review wireframe unchanged: [`admin_trainer_application.md`](../../../de
 
 | Date | Change |
 |------|--------|
-| 2026-05-25 | v1.0 — initial People Ops spec; P16 planned; wireframes W10-30…32 |
+| 2026-05-25 | v1.0 — initial People Ops spec; P18 planned; wireframes W10-30…32 |

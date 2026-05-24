@@ -92,8 +92,8 @@
 | `/admin/dashboard` | `(admin)/admin/dashboard/page.tsx` | admin | ✅ | Overview KPI |
 | `/admin/trainers` | `(admin)/admin/trainers/page.tsx` | admin | ✅ | Verification queue |
 | `/admin/trainers/[id]` | `(admin)/admin/trainers/[id]/page.tsx` | admin | ✅ | Application detail (`pending`) + operational profile (`approved`/`rejected`) — [`admin_people_ops_spec.md`](../implementation/mvp/specs/admin_people_ops_spec.md) |
-| `/admin/clients` | `(admin)/admin/clients/page.tsx` | admin | ⚠️ P16 | Client registry — search + list |
-| `/admin/clients/[id]` | `(admin)/admin/clients/[id]/page.tsx` | admin | ⚠️ P16 | Client detail (read-only tabs) |
+| `/admin/clients` | `(admin)/admin/clients/page.tsx` | admin | ⚠️ P18 | Client registry — search + list |
+| `/admin/clients/[id]` | `(admin)/admin/clients/[id]/page.tsx` | admin | ⚠️ P18 | Client detail (read-only tabs) |
 | `/admin/complaints` | `(admin)/admin/complaints/page.tsx` | admin | ✅ | Complaints list |
 | `/admin/complaints/[id]` | `(admin)/admin/complaints/[id]/page.tsx` | admin | ✅ | Complaint detail |
 | `/admin/refunds` | `(admin)/admin/refunds/page.tsx` | admin | ✅ | Manual refunds |
@@ -162,7 +162,7 @@ Template: [`wireframes/_page_template.md`](wireframes/_page_template.md)
 
 | Date | Change |
 |------|--------|
-| 2026-05-25 | P16 planned — `/admin/clients`, `/admin/clients/[id]`; trainer `[id]` operational modes |
+| 2026-05-25 | P18 planned — `/admin/clients`, `/admin/clients/[id]`; trainer `[id]` operational modes; P16 = public landing v2 |
 | 2026-05-23 | W10 — wireframe index links |
 | 2026-05-23 | W15 — dev-only `/design-system` Design Lab route |
 | 2026-05-23 | W2 backlinks — prototype_route_mapping, responsive_navigation_contract |

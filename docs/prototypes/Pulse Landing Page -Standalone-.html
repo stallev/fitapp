@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulse — Ваш персональный тренер рядом</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ═══ TOKENS ═══ */
+:root {
+  --forest: #2D5A40; --forest-dk: #1A3028; --forest-lt: #3D7A58; --forest-faint: #E4F0E8;
+  --gold: #C4973A; --gold-lt: #E8C070; --gold-soft: #F5E6C8;
+  --cream: #F5F0E8; --cream-dk: #EDE5D4; --cream-bd: #D8CCB4;
+  --ink: #1A3028; --ink2: #4A5A50; --ink3: #8A8578;
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --sh1: 0 1px 4px rgba(26,48,40,.07), 0 2px 8px rgba(26,48,40,.05);
+  --sh2: 0 4px 16px rgba(26,48,40,.10), 0 2px 6px rgba(26,48,40,.06);
+  --sh3: 0 8px 32px rgba(26,48,40,.13), 0 4px 12px rgba(26,48,40,.07);
+  --sh4: 0 16px 48px rgba(26,48,40,.18), 0 8px 20px rgba(26,48,40,.10);
+}
+
+/* ═══ RESET ═══ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+p, h1, h2, h3, h4 { text-wrap: pretty; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; font: inherit; }
+
+/* ═══ NAV ═══ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  height: 72px; padding: 0 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background .3s, box-shadow .3s;
+}
+.nav.scrolled { background: rgba(245,240,232,.95); backdrop-filter: blur(16px); box-shadow: 0 1px 0 rgba(26,48,40,.09); }
+.nav-logo { font-family: var(--serif); font-size: 22px; letter-spacing: -.03em; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { font-size: 14px; font-weight: 500; color: var(--ink2); transition: color .2s; white-space: nowrap; }
+.nav-links a:hover { color: var(--forest); }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+
+/* ═══ BUTTONS ═══ */
+.btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 500; cursor: pointer; border: none; white-space: nowrap; transition: all .2s; }
+.btn-ghost { background: none; color: var(--ink2); font-size: 14px; padding: 8px 14px; border-radius: 999px; }
+.btn-ghost:hover { background: var(--forest-faint); color: var(--forest); }
+.btn-pill { background: var(--forest); color: white; font-size: 14px; font-weight: 600; padding: 10px 22px; border-radius: 999px; }
+.btn-pill:hover { background: var(--forest-dk); box-shadow: 0 2px 12px rgba(26,48,40,.3); transform: translateY(-1px); }
+.btn-lg { background: var(--forest); color: white; font-size: 16px; font-weight: 600; padding: 16px 36px; border-radius: 999px; }
+.btn-lg:hover { background: var(--forest-dk); box-shadow: 0 4px 24px rgba(26,48,40,.35); transform: translateY(-2px); }
+.btn-lg:active { transform: scale(.97); }
+.btn-outline { background: transparent; color: var(--ink); font-size: 16px; font-weight: 500; padding: 15px 32px; border-radius: 999px; border: 1.5px solid var(--cream-bd); }
+.btn-outline:hover { background: var(--cream-dk); border-color: var(--ink3); }
+.btn-white { background: white; color: var(--forest-dk); font-size: 16px; font-weight: 600; padding: 16px 36px; border-radius: 999px; }
+.btn-white:hover { background: var(--cream); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,.15); }
+.btn-outline-white { background: transparent; color: white; font-size: 16px; font-weight: 500; padding: 15px 32px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.35); }
+.btn-outline-white:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); }
+
+/* ═══ LAYOUT ═══ */
+.wrap { max-width: 1280px; margin: 0 auto; }
+.sec { padding: 96px 56px; }
+.slabel { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--forest); background: var(--forest-faint); padding: 6px 16px; border-radius: 999px; margin-bottom: 20px; }
+.stitle { font-family: var(--serif); font-size: clamp(36px, 4vw, 52px); color: var(--ink); line-height: 1.05; letter-spacing: -.03em; margin-bottom: 14px; }
+.ssub { font-size: 18px; color: var(--ink2); line-height: 1.65; max-width: 540px; }
+.shead { text-align: center; margin-bottom: 68px; }
+.shead .ssub { margin: 0 auto; }
+
+/* ═══ REVEAL ═══ */
+.rv { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
+.rv.in { opacity: 1; transform: none; }
+.rv.d1 { transition-delay: .1s; } .rv.d2 { transition-delay: .2s; }
+.rv.d3 { transition-delay: .3s; } .rv.d4 { transition-delay: .4s; }
+.rv.d5 { transition-delay: .5s; }
+
+/* ═══ HERO ═══ */
+.hero { min-height: 100vh; display: flex; align-items: center; padding-top: 72px; overflow: hidden; position: relative; }
+.hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 800px; height: 800px; background: radial-gradient(ellipse at center, rgba(228,240,232,.7) 0%, transparent 65%); pointer-events: none; }
+.hero-inner { max-width: 1280px; margin: 0 auto; padding: 0 56px; width: 100%; display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: center; }
+.hero-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--forest); background: var(--forest-faint); border: 1px solid rgba(45,90,64,.12); padding: 7px 16px; border-radius: 999px; margin-bottom: 28px; }
+.hero-title { font-family: var(--serif); font-size: clamp(50px, 5.8vw, 82px); color: var(--ink); line-height: .97; letter-spacing: -.045em; margin-bottom: 24px; }
+.hero-title em { font-style: italic; color: var(--forest); }
+.hero-sub { font-size: 18px; color: var(--ink2); line-height: 1.65; max-width: 460px; margin-bottom: 40px; }
+.hero-ctas { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; flex-wrap: wrap; }
+.hero-trust { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.trust-chip { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; color: var(--ink2); background: white; border: 1px solid var(--cream-bd); padding: 6px 12px; border-radius: 999px; box-shadow: var(--sh1); }
+.hero-proof { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.proof-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink3); font-weight: 500; }
+.proof-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--cream-bd); flex-shrink: 0; }
+
+/* ═══ HERO VISUAL ═══ */
+.hero-visual { position: relative; height: 540px; }
+.hero-blob { position: absolute; inset: -60px; background: radial-gradient(ellipse 75% 75% at 55% 50%, rgba(228,240,232,.85) 0%, transparent 65%); border-radius: 60% 40% 50% 50% / 50% 50% 60% 40%; pointer-events: none; }
+.fc { position: absolute; background: white; border-radius: 20px; box-shadow: var(--sh4); width: 215px; overflow: hidden; transition: transform .35s cubic-bezier(.34,1.4,.64,1), box-shadow .35s; }
+.fc:hover { transform: translateY(-10px) rotate(0deg) !important; box-shadow: 0 28px 64px rgba(26,48,40,.22) !important; }
+.fc-photo { height: 128px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.fc-photo::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.13) 1px, transparent 1px); background-size: 14px 14px; }
+.fc-init { font-family: var(--serif); font-size: 44px; color: rgba(255,255,255,.55); font-style: italic; letter-spacing: -.04em; position: relative; z-index: 1; }
+.fc-badge { position: absolute; top: 9px; right: 9px; background: white; border-radius: 999px; padding: 3px 8px; font-size: 11px; font-weight: 600; color: var(--forest); display: flex; align-items: center; gap: 3px; z-index: 2; box-shadow: var(--sh1); }
+.fc-body { padding: 13px 15px; }
+.fc-name { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.fc-spec { font-size: 12px; color: var(--ink3); margin-bottom: 9px; }
+.fc-foot { display: flex; align-items: center; justify-content: space-between; }
+.fc-price { font-size: 13px; font-weight: 700; color: var(--forest); }
+
+/* ═══ TRUST BAR ═══ */
+.trust-bar { background: var(--forest-dk); }
+.trust-bar-inner { max-width: 1280px; margin: 0 auto; padding: 0 56px; display: grid; grid-template-columns: repeat(4,1fr); }
+.ts { padding: 36px 20px; text-align: center; border-right: 1px solid rgba(255,255,255,.07); }
+.ts:last-child { border-right: none; }
+.ts-num { font-family: var(--serif); font-size: 46px; color: white; line-height: 1; letter-spacing: -.04em; display: block; margin-bottom: 7px; }
+.ts-lbl { font-size: 13px; color: rgba(255,255,255,.5); }
+
+/* ═══ HOW IT WORKS ═══ */
+.steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+.step-card { background: white; border-radius: 22px; padding: 36px 32px; box-shadow: var(--sh1); border: 1px solid rgba(26,48,40,.05); }
+.step-num { font-family: var(--serif); font-size: 88px; color: var(--forest-faint); line-height: .88; letter-spacing: -.04em; margin-bottom: 24px; }
+.step-icon { width: 48px; height: 48px; background: var(--forest-faint); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--forest); margin-bottom: 16px; }
+.step-title { font-size: 20px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 10px; }
+.step-desc { font-size: 15px; color: var(--ink2); line-height: 1.6; }
+
+/* ═══ DISCIPLINES ═══ */
+.disc-wrap { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.disc-pill { display: flex; align-items: center; gap: 10px; background: white; border: 1px solid var(--cream-bd); padding: 14px 26px; border-radius: 999px; font-size: 15px; font-weight: 500; cursor: pointer; transition: all .2s; box-shadow: var(--sh1); }
+.disc-pill:hover { background: var(--forest); color: white; border-color: var(--forest); transform: translateY(-2px); box-shadow: var(--sh2); }
+.disc-pill:hover .disc-ct { color: rgba(255,255,255,.6); }
+.disc-ct { font-size: 12px; color: var(--ink3); font-weight: 400; }
+
+/* ═══ TRAINER CARDS ═══ */
+.trainers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.tc { background: white; border-radius: 22px; overflow: hidden; box-shadow: var(--sh1); border: 1px solid rgba(26,48,40,.05); transition: transform .25s, box-shadow .25s; cursor: pointer; }
+.tc:hover { transform: translateY(-7px); box-shadow: var(--sh3); }
+.tc-photo { height: 200px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.tc-photo::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.12) 1px, transparent 1px); background-size: 14px 14px; }
+.tc-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,48,40,.4) 0%, transparent 60%); z-index: 1; }
+.tc-init { font-family: var(--serif); font-size: 56px; color: rgba(255,255,255,.45); font-style: italic; letter-spacing: -.04em; position: relative; z-index: 0; }
+.tc-price { position: absolute; bottom: 14px; right: 14px; background: white; border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; box-shadow: var(--sh1); z-index: 2; }
+.tc-body { padding: 18px 20px; }
+.tc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.tc-name { font-size: 17px; font-weight: 700; }
+.tc-check { width: 22px; height: 22px; background: var(--forest-faint); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--forest); flex-shrink: 0; }
+.tc-spec { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
+.tc-rating { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink2); margin-bottom: 12px; }
+.tc-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tc-tag { font-size: 12px; font-weight: 500; color: var(--forest); background: var(--forest-faint); padding: 4px 10px; border-radius: 999px; }
+.trainers-ft { text-align: center; margin-top: 42px; }
+
+/* ═══ TESTIMONIALS ═══ */
+.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.testi { background: white; border-radius: 22px; padding: 36px 32px; box-shadow: var(--sh1); border: 1px solid rgba(26,48,40,.05); display: flex; flex-direction: column; }
+.testi-mark { font-family: var(--serif); font-size: 72px; color: var(--forest-faint); line-height: .65; margin-bottom: 18px; }
+.testi-stars { color: var(--gold); font-size: 14px; letter-spacing: 2px; margin-bottom: 14px; }
+.testi-text { font-size: 16px; color: var(--ink); line-height: 1.65; margin-bottom: 28px; flex: 1; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: white; flex-shrink: 0; }
+.testi-name { font-size: 14px; font-weight: 700; }
+.testi-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+
+/* ═══ FOR TRAINERS ═══ */
+.for-trainers { background: var(--forest-dk); padding: 96px 56px; }
+.ft-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr .9fr; gap: 80px; align-items: center; }
+.ft-label { color: rgba(255,255,255,.5); background: rgba(255,255,255,.1); }
+.ft-title { color: white; }
+.ft-title em { font-style: italic; color: var(--gold-lt); }
+.ft-sub { color: rgba(255,255,255,.6); max-width: 480px; }
+.ft-benefits { display: flex; flex-direction: column; gap: 26px; margin: 36px 0; }
+.ft-ben { display: flex; align-items: flex-start; gap: 16px; }
+.ft-ben-icon { width: 44px; height: 44px; background: rgba(255,255,255,.08); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold-lt); flex-shrink: 0; }
+.ft-ben-title { font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px; }
+.ft-ben-desc { font-size: 14px; color: rgba(255,255,255,.52); line-height: 1.5; }
+.ft-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.ft-stat { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 28px 24px; }
+.ft-stat-n { font-family: var(--serif); font-size: 40px; color: white; letter-spacing: -.04em; line-height: 1; margin-bottom: 8px; }
+.ft-stat-l { font-size: 13px; color: rgba(255,255,255,.42); line-height: 1.4; }
+
+/* ═══ FAQ ═══ */
+.faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 6px; }
+.faq-item { background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(26,48,40,.06); }
+.faq-q { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; cursor: pointer; transition: background .2s; user-select: none; }
+.faq-q:hover { background: var(--cream); }
+.faq-qt { font-size: 16px; font-weight: 600; color: var(--ink); }
+.faq-ico { width: 28px; height: 28px; border-radius: 50%; background: var(--forest-faint); display: flex; align-items: center; justify-content: center; color: var(--forest); flex-shrink: 0; transition: transform .3s, background .2s; }
+.faq-item.open .faq-ico { transform: rotate(45deg); background: var(--forest); color: white; }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
+.faq-item.open .faq-a { max-height: 220px; }
+.faq-ai { padding: 0 28px 22px; font-size: 15px; color: var(--ink2); line-height: 1.65; }
+
+/* ═══ FINAL CTA ═══ */
+.final-cta { padding: 104px 56px; text-align: center; position: relative; overflow: hidden; }
+.cta-wrap { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
+.cta-title { font-family: var(--serif); font-size: clamp(44px, 5.5vw, 70px); color: white; line-height: .97; letter-spacing: -.045em; margin-bottom: 20px; }
+.cta-title em { font-style: italic; color: var(--gold-lt); }
+.cta-sub { font-size: 18px; color: rgba(255,255,255,.68); line-height: 1.6; margin-bottom: 48px; }
+.cta-btns { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.cta-circle { position: absolute; border-radius: 50%; background: rgba(255,255,255,.05); pointer-events: none; }
+
+/* ═══ FOOTER ═══ */
+.footer { background: var(--cream-dk); padding: 44px 56px; border-top: 1px solid var(--cream-bd); }
+.footer-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.footer-logo { font-family: var(--serif); font-size: 20px; letter-spacing: -.03em; }
+.footer-tag { font-size: 12px; color: var(--ink3); margin-top: 4px; }
+.footer-links { display: flex; gap: 28px; }
+.footer-links a { font-size: 13px; color: var(--ink3); transition: color .2s; }
+.footer-links a:hover { color: var(--forest); }
+.footer-copy { font-size: 12px; color: var(--ink3); }
+
+/* ═══ TWEAKS PANEL ═══ */
+.tweaks-panel { position: fixed; bottom: 24px; right: 24px; z-index: 1000; background: white; border-radius: 20px; box-shadow: var(--sh4); padding: 22px; width: 258px; border: 1px solid rgba(26,48,40,.08); }
+.tp-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.tp-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+.tp-close { width: 26px; height: 26px; border-radius: 50%; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--ink2); cursor: pointer; border: none; transition: background .15s; }
+.tp-close:hover { background: var(--cream-bd); }
+.tp-group { margin-bottom: 18px; }
+.tp-group:last-child { margin-bottom: 0; }
+.tp-glabel { font-size: 11px; font-weight: 600; color: var(--ink3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
+.tp-swatches { display: flex; gap: 9px; }
+.tp-swatch { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all .15s; box-shadow: var(--sh1); }
+.tp-swatch.on { border-color: var(--ink); transform: scale(1.12); }
+.tp-opts { display: flex; gap: 7px; flex-wrap: wrap; }
+.tp-opt { font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 999px; cursor: pointer; background: var(--cream); color: var(--ink2); border: 1px solid var(--cream-bd); transition: all .15s; }
+.tp-opt.on { background: var(--forest-faint); color: var(--forest); border-color: transparent; }
+.tp-row { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--ink2); }
+.tp-toggle { width: 40px; height: 22px; border-radius: 11px; background: var(--cream-bd); cursor: pointer; position: relative; transition: background .2s; flex-shrink: 0; }
+.tp-toggle.on { background: var(--forest); }
+.tp-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: white; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.tp-toggle.on::after { transform: translateX(18px); }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .ft-inner { grid-template-columns: 1fr; gap: 48px; }
+  .ft-stats { display: grid; grid-template-columns: repeat(4,1fr); }
+  .trainers-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav { padding: 0 24px; }
+  .sec { padding: 64px 24px; }
+  .hero-inner { padding: 0 24px; }
+  .trust-bar-inner { padding: 0 24px; grid-template-columns: repeat(2,1fr); }
+  .ts { border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); padding: 24px 16px; }
+  .ts:nth-child(3), .ts:last-child { border-bottom: none; }
+  .steps-grid, .trainers-grid, .testi-grid { grid-template-columns: 1fr; }
+  .for-trainers { padding: 64px 24px; }
+  .ft-stats { grid-template-columns: repeat(2,1fr); }
+  .final-cta { padding: 72px 24px; }
+  .footer { padding: 40px 24px; }
+  .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; gap: 20px; }
+}
+
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ─── TWEAKS DEFAULTS ─── */
+const TWEAKS = /*EDITMODE-BEGIN*/{
+  "primaryColor": "#2D5A40",
+  "heroVariant": "split",
+  "showTrustBar": true,
+  "cardStyle": "rounded"
+}/*EDITMODE-END*/;
+
+/* ─── DATA ─── */
+const HERO_CARDS = [
+  { name:"Maria P.", spec:"Yoga & Pilates", cert:"NASM-CPT", rating:"5.0", price:"From $32/hr",
+    grad:"linear-gradient(145deg,#3D7A58,#2D5A40)", init:"MP",
+    pos:{ top:"10px", left:"0px", transform:"rotate(-4.5deg)", zIndex:1 } },
+  { name:"Anna V.", spec:"Stretching", cert:"ACE-CPT", rating:"4.8", price:"From $35/hr",
+    grad:"linear-gradient(145deg,#C4973A,#A37D28)", init:"AV",
+    pos:{ top:"90px", left:"150px", transform:"rotate(2.5deg)", zIndex:3 } },
+  { name:"Sergey K.", spec:"Strength", cert:"NSCA-CSCS", rating:"4.9", price:"From $48/hr",
+    grad:"linear-gradient(145deg,#5A7265,#3A4E45)", init:"SK",
+    pos:{ top:"265px", left:"22px", transform:"rotate(-1.5deg)", zIndex:2 } },
+];
+
+const TRAINERS = [
+  { id:1, name:"Maria Pilates", cert:"NASM-CPT", spec:"Pilates & Flexibility", rating:"5.0", reviews:1, price:"32",
+    tags:["Pilates","Stretching"], grad:"linear-gradient(145deg,#3D7A58,#2D5A40)", init:"MP" },
+  { id:2, name:"Sergey Power", cert:"NSCA-CSCS", spec:"Strength & Conditioning", rating:"4.9", reviews:28, price:"48",
+    tags:["Strength Training"], grad:"linear-gradient(145deg,#5A7265,#3A4E45)", init:"SP" },
+  { id:3, name:"Anna Yoga", cert:"RYT-200", spec:"Yoga & Pilates", rating:"4.8", reviews:32, price:"35",
+    tags:["Yoga","Pilates"], grad:"linear-gradient(145deg,#C4973A,#A37D28)", init:"AY" },
+];
+
+const DISCIPLINES = [
+  { name:"Personal Training", ct:"64 trainers" },
+  { name:"Yoga", ct:"48 trainers" },
+  { name:"Pilates", ct:"35 trainers" },
+  { name:"HIIT", ct:"29 trainers" },
+  { name:"Strength & Conditioning", ct:"52 trainers" },
+  { name:"Stretching", ct:"41 trainers" },
+  { name:"CrossFit", ct:"22 trainers" },
+  { name:"Running", ct:"18 trainers" },
+];
+
+const TESTIMONIALS = [
+  { text:"Lost 18 lbs in 3 months with Anna. I used to think fitness wasn't for me — now I train 5 days a week and feel the best I have in years.",
+    author:"Maria S.", meta:"29 · New York City", color:"#2D5A40", stars:"★★★★★" },
+  { text:"Sergey fixed my deadlift form and eliminated the back pain I'd had for years. Six months in, zero injuries, and I've hit three personal bests.",
+    author:"Alex V.", meta:"34 · Los Angeles", color:"#C4973A", stars:"★★★★★" },
+  { text:"Flexible scheduling, 100% online, not a single missed session in half a year. Pulse completely changed my relationship with working out.",
+    author:"Kate L.", meta:"26 · Austin, TX", color:"#3D7A58", stars:"★★★★★" },
+];
+
+const FAQS = [
+  { q:"Are all trainers background-checked and certified?",
+    a:"Yes. Every trainer on Pulse goes through identity verification, credential confirmation (NASM, ACE, NSCA, RYT, and others), and a background screening. Only fully approved specialists appear in the catalog." },
+  { q:"How do online sessions work?",
+    a:"Sessions happen through a built-in video call — no Zoom or third-party apps needed. Just click 'Join Session' at the scheduled time. Reminders are sent automatically." },
+  { q:"Can I cancel or reschedule a session?",
+    a:"Yes. You can cancel or reschedule up to 24 hours before your session at no charge. For late cancellations, policies vary by trainer and are shown on their profile before you book." },
+  { q:"What are the payment options?",
+    a:"We accept all major US credit and debit cards (Visa, Mastercard, Amex) and Apple Pay. Payment is processed securely at booking. Funds are only released to the trainer after a successful session." },
+  { q:"Is there a subscription or commitment required?",
+    a:"No subscriptions, no contracts. You pay per session — book as few or as many as you like. Cancel anytime with no hidden fees." },
+  { q:"How do I find the right trainer for my goals?",
+    a:"Use filters by specialty, format (online or in-person), price, and rating. Every profile includes a short intro video, their certifications, schedule, and verified reviews from real clients." },
+];
+
+/* ─── ICONS ─── */
+const Svg = ({sz=20,cl="",ch,...p}) => (
+  <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className={cl} {...p}>{ch}</svg>
+);
+const icons = {
+  Search:  (p) => <Svg {...p} ch={<><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></>}/>,
+  Check:   (p) => <Svg {...p} ch={<path d="m5 12 5 5L20 7"/>}/>,
+  Arrow:   (p) => <Svg {...p} ch={<><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></>}/>,
+  Calendar:(p) => <Svg {...p} ch={<><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></>}/>,
+  Users:   (p) => <Svg {...p} ch={<><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7"/><circle cx="17" cy="9" r="3"/><path d="M22 20c0-3-2-5-5-5"/></>}/>,
+  Dollar:  (p) => <Svg {...p} ch={<><path d="M12 3v18"/><path d="M17 6H10a3.5 3.5 0 0 0 0 7h4a3.5 3.5 0 0 1 0 7H7"/></>}/>,
+  Shield:  (p) => <Svg {...p} ch={<path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6l-8-3Z"/>}/>,
+  Plus:    (p) => <Svg {...p} ch={<><path d="M12 5v14"/><path d="M5 12h14"/></>}/>,
+  Lock:    (p) => <Svg {...p} ch={<><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></>}/>,
+  Star:    (p) => <svg width={p.sz||16} height={p.sz||16} viewBox="0 0 24 24" fill="#C4973A" className={p.cl||""}><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3Z"/></svg>,
+};
+
+/* ─── HOOKS ─── */
+function useScrolled() {
+  const [s, setS] = useState(false);
+  useEffect(() => {
+    const fn = () => setS(window.scrollY > 8);
+    window.addEventListener('scroll', fn, {passive:true});
+    fn();
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+  return s;
+}
+
+function useReveal() {
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll('.rv'));
+    els.forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight * 1.1) {
+        el.style.transition = 'none';
+        el.style.transitionDelay = '0s';
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        el.classList.add('in');
+      }
+    });
+    const ob = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.transition = '';
+          e.target.style.transitionDelay = '';
+          e.target.classList.add('in');
+          ob.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(el => { if (!el.classList.contains('in')) ob.observe(el); });
+    return () => ob.disconnect();
+  }, []);
+}
+
+function useCount(target, go) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!go) return;
+    const dur = 1600, t0 = Date.now();
+    const tick = () => {
+      const p = Math.min(1, (Date.now()-t0)/dur);
+      setN(Math.round((1-Math.pow(1-p,3))*target));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [go, target]);
+  return n;
+}
+
+/* ─── NAV ─── */
+function Nav({ color }) {
+  const scrolled = useScrolled();
+  return (
+    <nav className={`nav${scrolled?' scrolled':''}`}>
+      <a href="#" className="nav-logo">Pulse</a>
+      <ul className="nav-links">
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#trainers">Trainers</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <div className="nav-right">
+        <button className="btn btn-ghost">Sign In</button>
+        <button className="btn btn-pill" style={{background:color}}>Get Started</button>
+      </div>
+    </nav>
+  );
+}
+
+/* ─── FLOATING TRAINER CARD ─── */
+function FloatCard({ d }) {
+  return (
+    <div className="fc" style={d.pos}>
+      <div className="fc-photo" style={{background:d.grad}}>
+        <span className="fc-init">{d.init}</span>
+        <div className="fc-badge"><icons.Check sz={9}/> Verified</div>
+      </div>
+      <div className="fc-body">
+        <div className="fc-name">{d.name}</div>
+        <div className="fc-spec">{d.spec}</div>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'6px'}}>
+          <div style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'12px',color:'#4A5A50',fontWeight:500}}>
+            <icons.Star sz={12}/>{d.rating}
+          </div>
+          <span style={{fontSize:'11px',fontWeight:600,color:'#2D5A40',background:'#E4F0E8',padding:'2px 7px',borderRadius:'999px'}}>{d.cert}</span>
+        </div>
+        <div className="fc-price">{d.price}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── HERO ─── */
+function Hero({ color, variant }) {
+  return (
+    <section className="hero">
+      <div className="hero-inner">
+        <div>
+          <div className="hero-badge rv">
+            <icons.Shield sz={14}/>
+            Background-Checked Personal Trainers
+          </div>
+          <h1 className="hero-title rv d1">
+            Find a trainer<br/>
+            <em>who changes everything</em>
+          </h1>
+          <p className="hero-sub rv d2">
+            Book online or in-person sessions with NASM, ACE & NSCA certified specialists. No phone calls, no waitlists.
+          </p>
+          <div className="hero-ctas rv d3">
+            <button className="btn btn-lg" style={{background:color}}>
+              Find My Trainer <icons.Arrow sz={18}/>
+            </button>
+            <button className="btn btn-outline">Become a Trainer</button>
+          </div>
+          <div className="hero-trust rv d4">
+            <div className="trust-chip"><icons.Check sz={12}/>Background-checked</div>
+            <div className="trust-chip"><icons.Check sz={12}/>Cancel anytime</div>
+            <div className="trust-chip"><icons.Lock sz={12}/>Secure checkout</div>
+          </div>
+          <div className="hero-proof rv d5">
+            <div className="proof-item"><icons.Star sz={15}/> 4.9 rated</div>
+            <div className="proof-dot"></div>
+            <div className="proof-item">200+ certified trainers</div>
+            <div className="proof-dot"></div>
+            <div className="proof-item">10,000+ sessions booked</div>
+          </div>
+        </div>
+
+        {variant === 'split' && (
+          <div className="hero-visual rv d2">
+            <div className="hero-blob"></div>
+            {HERO_CARDS.map(d => <FloatCard key={d.name} d={d}/>)}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+/* ─── TRUST BAR ─── */
+function TrustBar({ show }) {
+  const ref = useRef(null);
+  const [vis, setVis] = useState(false);
+  useEffect(() => {
+    if (!show || !ref.current) return;
+    const ob = new IntersectionObserver(([e]) => { if(e.isIntersecting){setVis(true);ob.disconnect();} }, {threshold:0.4});
+    ob.observe(ref.current);
+    return () => ob.disconnect();
+  }, [show]);
+  const c1 = useCount(200, vis), c2 = useCount(10000, vis), c3 = useCount(98, vis), c4 = useCount(49, vis);
+  if (!show) return null;
+  return (
+    <div className="trust-bar" ref={ref}>
+      <div className="trust-bar-inner">
+        <div className="ts"><span className="ts-num">{c1}+</span><span className="ts-lbl">Certified Trainers</span></div>
+        <div className="ts"><span className="ts-num">{c2.toLocaleString('en-US')}+</span><span className="ts-lbl">Sessions Booked</span></div>
+        <div className="ts"><span className="ts-num">{c3}%</span><span className="ts-lbl">Client Satisfaction</span></div>
+        <div className="ts"><span className="ts-num">{(c4/10).toFixed(1)}★</span><span className="ts-lbl">Average Rating</span></div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── HOW IT WORKS ─── */
+function HowItWorks() {
+  const steps = [
+    { n:"01", icon:<icons.Search sz={22}/>, title:"Choose Your Goal",
+      desc:"Yoga, strength, HIIT, pilates — filter by goal, format (online or in-person), and budget." },
+    { n:"02", icon:<icons.Users sz={22}/>, title:"Find Your Trainer",
+      desc:"Browse certified profiles, video intros, real client reviews, and live availability." },
+    { n:"03", icon:<icons.Calendar sz={22}/>, title:"Book Your Session",
+      desc:"Online or in-person. Pay securely in one click and get an automatic reminder." },
+  ];
+  return (
+    <section className="sec" id="how" style={{background:'white'}}>
+      <div className="wrap">
+        <div className="shead">
+          <div className="rv"><span className="slabel">How It Works</span></div>
+          <h2 className="stitle rv d1">Get started in 3 minutes</h2>
+          <p className="ssub rv d2">From choosing your goal to your first session — it's that simple.</p>
+        </div>
+        <div className="steps-grid">
+          {steps.map((s,i) => (
+            <div key={i} className={`step-card rv d${i+1}`}>
+              <div className="step-num">{s.n}</div>
+              <div className="step-icon">{s.icon}</div>
+              <div className="step-title">{s.title}</div>
+              <p className="step-desc">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── DISCIPLINES ─── */
+function Disciplines() {
+  return (
+    <section className="sec">
+      <div className="wrap">
+        <div className="shead">
+          <div className="rv"><span className="slabel">Specialties</span></div>
+          <h2 className="stitle rv d1">Every goal. Every style.</h2>
+          <p className="ssub rv d2">Hundreds of certified specialists across every fitness discipline, in one place.</p>
+        </div>
+        <div className="disc-wrap rv d1">
+          {DISCIPLINES.map((d,i) => (
+            <div key={i} className="disc-pill">
+              <span>{d.name}</span>
+              <span className="disc-ct">{d.ct}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── FEATURED TRAINERS ─── */
+function FeaturedTrainers({ color }) {
+  return (
+    <section className="sec" id="trainers" style={{background:'white'}}>
+      <div className="wrap">
+        <div className="shead">
+          <div className="rv"><span className="slabel">Trainers</span></div>
+          <h2 className="stitle rv d1">Trainers clients trust</h2>
+          <p className="ssub rv d2">Every trainer is background-checked and holds a nationally recognized certification.</p>
+        </div>
+        <div className="trainers-grid">
+          {TRAINERS.map((t,i) => (
+            <div key={t.id} className={`tc rv d${i+1}`}>
+              <div className="tc-photo" style={{background:t.grad}}>
+                <span className="tc-init">{t.init}</span>
+                <div className="tc-overlay"></div>
+                <div className="tc-price">From ${t.price}/hr</div>
+              </div>
+              <div className="tc-body">
+                <div className="tc-head">
+                  <div className="tc-name">{t.name}</div>
+                  <div className="tc-check"><icons.Check sz={12}/></div>
+                </div>
+                <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}}>
+                  <div className="tc-spec">{t.spec}</div>
+                  <span style={{fontSize:'11px',fontWeight:600,color:'#2D5A40',background:'#E4F0E8',padding:'2px 7px',borderRadius:'999px',flexShrink:0}}>{t.cert}</span>
+                </div>
+                <div className="tc-rating">
+                  <icons.Star sz={14}/><strong>{t.rating}</strong>
+                  <span style={{color:'var(--ink3)'}}>· {t.reviews} review{t.reviews!==1?'s':''}</span>
+                </div>
+                <div className="tc-tags">
+                  {t.tags.map(tg => <span key={tg} className="tc-tag">{tg}</span>)}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="trainers-ft rv">
+          <button className="btn btn-outline">Browse All Trainers <icons.Arrow sz={18}/></button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── TESTIMONIALS ─── */
+function Testimonials() {
+  return (
+    <section className="sec" id="reviews">
+      <div className="wrap">
+        <div className="shead">
+          <div className="rv"><span className="slabel">Client Reviews</span></div>
+          <h2 className="stitle rv d1">Real people, real results</h2>
+          <p className="ssub rv d2">Verified reviews from clients who found their trainer on Pulse.</p>
+        </div>
+        <div className="testi-grid">
+          {TESTIMONIALS.map((t,i) => (
+            <div key={i} className={`testi rv d${i+1}`}>
+              <div className="testi-mark">"</div>
+              <div className="testi-stars">{t.stars}</div>
+              <p className="testi-text">{t.text}</p>
+              <div className="testi-author">
+                <div className="testi-avatar" style={{background:t.color}}>{t.author[0]}</div>
+                <div>
+                  <div className="testi-name">{t.author}</div>
+                  <div className="testi-role">{t.meta}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── FOR TRAINERS ─── */
+function ForTrainers() {
+  const benefits = [
+    { icon:<icons.Users sz={20}/>, title:"Grow your client base",
+      desc:"Create your profile and receive booking requests from thousands of potential clients across the US." },
+    { icon:<icons.Calendar sz={20}/>, title:"Own your schedule",
+      desc:"Flexible calendar with automated reminders. Set your hours, rates, and availability your way." },
+    { icon:<icons.Dollar sz={20}/>, title:"Get paid reliably",
+      desc:"Direct deposits to your US bank account. No cash, no invoicing, no payment chasing." },
+  ];
+  const stats = [
+    ["200+","active trainers on the platform"],
+    ["10K+","sessions delivered each month"],
+    ["98%","of clients rebook within 30 days"],
+    ["$3.5K–8K","avg. monthly trainer earnings"],
+  ];
+  return (
+    <section className="for-trainers">
+      <div className="ft-inner wrap">
+        <div>
+          <span className="slabel ft-label">For Trainers</span>
+          <h2 className="stitle ft-title">Grow your practice <em>with Pulse</em></h2>
+          <p className="ssub ft-sub">Join a community of NASM, ACE, and NSCA certified professionals. You focus on training — we handle everything else.</p>
+          <div className="ft-benefits">
+            {benefits.map((b,i) => (
+              <div key={i} className="ft-ben">
+                <div className="ft-ben-icon">{b.icon}</div>
+                <div>
+                  <div className="ft-ben-title">{b.title}</div>
+                  <div className="ft-ben-desc">{b.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button className="btn btn-white">Apply as a Trainer <icons.Arrow sz={18}/></button>
+        </div>
+        <div className="ft-stats">
+          {stats.map(([n,l],i) => (
+            <div key={i} className="ft-stat">
+              <div className="ft-stat-n">{n}</div>
+              <div className="ft-stat-l">{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── FAQ ─── */
+function FAQ() {
+  const [open, setOpen] = useState(null);
+  return (
+    <section className="sec" id="faq" style={{background:'white'}}>
+      <div className="wrap">
+        <div className="shead">
+          <div className="rv"><span className="slabel">FAQ</span></div>
+          <h2 className="stitle rv d1">Common questions</h2>
+        </div>
+        <div className="faq-list">
+          {FAQS.map((f,i) => (
+            <div key={i} className={`faq-item${open===i?' open':''}`}>
+              <div className="faq-q" onClick={()=>setOpen(open===i?null:i)}>
+                <span className="faq-qt">{f.q}</span>
+                <div className="faq-ico"><icons.Plus sz={14}/></div>
+              </div>
+              <div className="faq-a"><div className="faq-ai">{f.a}</div></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── FINAL CTA ─── */
+function FinalCTA({ color }) {
+  return (
+    <section className="final-cta" style={{background:color}}>
+      <div className="cta-circle" style={{width:'700px',height:'700px',top:'-280px',right:'-200px'}}></div>
+      <div className="cta-circle" style={{width:'350px',height:'350px',bottom:'-140px',left:'-100px'}}></div>
+      <div className="cta-wrap">
+        <span className="slabel" style={{background:'rgba(255,255,255,.14)',color:'rgba(255,255,255,.8)',marginBottom:'20px',display:'inline-block'}}>
+          Start Today
+        </span>
+        <h2 className="cta-title">Your first session — <em>this week</em></h2>
+        <p className="cta-sub">Choose a certified trainer, book your session, and take the first real step toward your goal.</p>
+        <div className="cta-btns">
+          <button className="btn btn-white">Find My Trainer <icons.Arrow sz={18}/></button>
+          <button className="btn btn-outline-white">Apply as a Trainer</button>
+        </div>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'24px',marginTop:'28px',flexWrap:'wrap'}}>
+          {["No subscription required","Cancel anytime","Secure US payments"].map((t,i)=>(
+            <div key={i} style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'13px',color:'rgba(255,255,255,.6)'}}>
+              <icons.Check sz={14}/>{t}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── FOOTER ─── */
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-inner wrap">
+        <div>
+          <div className="footer-logo">Pulse</div>
+          <div className="footer-tag">Personal Trainer Marketplace · United States</div>
+        </div>
+        <div className="footer-links">
+          <a href="#">About</a>
+          <a href="#">For Trainers</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+        <div className="footer-copy">© 2025 Pulse, Inc. All rights reserved.</div>
+      </div>
+    </footer>
+  );
+}
+
+/* ─── TWEAKS PANEL ─── */
+function TweaksPanel({ t, set, onClose }) {
+  const COLORS = [
+    { v:'#2D5A40', label:'Forest' },
+    { v:'#1A3D5C', label:'Ocean' },
+    { v:'#3D2A5C', label:'Amethyst' },
+  ];
+  return (
+    <div className="tweaks-panel">
+      <div className="tp-head">
+        <span className="tp-title">⚙ Tweaks</span>
+        <button className="tp-close" onClick={onClose}>✕</button>
+      </div>
+      <div className="tp-group">
+        <div className="tp-glabel">Brand Color</div>
+        <div className="tp-swatches">
+          {COLORS.map(c => (
+            <div key={c.v} className={`tp-swatch${t.primaryColor===c.v?' on':''}`}
+              style={{background:c.v}} title={c.label}
+              onClick={()=>set('primaryColor',c.v)}></div>
+          ))}
+        </div>
+      </div>
+      <div className="tp-group">
+        <div className="tp-glabel">Hero Layout</div>
+        <div className="tp-opts">
+          {[['split','Split'],['centered','Centered']].map(([v,l]) => (
+            <div key={v} className={`tp-opt${t.heroVariant===v?' on':''}`}
+              onClick={()=>set('heroVariant',v)}>{l}</div>
+          ))}
+        </div>
+      </div>
+      <div className="tp-group">
+        <div className="tp-row">
+          <span>Stats Bar</span>
+          <div className={`tp-toggle${t.showTrustBar?' on':''}`}
+            onClick={()=>set('showTrustBar',!t.showTrustBar)}></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── APP ─── */
+function App() {
+  const [tweaks, setTweaks] = useState(TWEAKS);
+  const [panelOpen, setPanelOpen] = useState(false);
+  useReveal();
+
+  function set(key, val) {
+    setTweaks(prev => ({...prev,[key]:val}));
+    window.parent.postMessage({type:'__edit_mode_set_keys',edits:{[key]:val}},'*');
+  }
+
+  useEffect(() => {
+    const handler = e => {
+      if (e.data?.type==='__activate_edit_mode') setPanelOpen(true);
+      if (e.data?.type==='__deactivate_edit_mode') setPanelOpen(false);
+    };
+    window.addEventListener('message', handler);
+    window.parent.postMessage({type:'__edit_mode_available'},'*');
+    return () => window.removeEventListener('message', handler);
+  }, []);
+
+  return (
+    <>
+      <Nav color={tweaks.primaryColor}/>
+      <Hero color={tweaks.primaryColor} variant={tweaks.heroVariant}/>
+      <TrustBar show={tweaks.showTrustBar}/>
+      <HowItWorks/>
+      <Disciplines/>
+      <FeaturedTrainers color={tweaks.primaryColor}/>
+      <Testimonials/>
+      <ForTrainers/>
+      <FAQ/>
+      <FinalCTA color={tweaks.primaryColor}/>
+      <Footer/>
+      {panelOpen && (
+        <TweaksPanel t={tweaks} set={set} onClose={()=>{
+          setPanelOpen(false);
+          window.parent.postMessage({type:'__edit_mode_dismissed'},'*');
+        }}/>
+      )}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+
+</script>
+</body>
+</html>

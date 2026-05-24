@@ -14,6 +14,8 @@
 
 Фаза **P04** — публичный landing `/` only: hero, categories, featured trainers, primary CTA → `/trainers`.
 
+**Historical (W16):** первая MVP-версия landing. Визуально **superseded** фазой **P16** ([`public_landing_spec.md`](../specs/public_landing_spec.md)) — P04 DoD не переписывается задним числом.
+
 **Аудитория:** AI-агенты после P03.
 
 ---
@@ -133,6 +135,7 @@ N/A.
 |----------|--------------|
 | [`P04_tasks.md`](../tasks/P04_tasks.md) | Checklist |
 | [`P05_phase_description.md`](./P05_phase_description.md) | Next — catalog |
+| [`P16_phase_description.md`](./P16_phase_description.md) | Landing v2 replace |
 
 ---
 

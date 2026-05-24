@@ -65,8 +65,8 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 | **Implementation contracts** | [`docs/implementation/mvp/contracts/`](docs/implementation/mvp/contracts/) |
 | **Implementation specs** | [`docs/implementation/mvp/specs/`](docs/implementation/mvp/specs/) |
 | **Implementation guides** | [`docs/implementation/mvp/guides/`](docs/implementation/mvp/guides/) |
-| **Implementation phases (P01–P15, P20 planned)** | [`docs/implementation/mvp/phases_tasks_descriptions/`](docs/implementation/mvp/phases_tasks_descriptions/) + [`tasks/`](docs/implementation/mvp/tasks/) + [`ui_component_phase_matrix.md`](docs/implementation/mvp/ui_component_phase_matrix.md) |
-| HTML-прототип | [`docs/prototypes/Fitness_Platform_Prototype_v1.html`](docs/prototypes/Fitness_Platform_Prototype_v1.html) |
+| **Implementation phases (P01–P14 MVP; P16–P18, P21 post-P14)** | [`docs/implementation/mvp/phases_tasks_descriptions/`](docs/implementation/mvp/phases_tasks_descriptions/) + [`tasks/`](docs/implementation/mvp/tasks/) + [`ui_component_phase_matrix.md`](docs/implementation/mvp/ui_component_phase_matrix.md) |
+| HTML-прототип | [`docs/prototypes/Fitness_Platform_Prototype_v1.html`](docs/prototypes/Fitness_Platform_Prototype_v1.html), landing: [`Pulse Landing Page -Standalone-.html`](docs/prototypes/Pulse Landing Page -Standalone-.html) |
 | Runtime / стек | [`docs/prds/07_governance/adr_001_stack_and_runtime.md`](docs/prds/07_governance/adr_001_stack_and_runtime.md), [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
 
 ## Цикл работы агента
@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P13 complete (admin moderation). Следующая фаза: **P14** (quality gate). **P20** (complaint resolution v2) — implementation in progress / post-P14 — см. [`P20_phase_description.md`](docs/implementation/mvp/phases_tasks_descriptions/P20_phase_description.md).  
+**Текущая фаза:** P14 complete (quality gate). **Post-P14 tracks:** **P16** (public landing v2), **P17** (complaint resolution v2 — in progress), **P18** (admin people ops, spec only), **P21** (email & jobs, post-MVP deferral). См. [`_migration_P15-P20_renumbering.md`](docs/implementation/mvp/phases_tasks_descriptions/_migration_P15-P20_renumbering.md).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

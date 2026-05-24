@@ -26,7 +26,7 @@
 | Operations | [`06_operations/`](06_operations/) | **Canonical** | migration runbook, observability, cron registry |
 | Governance | [`07_governance/`](07_governance/) | **Canonical** | ADR-001–007 ACCEPTED, decision process |
 
-**Design & implementation** (см. [`architecture_master_index.md`](architecture_master_index.md) §10–12): UX contracts, wireframes, contracts, specs, phases **P01–P15**, guides — **Canonical**.
+**Design & implementation** (см. [`architecture_master_index.md`](architecture_master_index.md) §10–12): UX contracts, wireframes, contracts, specs, phases **P01–P14** MVP + **P16–P18, P21** post-P14, guides — **Canonical**.
 
 ---
 
@@ -43,6 +43,7 @@
 | W10 | Wireframes MVP |
 | W11 | Phase descriptions P01–P07 + tasks *(superseded by W16)* |
 | W16 | Phase restructure P01–P15 + UI matrix + migration doc |
+| W22 | P16 landing v2; renumber P15→P21, P20→P17; Admin People Ops → P18 |
 | W12 | Operations + guides |
 | W13 | Architecture learning pack (layer walkthroughs) |
 | W14 | Final index sync (этот каталог + master index) |

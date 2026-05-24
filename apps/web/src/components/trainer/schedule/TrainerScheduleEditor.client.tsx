@@ -1,10 +1,18 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import { CalendarClockIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import { saveWeeklyScheduleAction } from "@/actions/trainer/save-weekly-schedule";
 import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { TrainerScheduleForEdit } from "@/data/trainer/get-trainer-schedule-for-edit.server";
 import type { WeeklyIntervalInput } from "@pulse/domain";
@@ -84,6 +92,19 @@ export function TrainerScheduleEditor({
           </TabsTrigger>
         </TabsList>
         <TabsContent value="regular" className="mt-4 space-y-3">
+          {intervals.length === 0 ? (
+            <Empty className="border border-dashed border-border/60">
+              <EmptyHeader>
+                <EmptyMedia variant="icon">
+                  <CalendarClockIcon aria-hidden />
+                </EmptyMedia>
+                <EmptyTitle>{MESSAGES.trainer.schedule.empty.title}</EmptyTitle>
+                <EmptyDescription>
+                  {MESSAGES.trainer.schedule.empty.description}
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          ) : null}
           {SCHEDULE_WEEKDAYS.map((day) => {
             const dayIntervals = grouped.get(day.dayOfWeek) ?? [];
             const enabled = enabledDays.has(day.dayOfWeek);

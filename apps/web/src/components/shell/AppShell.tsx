@@ -1,6 +1,7 @@
 import type { UserRole } from "@pulse/domain";
 
 import { AppShellCanvas } from "@/components/shell/AppShellCanvas";
+import { SkipToMainLink } from "@/components/shell/SkipToMainLink";
 import { BottomNav } from "@/components/shell/BottomNav.client";
 import { PageContainer } from "@/components/shell/PageContainer";
 import { SidebarNav } from "@/components/shell/SidebarNav.client";
@@ -27,6 +28,7 @@ export function AppShell({
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">
+      <SkipToMainLink />
       <TopBar />
       <div className="flex min-h-0 flex-1 flex-col items-center">
         <AppShellCanvas>

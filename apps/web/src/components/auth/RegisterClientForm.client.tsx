@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Loader2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { AUTH_MUTATION_ERROR_CODES } from "@pulse/domain";
 
@@ -23,6 +24,7 @@ import {
   type RegisterClientFormState,
 } from "@/actions/auth/register-client";
 import { MESSAGES } from "@/lib/messages";
+import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export const RegisterClientForm = () => {
   const router = useRouter();
@@ -36,6 +38,12 @@ export const RegisterClientForm = () => {
     state && !state.ok && state.code === AUTH_MUTATION_ERROR_CODES.DUPLICATE_EMAIL
       ? state.message
       : undefined;
+
+  useEffect(() => {
+    if (state && !state.ok && state.message) {
+      toast.error(state.message, { duration: PRODUCT_TOAST_DURATION_MS });
+    }
+  }, [state]);
 
   return (
     <form action={formAction} className="space-y-6" aria-busy={pending}>

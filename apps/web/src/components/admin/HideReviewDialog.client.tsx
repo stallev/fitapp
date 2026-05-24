@@ -52,6 +52,7 @@ export function HideReviewDialog({ reviewId }: HideReviewDialogProps) {
           size="sm"
           className="min-h-11"
           disabled={isPending}
+          aria-busy={isPending}
         >
           {MESSAGES.admin.reviews.hide}
         </Button>

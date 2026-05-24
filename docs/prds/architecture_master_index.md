@@ -216,8 +216,8 @@ Purpose: **layer walkthroughs** for AI onboarding — how contracts map to `apps
 
 | Path | Purpose |
 |------|---------|
-| [`implementation/mvp/phases_tasks_descriptions/`](../../implementation/mvp/phases_tasks_descriptions/) | **Canonical** — P01–P15 + P20 planned (W16/W17) |
-| [`implementation/mvp/tasks/`](../../implementation/mvp/tasks/) | **Canonical** — P01–P15 + P20 agent checklists |
+| [`implementation/mvp/phases_tasks_descriptions/`](../../implementation/mvp/phases_tasks_descriptions/) | **Canonical** — P01–P14 MVP + P16–P18, P21 post-P14 (W22) |
+| [`implementation/mvp/tasks/`](../../implementation/mvp/tasks/) | **Canonical** — phase agent checklists |
 | [`implementation/mvp/ui_component_phase_matrix.md`](../../implementation/mvp/ui_component_phase_matrix.md) | Phase × Component × Route (W16) |
 | [`implementation/mvp/contracts/`](../../implementation/mvp/contracts/) | **Canonical** — cross-module contracts (W8) |
 | `implementation/mvp/specs/` | **Canonical** — complex flow specs (W9) |
@@ -227,7 +227,7 @@ Purpose: **layer walkthroughs** for AI onboarding — how contracts map to `apps
 
 **W9 specs (Canonical):** [`global_shell_spec.md`](../../implementation/mvp/specs/global_shell_spec.md), [`password_reset_spec.md`](../../implementation/mvp/specs/password_reset_spec.md), [`catalog_discovery_spec.md`](../../implementation/mvp/specs/catalog_discovery_spec.md), [`trainer_onboarding_spec.md`](../../implementation/mvp/specs/trainer_onboarding_spec.md), [`booking_wizard_spec.md`](../../implementation/mvp/specs/booking_wizard_spec.md), [`trainer_schedule_spec.md`](../../implementation/mvp/specs/trainer_schedule_spec.md), [`admin_verification_spec.md`](../../implementation/mvp/specs/admin_verification_spec.md), [`complaint_refund_spec.md`](../../implementation/mvp/specs/complaint_refund_spec.md).
 
-**W16 phases (Canonical):** [`P01_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) … [`P15_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P15_phase_description.md) + matching `tasks/P0N_tasks.md`. **P20 planned:** [`P20_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P20_phase_description.md). Migration: [`_migration_P01-P07_to_P01-P15.md`](../../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md).
+**W16 phases (Canonical):** [`P01_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) … [`P14_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P14_phase_description.md) + matching `tasks/P0N_tasks.md`. **W22 post-P14:** P16 landing, P17 complaints, P18 people ops (spec), P21 email. Migrations: [`_migration_P01-P07_to_P01-P15.md`](../../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md), [`_migration_P15-P20_renumbering.md`](../../implementation/mvp/phases_tasks_descriptions/_migration_P15-P20_renumbering.md).
 
 Lampto reference: [`docs/examples/lampto/docs/implementation/mvp/`](../examples/lampto/docs/implementation/mvp/).
 

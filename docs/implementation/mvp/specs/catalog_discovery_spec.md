@@ -189,11 +189,11 @@ Matrix: [`authorization_matrix.md`](../../../prds/04_authorization_privacy/autho
 
 ## UI Catalog (by screen)
 
-**Phases:** P04–P06 · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
+**Phases:** P04–P06 (catalog); landing v2 → **P16** [`public_landing_spec.md`](./public_landing_spec.md) · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
 
 | Screen | CREATE | USE |
 |--------|--------|-----|
-| `/` (landing) | Landing section modules | `SectionTitle`, `PulseCard`, `Button`, `SpecChip`, `TrainerCard` preview |
+| `/` (landing) | P16 landing modules — see [`public_landing_spec.md`](./public_landing_spec.md) | `Button`, `CustomLink`, typography atoms, `Skeleton`, `Empty` |
 | `/trainers` | `TrainerCard`, filter surfaces | `FilterChip`, `Sheet`, `Pagination`, `Empty`, `Skeleton` |
 | `/trainers/[id]` | Profile tab panels, wishlist heart | `Tabs`, `RatingStars`, `StatusBadge`, `Button` |
 
@@ -227,5 +227,6 @@ Matrix: [`authorization_matrix.md`](../../../prds/04_authorization_privacy/autho
 
 | Date | Change |
 |------|--------|
+| 2026-05-25 | v1.2 — Landing section → P16 + `public_landing_spec.md` |
 | 2026-05-23 | v1.0 — catalog & discovery spec (W9-03) |
 | 2026-05-23 | v1.1 — Filter URL contract (`sort`, `page`, `pageSize`); P05 catalog-only note |

@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { Loader2Icon } from "lucide-react";
+import { toast } from "sonner";
 
 import { TRAINER_MUTATION_ERROR_CODES } from "@pulse/domain";
 
@@ -20,6 +21,7 @@ import {
   type RegisterTrainerFormState,
 } from "@/actions/auth/register-trainer";
 import { MESSAGES } from "@/lib/messages";
+import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type TrainerOnboardingCredentialsStepProps = {
   onSuccess: () => void;
@@ -44,6 +46,12 @@ export function TrainerOnboardingCredentialsStep({
     state && !state.ok && state.code === TRAINER_MUTATION_ERROR_CODES.DUPLICATE_EMAIL
       ? state.message
       : undefined;
+
+  useEffect(() => {
+    if (state && !state.ok && state.message) {
+      toast.error(state.message, { duration: PRODUCT_TOAST_DURATION_MS });
+    }
+  }, [state]);
 
   return (
     <form action={formAction} className="space-y-6" aria-busy={pending}>

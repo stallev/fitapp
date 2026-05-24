@@ -60,6 +60,7 @@ export function ScheduleDayRow({
           checked={enabled}
           onCheckedChange={onToggleDay}
           disabled={disabled}
+          aria-busy={disabled}
           aria-label={`${day.label} ${enabled ? "включён" : "выключен"}`}
           className="h-7 w-12"
         />
@@ -82,6 +83,7 @@ export function ScheduleDayRow({
             className="border-dashed"
             onClick={() => onRequestAddInterval(dayOfWeek)}
             disabled={disabled}
+            aria-busy={disabled}
           >
             {MESSAGES.trainer.schedule.addSlot}
           </Button>

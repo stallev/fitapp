@@ -61,13 +61,22 @@ ScreenRouter: switch(screen) → React component
 
 ---
 
+## Standalone prototype — public landing
+
+| Canonical path | Prototype file | Wireframe | Phase |
+|----------------|----------------|-----------|-------|
+| `/` | [`Pulse Landing Page -Standalone-.html`](../prototypes/Pulse Landing Page -Standalone-.html) | [`public_landing.md`](./wireframes/mvp/public_landing.md) v2 | **P16** |
+
+**Note:** Main SPA prototype [`Fitness_Platform_Prototype_v1.html`](../prototypes/Fitness_Platform_Prototype_v1.html) does **not** include `/` landing — use standalone file above.
+
+---
+
 ## Canonical MVP routes WITHOUT prototype screen
 
 These **MUST** be designed from PRD + user flows in W10 wireframes — no visual reference in HTML prototype.
 
 | Canonical path | Source spec | Wireframe | Priority |
 |----------------|-------------|-----------|----------|
-| `/` | pages_functional_spec § Public | [`public_landing.md`](./wireframes/mvp/public_landing.md) | P02 |
 | `/auth/login` | client_flow | [`auth_login.md`](./wireframes/mvp/auth_login.md) | P02 |
 | `/auth/register` | client_flow | [`auth_register_client.md`](./wireframes/mvp/auth_register_client.md) | P02 |
 | `/auth/register/trainer` | trainer_flow | [`auth_register_trainer.md`](./wireframes/mvp/auth_register_trainer.md) | P04 |

@@ -2,9 +2,9 @@
 
 **Тип:** Implementation matrix  
 **Статус:** Canonical  
-**Версия:** 1.0  
-**Дата:** 2026-05-23  
-**Волна:** W16  
+**Версия:** 2.0  
+**Дата:** 2026-05-25  
+**Волна:** W22  
 **Источник:** [`design_system_lab_spec.md`](specs/design_system_lab_spec.md) § Component inventory  
 **Связанные документы:** [`_phase_template.md`](phases_tasks_descriptions/_phase_template.md), [`global_shell_spec.md`](specs/global_shell_spec.md)
 
@@ -223,22 +223,30 @@
 
 ---
 
-## P15 — Email & Jobs *(post-MVP)*
+## P16 — Public Landing v2
 
 | Component | Action | Route | Notes |
 |-----------|--------|-------|-------|
-| Password reset UI | CREATE (optional) | `/auth/forgot-password` | Per password_reset_spec |
-| Product UI otherwise | MUST NOT | — | Backend jobs only |
+| `LandingNav` | CREATE | `/` | Fixed nav + scroll backdrop |
+| `LandingHero`, `LandingHeroFloatCard` | CREATE | `/` | Split hero; cards hidden `< lg` |
+| `LandingTrustBar` | CREATE | `/` | Animated stats; reduced-motion guard |
+| `LandingHowItWorks` | CREATE | `/` | `#how` |
+| `LandingSpecialtyPills` | CREATE | `/` | Links → `/trainers` |
+| `LandingFeaturedTrainers*` | CREATE | `/` | Suspense; approved-only |
+| `LandingTestimonials` | CREATE | `/` | Static MVP |
+| `LandingForTrainers` | CREATE | `/` | Dark section |
+| `LandingFaq` | CREATE | `/` | Accordion client |
+| `LandingFinalCta` | CREATE | `/` | Dual CTAs |
+| `LandingFooter` | CREATE | `/` | |
+| P04 `LandingHero`, `LandingValueProps`, `LandingCategoryChips`, legacy featured/footer | **DELETE** | — | Full replace per P16 |
+| `TweaksPanel` (prototype) | MUST NOT | — | Dev-only in HTML prototype |
+| `Button`, `CustomLink`, typography atoms, `Skeleton`, `Empty` | USE | `/` | Design Lab catalog |
+
+**Spec:** [`public_landing_spec.md`](specs/public_landing_spec.md) · **Prototype:** [`Pulse Landing Page -Standalone-.html`](../../prototypes/Pulse Landing Page -Standalone-.html)
 
 ---
 
-## P16–P19 — Reserved
-
-Post-MVP phase numbers reserved — no component matrix rows until phase docs exist.
-
----
-
-## P20 — Complaint Resolution v2
+## P17 — Complaint Resolution v2
 
 | Component | Action | Route | Notes |
 |-----------|--------|-------|-------|
@@ -254,6 +262,33 @@ Post-MVP phase numbers reserved — no component matrix rows until phase docs ex
 | `StatusBadge`, `Button`, `CustomLink` | USE | admin complaints | Design Lab catalog |
 
 **ADR:** [`adr_008_complaint_resolution_model.md`](../../../prds/07_governance/adr_008_complaint_resolution_model.md)
+
+---
+
+## P18 — Admin People Ops *(planned)*
+
+| Component | Action | Route | Notes |
+|-----------|--------|-------|-------|
+| Client registry + detail surfaces | CREATE | `/admin/clients`, `/admin/clients/[id]` | Spec: `admin_people_ops_spec.md` |
+| Trainer post-approval ops | USE (extend) | `/admin/trainers/[id]` | Revoke + cross-links |
+| Phase docs | — | — | Pending P18 phase/tasks files |
+
+---
+
+## P19 — Reserved
+
+Post-MVP phase number reserved — no component matrix rows until phase doc exists.
+
+---
+
+## P21 — Email & Jobs *(post-MVP)*
+
+| Component | Action | Route | Notes |
+|-----------|--------|-------|-------|
+| Password reset UI | CREATE (optional) | `/auth/forgot-password` | Per password_reset_spec |
+| Product UI otherwise | MUST NOT | — | Backend jobs only |
+
+**Former ID:** P15 (W16) — [`_migration_P15-P20_renumbering.md`](phases_tasks_descriptions/_migration_P15-P20_renumbering.md)
 
 ---
 
@@ -278,4 +313,4 @@ Available from P03 onward unless phase table says **MUST NOT**:
 | [`_migration_P01-P07_to_P01-P15.md`](phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md) | Phase renumbering |
 | [`global_shell_spec.md`](specs/global_shell_spec.md) | Shell CREATE details (P03) |
 
-**Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — W16
+**Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — W22

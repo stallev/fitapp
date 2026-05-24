@@ -52,6 +52,7 @@ export function DeleteReviewDialog({ reviewId }: DeleteReviewDialogProps) {
           size="sm"
           className="min-h-11"
           disabled={isPending}
+          aria-busy={isPending}
         >
           {MESSAGES.admin.reviews.delete}
         </Button>

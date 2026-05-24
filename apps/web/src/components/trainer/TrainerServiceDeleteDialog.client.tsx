@@ -45,6 +45,7 @@ export function TrainerServiceDeleteDialog({
               onConfirm();
             }}
             disabled={isPending}
+            aria-busy={isPending}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
             {MESSAGES.trainer.services.deleteConfirmAction}

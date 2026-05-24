@@ -50,7 +50,7 @@
 ### Out of scope
 
 - Stripe refund API
-- Email on approve/reject (→ **P15**)
+- Email on approve/reject (→ **P21**)
 
 ---
 

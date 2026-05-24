@@ -1,6 +1,6 @@
 # Wireframe: Admin Trainer Approved Detail (Operational)
 
-**Тип:** Wireframe | **Статус:** Canonical | **Версия:** 1.0 | **Дата:** 2026-05-25 | **Волна:** W10 / P16  
+**Тип:** Wireframe | **Статус:** Canonical | **Версия:** 1.0 | **Дата:** 2026-05-25 | **Волна:** W10 / P18  
 **Route:** `/admin/trainers/[id]` (when `trainer_profile.status = approved`) · **Prototype:** —
 
 ## Metadata
@@ -133,4 +133,4 @@
 - [ ] FX-10: revoke confirm before mutation
 - [ ] One `Button default` on view (catalog link)
 
-**Registry:** W10-30 · P16 planned
+**Registry:** W10-30 · P18 planned

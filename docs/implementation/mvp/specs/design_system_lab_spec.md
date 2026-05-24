@@ -672,8 +672,8 @@ apps/web/src/components/design-lab/
 | PulseCard compact interactive | `c.bookings` | [`client_bookings_list.md`](../../../design/wireframes/mvp/client_bookings_list.md) |
 | KPI pattern | `t.home` | [`trainer_dashboard.md`](../../../design/wireframes/mvp/trainer_dashboard.md) |
 | Admin queue row | `a.trainers` | [`admin_trainers_queue.md`](../../../design/wireframes/mvp/admin_trainers_queue.md) |
-| Hero typography | `/` (gap — no prototype screen) | [`public_landing.md`](../../../design/wireframes/mvp/public_landing.md) |
-| SectionTitle | marketing blocks | [`public_landing.md`](../../../design/wireframes/mvp/public_landing.md) |
+| Hero typography | `/` P16 landing | [`public_landing.md`](../../../design/wireframes/mvp/public_landing.md), [`public_landing_spec.md`](../public_landing_spec.md) |
+| SectionTitle | marketing blocks (P16) | [`public_landing.md`](../../../design/wireframes/mvp/public_landing.md) |
 
 ---
 

@@ -228,4 +228,5 @@ Multiple nav regions — distinct `aria-label`: `"Primary"`, `"Breadcrumb"`, `"A
 
 | Date | Change |
 |------|--------|
+| 2026-05-25 | P14 implementation — a11y shell, forbidden UI, segment errors, mutation UX audit |
 | 2026-05-23 | v1.0 — accessibility requirements (W2-04) |

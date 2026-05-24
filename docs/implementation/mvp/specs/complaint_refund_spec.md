@@ -6,7 +6,7 @@
 **Дата:** 2026-05-25  
 **Волна:** W9  
 **Зависит от:** [`lifecycle_models.md`](../../../prds/02_domain_model/lifecycle_models.md), [`authorization_matrix.md`](../../../prds/04_authorization_privacy/authorization_matrix.md)  
-**Связанные документы:** [`admin_flow.md`](../../../prds/01_product_scope/user_flows/users_mvp/admin_flow.md), [`post_mvp_deferrals.md`](../../../prds/01_product_scope/post_mvp_deferrals.md), [`adr_008_complaint_resolution_model.md`](../../../prds/07_governance/adr_008_complaint_resolution_model.md), [`P20_phase_description.md`](../phases_tasks_descriptions/P20_phase_description.md)
+**Связанные документы:** [`admin_flow.md`](../../../prds/01_product_scope/user_flows/users_mvp/admin_flow.md), [`post_mvp_deferrals.md`](../../../prds/01_product_scope/post_mvp_deferrals.md), [`adr_008_complaint_resolution_model.md`](../../../prds/07_governance/adr_008_complaint_resolution_model.md), [`P17_phase_description.md`](../phases_tasks_descriptions/P17_phase_description.md)
 
 ---
 
@@ -33,7 +33,7 @@ Implementation-spec **admin обработки жалоб и возвратов*
 | Entity | Statuses (MVP) |
 |--------|----------------|
 | Complaint | `open` → `in_review` → `closed` |
-| Complaint resolution (P20, on close only) | `no_action` \| `warning_to_trainer` \| `refund_recommended` \| `duplicate` \| `spam` |
+| Complaint resolution (P17, on close only) | `no_action` \| `warning_to_trainer` \| `refund_recommended` \| `duplicate` \| `spam` |
 | RefundRequest | `pending` → `approved` \| `rejected` |
 
 | Priority (complaint UI) | Display |
@@ -52,7 +52,7 @@ Implementation-spec **admin обработки жалоб и возвратов*
 4. Admin starts review → `StartComplaintReview` (`open` → `in_review`).
 5. Close complaint → `CloseComplaint` → `closed` + **`resolution`** + `adminNotes`; toast.success; badge update.
 
-### Admin — complaint detail (P20)
+### Admin — complaint detail (P17)
 
 1. Admin on `/admin/complaints/[id]` — **Context panel**: booking summary (read-only), trainer name, related refund status + link to `/admin/refunds` if exists.
 2. Status `in_review` — banner «В работе у {assignee}» (from audit log); **Audit timeline** (review started, closed).
@@ -161,7 +161,7 @@ sequenceDiagram
 | CR-MUST-4 | toast.success on admin resolution |
 | CR-MUST-5 | No Stripe UI — copy clarifies manual processing MVP |
 | CR-SHOULD-1 | Quick «Close» from list for low-priority open items |
-| CR-MUST-6 | Resolution **required** on every `CloseComplaint` (P20) |
+| CR-MUST-6 | Resolution **required** on every `CloseComplaint` (P17) |
 | CR-MUST-7 | Admin notes required (min 10 chars) except `duplicate` / `spam` |
 | CR-MUST-8 | Context panel: booking + related refund on detail (read-only) |
 | CR-MUST-9 | Copy clarifies closing complaint ≠ approving refund |
@@ -204,7 +204,7 @@ sequenceDiagram
 - [ ] Wireframes linked
 - [ ] Post-MVP Stripe noted in scope
 
-### Complaint resolution v2 (P20)
+### Complaint resolution v2 (P17)
 
 - [ ] CloseComplaint persists `resolution` per ADR-008
 - [ ] Resolve dialog: resolution select + conditional notes validation
@@ -216,10 +216,10 @@ sequenceDiagram
 
 ---
 
-## Complaint resolution v2 (P20)
+## Complaint resolution v2 (P17)
 
 **ADR:** [`adr_008_complaint_resolution_model.md`](../../../prds/07_governance/adr_008_complaint_resolution_model.md)  
-**Phase:** [`P20_tasks.md`](../tasks/P20_tasks.md)
+**Phase:** [`P17_tasks.md`](../tasks/P17_tasks.md)
 
 Detail page regions (top → bottom):
 
@@ -236,12 +236,12 @@ No new routes. No admin booking detail route — context is read-only on complai
 
 ## UI Catalog (by screen)
 
-**Phase:** P13 (base) · P20 (resolution v2) · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
+**Phase:** P13 (base) · P17 (resolution v2) · Full matrix: [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md)
 
 | Screen | CREATE | USE |
 |--------|--------|-----|
 | `/admin/complaints`, `/admin/refunds` | Admin queue/detail rows | `PageHeader`, confirm dialogs |
-| `/admin/complaints/[id]` (P20) | `ComplaintContextPanel`, `ComplaintAuditTimeline`, `ResolveComplaintDialog`, `ComplaintClosedSummary` | `ComplaintDetailCard`, `ComplaintProcessedBanner` |
+| `/admin/complaints/[id]` (P17) | `ComplaintContextPanel`, `ComplaintAuditTimeline`, `ResolveComplaintDialog`, `ComplaintClosedSummary` | `ComplaintDetailCard`, `ComplaintProcessedBanner` |
 | Client booking detail (if P08) | Complaint/refund entry actions | `Button`, `Dialog` |
 
 ---
@@ -256,8 +256,8 @@ No new routes. No admin booking detail route — context is read-only on complai
 | [`pages_functional_spec.md`](../../../prds/01_product_scope/pages_functional_spec.md) | Admin pages |
 | [`global_shell_spec.md`](./global_shell_spec.md) | Badges |
 | [`adr_008_complaint_resolution_model.md`](../../../prds/07_governance/adr_008_complaint_resolution_model.md) | Resolution decisions |
-| [`P20_tasks.md`](../tasks/P20_tasks.md) | P20 implementation |
-| [`admin_people_ops_spec.md`](./admin_people_ops_spec.md) | P16 deep links to client/trainer people pages |
+| [`P17_tasks.md`](../tasks/P17_tasks.md) | P17 implementation |
+| [`admin_people_ops_spec.md`](./admin_people_ops_spec.md) | P18 deep links to client/trainer people pages |
 
 **Registry:** [`documentation_creation_registry.md`](../../../meta/documentation_creation_registry.md) — wave W9-08
 
@@ -275,5 +275,5 @@ No new routes. No admin booking detail route — context is read-only on complai
 
 | Date | Change |
 |------|--------|
-| 2026-05-25 | v2.0 — Complaint resolution v2 (P20): resolution enum, detail UX, CR-MUST-6..9 |
+| 2026-05-25 | v2.0 — Complaint resolution v2 (P17): resolution enum, detail UX, CR-MUST-6..9 |
 | 2026-05-23 | v1.0 — complaint & refund spec (W9-08) |

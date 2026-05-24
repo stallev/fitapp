@@ -5,9 +5,16 @@ import { useOptimistic, useState, useTransition } from "react";
 import { toast } from "sonner";
 
 import { deleteTrainerServiceAction } from "@/actions/trainer/delete-trainer-service";
-import { ContentText, Heading } from "@/components/atoms";
+import { Heading } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
-import { PulseCard } from "@/components/ui/card";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import type { TrainerServiceForEdit } from "@/data/trainer/get-trainer-services-for-edit.server";
 import { MESSAGES } from "@/lib/messages";
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
@@ -58,30 +65,36 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
     startToggleTransition(async () => {
       setOptimisticServices({ type: "toggle", serviceId });
 
-      const response = await resilientPostFetch(
-        `/api/trainer/services/${serviceId}/toggle`,
-        { method: "POST" },
-      );
-      const result = (await response.json()) as {
-        ok: boolean;
-        data?: { isActive: boolean };
-        message?: string;
-      };
+      try {
+        const response = await resilientPostFetch(
+          `/api/trainer/services/${serviceId}/toggle`,
+          { method: "POST" },
+        );
+        const result = (await response.json()) as {
+          ok: boolean;
+          data?: { isActive: boolean };
+          message?: string;
+        };
 
-      if (!result.ok || !result.data) {
-        toast.error(result.message ?? MESSAGES.trainer.services.toggleError, {
+        if (!result.ok || !result.data) {
+          toast.error(result.message ?? MESSAGES.trainer.services.toggleError, {
+            duration: PRODUCT_TOAST_DURATION_MS,
+          });
+          return;
+        }
+
+        setServices((current) =>
+          current.map((service) =>
+            service.id === serviceId
+              ? { ...service, isActive: result.data!.isActive }
+              : service,
+          ),
+        );
+      } catch {
+        toast.error(MESSAGES.trainer.services.toggleError, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
-        return;
       }
-
-      setServices((current) =>
-        current.map((service) =>
-          service.id === serviceId
-            ? { ...service, isActive: result.data!.isActive }
-            : service,
-        ),
-      );
     });
   };
 
@@ -133,6 +146,7 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
             setFormOpen(true);
           }}
           disabled={pending}
+          aria-busy={pending}
         >
           <PlusIcon aria-hidden className="size-4" />
           {MESSAGES.trainer.services.addNew}
@@ -140,24 +154,31 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
       </div>
 
       {optimisticServices.length === 0 ? (
-        <PulseCard className="space-y-3 p-6 text-center">
-          <Heading as="h2" visualLevel="h4">
-            {MESSAGES.trainer.services.emptyTitle}
-          </Heading>
-          <ContentText variant="muted" as="p">
-            {MESSAGES.trainer.services.emptyDescription}
-          </ContentText>
-          <Button
-            type="button"
-            onClick={() => {
-              setEditingService(null);
-              setFormOpen(true);
-            }}
-          >
-            <PlusIcon aria-hidden className="size-4" />
-            {MESSAGES.trainer.services.addNew}
-          </Button>
-        </PulseCard>
+        <Empty className="border border-border/60">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <PlusIcon aria-hidden />
+            </EmptyMedia>
+            <EmptyTitle>{MESSAGES.trainer.services.emptyTitle}</EmptyTitle>
+            <EmptyDescription>
+              {MESSAGES.trainer.services.emptyDescription}
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button
+              type="button"
+              onClick={() => {
+                setEditingService(null);
+                setFormOpen(true);
+              }}
+              disabled={pending}
+              aria-busy={pending}
+            >
+              <PlusIcon aria-hidden className="size-4" />
+              {MESSAGES.trainer.services.addNew}
+            </Button>
+          </EmptyContent>
+        </Empty>
       ) : (
         <div className="grid gap-3 md:grid-cols-2">
           {optimisticServices.map((service) => (

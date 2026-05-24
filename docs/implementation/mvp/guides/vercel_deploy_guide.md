@@ -56,8 +56,8 @@ Configure in Vercel Dashboard → Project → Settings → Environment Variables
 | `AWS_SECRET_ACCESS_KEY` | ✅ | ✅ | When upload feature enabled |
 | `AWS_REGION` | ✅ | ✅ | S3 bucket region |
 | `AWS_S3_BUCKET_NAME` | ✅ | ✅ | When upload feature enabled |
-| `CRON_SECRET` | ❌ MVP | ❌ MVP | P15 post-MVP |
-| `RESEND_API_KEY` | ❌ MVP | ❌ MVP | P15 post-MVP |
+| `CRON_SECRET` | ❌ MVP | ❌ MVP | P21 post-MVP |
+| `RESEND_API_KEY` | ❌ MVP | ❌ MVP | P21 post-MVP |
 
 **MUST** — `AUTH_URL` matches deployed origin for Auth.js callbacks ([`auth_runtime_spec.md`](../../../prds/05_runtime/auth_runtime_spec.md)).
 
@@ -152,7 +152,7 @@ Parallel preview deploys on same Neon branch: last migrate wins — prefer branc
 
 ---
 
-## Post-MVP additions (P15)
+## Post-MVP additions (P21)
 
 When email phase unlocks:
 
