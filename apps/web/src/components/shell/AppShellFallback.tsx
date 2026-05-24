@@ -18,7 +18,10 @@ export function AppShellFallback() {
               </div>
             </div>
           </aside>
-          <main className="min-w-0 flex-1 px-4 pt-4 md:px-6 md:pt-6 lg:px-8">
+          <main
+            id="main-content"
+            className="min-w-0 flex-1 px-4 pt-4 md:px-6 md:pt-6 lg:px-8"
+          >
             <Skeleton className="h-8 w-48" />
             <Skeleton className="mt-6 h-40 w-full rounded-xl" />
           </main>

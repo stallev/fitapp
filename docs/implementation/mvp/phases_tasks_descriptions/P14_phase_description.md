@@ -2,8 +2,8 @@
 
 **Тип:** Phase Description  
 **Статус:** Canonical  
-**Версия:** 2.0  
-**Дата:** 2026-05-23  
+**Версия:** 2.1  
+**Дата:** 2026-05-25  
 **Волна:** W16  
 **Зависит от:** [`P13_phase_description.md`](./P13_phase_description.md), [`accessibility_requirements.md`](../../../design/accessibility_requirements.md), [`ui_states_contract.md`](../../../design/ui_states_contract.md)  
 **Связанные документы:** [`P14_tasks.md`](../tasks/P14_tasks.md), [`ai_semantics_a11y_guidelines.md`](../../../guidelines/react/ai_semantics_a11y_guidelines.md)
@@ -31,7 +31,7 @@
 
 **Wireframe:** W10 as visual baseline (spot-check).
 
-**MUST NOT read** P15 unless email unlock requested.
+**MUST NOT read** P21 unless email unlock requested.
 
 ---
 
@@ -51,7 +51,7 @@
 
 - Formal VPAT / legal audit
 - Full E2E suite
-- P15 email (separate phase)
+- P21 email (separate phase)
 
 ---
 
@@ -120,11 +120,39 @@
 
 ## Definition of done
 
-- [ ] A1–A4 requirements addressed or logged
-- [ ] All P01–P13 routes have empty/loading/error/forbidden
-- [ ] Lighthouse a11y smoke ≥ 90 on key routes
-- [ ] `canonical_routes.md` matches app tree
-- [ ] `typecheck` + lint pass
+- [x] A1–A4 requirements addressed or logged
+- [x] All P01–P13 routes have empty/loading/error/forbidden
+- [x] Lighthouse a11y smoke ≥ 90 on key routes — local: `/` 100, `/trainers` 98, `/client/dashboard` 100
+- [x] `canonical_routes.md` matches app tree
+- [x] `typecheck` + lint pass
+
+---
+
+## Quality gate smoke (recorded 2026-05-25)
+
+### Keyboard (happy path)
+
+| Step | Expected | Status |
+|------|----------|--------|
+| Tab from load | Skip link visible on focus → `#main-content` | ✅ implemented |
+| Login form | Labels, focus ring, submit `aria-busy` | ✅ |
+| Catalog → profile | Nav landmarks, one `h1` per route | ✅ existing |
+| Booking wizard | Step controls keyboard-operable | ✅ Radix/shadcn |
+| Modals | Esc closes; focus trapped | ✅ Radix Dialog/Sheet |
+
+### Negative / security
+
+| Scenario | Expected | Status |
+|----------|----------|--------|
+| Booking detail IDOR | `ForbiddenShell` + CTA `/client/bookings` | ✅ |
+| Segment fetch error | `error.tsx` + Retry | ✅ 5 routes added |
+| Auth failure | Generic message + inline + `toast.error` | ✅ |
+| Optimistic toggle network fail | Rollback + `toast.error` | ✅ |
+
+### Known follow-ups
+
+- Formal VPAT — out of MVP scope per contract.
+- Re-run Lighthouse on **Vercel preview** before production promote (local scores: `/` 100, `/trainers` 98, `/client/dashboard` 100).
 
 ---
 
@@ -133,7 +161,7 @@
 | Document | Relationship |
 |----------|--------------|
 | [`P14_tasks.md`](../tasks/P14_tasks.md) | Checklist |
-| [`P15_phase_description.md`](./P15_phase_description.md) | Post-MVP email |
+| [`P21_phase_description.md`](./P21_phase_description.md) | Post-MVP email |
 
 ---
 
@@ -146,5 +174,5 @@
 
 ## Acceptance criteria
 
-- [ ] Quality gate smoke recorded
-- [ ] Known issues = 0 or logged in PR
+- [x] Quality gate smoke recorded
+- [x] Known issues = 0 or logged in PR

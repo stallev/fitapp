@@ -72,6 +72,19 @@ export const MESSAGES = {
     back: "Назад",
     bookingStep: "Шаг {step} из {total}",
     sessionTitle: "Сессия",
+    skipToContent: "Перейти к содержимому",
+  },
+  common: {
+    segmentError: {
+      title: "Не удалось загрузить данные",
+      description: "Проверьте подключение и попробуйте снова.",
+      retry: "Повторить",
+    },
+    forbidden: {
+      title: "Доступ запрещён",
+      description: "У вас нет прав для просмотра этой страницы.",
+      homeCta: "На главную",
+    },
   },
   empty: {
     clientDashboard: {
@@ -214,6 +227,7 @@ export const MESSAGES = {
   },
   booking: {
     wizard: {
+      pageTitle: "Бронирование занятия",
       stepService: "Услуга",
       stepSlot: "Время",
       stepConfirm: "Подтверждение",
@@ -248,6 +262,10 @@ export const MESSAGES = {
       messageLabel: "Ваше сообщение",
       backToBookings: "К списку занятий",
       timezoneHint: "Время указано в часовом поясе тренера",
+      forbiddenTitle: "Нет доступа к бронированию",
+      forbiddenDescription:
+        "Это бронирование недоступно или принадлежит другому аккаунту.",
+      forbiddenCta: "К списку занятий",
     },
     list: {
       metaTitle: "Мои сессии — Pulse",
@@ -432,6 +450,11 @@ export const MESSAGES = {
       save: "Сохранить расписание",
       saving: "Сохраняем…",
       saved: "Расписание сохранено",
+      empty: {
+        title: "Расписание не настроено",
+        description:
+          "Включите рабочий день и добавьте интервалы доступности.",
+      },
       addSlot: "Добавить слот",
       addException: "Добавить исключение",
       dayOff: "Выходной",

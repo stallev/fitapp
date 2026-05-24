@@ -93,7 +93,7 @@
 | | Income → `/trainer/income` | Dollar |
 | **admin** | Overview → `/admin/dashboard` | Home |
 | | Trainers → `/admin/trainers` | Shield + badge |
-| | Clients → `/admin/clients` | Users — **P16 planned**, no badge |
+| | Clients → `/admin/clients` | Users — **P18 planned**, no badge |
 | | Complaints → `/admin/complaints` | Flag + badge |
 | | Refunds → `/admin/refunds` | Refresh + badge |
 

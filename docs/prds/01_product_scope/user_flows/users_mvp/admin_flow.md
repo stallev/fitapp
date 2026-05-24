@@ -263,7 +263,7 @@ Low    → status="info"      (bg-info-container text-info)
 
 **UX rule**: зелёный empty state при отсутствии жалоб — позитивный фидбек, что очередь пуста.
 
-### Complaint detail (P20)
+### Complaint detail (P17)
 
 **Route**: `/admin/complaints/[id]`
 
@@ -377,7 +377,7 @@ Review card:
 
 ---
 
-## Поток 6: Реестр клиентов (P16)
+## Поток 6: Реестр клиентов (P18)
 
 **Route**: `/admin/clients`  
 **Spec**: [`admin_people_ops_spec.md`](../../../../implementation/mvp/specs/admin_people_ops_spec.md) · Wireframe W10-31
@@ -407,7 +407,7 @@ Desktop: table or md:grid-cols-2 cards
 
 ---
 
-## Поток 7: Карточка клиента (P16)
+## Поток 7: Карточка клиента (P18)
 
 **Route**: `/admin/clients/[id]`  
 **Wireframe**: W10-32
@@ -426,7 +426,7 @@ Tab content: read-only rows with links to
 
 **UX rules:**
 
-- **Read-only** — no suspend/ban in P16.
+- **Read-only** — no suspend/ban in P18.
 - Deep link from complaint detail: «Client profile» → this route.
 - **MUST NOT** show trainer private notes.
 
@@ -498,7 +498,7 @@ Admin преимущественно работает с desktop. Mobile — д�
 |----------|--------------|
 | [`pages_functional_spec.md`](../../pages_functional_spec.md) | Page-level behavior |
 | [`admin_verification_spec.md`](../../../../implementation/mvp/specs/admin_verification_spec.md) | Trainer queue UX (W9) |
-| [`admin_people_ops_spec.md`](../../../../implementation/mvp/specs/admin_people_ops_spec.md) | Client registry + approved trainer ops (P16) |
+| [`admin_people_ops_spec.md`](../../../../implementation/mvp/specs/admin_people_ops_spec.md) | Client registry + approved trainer ops (P18) |
 | [`complaint_refund_spec.md`](../../../../implementation/mvp/specs/complaint_refund_spec.md) | Complaints & refunds UX (W9) |
 | [`global_shell_spec.md`](../../../../implementation/mvp/specs/global_shell_spec.md) | Admin shell & badges (W9) |
 | [`canonical_routes.md`](../../../../design/canonical_routes.md) | Route inventory |

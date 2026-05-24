@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 
 import { BookingWizard } from "@/components/booking/BookingWizard.client";
+import { BookingWizardSkeleton } from "@/components/booking/BookingWizardSkeleton";
 import { getPublicTrainerProfile } from "@/data/trainer/get-public-trainer-profile.server";
 import { BOOKING_WIZARD_STEP } from "@/lib/booking/booking-wizard-utils";
 
@@ -27,7 +28,7 @@ export default async function BookTrainerPage({
   const profile = await getPublicTrainerProfile(trainerId);
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<BookingWizardSkeleton />}>
       <BookingWizard
         profile={profile}
         initialServiceId={query.serviceId ?? profile.defaultServiceId}

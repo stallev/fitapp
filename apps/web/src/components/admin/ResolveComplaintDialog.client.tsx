@@ -133,6 +133,7 @@ export function ResolveComplaintDialog({
           size={triggerSize}
           className={cn("min-h-11", className)}
           disabled={disabled || isPending}
+          aria-busy={isPending}
         >
           {isPending ? pendingLabel : triggerLabel}
         </Button>

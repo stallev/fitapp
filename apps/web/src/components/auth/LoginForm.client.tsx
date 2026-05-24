@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { Loader2Icon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 import { AlertText, ContentText } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ import {
   type LoginFormState,
 } from "@/actions/auth/login";
 import { MESSAGES } from "@/lib/messages";
+import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 type LoginFormProps = {
   callbackUrl?: string;
@@ -30,6 +32,12 @@ export const LoginForm = ({ callbackUrl: callbackUrlProp }: LoginFormProps) => {
     LoginFormState,
     FormData
   >(loginAction, null);
+
+  useEffect(() => {
+    if (state && !state.ok && state.message) {
+      toast.error(state.message, { duration: PRODUCT_TOAST_DURATION_MS });
+    }
+  }, [state]);
 
   return (
     <form action={formAction} className="space-y-4" aria-busy={pending}>

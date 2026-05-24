@@ -27,24 +27,31 @@ export function ApproveTrainerButton({
     startTransition(async () => {
       const payload = { trainerProfileId };
 
-      const result: MutationResult<{ trainerProfileId: string }> = isIosSafari()
-        ? await resilientPostFetch("/api/admin/trainers/approve", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          }).then((response) => response.json())
-        : await approveTrainerAction(payload);
+      try {
+        const result: MutationResult<{ trainerProfileId: string }> = isIosSafari()
+          ? await resilientPostFetch("/api/admin/trainers/approve", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            }).then((response) => response.json())
+          : await approveTrainerAction(payload);
 
-      if (!result.ok) {
-        toast.error(result.message, { duration: PRODUCT_TOAST_DURATION_MS });
+        if (!result.ok) {
+          toast.error(result.message, { duration: PRODUCT_TOAST_DURATION_MS });
+          router.refresh();
+          return;
+        }
+
+        toast.success(MESSAGES.admin.moderation.approveSuccess, {
+          duration: PRODUCT_TOAST_DURATION_MS,
+        });
         router.refresh();
-        return;
+      } catch {
+        toast.error(MESSAGES.admin.errors.generic, {
+          duration: PRODUCT_TOAST_DURATION_MS,
+        });
+        router.refresh();
       }
-
-      toast.success(MESSAGES.admin.moderation.approveSuccess, {
-        duration: PRODUCT_TOAST_DURATION_MS,
-      });
-      router.refresh();
     });
   }
 

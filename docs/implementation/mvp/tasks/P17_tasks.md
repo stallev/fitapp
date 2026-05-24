@@ -1,18 +1,20 @@
-# P20 Tasks — Complaint Resolution v2
+# P17 Tasks — Complaint Resolution v2
 
 **Тип:** Tasks  
 **Статус:** Canonical  
-**Версия:** 1.0  
+**Версия:** 2.0  
 **Дата:** 2026-05-25  
-**Волна:** W17  
-**Зависит от:** [`P20_phase_description.md`](../phases_tasks_descriptions/P20_phase_description.md)  
-**Связанные документы:** [`adr_008_complaint_resolution_model.md`](../../../prds/07_governance/adr_008_complaint_resolution_model.md), [`complaint_refund_spec.md`](../specs/complaint_refund_spec.md)
+**Волна:** W22 *(renumbered from W17 P20)*  
+**Зависит от:** [`P17_phase_description.md`](../phases_tasks_descriptions/P17_phase_description.md)  
+**Связанные документы:** [`adr_008_complaint_resolution_model.md`](../../../prds/07_governance/adr_008_complaint_resolution_model.md), [`complaint_refund_spec.md`](../specs/complaint_refund_spec.md), [`_migration_P15-P20_renumbering.md`](../phases_tasks_descriptions/_migration_P15-P20_renumbering.md)
+
+**Former ID:** P20 (W17).
 
 ---
 
 ## Purpose
 
-Чеклист **P20** — complaint resolution v2: domain, schema, admin detail/list UX.
+Чеклист **P17** — complaint resolution v2: domain, schema, admin detail/list UX.
 
 ---
 
@@ -64,7 +66,7 @@
 
 | Document | Relationship |
 |----------|--------------|
-| [`P20_phase_description.md`](../phases_tasks_descriptions/P20_phase_description.md) | DoD |
-| [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) | P20 row |
+| [`P17_phase_description.md`](../phases_tasks_descriptions/P17_phase_description.md) | DoD |
+| [`ui_component_phase_matrix.md`](../ui_component_phase_matrix.md) | P17 row |
 
-**Registry:** W17
+**Registry:** W22 (was W17)

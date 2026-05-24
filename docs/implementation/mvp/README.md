@@ -2,11 +2,12 @@
 
 Фазовая декомпозиция разработки Pulse — формат идентичен lampto.
 
-**Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — волны W8–W16 **complete**
+**Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — волны W8–W22 **complete**
 
-**Статус:** contracts (W8) + specs (W9) + wireframes (W10) + phases **P01–P15** (W16) + **P20 planned** (W17) + operations & guides (W12) + architecture learning pack (W13) + index sync (W14) — **Canonical**. **P13 implementation complete** (admin moderation). Следующий шаг: **P14** (quality gate). **P20** (complaint resolution v2) — после P14.
+**Статус:** contracts (W8) + specs (W9) + wireframes (W10) + phases **P01–P14** MVP (W16) + **P16–P18, P21** post-P14 (W22) + operations & guides (W12) + architecture learning pack (W13) + index sync (W14) — **Canonical**. **P13 implementation complete** (admin moderation). **P14** quality gate. **P17** (complaint resolution v2) — in progress. **P16** (landing v2) — documented, not implemented.
 
-**Миграция W11→W16:** [`phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md`](phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md)
+**Миграция W11→W16:** [`phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md`](phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md)  
+**Renumbering W22:** [`phases_tasks_descriptions/_migration_P15-P20_renumbering.md`](phases_tasks_descriptions/_migration_P15-P20_renumbering.md)
 
 **Верификация в конце каждой фазы (обязательно):**
 
@@ -23,11 +24,11 @@ npm run lint        # apps/web + все packages/* (не только web)
 
 | Каталог | Содержимое | Статус |
 |---------|------------|--------|
-| `phases_tasks_descriptions/` | `P{N}_phase_description.md` (P01–P15, P20) + `_phase_template.md` | **Canonical** |
-| `tasks/` | `P{N}_tasks.md` — чеклисты (P01–P15, P20) | **Canonical** |
-| `ui_component_phase_matrix.md` | Phase × Component × Route × CREATE/USE | **Canonical** (W16) |
+| `phases_tasks_descriptions/` | `P{N}_phase_description.md` (P01–P14, P16–P18, P21) + templates + migrations | **Canonical** |
+| `tasks/` | `P{N}_tasks.md` — чеклисты | **Canonical** |
+| `ui_component_phase_matrix.md` | Phase × Component × Route × CREATE/USE | **Canonical** (W22) |
 | `contracts/` | Контракты между модулями | **Canonical** (W8) |
-| `specs/` | Детальные specs (booking wizard, trainer onboarding) | **Canonical** (W9) |
+| `specs/` | Детальные specs | **Canonical** (W9 + W22 `public_landing_spec`) |
 | `guides/` | Local dev, deploy, migrations, seed, cron | **Canonical** (W12) |
 
 ---
@@ -40,14 +41,14 @@ npm run lint        # apps/web + все packages/* (не только web)
 
 ---
 
-## Phases (W16 — Canonical)
+## Phases — MVP core (W16)
 
 | Phase | Description | Tasks |
 |-------|-------------|-------|
 | P01 | Monorepo & data layer | [`P01_phase_description.md`](phases_tasks_descriptions/P01_phase_description.md) | [`P01_tasks.md`](tasks/P01_tasks.md) |
 | P02 | Auth & request guards | [`P02_phase_description.md`](phases_tasks_descriptions/P02_phase_description.md) | [`P02_tasks.md`](tasks/P02_tasks.md) |
 | P03 | Design system & app shell | [`P03_phase_description.md`](phases_tasks_descriptions/P03_phase_description.md) | [`P03_tasks.md`](tasks/P03_tasks.md) |
-| P04 | Public landing | [`P04_phase_description.md`](phases_tasks_descriptions/P04_phase_description.md) | [`P04_tasks.md`](tasks/P04_tasks.md) |
+| P04 | Public landing *(historical MVP)* | [`P04_phase_description.md`](phases_tasks_descriptions/P04_phase_description.md) | [`P04_tasks.md`](tasks/P04_tasks.md) |
 | P05 | Catalog discovery | [`P05_phase_description.md`](phases_tasks_descriptions/P05_phase_description.md) | [`P05_tasks.md`](tasks/P05_tasks.md) |
 | P06 | Trainer profile + wishlist | [`P06_phase_description.md`](phases_tasks_descriptions/P06_phase_description.md) | [`P06_tasks.md`](tasks/P06_tasks.md) |
 | P07 | Booking wizard | [`P07_phase_description.md`](phases_tasks_descriptions/P07_phase_description.md) | [`P07_tasks.md`](tasks/P07_tasks.md) |
@@ -58,7 +59,18 @@ npm run lint        # apps/web + все packages/* (не только web)
 | P12 | Trainer schedule & clients | [`P12_phase_description.md`](phases_tasks_descriptions/P12_phase_description.md) | [`P12_tasks.md`](tasks/P12_tasks.md) |
 | P13 | Admin moderation | [`P13_phase_description.md`](phases_tasks_descriptions/P13_phase_description.md) | [`P13_tasks.md`](tasks/P13_tasks.md) |
 | P14 | Quality gate (a11y, UI states) | [`P14_phase_description.md`](phases_tasks_descriptions/P14_phase_description.md) | [`P14_tasks.md`](tasks/P14_tasks.md) |
-| P15 | Email & jobs *(post-MVP)* | [`P15_phase_description.md`](phases_tasks_descriptions/P15_phase_description.md) | [`P15_tasks.md`](tasks/P15_tasks.md) |
+
+---
+
+## Phases — Post-P14 (W22)
+
+| Phase | Description | Tasks |
+|-------|-------------|-------|
+| P16 | Public landing v2 | [`P16_phase_description.md`](phases_tasks_descriptions/P16_phase_description.md) | [`P16_tasks.md`](tasks/P16_tasks.md) |
+| P17 | Complaint resolution v2 *(was P20)* | [`P17_phase_description.md`](phases_tasks_descriptions/P17_phase_description.md) | [`P17_tasks.md`](tasks/P17_tasks.md) |
+| P18 | Admin people ops *(spec; phase docs TBD)* | — | — |
+| P19 | Reserved | — | — |
+| P21 | Email & jobs *(post-MVP; was P15)* | [`P21_phase_description.md`](phases_tasks_descriptions/P21_phase_description.md) | [`P21_tasks.md`](tasks/P21_tasks.md) |
 
 ---
 
@@ -74,23 +86,24 @@ npm run lint        # apps/web + все packages/* (не только web)
 | [`contracts/trainer_verification_contract.md`](contracts/trainer_verification_contract.md) | Admin moderation |
 | [`contracts/file_upload_contract.md`](contracts/file_upload_contract.md) | S3 file lifecycle |
 | [`contracts/review_moderation_contract.md`](contracts/review_moderation_contract.md) | Reviews |
-| [`contracts/email_notifications_contract.md`](contracts/email_notifications_contract.md) | Post-MVP email jobs |
+| [`contracts/email_notifications_contract.md`](contracts/email_notifications_contract.md) | Post-MVP email jobs (P21) |
 
 ---
 
-## Specs (W9 — Canonical)
+## Specs (W9 + W22 — Canonical)
 
 | Spec | Назначение |
 |------|------------|
 | [`specs/global_shell_spec.md`](specs/global_shell_spec.md) | App shell, layouts, nav config |
+| [`specs/public_landing_spec.md`](specs/public_landing_spec.md) | Public landing v2 (P16) |
 | [`specs/password_reset_spec.md`](specs/password_reset_spec.md) | Post-MVP password reset |
 | [`specs/catalog_discovery_spec.md`](specs/catalog_discovery_spec.md) | Catalog & trainer profile |
 | [`specs/trainer_onboarding_spec.md`](specs/trainer_onboarding_spec.md) | Trainer registration wizard |
 | [`specs/booking_wizard_spec.md`](specs/booking_wizard_spec.md) | 3-step booking flow |
 | [`specs/trainer_schedule_spec.md`](specs/trainer_schedule_spec.md) | Weekly schedule & exceptions |
 | [`specs/admin_verification_spec.md`](specs/admin_verification_spec.md) | Admin trainer moderation |
-| [`specs/admin_people_ops_spec.md`](specs/admin_people_ops_spec.md) | Admin people registry + post-approval trainer ops (P16 planned) |
-| [`specs/complaint_refund_spec.md`](specs/complaint_refund_spec.md) | Complaints & manual refunds |
+| [`specs/admin_people_ops_spec.md`](specs/admin_people_ops_spec.md) | Admin people registry (P18 planned) |
+| [`specs/complaint_refund_spec.md`](specs/complaint_refund_spec.md) | Complaints & manual refunds (P17) |
 | [`specs/design_system_lab_spec.md`](specs/design_system_lab_spec.md) | Shared UI primitives + Design Lab page (P03+) |
 
 ---
@@ -103,7 +116,7 @@ npm run lint        # apps/web + все packages/* (не только web)
 | [`guides/vercel_deploy_guide.md`](guides/vercel_deploy_guide.md) | Vercel preview/production |
 | [`guides/neon_prisma_migrations_guide.md`](guides/neon_prisma_migrations_guide.md) | Neon branches + Prisma v7 CLI |
 | [`guides/seed_and_fixtures_guide.md`](guides/seed_and_fixtures_guide.md) | Dev seed + smoke credentials |
-| [`guides/cron_jobs_setup_guide.md`](guides/cron_jobs_setup_guide.md) | Vercel Cron (post-MVP P15) |
+| [`guides/cron_jobs_setup_guide.md`](guides/cron_jobs_setup_guide.md) | Vercel Cron (post-MVP P21) |
 
 Ops PRD: [`../../prds/06_operations/README.md`](../../prds/06_operations/README.md)
 
@@ -126,4 +139,4 @@ Ops PRD: [`../../prds/06_operations/README.md`](../../prds/06_operations/README.
 |----------|--------------|
 | [`../../design/wireframes/route_index.md`](../../design/wireframes/route_index.md) | Wireframes (W10) |
 | [`../../prds/06_operations/`](../../prds/06_operations/) | Operations layer |
-| [`../../meta/documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) | Wave W14 complete |
+| [`../../meta/documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) | Wave registry |

@@ -1,6 +1,6 @@
 # Wireframe: Admin Client Detail
 
-**Тип:** Wireframe | **Статус:** Canonical | **Версия:** 1.0 | **Дата:** 2026-05-25 | **Волна:** W10 / P16  
+**Тип:** Wireframe | **Статус:** Canonical | **Версия:** 1.0 | **Дата:** 2026-05-25 | **Волна:** W10 / P18  
 **Route:** `/admin/clients/[id]` · **Prototype:** —
 
 ## Metadata
@@ -29,7 +29,7 @@ Standard admin shell — see [`admin_trainer_approved_detail.md`](./admin_traine
 3. **Tabs** (`AdminPillTabs`) — **Бронирования** (default) | **Жалобы** | **Возвраты**.
 4. **Tab: Бронирования** — list rows:
    - Service name snapshot, trainer name (link → `/admin/trainers/[trainerProfileId]` if approved), `startsAt`, `StatusBadge`.
-   - Row link → **no** `/admin/bookings/[id]` in P16 — read-only snippet only; optional future phase.
+   - Row link → **no** `/admin/bookings/[id]` in P18 — read-only snippet only; optional future phase.
 5. **Tab: Жалобы** — rows: priority badge, target trainer, status, createdAt → link `/admin/complaints/[id]`.
 6. **Tab: Возвраты** — rows: amount, status, booking ref → link `/admin/refunds` or highlight card id.
 
@@ -38,7 +38,7 @@ Standard admin shell — see [`admin_trainer_approved_detail.md`](./admin_traine
 - **MUST NOT** show `trainer_client_note` (trainer-private).
 - **MUST NOT** show password / auth tokens.
 - IDOR: 404 if `user.role !== client`.
-- No account suspend UI in P16.
+- No account suspend UI in P18.
 - PII: email OK for admin; minimize in list views elsewhere.
 
 ## States
@@ -81,4 +81,4 @@ Standard admin shell — see [`admin_trainer_approved_detail.md`](./admin_traine
 - [ ] Each empty tab has message (FX-8)
 - [ ] Trainer name links to operational trainer detail when applicable
 
-**Registry:** W10-32 · P16 planned
+**Registry:** W10-32 · P18 planned

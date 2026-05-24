@@ -126,7 +126,7 @@ Aligns with [`ui_states_contract.md`](../../design/ui_states_contract.md).
 | Neon connection timeout | Prisma P1001 in logs | Retry transient; show error.tsx on reads |
 | Missing env var at boot | Build/runtime fail fast | Vercel env audit |
 | Prisma schema drift | Runtime query errors post-deploy | migrate deploy checklist |
-| Resend API failure (P15) | `delivery_log.status=failed` | Retry policy in cron_jobs_registry |
+| Resend API failure (P21) | `delivery_log.status=failed` | Retry policy in cron_jobs_registry |
 | Log volume spike | Vercel log rate | Reduce debug logging in prod |
 
 ---
@@ -154,7 +154,7 @@ Aligns with [`ui_states_contract.md`](../../design/ui_states_contract.md).
 | Risk | Guard |
 |------|-------|
 | Silent mutation failures (no toast) | ui-toast-mutations rule + P14 smoke |
-| Email sent but no delivery_log (P15) | Contract test + FM-011 check |
+| Email sent but no delivery_log (P21) | Contract test + FM-011 check |
 | Debug `console.log` left in Actions | ESLint / review |
 | Lampto Netlify log patterns | Vercel dashboard only for MVP |
 
@@ -167,7 +167,7 @@ Aligns with [`ui_states_contract.md`](../../design/ui_states_contract.md).
 | Deploy failure | Vercel | Fix before merge to main |
 | 5xx rate spike | Vercel logs filter | Investigate last deploy |
 | DB connectivity | Neon dashboard | Check pool limits |
-| Cron miss (P15) | Vercel Cron history | Alert when jobs enabled |
+| Cron miss (P21) | Vercel Cron history | Alert when jobs enabled |
 
 **SHOULD (P14):** integrate error tracking (e.g. Sentry) for unhandled server exceptions with release tagging.
 
@@ -175,7 +175,7 @@ Aligns with [`ui_states_contract.md`](../../design/ui_states_contract.md).
 
 ## Post-MVP job observability
 
-When P15 enables email ([`email_notifications_contract.md`](../../implementation/mvp/contracts/email_notifications_contract.md)):
+When P21 enables email ([`email_notifications_contract.md`](../../implementation/mvp/contracts/email_notifications_contract.md)):
 
 | Query | Purpose |
 |-------|---------|

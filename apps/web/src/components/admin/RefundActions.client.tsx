@@ -89,7 +89,7 @@ export function RefundActions({ refundRequestId }: RefundActionsProps) {
 
       <AlertDialog open={rejectOpen} onOpenChange={setRejectOpen}>
         <AlertDialogTrigger asChild>
-          <Button type="button" variant="outline" disabled={isPending}>
+          <Button type="button" variant="outline" disabled={isPending} aria-busy={isPending}>
             {MESSAGES.admin.refunds.reject}
           </Button>
         </AlertDialogTrigger>

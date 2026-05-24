@@ -1,20 +1,20 @@
-# Cron Jobs Setup Guide — Pulse (Post-MVP P15)
+# Cron Jobs Setup Guide — Pulse (Post-MVP P21)
 
 **Тип:** Guide  
 **Статус:** Canonical  
 **Версия:** 1.0  
 **Дата:** 2026-05-23  
 **Волна:** W12  
-**Зависит от:** [`cron_jobs_registry.md`](../../../prds/06_operations/cron_jobs_registry.md), [`P15_phase_description.md`](../phases_tasks_descriptions/P15_phase_description.md)  
+**Зависит от:** [`cron_jobs_registry.md`](../../../prds/06_operations/cron_jobs_registry.md), [`P21_phase_description.md`](../phases_tasks_descriptions/P21_phase_description.md)  
 **Связанные документы:** [`email_notifications_contract.md`](../contracts/email_notifications_contract.md), [`vercel_deploy_guide.md`](./vercel_deploy_guide.md)
 
 ---
 
 ## Purpose
 
-Пошаговая настройка **Vercel Cron** и job Route Handlers для post-MVP email (фаза **P15**). **Не выполнять на MVP P01–P13** — таблицы `job_execution` / `delivery_log` exist but remain empty ([**INV-12**](../../../prds/02_domain_model/domain_invariants.md)).
+Пошаговая настройка **Vercel Cron** и job Route Handlers для post-MVP email (фаза **P21**). **Не выполнять на MVP P01–P13** — таблицы `job_execution` / `delivery_log` exist but remain empty ([**INV-12**](../../../prds/02_domain_model/domain_invariants.md)).
 
-**Prerequisite:** explicit unlock in [`post_mvp_deferrals.md`](../../../prds/01_product_scope/post_mvp_deferrals.md) + P15 phase start.
+**Prerequisite:** explicit unlock in [`post_mvp_deferrals.md`](../../../prds/01_product_scope/post_mvp_deferrals.md) + P21 phase start.
 
 ---
 
@@ -197,8 +197,8 @@ If email phase must disable:
 |----------|--------------|
 | [`cron_jobs_registry.md`](../../../prds/06_operations/cron_jobs_registry.md) | Job catalog |
 | [`email_notifications_contract.md`](../contracts/email_notifications_contract.md) | Contract |
-| [`P15_phase_description.md`](../phases_tasks_descriptions/P15_phase_description.md) | Phase scope |
-| [`P15_tasks.md`](../tasks/P15_tasks.md) | Agent checklist |
+| [`P21_phase_description.md`](../phases_tasks_descriptions/P21_phase_description.md) | Phase scope |
+| [`P21_tasks.md`](../tasks/P21_tasks.md) | Agent checklist |
 | [`observability_plan.md`](../../../prds/06_operations/observability_plan.md) | Failed job monitoring |
 | [`vercel_deploy_guide.md`](./vercel_deploy_guide.md) | Env setup |
 
@@ -208,7 +208,7 @@ If email phase must disable:
 
 ## Agent notes
 
-- **Default: skip this guide** unless user explicitly enables P15.
+- **Default: skip this guide** unless user explicitly enables P21.
 - grep `resend` in apps/web before merging P01–P13.
 - Start with J-01 email processor only; add reminders (J-02) after E-07 tested.
 

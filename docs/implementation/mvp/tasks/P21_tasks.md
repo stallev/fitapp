@@ -1,18 +1,20 @@
-# P15 Tasks — Email & Jobs (Post-MVP)
+# P21 Tasks — Email & Jobs (Post-MVP)
 
 **Тип:** Tasks  
 **Статус:** Canonical  
-**Версия:** 2.0  
-**Дата:** 2026-05-23  
-**Волна:** W16  
-**Зависит от:** [`P15_phase_description.md`](../phases_tasks_descriptions/P15_phase_description.md)  
-**Связанные документы:** [`email_notifications_contract.md`](../contracts/email_notifications_contract.md)
+**Версия:** 3.0  
+**Дата:** 2026-05-25  
+**Волна:** W22 *(renumbered from W16 P15)*  
+**Зависит от:** [`P21_phase_description.md`](../phases_tasks_descriptions/P21_phase_description.md)  
+**Связанные документы:** [`email_notifications_contract.md`](../contracts/email_notifications_contract.md), [`_migration_P15-P20_renumbering.md`](../phases_tasks_descriptions/_migration_P15-P20_renumbering.md)
+
+**Former ID:** P15 (W16).
 
 ---
 
 ## Purpose
 
-Чеклист **P15** — post-MVP email runtime. **Execute only after deferral unlock.**
+Чеклист **P21** — post-MVP email runtime. **Execute only after deferral unlock.**
 
 ---
 
@@ -61,7 +63,7 @@
 
 | Document | Relationship |
 |----------|--------------|
-| [`P15_phase_description.md`](../phases_tasks_descriptions/P15_phase_description.md) | DoD |
+| [`P21_phase_description.md`](../phases_tasks_descriptions/P21_phase_description.md) | DoD |
 | [`cron_jobs_setup_guide.md`](../guides/cron_jobs_setup_guide.md) | Cron setup |
 
-**Registry:** W16
+**Registry:** W22 (was W16)

@@ -1,6 +1,6 @@
 # Wireframe: Admin Complaint Detail
 
-**Тип:** Wireframe | **Статус:** Canonical | **Версия:** 2.0 | **Дата:** 2026-05-25 | **Волна:** W10 / P20  
+**Тип:** Wireframe | **Статус:** Canonical | **Версия:** 2.0 | **Дата:** 2026-05-25 | **Волна:** W10 / P17  
 **Route:** `/admin/complaints/[id]` · **Prototype:** —
 
 ## Metadata
@@ -41,4 +41,4 @@
 | error | Invalid transition toast |
 | forbidden | Non-admin |
 
-**Registry:** W10-27 · P20 sync 2026-05-25
+**Registry:** W10-27 · P17 sync 2026-05-25

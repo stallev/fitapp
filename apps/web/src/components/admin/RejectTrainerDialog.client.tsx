@@ -47,33 +47,40 @@ export function RejectTrainerDialog({ trainerProfileId }: RejectTrainerDialogPro
     startTransition(async () => {
       const payload = { trainerProfileId, rejectionReason: reason.trim() };
 
-      const result: MutationResult<{ trainerProfileId: string }> = isIosSafari()
-        ? await resilientPostFetch("/api/admin/trainers/reject", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
-          }).then((response) => response.json())
-        : await rejectTrainerAction(payload);
+      try {
+        const result: MutationResult<{ trainerProfileId: string }> = isIosSafari()
+          ? await resilientPostFetch("/api/admin/trainers/reject", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            }).then((response) => response.json())
+          : await rejectTrainerAction(payload);
 
-      if (!result.ok) {
-        toast.error(result.message, { duration: PRODUCT_TOAST_DURATION_MS });
+        if (!result.ok) {
+          toast.error(result.message, { duration: PRODUCT_TOAST_DURATION_MS });
+          router.refresh();
+          return;
+        }
+
+        toast.success(MESSAGES.admin.moderation.rejectSuccess, {
+          duration: PRODUCT_TOAST_DURATION_MS,
+        });
+        setOpen(false);
+        setReason("");
         router.refresh();
-        return;
+      } catch {
+        toast.error(MESSAGES.admin.errors.generic, {
+          duration: PRODUCT_TOAST_DURATION_MS,
+        });
+        router.refresh();
       }
-
-      toast.success(MESSAGES.admin.moderation.rejectSuccess, {
-        duration: PRODUCT_TOAST_DURATION_MS,
-      });
-      setOpen(false);
-      setReason("");
-      router.refresh();
     });
   }
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button type="button" variant="outline">
+        <Button type="button" variant="outline" disabled={isPending} aria-busy={isPending}>
           {MESSAGES.admin.moderation.reject}
         </Button>
       </AlertDialogTrigger>

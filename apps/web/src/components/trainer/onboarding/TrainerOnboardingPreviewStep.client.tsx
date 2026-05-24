@@ -50,23 +50,29 @@ export function TrainerOnboardingPreviewStep({
 
   const handleIosFallbackSubmit = () => {
     startFallbackTransition(async () => {
-      const response = await resilientPostFetch("/api/trainer/onboarding/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ acceptedTerms: true }),
-      });
+      try {
+        const response = await resilientPostFetch("/api/trainer/onboarding/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ acceptedTerms: true }),
+        });
 
-      const result = (await response.json()) as SubmitTrainerApplicationFormState;
-      if (!result || !result.ok) {
-        toast.error(
-          (result && !result.ok && result.message) ||
-            MESSAGES.trainer.onboarding.errors.generic,
-          { duration: PRODUCT_TOAST_DURATION_MS },
-        );
-        return;
+        const result = (await response.json()) as SubmitTrainerApplicationFormState;
+        if (!result || !result.ok) {
+          toast.error(
+            (result && !result.ok && result.message) ||
+              MESSAGES.trainer.onboarding.errors.generic,
+            { duration: PRODUCT_TOAST_DURATION_MS },
+          );
+          return;
+        }
+
+        router.push("/trainer/dashboard?submitted=1");
+      } catch {
+        toast.error(MESSAGES.trainer.onboarding.errors.generic, {
+          duration: PRODUCT_TOAST_DURATION_MS,
+        });
       }
-
-      router.push("/trainer/dashboard?submitted=1");
     });
   };
 

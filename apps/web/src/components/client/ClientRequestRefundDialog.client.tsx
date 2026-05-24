@@ -59,7 +59,13 @@ export function ClientRequestRefundDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button" variant="secondary" className="min-h-11 w-full">
+        <Button
+          type="button"
+          variant="secondary"
+          className="min-h-11 w-full"
+          disabled={isPending}
+          aria-busy={isPending}
+        >
           {MESSAGES.clientComplaint.requestRefund}
         </Button>
       </DialogTrigger>

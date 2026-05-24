@@ -1,6 +1,6 @@
 # Wireframe: Admin Clients Registry
 
-**Тип:** Wireframe | **Статус:** Canonical | **Версия:** 1.0 | **Дата:** 2026-05-25 | **Волна:** W10 / P16  
+**Тип:** Wireframe | **Статус:** Canonical | **Версия:** 1.0 | **Дата:** 2026-05-25 | **Волна:** W10 / P18  
 **Route:** `/admin/clients` · **Prototype:** —
 
 ## Metadata
@@ -43,7 +43,7 @@
 ## Guardrails
 
 - Admin-only; FM-005.
-- **No** bulk export / CSV in P16.
+- **No** bulk export / CSV in P18.
 - **No** suspend/ban toggle (post-MVP).
 - Do not show trainers or admins in this list.
 
@@ -90,7 +90,7 @@
 
 ## Navigation note
 
-Add sidebar item **«Клиенты»** between «Тренеры» and «Жалобы» — **no badge**. See [`responsive_navigation_contract.md`](../../responsive_navigation_contract.md) (update on P16).
+Add sidebar item **«Клиенты»** between «Тренеры» and «Жалобы» — **no badge**. See [`responsive_navigation_contract.md`](../../responsive_navigation_contract.md) (update on P18).
 
 ## Acceptance criteria
 
@@ -99,4 +99,4 @@ Add sidebar item **«Клиенты»** between «Тренеры» and «Жал�
 - [ ] FX-8 empty search state with reset
 - [ ] Privacy: admin-only email display
 
-**Registry:** W10-31 · P16 planned
+**Registry:** W10-31 · P18 planned

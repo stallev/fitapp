@@ -9,6 +9,7 @@ alwaysApply: false
 # Prototype & design-system fidelity
 
 **Visual source (subordinate to Cursor Rules / PRD):** [`Fitness_Platform_Prototype_v1.html`](docs/prototypes/Fitness_Platform_Prototype_v1.html)  
+**Landing `/` (P16):** [`Pulse Landing Page -Standalone-.html`](docs/prototypes/Pulse Landing Page -Standalone-.html) + [`public_landing_spec.md`](docs/implementation/mvp/specs/public_landing_spec.md)  
 **Token canon:** [`fitness-platform-design-system.md`](docs/default_docs/fitness-platform-design-system.md)  
 **Typography:** [`typography_text_guidelines.md`](docs/guidelines/typography_text_guidelines.md)
 

@@ -56,7 +56,7 @@
 | Mark booking completed | P04_tasks §6 | [`P12_tasks.md`](../tasks/P12_tasks.md) |
 | Admin approve | P05_tasks §2 | [`P13_tasks.md`](../tasks/P13_tasks.md) |
 | A11y gate | P07_phase | [`P14_phase_description.md`](./P14_phase_description.md) |
-| Email jobs | P06_phase | [`P15_phase_description.md`](./P15_phase_description.md) |
+| Email jobs | P06_phase | [`P21_phase_description.md`](./P21_phase_description.md) *(was P15)* |
 
 ---
 
@@ -69,7 +69,7 @@
 | [`implementation/mvp/README.md`](../README.md) | Phases table P01–P15 |
 | [`AGENTS.md`](../../../AGENTS.md) | P01–P07 → P01–P15 |
 | [`mvp_scope.md`](../../prds/01_product_scope/mvp_scope.md) | P01–P05 → P01–P13; hardening **P14** |
-| [`cron_jobs_setup_guide.md`](../guides/cron_jobs_setup_guide.md) | P06 → **P15** |
+| [`cron_jobs_setup_guide.md`](../guides/cron_jobs_setup_guide.md) | P06 → **P21** *(was P15)* |
 | [`seed_and_fixtures_guide.md`](../guides/seed_and_fixtures_guide.md) | P01–P02 split |
 
 ---

@@ -7,6 +7,7 @@ import {
   COMPLAINT_STATUS,
   REFUND_STATUS,
   canClientCancelBooking,
+  type BookingStatus,
 } from "@pulse/domain";
 import { getPrisma } from "@pulse/db";
 import { assertCanReadBooking, PolicyError } from "@pulse/policy-server";
@@ -31,19 +32,80 @@ export type ClientBookingDetail = {
   canRequestRefund: boolean;
 };
 
-export async function getClientBookingDetail(
+export type ClientBookingAccessResult =
+  | { status: "ok"; booking: ClientBookingDetail }
+  | { status: "forbidden" }
+  | { status: "not_found" };
+
+function mapBookingRow(
+  booking: {
+    id: string;
+    status: BookingStatus;
+    serviceNameSnapshot: string;
+    startsAt: Date;
+    durationMinutes: number;
+    priceCents: number;
+    currency: string;
+    clientMessage: string | null;
+    review: { id: string } | null;
+    complaints: { id: string }[];
+    refundRequests: { id: string }[];
+    trainerProfile: {
+      timezone: string;
+      photoUrl: string | null;
+      user: { fullName: string };
+    };
+  },
+): ClientBookingDetail {
+  const startsAtUtc = booking.startsAt.toISOString();
+
+  const isEligibleForSupport =
+    booking.status === BOOKING_STATUS.COMPLETED ||
+    booking.status === BOOKING_STATUS.CANCELLED ||
+    booking.status === BOOKING_STATUS.CONFIRMED;
+
+  const isEligibleForRefund =
+    booking.status === BOOKING_STATUS.COMPLETED ||
+    booking.status === BOOKING_STATUS.CANCELLED;
+
+  return {
+    id: booking.id,
+    status: booking.status,
+    serviceNameSnapshot: booking.serviceNameSnapshot,
+    startsAtUtc,
+    durationMinutes: booking.durationMinutes,
+    priceCents: booking.priceCents,
+    currency: booking.currency,
+    clientMessage: booking.clientMessage,
+    trainerName: booking.trainerProfile.user.fullName,
+    trainerPhotoUrl: booking.trainerProfile.photoUrl,
+    trainerTimezone: booking.trainerProfile.timezone,
+    canCancel: canClientCancelBooking({
+      status: booking.status,
+      startsAtUtc,
+    }),
+    canLeaveReview:
+      booking.status === BOOKING_STATUS.COMPLETED && booking.review === null,
+    canFileComplaint:
+      isEligibleForSupport && booking.complaints.length === 0,
+    canRequestRefund:
+      isEligibleForRefund && booking.refundRequests.length === 0,
+  };
+}
+
+export async function resolveClientBookingAccess(
   bookingId: string,
-): Promise<ClientBookingDetail | null> {
+): Promise<ClientBookingAccessResult> {
   const ctx = await getPolicySessionContext();
   if (!ctx) {
-    return null;
+    return { status: "forbidden" };
   }
 
   try {
     await assertCanReadBooking(ctx, bookingId);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return null;
+      return { status: "forbidden" };
     }
 
     throw error;
@@ -88,55 +150,37 @@ export async function getClientBookingDetail(
   });
 
   if (!booking) {
+    return { status: "not_found" };
+  }
+
+  return { status: "ok", booking: mapBookingRow(booking) };
+}
+
+export async function getClientBookingDetail(
+  bookingId: string,
+): Promise<ClientBookingDetail | null> {
+  const result = await resolveClientBookingAccess(bookingId);
+  if (result.status !== "ok") {
     return null;
   }
 
-  const startsAtUtc = booking.startsAt.toISOString();
-
-  const isEligibleForSupport =
-    booking.status === BOOKING_STATUS.COMPLETED ||
-    booking.status === BOOKING_STATUS.CANCELLED ||
-    booking.status === BOOKING_STATUS.CONFIRMED;
-
-  const isEligibleForRefund =
-    booking.status === BOOKING_STATUS.COMPLETED ||
-    booking.status === BOOKING_STATUS.CANCELLED;
-
-  return {
-    id: booking.id,
-    status: booking.status,
-    serviceNameSnapshot: booking.serviceNameSnapshot,
-    startsAtUtc,
-    durationMinutes: booking.durationMinutes,
-    priceCents: booking.priceCents,
-    currency: booking.currency,
-    clientMessage: booking.clientMessage,
-    trainerName: booking.trainerProfile.user.fullName,
-    trainerPhotoUrl: booking.trainerProfile.photoUrl,
-    trainerTimezone: booking.trainerProfile.timezone,
-    canCancel: canClientCancelBooking({
-      status: booking.status,
-      startsAtUtc,
-    }),
-    canLeaveReview:
-      booking.status === BOOKING_STATUS.COMPLETED && booking.review === null,
-    canFileComplaint:
-      isEligibleForSupport && booking.complaints.length === 0,
-    canRequestRefund:
-      isEligibleForRefund && booking.refundRequests.length === 0,
-  };
+  return result.booking;
 }
 
 export async function requireClientBookingDetail(
   bookingId: string,
 ): Promise<ClientBookingDetail> {
-  const booking = await getClientBookingDetail(bookingId);
+  const result = await resolveClientBookingAccess(bookingId);
 
-  if (!booking) {
+  if (result.status === "not_found") {
     notFound();
   }
 
-  return booking;
+  if (result.status === "forbidden") {
+    notFound();
+  }
+
+  return result.booking;
 }
 
 export function isPendingBookingStatus(status: string): boolean {

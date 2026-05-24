@@ -7,7 +7,10 @@ import { MESSAGES } from "@/lib/messages";
 
 export default function NotFoundPage() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center px-4 py-16">
+    <main
+      id="main-content"
+      className="flex min-h-dvh flex-col items-center justify-center px-4 py-16"
+    >
       <Container variant="narrow" className="text-center">
         <Heading as="h1" visualLevel="h2">
           {MESSAGES.notFound.title}
