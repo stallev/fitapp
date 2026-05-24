@@ -263,6 +263,51 @@ Low    → status="info"      (bg-info-container text-info)
 
 **UX rule**: зелёный empty state при отсутствии жалоб — позитивный фидбек, что очередь пуста.
 
+### Complaint detail (P20)
+
+**Route**: `/admin/complaints/[id]`
+
+```
+[← Back]  "Complaint"
+
+[ℹ In review · assigned to Pulse Admin]   ← banner when in_review
+
+┌─ Context ──────────────────────────────────────┐
+│ Booking #A1B2 · 24 May · confirmed           │
+│ Refund: none / Pending $38        [→ Refunds]│
+└──────────────────────────────────────────────┘
+
+┌─ Complaint ──────────────────────────────────┐
+│ [Medium] [In review] · 1 day ago             │
+│ From: Alex Client · On: Dmitry Strength      │
+│ Description text…                            │
+└──────────────────────────────────────────────┘
+
+Audit timeline
+  · Review started — Pulse Admin — today
+  · Filed — Alex Client — yesterday
+
+[Finish review ─────────────]  ← primary when in_review
+```
+
+**Finish review dialog:**
+
+```
+Resolution: [Select ▼]
+Internal note: [________________________]
+              max ~650px width
+
+[Cancel]  [Confirm]
+```
+
+**Closed state:** resolution badge + internal note + closed by + date; no actions.
+
+**Rules:**
+
+- Quick «Close without review» only when status `open` (list or detail).
+- `refund_recommended` shows link to `/admin/refunds` — does **not** auto-approve refund.
+- Closing complaint ≠ approving refund.
+
 ---
 
 ## Поток 4: Возвраты
@@ -332,6 +377,89 @@ Review card:
 
 ---
 
+## Поток 6: Реестр клиентов (P16)
+
+**Route**: `/admin/clients`  
+**Spec**: [`admin_people_ops_spec.md`](../../../../implementation/mvp/specs/admin_people_ops_spec.md) · Wireframe W10-31
+
+```
+"Clients"  ← font-display text-[26px] md:text-[36px]
+"Registered clients registry"  ← text-muted-foreground text-[13px]
+
+[ 🔍 Search by name or email ]  ← max-w-[300px] md
+```
+
+### Client list
+
+```
+Mobile:  grid-cols-1 cards
+Desktop: table or md:grid-cols-2 cards
+
+┌────────────────────────────────────────────────┐
+│ [Avatar sm]  Alex Client                       │
+│              alex@pulse.dev                    │
+│              Joined 3 mo ago · 12 bookings  → │
+└────────────────────────────────────────────────┘
+```
+
+- **No nav badge** — registry, not queue.
+- Empty search → «No clients found» + reset link.
+
+---
+
+## Поток 7: Карточка клиента (P16)
+
+**Route**: `/admin/clients/[id]`  
+**Wireframe**: W10-32
+
+```
+[← Back]  "Alex Client"
+
+[Summary card]
+  avatar · email · member since · total bookings
+
+[Bookings] [Complaints] [Refunds]  ← Pill tabs
+
+Tab content: read-only rows with links to
+  /admin/complaints/[id]  /admin/refunds  (where applicable)
+```
+
+**UX rules:**
+
+- **Read-only** — no suspend/ban in P16.
+- Deep link from complaint detail: «Client profile» → this route.
+- **MUST NOT** show trainer private notes.
+
+---
+
+## Поток 8: Операционный профиль тренера (approved)
+
+**Route**: `/admin/trainers/[id]` when `status = approved`  
+**Wireframe**: W10-30 · same URL as verification detail (W10-25)
+
+```
+[← Back]  "Trainer application"   [Open in catalog →]  ← primary CTA
+
+[✓ Approved banner + reviewer metadata]
+
+[Profile card — reuse]
+
+[Platform activity]
+  Complaints (N) →
+  Upcoming bookings (N)
+  Public profile →
+
+[Services — reuse]
+
+[Management]
+  Helper: revoke hides from catalog; blocked if active bookings
+  [Revoke approval]  ← destructive outline → AlertDialog + reason
+```
+
+После `pending` review (Поток 2) admin возвращается сюда через tab **Approved**.
+
+---
+
 ## UX-принципы специфичные для Admin role
 
 ### Информационная плотность
@@ -370,6 +498,7 @@ Admin преимущественно работает с desktop. Mobile — д�
 |----------|--------------|
 | [`pages_functional_spec.md`](../../pages_functional_spec.md) | Page-level behavior |
 | [`admin_verification_spec.md`](../../../../implementation/mvp/specs/admin_verification_spec.md) | Trainer queue UX (W9) |
+| [`admin_people_ops_spec.md`](../../../../implementation/mvp/specs/admin_people_ops_spec.md) | Client registry + approved trainer ops (P16) |
 | [`complaint_refund_spec.md`](../../../../implementation/mvp/specs/complaint_refund_spec.md) | Complaints & refunds UX (W9) |
 | [`global_shell_spec.md`](../../../../implementation/mvp/specs/global_shell_spec.md) | Admin shell & badges (W9) |
 | [`canonical_routes.md`](../../../../design/canonical_routes.md) | Route inventory |

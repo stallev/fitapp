@@ -4,6 +4,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { ClientBookingCancelDialog } from "@/components/client/ClientBookingCancelDialog.client";
+import { ClientFileComplaintDialog } from "@/components/client/ClientFileComplaintDialog.client";
+import { ClientRequestRefundDialog } from "@/components/client/ClientRequestRefundDialog.client";
 import { Button } from "@/components/ui/button";
 import { CustomLink } from "@/components/ui/CustomLink";
 
@@ -12,14 +14,20 @@ import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type ClientBookingDetailActionsProps = {
   bookingId: string;
+  priceCents: number;
   canCancel: boolean;
   canLeaveReview: boolean;
+  canFileComplaint: boolean;
+  canRequestRefund: boolean;
 };
 
 export function ClientBookingDetailActions({
   bookingId,
+  priceCents,
   canCancel,
   canLeaveReview,
+  canFileComplaint,
+  canRequestRefund,
 }: ClientBookingDetailActionsProps) {
   const [cancelOpen, setCancelOpen] = useState(false);
 
@@ -29,13 +37,16 @@ export function ClientBookingDetailActions({
     });
   };
 
-  if (!canCancel && !canLeaveReview) {
+  const hasActions =
+    canCancel || canLeaveReview || canFileComplaint || canRequestRefund;
+
+  if (!hasActions) {
     return null;
   }
 
   return (
     <>
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
         {canCancel ? (
           <>
             <Button
@@ -58,11 +69,22 @@ export function ClientBookingDetailActions({
         ) : null}
 
         {canLeaveReview ? (
-          <Button asChild variant="secondary" className="min-h-11 w-full">
+          <Button asChild variant="secondary" className="min-h-11 w-full sm:flex-1">
             <CustomLink href={`/client/reviews/${bookingId}`}>
               {MESSAGES.booking.actions.leaveReview}
             </CustomLink>
           </Button>
+        ) : null}
+
+        {canFileComplaint ? (
+          <ClientFileComplaintDialog bookingId={bookingId} />
+        ) : null}
+
+        {canRequestRefund ? (
+          <ClientRequestRefundDialog
+            bookingId={bookingId}
+            maxAmountCents={priceCents}
+          />
         ) : null}
       </div>
 

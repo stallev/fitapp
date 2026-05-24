@@ -43,7 +43,9 @@
 | `/trainer/income` | [`mvp/trainer_income.md`](./mvp/trainer_income.md) | `t.income` | P04 | mvp_scope |
 | `/admin/dashboard` | [`mvp/admin_dashboard.md`](./mvp/admin_dashboard.md) | `a.home` | P05 | admin_flow |
 | `/admin/trainers` | [`mvp/admin_trainers_queue.md`](./mvp/admin_trainers_queue.md) | `a.trainers` | P05 | admin_verification_spec |
-| `/admin/trainers/[id]` | [`mvp/admin_trainer_application.md`](./mvp/admin_trainer_application.md) | — | P05 | admin_verification_spec |
+| `/admin/trainers/[id]` | [`mvp/admin_trainer_application.md`](./mvp/admin_trainer_application.md) (`pending`) · [`mvp/admin_trainer_approved_detail.md`](./mvp/admin_trainer_approved_detail.md) (`approved`) | — | P05 / **P16** | admin_verification_spec · admin_people_ops_spec |
+| `/admin/clients` | [`mvp/admin_clients_registry.md`](./mvp/admin_clients_registry.md) | — | **P16** | admin_people_ops_spec |
+| `/admin/clients/[id]` | [`mvp/admin_client_detail.md`](./mvp/admin_client_detail.md) | — | **P16** | admin_people_ops_spec |
 | `/admin/complaints` | [`mvp/admin_complaints_list.md`](./mvp/admin_complaints_list.md) | `a.complaints` | P05 | complaint_refund_spec |
 | `/admin/complaints/[id]` | [`mvp/admin_complaint_detail.md`](./mvp/admin_complaint_detail.md) | — | P05 | complaint_refund_spec |
 | `/admin/refunds` | [`mvp/admin_refunds.md`](./mvp/admin_refunds.md) | `a.refunds` | P05 | complaint_refund_spec |

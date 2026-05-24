@@ -50,6 +50,7 @@
 | **Multi-currency** | Single currency USD on MVP | `currency` column exists; MVP fixed USD | — | Pricing ADR |
 | **Trainer analytics (advanced)** | Post-PMF | — | — | Data warehouse / BI |
 | **Client wishlist** | Снижение scope discovery; schema и domain готовы | `wishlist` table (composite PK) | — | [`wishlist_contract.md`](../../implementation/mvp/contracts/wishlist_contract.md); re-enable UI + `/api/client/wishlist` |
+| **User account suspend / ban** | Нет `account_status` в MVP schema; support через complaints | — (future column or enum) | — | ADR + migration; [`admin_people_ops_spec.md`](../../implementation/mvp/specs/admin_people_ops_spec.md) — P16 registry read-only first |
 | **AWS SAM / SQS jobs** | Vercel Cron enough until volume grows | `job_execution`, `delivery_log` — schema on MVP, **no email cron** | — | Volume ADR amending ADR-001 |
 
 ---

@@ -196,11 +196,19 @@
 
 | Component | Action | Route | Notes |
 |-----------|--------|-------|-------|
-| `ModerationQueueRow` | CREATE | `/admin/trainers`, etc. | Approve/Reject hierarchy |
-| Admin table rows | CREATE | complaints, refunds, reviews | |
+| `ModerationQueueRow` | CREATE | `/admin/trainers` | Approve/Reject hierarchy |
+| `TrainerApplicationDetailHeader`, `TrainerApplicationProfileCard`, `TrainerApplicationDocumentsCard`, `TrainerApplicationDecisionBar`, `TrainerApplicationProcessedBanner`, `TrainerApplicationServicesSection`, `TrainerApplicationIncompleteAlert`, `TrainerApplicationDetailSkeleton` | CREATE | `/admin/trainers/[id]` | Detail parity: sticky decision bar, doc sections, incomplete alert |
+| `AdminPillTabs`, `AdminQueueEmptyState`, `AdminQueueGridSkeleton` | CREATE | admin queue routes | Shared pill tabs + empty/skeleton |
+| `AdminPageError` | CREATE | admin routes | Segment `error.tsx` Retry |
+| `AdminDashboardKpiGrid`, `AdminNeedsAttentionCard` | CREATE | `/admin/dashboard` | `PulseCardKpi` + attention card |
+| `ComplaintQueueCard`, `ComplaintRowActions` | CREATE | `/admin/complaints` | Grid + quick close confirm |
+| `ComplaintDetailHeader`, `ComplaintDetailCard`, `ComplaintDetailActionsBar`, `ComplaintProcessedBanner`, `CloseComplaintDialog`, `ComplaintDetailSkeleton` | CREATE | `/admin/complaints/[id]` | Detail parity: sticky actions, localized badges, close confirm |
+| `AdminRefundsKpiGrid`, `RefundQueueCard` | CREATE | `/admin/refunds` | KPI tier-1 + queue card |
+| `ReviewModerationCard`, `DeleteReviewDialog`, `HideReviewDialog` | CREATE | `/admin/reviews` | Tabs visible/hidden + confirms |
 | `PageHeader` | USE | admin lists | |
+| `PulseCardKpi`, `RatingStars`, `PulseCard` | USE | dashboard, refunds, reviews | Design Lab catalog |
 | `StatusBadge`, `IconBadge` | USE | nav badges | |
-| Confirm dialogs | USE | reject, hide review | |
+| Confirm dialogs | USE | reject, hide, delete review, close complaint | |
 | Admin forms layout | USE | detail pages | **admin-forms-layout** rule |
 | Client complaint/refund entry | CREATE/USE | booking detail | If not in P08 |
 
@@ -221,6 +229,31 @@
 |-----------|--------|-------|-------|
 | Password reset UI | CREATE (optional) | `/auth/forgot-password` | Per password_reset_spec |
 | Product UI otherwise | MUST NOT | — | Backend jobs only |
+
+---
+
+## P16–P19 — Reserved
+
+Post-MVP phase numbers reserved — no component matrix rows until phase docs exist.
+
+---
+
+## P20 — Complaint Resolution v2
+
+| Component | Action | Route | Notes |
+|-----------|--------|-------|-------|
+| `ComplaintContextPanel` | CREATE | `/admin/complaints/[id]` | Booking snippet + refund link |
+| `ComplaintAuditTimeline` | CREATE | `/admin/complaints/[id]` | Read-only audit entries |
+| `ResolveComplaintDialog` | CREATE | `/admin/complaints/[id]` | Resolution select + notes; replaces bare close on in_review |
+| `ComplaintClosedSummary` | CREATE | `/admin/complaints/[id]` | Resolution badge + notes when closed |
+| `ComplaintDetailActionsBar` | USE (extend) | `/admin/complaints/[id]` | «Finish review» label on in_review |
+| `ComplaintProcessedBanner` | USE (extend) | `/admin/complaints/[id]` | Assignee in in_review banner |
+| `ComplaintRowActions` | USE (extend) | `/admin/complaints` | Quick close open-only |
+| `CloseComplaintDialog` | USE | `/admin/complaints` | Delegates to resolve dialog or quick path |
+| `ComplaintDetailCard`, `ComplaintDetailHeader`, `ComplaintDetailSkeleton` | USE | `/admin/complaints/[id]` | P13 base |
+| `StatusBadge`, `Button`, `CustomLink` | USE | admin complaints | Design Lab catalog |
+
+**ADR:** [`adr_008_complaint_resolution_model.md`](../../../prds/07_governance/adr_008_complaint_resolution_model.md)
 
 ---
 

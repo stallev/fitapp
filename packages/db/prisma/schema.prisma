@@ -56,6 +56,16 @@ enum ComplaintStatus {
   @@map("complaint_status")
 }
 
+enum ComplaintResolution {
+  no_action
+  warning_to_trainer
+  refund_recommended
+  duplicate
+  spam
+
+  @@map("complaint_resolution")
+}
+
 enum RefundStatus {
   pending
   approved
@@ -374,6 +384,7 @@ model Complaint {
   targetBookingId String?           @map("target_booking_id") @db.Uuid
   priority        ComplaintPriority @default(medium)
   status          ComplaintStatus   @default(open)
+  resolution      ComplaintResolution?
   reason          String
   adminNotes      String?           @map("admin_notes")
   resolvedById    String?           @map("resolved_by_id") @db.Uuid

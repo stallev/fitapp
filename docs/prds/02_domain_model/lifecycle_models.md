@@ -218,6 +218,10 @@ stateDiagram-v2
 | `open` | `in_review` | `admin` | `StartComplaintReview` |
 | `*` | `closed` | `admin` | `CloseComplaint` |
 
+**P20 (ADR-008):** on `CloseComplaint`, persist **`resolution`** (`no_action` | `warning_to_trainer` | `refund_recommended` | `duplicate` | `spam`) + `admin_notes`. Status remains `closed`; resolution is not a workflow state.
+
+**Assignee (P20):** admin who started review — from `audit_log.action = complaint.review_started` (no `assigned_to_id` FK).
+
 **MVP:** reporter is usually client; admin assigns priority on create or review.
 
 ---

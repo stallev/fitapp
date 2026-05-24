@@ -11,8 +11,3 @@ function policyStub(_ctx: PolicySessionContext, ..._rest: unknown[]): void {
 export const assertCanConfirmBooking = policyStub;
 export const assertCanMutateTrainerService = policyStub;
 export const assertCanToggleWishlist = policyStub;
-export const assertCanModerateReview = policyStub;
-export const assertCanApproveTrainer = policyStub;
-export const assertCanReadPrivateDoc = policyStub;
-export const assertCanManageComplaint = policyStub;
-export const assertCanProcessRefund = policyStub;

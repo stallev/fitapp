@@ -4,7 +4,7 @@
 
 **Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — волны W8–W16 **complete**
 
-**Статус:** contracts (W8) + specs (W9) + wireframes (W10) + phases **P01–P15** (W16) + operations & guides (W12) + architecture learning pack (W13) + index sync (W14) — **Canonical**. **P12 implementation complete** (trainer schedule, clients, income, dashboard, `CompleteBooking`). Следующий шаг: **P13** (admin moderation).
+**Статус:** contracts (W8) + specs (W9) + wireframes (W10) + phases **P01–P15** (W16) + **P20 planned** (W17) + operations & guides (W12) + architecture learning pack (W13) + index sync (W14) — **Canonical**. **P13 implementation complete** (admin moderation). Следующий шаг: **P14** (quality gate). **P20** (complaint resolution v2) — после P14.
 
 **Миграция W11→W16:** [`phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md`](phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md)
 
@@ -23,8 +23,8 @@ npm run lint        # apps/web + все packages/* (не только web)
 
 | Каталог | Содержимое | Статус |
 |---------|------------|--------|
-| `phases_tasks_descriptions/` | `P{N}_phase_description.md` (P01–P15) + `_phase_template.md` | **Canonical** (W16) |
-| `tasks/` | `P{N}_tasks.md` — чеклисты для агентов (P01–P15) | **Canonical** (W16) |
+| `phases_tasks_descriptions/` | `P{N}_phase_description.md` (P01–P15, P20) + `_phase_template.md` | **Canonical** |
+| `tasks/` | `P{N}_tasks.md` — чеклисты (P01–P15, P20) | **Canonical** |
 | `ui_component_phase_matrix.md` | Phase × Component × Route × CREATE/USE | **Canonical** (W16) |
 | `contracts/` | Контракты между модулями | **Canonical** (W8) |
 | `specs/` | Детальные specs (booking wizard, trainer onboarding) | **Canonical** (W9) |
@@ -89,6 +89,7 @@ npm run lint        # apps/web + все packages/* (не только web)
 | [`specs/booking_wizard_spec.md`](specs/booking_wizard_spec.md) | 3-step booking flow |
 | [`specs/trainer_schedule_spec.md`](specs/trainer_schedule_spec.md) | Weekly schedule & exceptions |
 | [`specs/admin_verification_spec.md`](specs/admin_verification_spec.md) | Admin trainer moderation |
+| [`specs/admin_people_ops_spec.md`](specs/admin_people_ops_spec.md) | Admin people registry + post-approval trainer ops (P16 planned) |
 | [`specs/complaint_refund_spec.md`](specs/complaint_refund_spec.md) | Complaints & manual refunds |
 | [`specs/design_system_lab_spec.md`](specs/design_system_lab_spec.md) | Shared UI primitives + Design Lab page (P03+) |
 

@@ -1,8 +1,10 @@
 export {
   AUTH_MUTATION_ERROR_CODES,
   BOOKING_MUTATION_ERROR_CODES,
+  COMPLAINT_MUTATION_ERROR_CODES,
   FILE_UPLOAD_MUTATION_ERROR_CODES,
   MUTATION_ERROR_CODES,
+  REFUND_MUTATION_ERROR_CODES,
   REVIEW_MUTATION_ERROR_CODES,
   TRAINER_MUTATION_ERROR_CODES,
   TRAINER_SERVICE_MUTATION_ERROR_CODES,
@@ -10,8 +12,10 @@ export {
   WISHLIST_MUTATION_ERROR_CODES,
   type AuthMutationErrorCode,
   type BookingMutationErrorCode,
+  type ComplaintMutationErrorCode,
   type FileUploadMutationErrorCode,
   type MutationErrorCode,
+  type RefundMutationErrorCode,
   type ReviewMutationErrorCode,
   type TrainerMutationErrorCode,
   type TrainerServiceMutationErrorCode,
@@ -70,6 +74,29 @@ export {
   TRAINER_STATUSES,
   type TrainerStatus,
 } from "./types/trainer-status";
+export {
+  COMPLAINT_STATUS,
+  COMPLAINT_STATUSES,
+  type ComplaintStatus,
+} from "./types/complaint-status";
+export {
+  REFUND_STATUS,
+  REFUND_STATUSES,
+  type RefundStatus,
+} from "./types/refund-status";
+export {
+  COMPLAINT_PRIORITY,
+  COMPLAINT_PRIORITIES,
+  type ComplaintPriority,
+} from "./types/complaint-priority";
+export {
+  COMPLAINT_RESOLUTION,
+  COMPLAINT_RESOLUTIONS,
+  COMPLAINT_RESOLUTION_NOTES_MIN_LENGTH,
+  COMPLAINT_RESOLUTIONS_REQUIRING_NOTES,
+  complaintResolutionRequiresNotes,
+  type ComplaintResolution,
+} from "./types/complaint-resolution";
 export { USER_ROLE, USER_ROLES, type UserRole } from "./types/user-role";
 
 export { isBookingStatus } from "./guards/is-booking-status";
@@ -172,6 +199,34 @@ export {
   type PublishReviewInput,
 } from "./schemas/publish-review";
 export {
+  approveTrainerInputSchema,
+  rejectTrainerInputSchema,
+  type ApproveTrainerInput,
+  type RejectTrainerInput,
+} from "./schemas/trainer-verification";
+export {
+  closeComplaintInputSchema,
+  fileComplaintInputSchema,
+  startComplaintReviewInputSchema,
+  type CloseComplaintInput,
+  type FileComplaintInput,
+  type StartComplaintReviewInput,
+} from "./schemas/complaint";
+export {
+  approveRefundInputSchema,
+  rejectRefundInputSchema,
+  requestRefundInputSchema,
+  type ApproveRefundInput,
+  type RejectRefundInput,
+  type RequestRefundInput,
+} from "./schemas/refund";
+export {
+  deleteReviewInputSchema,
+  hideReviewInputSchema,
+  type DeleteReviewInput,
+  type HideReviewInput,
+} from "./schemas/review-moderation";
+export {
   bookingOverlapsExisting,
   buildBookingSnapshots,
   isSlotAllowed,
@@ -200,6 +255,42 @@ export {
   type PublishReviewFacts,
   type PublishReviewValidationError,
 } from "./review/publish-review";
+export {
+  validateDeleteReview,
+  validateHideReview,
+  type DeleteReviewFacts,
+  type HideReviewFacts,
+  type HideReviewValidationError,
+} from "./review/hide-review";
+export {
+  validateCloseComplaint,
+  validateCloseComplaintInput,
+  type CloseComplaintFacts,
+  type CloseComplaintInputFacts,
+} from "./complaint/close-complaint";
+export {
+  validateFileComplaint,
+  validateStartComplaintReview,
+  type FileComplaintFacts,
+  type FileComplaintValidationError,
+  type StartComplaintReviewFacts,
+} from "./complaint/file-complaint";
+export {
+  validateProcessRefund,
+  validateRequestRefund,
+  type ProcessRefundFacts,
+  type ProcessRefundValidationError,
+  type RequestRefundFacts,
+  type RequestRefundValidationError,
+} from "./refund/request-refund";
+export {
+  validateApproveTrainer,
+  validateRejectTrainer,
+  type ApproveTrainerFacts,
+  type ApproveTrainerValidationError,
+  type RejectTrainerFacts,
+  type RejectTrainerValidationError,
+} from "./trainer/approve-trainer";
 export {
   type BookingOverlapInput,
   type DateRange,

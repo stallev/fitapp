@@ -1,6 +1,54 @@
-import { RoutePlaceholder } from "@/components/shell/RoutePlaceholder";
+import { Suspense } from "react";
+
+import { AdminPillTabs } from "@/components/admin/AdminPillTabs.client";
+import { AdminQueueGridSkeleton } from "@/components/admin/AdminQueueGridSkeleton";
+import { ReviewsTabPanel } from "@/components/admin/ReviewsTabPanel.server";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { getReviewModerationCounts } from "@/data/admin/list-reviews-for-moderation.server";
+import {
+  resolveReviewTab,
+  REVIEW_MODERATION_TABS,
+  REVIEW_TAB_VISIBLE,
+} from "@/lib/admin/review-moderation-tabs";
 import { MESSAGES } from "@/lib/messages";
 
-export default function AdminReviewsPage() {
-  return <RoutePlaceholder title={MESSAGES.nav.admin.reviews} />;
+type AdminReviewsPageProps = {
+  searchParams: Promise<{ tab?: string }>;
+};
+
+export default async function AdminReviewsPage({
+  searchParams,
+}: AdminReviewsPageProps) {
+  const params = await searchParams;
+  const activeTab = resolveReviewTab(params.tab);
+  const countsData = await getReviewModerationCounts();
+
+  const counts: Record<string, number> = {
+    visible: countsData.visible,
+    hidden: countsData.hidden,
+  };
+
+  const tabs = REVIEW_MODERATION_TABS.map((tab) => ({
+    value: tab.value,
+    label: tab.label,
+  }));
+
+  return (
+    <>
+      <PageHeader title={MESSAGES.admin.reviews.title} />
+
+      <AdminPillTabs
+        activeTab={activeTab}
+        tabs={tabs}
+        counts={counts}
+        basePath="/admin/reviews"
+        defaultTab={REVIEW_TAB_VISIBLE}
+        ariaLabel={MESSAGES.admin.reviews.tabsAriaLabel}
+      >
+        <Suspense fallback={<AdminQueueGridSkeleton count={4} />}>
+          <ReviewsTabPanel tab={activeTab} />
+        </Suspense>
+      </AdminPillTabs>
+    </>
+  );
 }
