@@ -9,13 +9,20 @@ export {
   assertCanManageComplaint,
   assertCanModerateReview,
   assertCanMutateSchedule,
-  assertCanMutateTrainerService,
   assertCanProcessRefund,
   assertCanReadPrivateDoc,
 } from "./stubs";
 export { assertCanInitiateUpload } from "./file-upload/assert-can-initiate-upload";
 export { assertCanReadFileAsset } from "./file-upload/assert-can-read-file-asset";
 export { assertCanMutateTrainerProfile } from "./trainer/assert-can-mutate-trainer-profile";
+export {
+  assertCanEditTrainerProfile,
+  type TrainerProfileEditPolicyFacts,
+} from "./trainer/assert-can-edit-trainer-profile";
+export {
+  assertCanMutateTrainerService,
+  type TrainerServicePolicyFacts,
+} from "./trainer/assert-can-mutate-trainer-service";
 export { assertCanCreateBooking } from "./booking/assert-can-create-booking";
 export {
   assertCanCancelBooking,

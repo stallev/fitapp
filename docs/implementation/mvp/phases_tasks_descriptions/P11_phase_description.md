@@ -108,8 +108,8 @@ N/A — standard CRUD.
 
 ## Definition of done
 
-- [ ] Profile + services CRUD
-- [ ] Upload errors per contract
+- [x] Profile + services CRUD
+- [x] Upload errors per contract
 - [ ] Smoke + typecheck + lint pass
 
 ---
@@ -131,4 +131,4 @@ N/A — standard CRUD.
 
 ## Acceptance criteria
 
-- [ ] Services CRUD smoke pass
+- [x] Services CRUD smoke pass

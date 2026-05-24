@@ -77,4 +77,4 @@ Full list: [`docs/guidelines/README.md`](docs/guidelines/README.md).
 
 ## Repository status
 
-**Текущая фаза:** P10 complete (trainer onboarding `/auth/register/trainer`). Следующая фаза: **P11** (trainer profile & services). Не расширять реализацию без явной фазы и contract.
+**Текущая фаза:** P11 complete (trainer profile `/trainer/profile`, services CRUD `/trainer/services`). Следующая фаза: **P12** (schedule). Не расширять реализацию без явной фазы и contract.
