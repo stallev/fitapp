@@ -18,6 +18,7 @@ export type WeeklyIntervalInput = {
 export type ScheduleExceptionInput = {
   exceptionDate: string;
   isBlocked: boolean;
+  reason?: string;
 };
 
 export type BookingOverlapInput = {

@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P11 complete (trainer profile edit `/trainer/profile`, services CRUD `/trainer/services`, `ServiceCard`, optimistic toggle). Следующая фаза: **P12** (trainer schedule & clients).  
+**Текущая фаза:** P12 complete (trainer schedule `/trainer/schedule`, clients `/trainer/clients`, income, dashboard KPI, `CompleteBooking`). Следующая фаза: **P13** (admin moderation).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

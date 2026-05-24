@@ -1,21 +1,17 @@
-import Link from "next/link";
-import { CalendarIcon } from "lucide-react";
 import { Suspense } from "react";
 
 import { Heading } from "@/components/atoms";
 import { TrainerDashboardSubmittedToast } from "@/components/trainer/TrainerDashboardSubmittedToast.client";
-import { Button } from "@/components/ui/button";
-import {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-} from "@/components/ui/empty";
+import { TrainerDashboardKpiGrid } from "@/components/trainer/TrainerDashboardKpiGrid";
+import { TrainerRecentReviews } from "@/components/trainer/TrainerRecentReviews";
+import { TrainerTodaySessionsList } from "@/components/trainer/TrainerTodaySessionsList";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { getTrainerDashboardSnapshot } from "@/data/trainer/get-trainer-dashboard.server";
 import { MESSAGES } from "@/lib/messages";
 
-export default function TrainerDashboardPage() {
+export default async function TrainerDashboardPage() {
+  const snapshot = await getTrainerDashboardSnapshot();
+
   return (
     <>
       <Suspense fallback={null}>
@@ -24,24 +20,19 @@ export default function TrainerDashboardPage() {
       <Heading as="h1" visualLevel="h3">
         {MESSAGES.dashboard.trainerTitle}
       </Heading>
-      <Empty className="mt-6 border-border bg-card">
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <CalendarIcon aria-hidden />
-          </EmptyMedia>
-          <EmptyTitle>{MESSAGES.empty.trainerDashboard.title}</EmptyTitle>
-          <EmptyDescription>
-            {MESSAGES.empty.trainerDashboard.description}
-          </EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          <Button asChild>
-            <Link href="/trainer/profile">
-              {MESSAGES.empty.trainerDashboard.cta}
-            </Link>
-          </Button>
-        </EmptyContent>
-      </Empty>
+      {!snapshot.isApproved ? (
+        <Alert className="mt-4">
+          <AlertTitle>{MESSAGES.trainerReviewBanner.title}</AlertTitle>
+          <AlertDescription>{MESSAGES.trainerReviewBanner.description}</AlertDescription>
+        </Alert>
+      ) : null}
+      <div className="mt-6 space-y-6">
+        <TrainerDashboardKpiGrid snapshot={snapshot} />
+        <div className="grid gap-6 md:grid-cols-2">
+          <TrainerTodaySessionsList sessions={snapshot.todaySessions} />
+          <TrainerRecentReviews reviews={snapshot.recentReviews} />
+        </div>
+      </div>
     </>
   );
 }

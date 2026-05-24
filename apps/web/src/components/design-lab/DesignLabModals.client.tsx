@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { FilterIcon } from "lucide-react";
 
 import { ContentText } from "@/components/atoms";
+import { AddIntervalOverlay } from "@/components/trainer/schedule/AddIntervalOverlay.client";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -41,6 +43,8 @@ import {
 } from "@/components/design-lab/DesignLabSection";
 
 export function DesignLabModals() {
+  const [addIntervalOpen, setAddIntervalOpen] = useState(false);
+
   return (
     <DesignLabSection id="modals" title="L2 — Modal windows">
       <ContentText variant="muted" as="p">
@@ -107,6 +111,23 @@ export function DesignLabModals() {
               </SheetFooter>
             </SheetContent>
           </Sheet>
+        </div>
+
+        <div>
+          <VariantLabel>Schedule — add interval overlay</VariantLabel>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setAddIntervalOpen(true)}
+          >
+            New interval
+          </Button>
+          <AddIntervalOverlay
+            open={addIntervalOpen}
+            dayOfWeek={1}
+            onOpenChange={setAddIntervalOpen}
+            onAdd={() => setAddIntervalOpen(false)}
+          />
         </div>
 
         <div>

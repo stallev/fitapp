@@ -124,7 +124,7 @@ sequenceDiagram
 |-----------|----------|
 | `DayRow` | Switch + chips + add slot |
 | `IntervalChip` | Mono time range; × removes (confirm if busy day optional) |
-| `AddIntervalSheet` | start/end time pickers; local time |
+| `AddIntervalOverlay` | start/end time pickers (24h); Sheet `< md`, Dialog `≥ md`; local time |
 | `ExceptionsCalendar` | Highlights blocked, today, selected |
 | `TimezoneLabel` | From profile; ADR-004 |
 

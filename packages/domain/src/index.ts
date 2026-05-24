@@ -6,6 +6,7 @@ export {
   REVIEW_MUTATION_ERROR_CODES,
   TRAINER_MUTATION_ERROR_CODES,
   TRAINER_SERVICE_MUTATION_ERROR_CODES,
+  SCHEDULE_MUTATION_ERROR_CODES,
   WISHLIST_MUTATION_ERROR_CODES,
   type AuthMutationErrorCode,
   type BookingMutationErrorCode,
@@ -14,6 +15,7 @@ export {
   type ReviewMutationErrorCode,
   type TrainerMutationErrorCode,
   type TrainerServiceMutationErrorCode,
+  type ScheduleMutationErrorCode,
   type WishlistMutationErrorCode,
 } from "./constants/mutation-error-codes";
 export {
@@ -148,6 +150,24 @@ export {
   type CancelBookingInput,
 } from "./schemas/cancel-booking";
 export {
+  completeBookingInputSchema,
+  type CompleteBookingInput,
+} from "./schemas/complete-booking";
+export {
+  deleteScheduleExceptionInputSchema,
+  scheduleExceptionInputSchema,
+  type DeleteScheduleExceptionInput,
+} from "./schemas/schedule-exception";
+export {
+  saveWeeklyScheduleInputSchema,
+  weeklyIntervalInputSchema,
+  type SaveWeeklyScheduleInput,
+} from "./schemas/save-weekly-schedule";
+export {
+  upsertTrainerClientNoteInputSchema,
+  type UpsertTrainerClientNoteInput,
+} from "./schemas/upsert-trainer-client-note";
+export {
   publishReviewInputSchema,
   type PublishReviewInput,
 } from "./schemas/publish-review";
@@ -170,6 +190,12 @@ export {
   type ClientCancelBookingFacts,
 } from "./booking/cancel-booking";
 export {
+  canCompleteBooking,
+  validateCompleteBooking,
+  type CompleteBookingFacts,
+  type CompleteBookingValidationError,
+} from "./booking/complete-booking";
+export {
   validatePublishReview,
   type PublishReviewFacts,
   type PublishReviewValidationError,
@@ -188,6 +214,11 @@ export {
   listLocalDatesFromToday,
 } from "./scheduling/generate-available-slots";
 export { formatTrainerTimezoneLabel } from "./scheduling/format-timezone-label";
+export { parseLocalTimeToMinutes } from "./scheduling/parse-local-time";
+export {
+  validateWeeklyIntervals,
+  type ValidateWeeklyIntervalsError,
+} from "./scheduling/validate-weekly-intervals";
 export {
   validateApplicationComplete,
   validateAssetReadyForLink,
