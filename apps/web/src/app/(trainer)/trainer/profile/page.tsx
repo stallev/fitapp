@@ -1,6 +1,15 @@
-import { RoutePlaceholder } from "@/components/shell/RoutePlaceholder";
+import type { Metadata } from "next";
+
+import { TrainerProfileEditForm } from "@/components/trainer/TrainerProfileEditForm.client";
+import { getTrainerProfileForEdit } from "@/data/trainer/get-trainer-profile-for-edit.server";
 import { MESSAGES } from "@/lib/messages";
 
-export default function TrainerProfilePage() {
-  return <RoutePlaceholder title={MESSAGES.placeholders.trainerProfile} />;
+export const metadata: Metadata = {
+  title: MESSAGES.trainer.editProfile.metaTitle,
+};
+
+export default async function TrainerProfilePage() {
+  const profile = await getTrainerProfileForEdit();
+
+  return <TrainerProfileEditForm profile={profile} />;
 }

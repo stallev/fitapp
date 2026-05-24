@@ -18,20 +18,20 @@
 
 ## 1. Trainer profile
 
-- [ ] `/trainer/profile` edit fields per spec
-- [ ] Blob upload photo/certs
-- [ ] Save toasts + pending UI
+- [x] `/trainer/profile` edit fields per spec
+- [x] Blob upload photo/certs
+- [x] Save toasts + pending UI
 
 ## 2. Services
 
-- [ ] `/trainer/services` CRUD
-- [ ] `ServiceCard` component
-- [ ] Active/hidden toggle — optimistic optional; `toast.error` on fail
+- [x] `/trainer/services` CRUD
+- [x] `ServiceCard` component
+- [x] Active/hidden toggle — optimistic optional; `toast.error` on fail
 
 ## 3. Verification
 
-- [ ] `npm run typecheck`
-- [ ] `npm run lint`
+- [x] `npm run typecheck`
+- [x] `npm run lint`
 - [ ] Smoke: service CRUD
 - [ ] Smoke: MIME/size upload errors
 - [ ] **MUST NOT** schedule editor (→ P12)

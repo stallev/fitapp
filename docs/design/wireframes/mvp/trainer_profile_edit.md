@@ -24,6 +24,8 @@
 
 - Timezone change affects slots (warning copy).
 - Pending trainers can edit; public listing still hidden.
+- **`city`** — deferred (no DDL); not in P11 form.
+- **Cert edit after approval** — MVP P11 does not auto-trigger re-verification or status change.
 
 ## States
 

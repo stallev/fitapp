@@ -1,18 +1,11 @@
 import { ContentText, Heading } from "@/components/atoms";
 import { PulseCard } from "@/components/ui/card";
 import type { PublicTrainerProfile } from "@/lib/trainer/trainer-profile";
+import { formatServicePrice } from "@/lib/trainer/format-service-price";
 
 export type TrainerProfileServicesTabProps = {
   profile: PublicTrainerProfile;
 };
-
-function formatServicePrice(cents: number, currency: string): string {
-  return new Intl.NumberFormat("ru-RU", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: 0,
-  }).format(cents / 100);
-}
 
 export function TrainerProfileServicesTab({
   profile,

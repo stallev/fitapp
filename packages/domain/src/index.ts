@@ -5,6 +5,7 @@ export {
   MUTATION_ERROR_CODES,
   REVIEW_MUTATION_ERROR_CODES,
   TRAINER_MUTATION_ERROR_CODES,
+  TRAINER_SERVICE_MUTATION_ERROR_CODES,
   WISHLIST_MUTATION_ERROR_CODES,
   type AuthMutationErrorCode,
   type BookingMutationErrorCode,
@@ -12,6 +13,7 @@ export {
   type MutationErrorCode,
   type ReviewMutationErrorCode,
   type TrainerMutationErrorCode,
+  type TrainerServiceMutationErrorCode,
   type WishlistMutationErrorCode,
 } from "./constants/mutation-error-codes";
 export {
@@ -108,6 +110,16 @@ export {
   submitTrainerApplicationSchema,
   type SubmitTrainerApplicationInput,
 } from "./schemas/submit-trainer-application";
+export {
+  updateTrainerProfileSchema,
+  type UpdateTrainerProfileInput,
+} from "./schemas/update-trainer-profile";
+export {
+  createTrainerServiceSchema,
+  updateTrainerServiceSchema,
+  type CreateTrainerServiceInput,
+  type UpdateTrainerServiceInput,
+} from "./schemas/trainer-service";
 export {
   confirmUploadInputSchema,
   initiateUploadInputSchema,

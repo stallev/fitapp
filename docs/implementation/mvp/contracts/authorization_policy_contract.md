@@ -109,8 +109,9 @@ Policy **MUST** throw/return before domain when role insufficient; domain handle
 | `assertCanConfirmBooking` | Booking confirm |
 | `assertCanCompleteBooking` | Booking complete |
 | `assertCanCancelBooking` | Booking cancel |
-| `assertCanMutateTrainerProfile` | Trainer profile update |
-| `assertCanMutateTrainerService` | Services CRUD |
+| `assertCanMutateTrainerProfile` | Trainer onboarding profile update (`pending`/`rejected` only) |
+| `assertCanEditTrainerProfile` | Trainer post-onboarding profile edit (all statuses, owner) |
+| `assertCanMutateTrainerService` | Services CRUD (implemented P11; FM-016 ownership) |
 | `assertCanMutateSchedule` | Weekly + exceptions |
 | `assertCanToggleWishlist` | Wishlist |
 | `assertCanPublishReview` | Review publish |
