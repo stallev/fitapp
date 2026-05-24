@@ -19,4 +19,4 @@ Architecture Decision Records и governance Pulse.
 | [adr_004_timezone_scheduling_model.md](adr_004_timezone_scheduling_model.md) | ACCEPTED | Trainer IANA timezone, UTC instants |
 | [adr_005_mvp_booking_without_payment.md](adr_005_mvp_booking_without_payment.md) | ACCEPTED | MVP booking without Stripe |
 | [adr_006_idempotent_email_delivery.md](adr_006_idempotent_email_delivery.md) | ACCEPTED | Post-MVP idempotent email jobs |
-| [adr_007_file_asset_blob_lifecycle.md](adr_007_file_asset_blob_lifecycle.md) | ACCEPTED | Vercel Blob + `file_asset` lifecycle |
+| [adr_007_file_asset_blob_lifecycle.md](adr_007_file_asset_blob_lifecycle.md) | ACCEPTED | AWS S3 + `file_asset` lifecycle |

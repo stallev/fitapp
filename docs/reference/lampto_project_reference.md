@@ -60,7 +60,7 @@ Pulse **наследует подходы**, но имеет **свой доме
 | Next.js | 16.2.6 (pinned) | **16.2.6** (App Router, `proxy.ts`) — [ADR-002](../prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
 | Auth | Auth.js + Google OAuth | **Auth.js + Credentials** (email/password) |
 | Email | SES (AWS) | **Resend** |
-| File storage | S3 | **Vercel Blob** |
+| File storage | S3 (lampto) | **AWS S3** (Pulse — same pattern) |
 | Jobs runtime | AWS SAM (EventBridge + SQS + Lambda) | **Vercel Cron + serverless jobs** на MVP; AWS — post-MVP при необходимости |
 | Timezone invariant | `Group.timezone` | **`TrainerProfile.timezone`** |
 | Design | Calm Editorial | **Warm Forest / Material You** — см. design system |

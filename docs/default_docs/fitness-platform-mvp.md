@@ -17,7 +17,7 @@ Online marketplace connecting fitness trainers with clients. Supports session di
 | Database | **PostgreSQL v17 on Neon** | pgBouncer pooling для serverless |
 | UI | Shadcn UI + Tailwind CSS v4 | Dark mode через CSS vars |
 | Fonts | DM Serif Display · DM Sans · JetBrains Mono | next/font/google |
-| Storage | Vercel Blob | Фото профилей, сертификаты |
+| Storage | AWS S3 | Фото профилей, сертификаты, verification docs |
 | Email | Resend | Транзакционные письма |
 | Video | Daily.co | **Post-MVP** |
 | Payments | Stripe Connect | **Post-MVP** |

@@ -1,20 +1,36 @@
 import "server-only";
 
+import { HeadObjectCommand } from "@aws-sdk/client-s3";
+
 import {
   confirmUploadInputSchema,
   FILE_UPLOAD_MUTATION_ERROR_CODES,
+  isFileUploadObjectKey,
   type ConfirmUploadInput,
   type MutationResult,
 } from "@pulse/domain";
 import { getPrisma } from "@pulse/db";
 
+import { buildFileAssetServeUrl } from "@/lib/files/file-asset-serve-url";
+import { getS3Client } from "@/lib/s3/s3-client";
+import { getS3BucketName } from "@/lib/s3/s3-config";
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
-export type ConfirmUploadResult = MutationResult<{ uploadStatus: "ready" }>;
+export type ConfirmUploadResult = MutationResult<{
+  uploadStatus: "ready";
+  readUrl: string;
+}>;
+
+async function markUploadFailed(fileAssetId: string): Promise<void> {
+  await getPrisma().fileAsset.update({
+    where: { id: fileAssetId },
+    data: { uploadStatus: "failed" },
+  });
+}
 
 async function markUploadReady(
   fileAssetId: string,
-  blobUrl: string,
+  actualSize: number,
 ): Promise<ConfirmUploadResult> {
   const existing = await getPrisma().fileAsset.findFirst({
     where: { id: fileAssetId },
@@ -25,19 +41,22 @@ async function markUploadReady(
     return { ok: false, code: FILE_UPLOAD_MUTATION_ERROR_CODES.UPLOAD_NOT_FOUND };
   }
 
+  const readUrl = buildFileAssetServeUrl(fileAssetId);
+
   if (existing.uploadStatus === "ready") {
-    return { ok: true, data: { uploadStatus: "ready" } };
+    return { ok: true, data: { uploadStatus: "ready", readUrl } };
   }
 
   await getPrisma().fileAsset.update({
     where: { id: fileAssetId },
     data: {
       uploadStatus: "ready",
-      blobUrl,
+      sizeBytes: actualSize,
+      blobUrl: readUrl,
     },
   });
 
-  return { ok: true, data: { uploadStatus: "ready" } };
+  return { ok: true, data: { uploadStatus: "ready", readUrl } };
 }
 
 export async function confirmUpload(
@@ -48,11 +67,16 @@ export async function confirmUpload(
     return { ok: false, code: FILE_UPLOAD_MUTATION_ERROR_CODES.VALIDATION };
   }
 
-  const { fileAssetId, blobUrl } = parsed.data;
+  const { fileAssetId, expectedSize } = parsed.data;
 
   const existing = await getPrisma().fileAsset.findFirst({
     where: { id: fileAssetId },
-    select: { ownerUserId: true },
+    select: {
+      id: true,
+      ownerUserId: true,
+      blobPathname: true,
+      uploadStatus: true,
+    },
   });
 
   if (!existing) {
@@ -64,33 +88,37 @@ export async function confirmUpload(
     return { ok: false, code: FILE_UPLOAD_MUTATION_ERROR_CODES.FORBIDDEN };
   }
 
-  return markUploadReady(fileAssetId, blobUrl);
-}
+  if (existing.uploadStatus === "ready") {
+    return markUploadReady(fileAssetId, expectedSize);
+  }
 
-export async function confirmUploadByPathname(
-  pathname: string,
-  blobUrl: string,
-  ownerUserId?: string,
-): Promise<ConfirmUploadResult> {
-  const where = ownerUserId
-    ? { blobPathname: pathname, ownerUserId }
-    : { blobPathname: pathname };
+  if (existing.uploadStatus !== "pending") {
+    return { ok: false, code: FILE_UPLOAD_MUTATION_ERROR_CODES.INVALID_UPLOAD_STATE };
+  }
 
-  const existing = await getPrisma().fileAsset.findFirst({
-    where,
-    select: { id: true, ownerUserId: true },
-  });
+  if (!isFileUploadObjectKey(existing.blobPathname)) {
+    return { ok: false, code: FILE_UPLOAD_MUTATION_ERROR_CODES.FORBIDDEN };
+  }
 
-  if (!existing) {
+  let actualSize: number;
+
+  try {
+    const head = await getS3Client().send(
+      new HeadObjectCommand({
+        Bucket: getS3BucketName(),
+        Key: existing.blobPathname,
+      }),
+    );
+    actualSize = head.ContentLength ?? 0;
+  } catch {
+    await markUploadFailed(fileAssetId);
     return { ok: false, code: FILE_UPLOAD_MUTATION_ERROR_CODES.UPLOAD_NOT_FOUND };
   }
 
-  if (!ownerUserId) {
-    const ctx = await getPolicySessionContext();
-    if (!ctx || ctx.userId !== existing.ownerUserId) {
-      return { ok: false, code: FILE_UPLOAD_MUTATION_ERROR_CODES.FORBIDDEN };
-    }
+  if (actualSize !== expectedSize) {
+    await markUploadFailed(fileAssetId);
+    return { ok: false, code: FILE_UPLOAD_MUTATION_ERROR_CODES.VALIDATION };
   }
 
-  return markUploadReady(existing.id, blobUrl);
+  return markUploadReady(fileAssetId, actualSize);
 }

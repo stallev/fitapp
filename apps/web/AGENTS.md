@@ -85,7 +85,7 @@ Visual and interaction canon — **do not invent** ad-hoc styles:
 | `ios-safari-mutation-transport.mdc` | iOS Safari `Load failed` — Class A/B |
 | `auth-security.mdc` | Auth.js, defense in depth |
 | `app-router-streaming-loading.mdc` | Suspense, `loading.tsx` |
-| `vercel-blob-uploads.mdc` | FileAsset + Vercel Blob |
+| `s3-file-asset-uploads.mdc` | FileAsset + AWS S3 |
 | `react-ui-components.mdc` | RSC/client boundaries |
 | `react-one-component-per-file.mdc` | One component per file |
 | `react-logic-presentation.mdc` | Logic vs presentation split |

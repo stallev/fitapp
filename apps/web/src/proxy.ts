@@ -43,6 +43,5 @@ export const config = {
     "/admin/:path*",
     "/book/:path*",
     "/sessions/:path*",
-    "/api/upload",
   ],
 };

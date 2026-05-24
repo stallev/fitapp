@@ -44,7 +44,7 @@
 | Авторизация | Auth.js v5 + **Credentials** | JWT-сессии, role в token |
 | UI | shadcn/ui + Tailwind CSS 4 | Warm Forest design system |
 | Email | Resend | Транзакционные письма |
-| Storage | Vercel Blob | Фото профилей, сертификаты |
+| Storage | AWS S3 | Фото профилей, сертификаты |
 | Уведомления | Sonner | Toast-фидбек |
 
 Принципы контура A:

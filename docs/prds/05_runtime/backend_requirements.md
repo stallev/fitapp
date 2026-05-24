@@ -36,7 +36,7 @@
 | Authorization | `@pulse/policy-server` before domain |
 | Domain invocation | Thin adapter — no business rules inline |
 | Cache | Per [`cache_revalidation_policy.md`](./cache_revalidation_policy.md) |
-| File upload | Presign Route Handler → Vercel Blob |
+| File upload | Presigned PUT via Server Action → **AWS S3** |
 
 **MUST NOT:**
 
@@ -80,7 +80,10 @@ Prefer Server Actions for MVP mutations unless streaming/binary required.
 | `DIRECT_URL` | Migrations CLI | ✅ |
 | `AUTH_SECRET` | Web | ✅ |
 | `AUTH_URL` | Web (Vercel) | ✅ production |
-| `BLOB_READ_WRITE_TOKEN` | Web upload | ✅ when upload ships |
+| `AWS_ACCESS_KEY_ID` | Web upload | ✅ when upload ships |
+| `AWS_SECRET_ACCESS_KEY` | Web upload | ✅ when upload ships |
+| `AWS_REGION` | Web upload | ✅ when upload ships |
+| `AWS_S3_BUCKET_NAME` | Web upload | ✅ when upload ships |
 | `CRON_SECRET` | Jobs | ✅ when cron ships |
 | `RESEND_API_KEY` | Jobs | ❌ post-MVP |
 

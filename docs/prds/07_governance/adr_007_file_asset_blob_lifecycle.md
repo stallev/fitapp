@@ -1,26 +1,26 @@
-# ADR-007: File Asset & Vercel Blob Lifecycle
+# ADR-007: File Asset & S3 Object Lifecycle
 
 **Тип:** ADR  
 **Статус:** ACCEPTED  
-**Версия:** 1.0  
-**Дата:** 2026-05-23  
+**Версия:** 1.1  
+**Дата:** 2026-05-24  
 **Волна:** W4  
 **Зависит от:** [`adr_001_stack_and_runtime.md`](./adr_001_stack_and_runtime.md), [`lifecycle_models.md`](../02_domain_model/lifecycle_models.md), [`domain_invariants.md`](../02_domain_model/domain_invariants.md)  
-**Связанные документы:** [`adr_index.md`](./adr_index.md), [`database_schema_v1.md`](../03_data_model/database_schema_v1.md), [`blob-upload-agent-instruction.md`](../../guidelines/nextjs/blob-upload-agent-instruction.md)
+**Связанные документы:** [`adr_index.md`](./adr_index.md), [`database_schema_v1.md`](../03_data_model/database_schema_v1.md), [`s3-upload-agent-instruction.md`](../../guidelines/nextjs/s3-upload-agent-instruction.md)
 
 ---
 
 ## Purpose
 
-Зафиксировать **модель медиа-файлов Pulse**: единый реестр `file_asset`, хранение в **Vercel Blob**, lifecycle `pending` → `ready` → `failed`, политика привязки FK только после `ready`. Реализует **INV-11** и [`FM-012`](../02_domain_model/failure_modes_catalog.md#fm-012).
+Зафиксировать **модель медиа-файлов Pulse**: единый реестр `file_asset`, хранение в **AWS S3**, lifecycle `pending` → `ready` → `failed`, политика привязки FK только после `ready`. Реализует **INV-11** и [`FM-012`](../02_domain_model/failure_modes_catalog.md#fm-012).
 
 ---
 
 ## Scope / Out of scope
 
-**In scope:** profile photos, trainer certificates (public), verification documents (admin), upload auth, Blob pathname strategy, MVP cleanup.
+**In scope:** profile photos, trainer certificates (public read), verification documents (private), upload auth, S3 object key strategy with project prefix, MVP cleanup.
 
-**Out of scope:** image CDN transforms, virus scanning service (post-MVP hardening), S3 migration (would require new ADR).
+**Out of scope:** image CDN transforms, virus scanning service (post-MVP hardening), multi-bucket sharding.
 
 ---
 
@@ -29,19 +29,20 @@
 | Term | Definition |
 |------|------------|
 | `FileAsset` | Prisma model / `file_asset` table — single registry |
-| `blob_pathname` | Server-chosen canonical path in Blob store |
+| `blob_pathname` | Canonical **S3 object key** (legacy column name; not Vercel Blob) |
+| `FILE_UPLOAD_OBJECT_KEY_PREFIX` | Domain constant (`pulse/`) — root prefix for every object key |
 | `upload_status` | `pending` \| `ready` \| `failed` |
-| Client upload | Browser → Blob via token from server |
+| Client upload | Browser → S3 via presigned **PUT** URL from server |
 
 ---
 
 ## Context
 
-ADR-001 selects **Vercel Blob** (not S3). Schema §9 defines `file_asset` with FKs from `trainer_certificate`, `verification_document`, profile `photo_url` pattern.
+ADR-001 selects **AWS S3** for user-uploaded media. Schema §9 defines `file_asset` with FKs from `trainer_certificate`, `verification_document`, profile `photo_url` pattern.
 
 [`lifecycle_models.md`](../02_domain_model/lifecycle_models.md): File upload SM — **MUST NOT** attach verification docs until `ready`.
 
-Context7 `/vercel/storage` (verified 2026-05-23): client upload via `@vercel/blob/client` `upload()` + server `handleUpload()` with `onBeforeGenerateToken` / `onUploadCompleted`; server-only `BLOB_READ_WRITE_TOKEN`.
+Upload pattern: presigned PUT + HeadObject confirm — aligned with lampto FileAsset S3 flow ([`s3-upload-agent-instruction.md`](../../guidelines/nextjs/s3-upload-agent-instruction.md)).
 
 ---
 
@@ -51,7 +52,7 @@ Context7 `/vercel/storage` (verified 2026-05-23): client upload via `@vercel/blo
 
 **MUST** — all binary uploads flow through **`file_asset`** only.
 
-**MUST NOT** — parallel tables, direct Blob URLs without row, or `photo_url` string without asset row for new uploads (legacy nullable `photo_url` on profile may hold derived URL from ready asset at MVP).
+**MUST NOT** — parallel tables, direct S3 URLs without row, or `photo_url` string without asset row for new uploads.
 
 ### 2. Lifecycle
 
@@ -65,50 +66,41 @@ stateDiagram-v2
 
 | Phase | Action |
 |-------|--------|
-| **initiateUpload** | Server Action: `auth()` + policy → validate mime/size → INSERT `file_asset` `pending` + server `blob_pathname` |
-| **client upload** | Browser `upload()` to Route Handler with `handleUpload` |
-| **confirmUpload** | Server verifies Blob exists + size/mime → UPDATE `ready`, set `blob_url` |
-| **failUpload** | Error/timeout → `failed` |
+| **initiateUpload** | Server Action: `auth()` + policy → validate mime/size → INSERT `file_asset` `pending` + server `blob_pathname` via `buildFileUploadObjectKey()` |
+| **presign PUT** | Server generates presigned PUT for `blob_pathname` (TTL 300s) |
+| **client upload** | Browser PUT bytes to S3 (XHR progress) |
+| **confirmUpload** | Server **HeadObject** → verify size → UPDATE `ready` (or `failed`) |
 | **link FK** | Certificate / verification / profile — **only** when `ready` (**INV-11**) |
 
-### 3. Vercel Blob integration
+### 3. S3 integration
 
 | Policy | Value |
 |--------|-------|
-| SDK | `@vercel/blob` + `@vercel/blob/client` |
-| Env | `BLOB_READ_WRITE_TOKEN` — **server-only**, never `NEXT_PUBLIC_*` |
-| Pathname pattern | `{ownerUserId}/{purpose}/{uuid}` — e.g. `trainers/{profileId}/certs/{uuid}.pdf` |
-| Access | `public` for catalog photos/certs; **`private`** for verification docs — enforce via Blob access + app auth on read |
-| Token generation | `handleUpload` `onBeforeGenerateToken`: allowedContentTypes, maximumSizeInBytes, short `validUntil` |
+| SDK | `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner` |
+| Env | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_S3_BUCKET_NAME` — **server-only** |
+| Object key pattern | `{FILE_UPLOAD_OBJECT_KEY_PREFIX}{ownerUserId}/{purpose}/{uuid}` — e.g. `pulse/{userId}/certificate/{uuid}` |
+| Prefix constant | `@pulse/domain` → `FILE_UPLOAD_OBJECT_KEY_PREFIX` = `pulse/` |
+| Bucket access | **Private**; Block Public Access; reads via presigned GET |
+| Upload TTL | Presigned PUT: **300s** |
+| Read TTL | Presigned GET: **7200s** — not persisted in DB |
 
-Context7 pattern:
+Key builder (domain):
 
 ```typescript
-// Route Handler — server only
-import { handleUpload } from '@vercel/blob/client';
+import { buildFileUploadObjectKey, FILE_UPLOAD_OBJECT_KEY_PREFIX } from "@pulse/domain";
 
-await handleUpload({
-  body,
-  request,
-  onBeforeGenerateToken: async () => ({
-    allowedContentTypes: ['image/jpeg', 'image/png', 'application/pdf'],
-    maximumSizeInBytes: 10 * 1024 * 1024,
-    addRandomSuffix: true,
-  }),
-  onUploadCompleted: async ({ blob, tokenPayload }) => {
-    // Mark FileAsset ready — after policy re-check
-  },
-});
+const objectKey = buildFileUploadObjectKey(ownerUserId, purpose, randomUUID());
+// → "pulse/{ownerUserId}/{purpose}/{uuid}"
 ```
 
 ### 4. Authorization
 
-Every initiate/confirm/delete **MUST**:
+Every initiate/confirm/read **MUST**:
 
 1. `auth()` from `@/auth`
 2. `@pulse/policy-server` — owner trainer, or admin for moderation reads
 
-**MUST NOT** expose read-write token to client except short-lived client token from `handleUpload`.
+**MUST NOT** expose AWS credentials to the client — only short-lived presigned URLs.
 
 ### 5. Validation limits (MVP defaults)
 
@@ -118,21 +110,21 @@ Every initiate/confirm/delete **MUST**:
 | Certificate | 10 MB | `image/*`, `application/pdf` |
 | Verification doc | 10 MB | `image/*`, `application/pdf` |
 
-Adjust in W8 contract with product sign-off.
+Canonical source: `@pulse/domain` → `validateUploadRequest`.
 
 ### 6. Reads & URLs
 
-- Serve public assets via stable `blob_url` when `ready`.
-- **MUST NOT** persist expiring signed URLs as canonical — use `blob_pathname` as source of truth ([`blob-upload-agent-instruction.md`](../../guidelines/nextjs/blob-upload-agent-instruction.md)).
-- Private docs: signed read or authenticated Route Handler proxy.
+- **`blob_pathname`** — source of truth (S3 object key with `pulse/` prefix).
+- **`blob_url`** — optional stable public URL post-MVP; **MUST NOT** store expiring presigned URLs.
+- Private docs: presigned GET or authenticated Route Handler proxy + policy.
 
 ### 7. Deletion & orphans
 
 | Scenario | MVP | Post-MVP |
 |----------|-----|----------|
-| User deletes certificate | Unlink FK; **MAY** leave Blob (GC later) | Cron delete orphaned Blob |
-| `pending` stale > 24h | Manual/admin | Scheduled cleanup job |
-| Replace profile photo | New asset row; old orphan acceptable MVP | GC old pathname |
+| User deletes certificate | Unlink FK; **MAY** leave S3 object (GC later) | Cron delete orphaned keys under `pulse/` |
+| `pending` stale > 24h | Manual/admin | S3 Lifecycle + scheduled DB cleanup |
+| Replace profile photo | New asset row; old orphan acceptable MVP | GC old key |
 
 ### 8. Cache invalidation
 
@@ -144,16 +136,17 @@ After confirm → `updateTag` / `revalidatePath` per [ADR-002](./adr_002_next162
 
 **Positive:**
 
-- Aligns with lampto FileAsset pattern (S3 → Blob swap only at storage layer).
+- Aligns with lampto FileAsset S3 pattern — same lifecycle, portable storage.
+- Project prefix (`pulse/`) isolates keys in shared or multi-app buckets.
 - pending/ready gate prevents broken certificate links on partial upload.
-- Context7-verified client upload reduces server bandwidth.
+- Presigned client upload reduces server bandwidth on Vercel functions.
 
 **Trade-offs:**
 
-- Two-step upload complexity vs direct server `put()` — needed for large PDFs and progress UI.
-- Orphan `pending` rows without cron on MVP — acceptable with manual cleanup.
+- Three-step upload (initiate → PUT → confirm) vs direct server `put()` — needed for large PDFs and progress UI.
+- Orphan `pending` rows without cron on MVP — acceptable with S3 Lifecycle on prefix.
 
-**Downstream:** W8 `file_upload_contract.md`, W9 trainer onboarding spec.
+**Downstream:** W8 `file_upload_contract.md`, trainer onboarding (P10), profile & services (P11).
 
 ---
 
@@ -162,11 +155,12 @@ After confirm → `updateTag` / `revalidatePath` per [ADR-002](./adr_002_next162
 | Alternative | Why rejected |
 |-------------|--------------|
 | Direct `put()` from Server Action only | Poor UX for large files; no client progress |
-| S3 (lampto default) | ADR-001 Vercel Blob |
+| Vercel Blob (v1.0 ADR-007) | Superseded v1.1 — S3 chosen for portability and lampto parity |
 | Store files in PostgreSQL bytea | Not scalable; contradicts schema |
 | Link FK at `pending` | FM-012 / INV-11 violation |
 | Multiple file tables per feature | Drift; duplicate policy |
-| Public Blob for verification docs | Privacy leak |
+| Public bucket ACL for verification docs | Privacy leak |
+| Client-supplied object keys | Path traversal / IDOR risk |
 
 ---
 
@@ -174,11 +168,12 @@ After confirm → `updateTag` / `revalidatePath` per [ADR-002](./adr_002_next162
 
 | Threat | Mitigation |
 |--------|------------|
-| Upload without auth | Reject at initiate + `onBeforeGenerateToken` |
-| MIME bypass | Server allowlist; verify magic bytes on confirm (SHOULD) |
-| Path traversal in pathname | Server generates pathname; ignore client path |
+| Upload without auth | Reject at initiate + presign |
+| MIME bypass | Server allowlist via `@pulse/domain`; SHOULD verify magic bytes on confirm |
+| Path traversal in key | Server generates key with `buildFileUploadObjectKey()`; `isFileUploadObjectKey()` guard |
 | IDOR read private doc | policy-server on read handler |
-| Leaked RW token | Short TTL; server-only env |
+| Leaked AWS credentials | Server-only env; presigned URLs short TTL |
+| Keys without project prefix | Reject in confirm/read if prefix mismatch |
 
 ---
 
@@ -194,21 +189,22 @@ After confirm → `updateTag` / `revalidatePath` per [ADR-002](./adr_002_next162
 
 | Risk | Guard |
 |------|-------|
-| FM-012 pending FK | Domain validator on link use-cases |
+| FM-012 pending FK | Domain validator `validateFileAssetReadyForLink` |
 | Duplicate registries | grep new `*upload*` tables |
-| S3 SDK in repo | grep `@aws-sdk/client-s3` |
+| Vercel Blob SDK in new code | grep `@vercel/blob` |
+| Missing prefix on keys | `isFileUploadObjectKey()` in confirm/read |
 | Missing toast/pending UI | ui-mutation-pending rule on upload components |
 
 ---
 
 ## Acceptance criteria
 
-- [ ] Single `file_asset` registry documented
-- [ ] pending → ready → failed with Context7 Blob pattern
-- [ ] INV-11 / FM-012 enforced at link time
-- [ ] Auth + policy on all mutations
-- [ ] Public vs private access for certs vs verification
-- [ ] ADR-001 Blob choice referenced
+- [x] Single `file_asset` registry documented
+- [x] pending → ready → failed with S3 presigned pattern
+- [x] INV-11 / FM-012 enforced at link time
+- [x] Auth + policy on all mutations
+- [x] Public vs private access for certs vs verification
+- [x] `FILE_UPLOAD_OBJECT_KEY_PREFIX` in `@pulse/domain`
 
 ---
 
@@ -216,12 +212,12 @@ After confirm → `updateTag` / `revalidatePath` per [ADR-002](./adr_002_next162
 
 | Document | Relationship |
 |----------|--------------|
-| [`adr_001_stack_and_runtime.md`](./adr_001_stack_and_runtime.md) | Vercel Blob |
+| [`adr_001_stack_and_runtime.md`](./adr_001_stack_and_runtime.md) | S3 storage |
 | [`adr_002_next162_vercel_runtime_policy.md`](./adr_002_next162_vercel_runtime_policy.md) | Cache after upload |
 | [`lifecycle_models.md`](../02_domain_model/lifecycle_models.md) | File upload SM |
 | [`domain_invariants.md`](../02_domain_model/domain_invariants.md) | INV-11 |
-| [`blob-upload-agent-instruction.md`](../../guidelines/nextjs/blob-upload-agent-instruction.md) | Agent guide |
-| [`.cursor/rules/vercel-blob-uploads.mdc`](../../../.cursor/rules/vercel-blob-uploads.mdc) | Cursor enforcement |
+| [`s3-upload-agent-instruction.md`](../../guidelines/nextjs/s3-upload-agent-instruction.md) | Agent guide |
+| [`.cursor/rules/s3-file-asset-uploads.mdc`](../../../.cursor/rules/s3-file-asset-uploads.mdc) | Cursor enforcement |
 | [`../../implementation/mvp/contracts/file_upload_contract.md`](../../implementation/mvp/contracts/file_upload_contract.md) | W8 |
 
 **Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — wave W4-05
@@ -230,10 +226,10 @@ After confirm → `updateTag` / `revalidatePath` per [ADR-002](./adr_002_next162
 
 ## Agent notes
 
-- Context7: `/vercel/storage` — `handleUpload`, `upload`, `generateClientTokenFromReadWriteToken`.
-- Create `FileAsset` row **before** bytes hit Blob.
-- Verification documents: **`private`** access + admin/trainer policy on download.
-- Do not copy lampto S3 presign code verbatim — use Vercel APIs.
+- Object key prefix: **`FILE_UPLOAD_OBJECT_KEY_PREFIX`** in `@pulse/domain` — never inline `"pulse/"` in actions/DAL.
+- Create `FileAsset` row **before** bytes hit S3.
+- Verification documents: **private** bucket + presigned GET + admin/trainer policy on download.
+- Migrate legacy `/api/upload` (`@vercel/blob`) to S3 presigned flow per S3 guide — do not extend Blob handler.
 
 ---
 
@@ -242,3 +238,4 @@ After confirm → `updateTag` / `revalidatePath` per [ADR-002](./adr_002_next162
 | Date | Change |
 |------|--------|
 | 2026-05-23 | v1.0 — ACCEPTED; FileAsset + Vercel Blob lifecycle |
+| 2026-05-24 | v1.1 — **S3** presigned PUT/GET; `FILE_UPLOAD_OBJECT_KEY_PREFIX`; Blob guide deprecated |

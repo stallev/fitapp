@@ -1,7 +1,7 @@
 # 01 — Архитектура проекта Pulse: общий обзор
 
 **Дата:** 2026-05-23  
-**Стек MVP:** Next.js **16.2.6** (Vercel) + Neon PostgreSQL + Prisma v7 + Resend + Vercel Blob  
+**Стек MVP:** Next.js **16.2.6** (Vercel) + Neon PostgreSQL + Prisma v7 + Resend + **AWS S3**  
 **Runtime:** [ADR-002](../prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — `proxy.ts`, async APIs
 **Референс архитектуры:** [`docs/examples/lampto/`](../examples/lampto/) — см. [`lampto_project_reference.md`](../reference/lampto_project_reference.md)
 

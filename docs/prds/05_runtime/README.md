@@ -76,7 +76,7 @@ flowchart TB
 | Interception | **`proxy.ts`** (nodejs) | ADR-002 |
 | Auth | Auth.js v5, JWT, Credentials | ADR-003 |
 | DB | Prisma v7 + Neon pool | ADR-001 |
-| Blob | Vercel Blob | ADR-007 |
+| S3 | AWS S3 | ADR-007 |
 | Email | Resend post-MVP | ADR-006 |
 
 Context7 libraries: `/vercel/next.js/v16.2.2`, `/websites/authjs_dev`, `/websites/prisma_io`.

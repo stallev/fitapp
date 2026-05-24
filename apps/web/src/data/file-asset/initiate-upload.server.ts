@@ -3,10 +3,10 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 
 import {
+  buildFileUploadObjectKey,
   FILE_UPLOAD_MUTATION_ERROR_CODES,
   initiateUploadInputSchema,
   validateUploadRequest,
-  type FileUploadPurpose,
   type InitiateUploadInput,
   type MutationResult,
 } from "@pulse/domain";
@@ -62,12 +62,16 @@ export async function initiateUpload(
   }
 
   const ownerUserId = ctx!.userId;
-  const pathname = buildBlobPathname(ownerUserId, purpose);
+  const objectKey = buildFileUploadObjectKey(
+    ownerUserId,
+    purpose,
+    randomUUID(),
+  );
 
   const fileAsset = await getPrisma().fileAsset.create({
     data: {
       ownerUserId,
-      blobPathname: pathname,
+      blobPathname: objectKey,
       mimeType,
       sizeBytes,
       uploadStatus: "pending",
@@ -82,11 +86,4 @@ export async function initiateUpload(
       pathname: fileAsset.blobPathname,
     },
   };
-}
-
-function buildBlobPathname(
-  ownerUserId: string,
-  purpose: FileUploadPurpose,
-): string {
-  return `${ownerUserId}/${purpose}/${randomUUID()}`;
 }

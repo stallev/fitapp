@@ -36,12 +36,18 @@ export {
   type TrainerTimezone,
 } from "./constants/trainer-timezones";
 export {
+  FILE_UPLOAD_OBJECT_KEY_PREFIX,
   FILE_UPLOAD_PURPOSE,
   FILE_UPLOAD_PURPOSES,
   FILE_UPLOAD_PURPOSE_SET,
   isFileUploadPurpose,
   type FileUploadPurpose,
 } from "./constants/file-upload-purpose";
+export {
+  buildFileUploadObjectKey,
+  isFileUploadObjectKey,
+  parseFileUploadPurposeFromObjectKey,
+} from "./constants/file-upload-object-key";
 export {
   BOOKING_STATUSES,
   BOOKING_STATUS,
@@ -105,8 +111,10 @@ export {
 export {
   confirmUploadInputSchema,
   initiateUploadInputSchema,
+  presignUploadInputSchema,
   type ConfirmUploadInput,
   type InitiateUploadInput,
+  type PresignUploadInput,
 } from "./schemas/initiate-upload";
 export {
   catalogTrainersQuerySchema,

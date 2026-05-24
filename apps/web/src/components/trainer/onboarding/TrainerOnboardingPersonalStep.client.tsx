@@ -95,9 +95,9 @@ export function TrainerOnboardingPersonalStep({
         accept="image/jpeg,image/png,image/webp"
         label={MESSAGES.trainer.onboarding.photoUpload}
         disabled={isPending}
-        onUploaded={({ fileAssetId, blobUrl }) => {
+        onUploaded={({ fileAssetId, readUrl }) => {
           setPhotoFileAssetId(fileAssetId);
-          setPhotoUrl(blobUrl);
+          setPhotoUrl(readUrl);
         }}
       />
 

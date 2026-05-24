@@ -75,10 +75,13 @@ AUTH_URL="http://localhost:3000"
 
 **MVP — do NOT add:** `RESEND_API_KEY`, `CRON_SECRET` (until P15).
 
-Optional when file upload ships:
+Optional when file upload ships (S3 — server-only):
 
 ```bash
-BLOB_READ_WRITE_TOKEN="vercel_blob_..."
+AWS_ACCESS_KEY_ID="..."
+AWS_SECRET_ACCESS_KEY="..."
+AWS_REGION="eu-central-1"
+AWS_S3_BUCKET_NAME="your-bucket-name"
 ```
 
 ### 4. Database migrate + seed
