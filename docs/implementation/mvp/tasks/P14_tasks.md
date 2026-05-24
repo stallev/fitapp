@@ -30,6 +30,9 @@
 - [ ] Routes vs [`ui_states_contract.md`](../../../design/ui_states_contract.md)
 - [ ] empty | loading | error | forbidden per async region
 - [ ] Forbidden route UI
+- [x] Admin UI parity: `/admin/dashboard`, `/admin/complaints`, `/admin/refunds`, `/admin/reviews` — `loading.tsx`/`error.tsx`, shared queue components (P14 implementation)
+- [x] Admin trainer detail parity: `/admin/trainers/[id]` — profile card, documents, sticky decision bar, processed/incomplete states
+- [x] Admin complaint detail parity: `/admin/complaints/[id]` — detail card, sticky actions, close confirm, processed banners
 
 ## 3. Mutation UX audit
 

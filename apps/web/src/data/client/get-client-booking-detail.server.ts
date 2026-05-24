@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 
 import {
   BOOKING_STATUS,
+  COMPLAINT_STATUS,
+  REFUND_STATUS,
   canClientCancelBooking,
 } from "@pulse/domain";
 import { getPrisma } from "@pulse/db";
@@ -25,6 +27,8 @@ export type ClientBookingDetail = {
   trainerTimezone: string;
   canCancel: boolean;
   canLeaveReview: boolean;
+  canFileComplaint: boolean;
+  canRequestRefund: boolean;
 };
 
 export async function getClientBookingDetail(
@@ -61,6 +65,18 @@ export async function getClientBookingDetail(
       currency: true,
       clientMessage: true,
       review: { select: { id: true } },
+      complaints: {
+        where: {
+          status: { in: [COMPLAINT_STATUS.OPEN, COMPLAINT_STATUS.IN_REVIEW] },
+        },
+        select: { id: true },
+        take: 1,
+      },
+      refundRequests: {
+        where: { status: REFUND_STATUS.PENDING },
+        select: { id: true },
+        take: 1,
+      },
       trainerProfile: {
         select: {
           timezone: true,
@@ -76,6 +92,15 @@ export async function getClientBookingDetail(
   }
 
   const startsAtUtc = booking.startsAt.toISOString();
+
+  const isEligibleForSupport =
+    booking.status === BOOKING_STATUS.COMPLETED ||
+    booking.status === BOOKING_STATUS.CANCELLED ||
+    booking.status === BOOKING_STATUS.CONFIRMED;
+
+  const isEligibleForRefund =
+    booking.status === BOOKING_STATUS.COMPLETED ||
+    booking.status === BOOKING_STATUS.CANCELLED;
 
   return {
     id: booking.id,
@@ -95,6 +120,10 @@ export async function getClientBookingDetail(
     }),
     canLeaveReview:
       booking.status === BOOKING_STATUS.COMPLETED && booking.review === null,
+    canFileComplaint:
+      isEligibleForSupport && booking.complaints.length === 0,
+    canRequestRefund:
+      isEligibleForRefund && booking.refundRequests.length === 0,
   };
 }
 

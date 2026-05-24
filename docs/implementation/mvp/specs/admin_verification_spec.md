@@ -180,6 +180,7 @@ sequenceDiagram
 | [`trainer_verification_contract.md`](../contracts/trainer_verification_contract.md) | Approve/Reject API |
 | [`file_upload_contract.md`](../contracts/file_upload_contract.md) | Document download |
 | [`trainer_onboarding_spec.md`](./trainer_onboarding_spec.md) | Incoming applications |
+| [`admin_people_ops_spec.md`](./admin_people_ops_spec.md) | Post-approval trainer ops + client registry (P16) |
 | [`global_shell_spec.md`](./global_shell_spec.md) | Admin badges |
 | [`authorization_matrix.md`](../../../prds/04_authorization_privacy/authorization_matrix.md) | Admin permissions |
 

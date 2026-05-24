@@ -18,40 +18,40 @@
 
 ## 1. Admin dashboard
 
-- [ ] `/admin/dashboard` KPI + needs attention
-- [ ] Empty states when queues clear
+- [x] `/admin/dashboard` KPI + needs attention
+- [x] Empty states when queues clear
 
 ## 2. Trainer verification
 
-- [ ] `/admin/trainers` tabs Pending / Approved / Rejected
-- [ ] `/admin/trainers/[id]` + documents
-- [ ] `ModerationQueueRow`
-- [ ] Approve / Reject + reject reason validation
-- [ ] Revalidate `trainers` cache tag
+- [x] `/admin/trainers` tabs Pending / Approved / Rejected
+- [x] `/admin/trainers/[id]` + documents
+- [x] `ModerationQueueRow`
+- [x] Approve / Reject + reject reason validation
+- [x] Revalidate `trainers` cache tag
 
 ## 3. Complaints & refunds
 
-- [ ] `/admin/complaints` + detail workflows
-- [ ] `/admin/refunds` — DB only, no Stripe
-- [ ] Client complaint/refund entry if not in P08
+- [x] `/admin/complaints` + detail workflows
+- [x] `/admin/refunds` — DB only, no Stripe
+- [x] Client complaint/refund entry if not in P08
 
 ## 4. Review moderation
 
-- [ ] `/admin/reviews` queue
-- [ ] Hide/delete per contract
+- [x] `/admin/reviews` queue
+- [x] Hide/delete per contract
 
 ## 5. Shell
 
-- [ ] Nav badge counts
-- [ ] Pending UI on all admin mutations
+- [x] Nav badge counts
+- [x] Pending UI on all admin mutations
 
 ## 6. Verification
 
-- [ ] `npm run typecheck`
-- [ ] `npm run lint`
+- [x] `npm run typecheck`
+- [x] `npm run lint`
 - [ ] Smoke: approve → visible in `/trainers`
 - [ ] Smoke: non-admin denied
-- [ ] MVP routes vs [`canonical_routes.md`](../../../design/canonical_routes.md)
+- [x] MVP routes vs [`canonical_routes.md`](../../../design/canonical_routes.md)
 
 ---
 

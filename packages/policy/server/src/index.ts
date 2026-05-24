@@ -2,14 +2,12 @@ import "server-only";
 
 export type { PolicySessionContext } from "@pulse/domain";
 export { PolicyError, type PolicyDenyCode } from "./errors/policy-error";
-export {
-  assertCanApproveTrainer,
-  assertCanConfirmBooking,
-  assertCanManageComplaint,
-  assertCanModerateReview,
-  assertCanProcessRefund,
-  assertCanReadPrivateDoc,
-} from "./stubs";
+export { assertCanConfirmBooking } from "./stubs";
+export { assertCanApproveTrainer } from "./trainer/assert-can-approve-trainer";
+export { assertCanManageComplaint } from "./complaint/assert-can-manage-complaint";
+export { assertCanModerateReview } from "./review/assert-can-moderate-review";
+export { assertCanProcessRefund } from "./refund/assert-can-process-refund";
+export { assertCanReadPrivateDoc } from "./file-upload/assert-can-read-private-doc";
 export { assertCanInitiateUpload } from "./file-upload/assert-can-initiate-upload";
 export { assertCanReadFileAsset } from "./file-upload/assert-can-read-file-asset";
 export {

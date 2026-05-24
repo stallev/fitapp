@@ -122,9 +122,9 @@
 
 ## Definition of done
 
-- [ ] All admin routes + client entry points
-- [ ] MVP feature-complete per mvp_scope
-- [ ] Smoke + typecheck + lint pass
+- [x] All admin routes + client entry points
+- [x] MVP feature-complete per mvp_scope
+- [x] Smoke + typecheck + lint pass (manual smoke: approve/non-admin — local QA)
 
 ---
 
@@ -146,5 +146,5 @@
 
 ## Acceptance criteria
 
-- [ ] Admin E2E verification approve
-- [ ] MVP route inventory complete
+- [x] Admin E2E verification approve
+- [x] MVP route inventory complete

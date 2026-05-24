@@ -422,6 +422,7 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 | W9-06 | `docs/implementation/mvp/specs/trainer_schedule_spec.md` | schedule_slots_contract, adr_004 | trainer_flow |
 | W9-07 | `docs/implementation/mvp/specs/admin_verification_spec.md` | trainer_verification_contract, ui_states | admin_flow |
 | W9-08 | `docs/implementation/mvp/specs/complaint_refund_spec.md` | lifecycle_models, authorization_matrix | admin_flow |
+| W9-09 | `docs/implementation/mvp/specs/admin_people_ops_spec.md` | admin_verification_spec, trainer_verification_contract | admin_flow, canonical_routes |
 
 ---
 
@@ -469,6 +470,9 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 | W10-27 | `.../mvp/admin_complaint_detail.md` | `/admin/complaints/[id]` | complaint_refund_spec |
 | W10-28 | `.../mvp/admin_refunds.md` | `/admin/refunds` | complaint_refund_spec |
 | W10-29 | `.../mvp/admin_reviews_moderation.md` | `/admin/reviews` | review_moderation_contract |
+| W10-30 | `.../mvp/admin_trainer_approved_detail.md` | `/admin/trainers/[id]` (approved) | admin_people_ops_spec |
+| W10-31 | `.../mvp/admin_clients_registry.md` | `/admin/clients` | admin_people_ops_spec |
+| W10-32 | `.../mvp/admin_client_detail.md` | `/admin/clients/[id]` | admin_people_ops_spec |
 
 **Обновить backlinks после W10:** `canonical_routes.md` § Wireframe index, `design/README.md`, `prototype_route_mapping.md`.
 
@@ -638,19 +642,9 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 
 **Следующий шаг:** **P01 implementation** (monorepo & data layer) — [`P01_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P01_phase_description.md) + [`P01_tasks.md`](../implementation/mvp/tasks/P01_tasks.md).
 
-**Документация MVP-complete (W0–W16, 2026-05-23).** Фазы P01–P15 (W16 restructure). Новые PRD/specs — только при material scope change.
+**Документация MVP-complete (W0–W16, 2026-05-23).** Фазы P01–P15 (W16). **P20** (Complaint Resolution v2, W17) — planned post-P14. **P16** (Admin People Ops, W18) — planned post-P14. P17–P19 reserved.
 
-**Миграция W11→W16:** [`_migration_P01-P07_to_P01-P15.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md)
-
-**Перед начинанием сессии реализации прочитать:**
-
-1. Этот реестр (§2 требования)
-2. [`ai_first_project_methodology.md`](./ai_first_project_methodology.md)
-3. Файлы из колонки «Зависит от» для текущей фазы
-4. [`ui_component_phase_matrix.md`](../implementation/mvp/ui_component_phase_matrix.md) — row for active phase only
-5. Context7 — если runtime/auth/db
-
-**После завершения W16** документация готова к пофазной имплементации P01→P14 (+ P15 post-MVP).
+**После завершения W16** документация готова к пофазной имплементации P01→P14 (+ P15 post-MVP email, + P20 post-P14).
 
 ---
 
@@ -658,6 +652,8 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 
 | Date | Change |
 |------|--------|
+| 2026-05-25 | **W18-01** — `admin_people_ops_spec.md` (P16 People Ops); wireframes W10-30…32; canonical routes `/admin/clients*` |
+| 2026-05-25 | **W17-01** — ADR-008, complaint_refund_spec v2, P20 phase/tasks (Complaint Resolution v2) |
 | 2026-05-23 | **W16 complete** — P01–P15 phase restructure (30 phase/task files), `_phase_template.md`, `_migration_P01-P07_to_P01-P15.md`, `ui_component_phase_matrix.md`, UI Catalog sections in specs, cross-ref sync |
 | 2026-05-23 | **W15-01** — `design_system_lab_spec.md` (shared UI primitives + Design Lab page) |
 | 2026-05-23 | **W14 complete** — final index sync: `architecture_master_index`, `prds/README`, `design/README`, methodology checklist, `AGENTS.md`, `implementation/mvp/README` |

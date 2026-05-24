@@ -77,4 +77,4 @@ Full list: [`docs/guidelines/README.md`](docs/guidelines/README.md).
 
 ## Repository status
 
-**Текущая фаза:** P12 complete (trainer schedule, clients, income, dashboard, mark booking completed). Следующая фаза: **P13** (admin). Не расширять реализацию без явной фазы и contract.
+**Текущая фаза:** P13 complete (admin moderation). Следующая фаза: **P14** (quality gate). Не расширять реализацию без явной фазы и contract.

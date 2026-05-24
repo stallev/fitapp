@@ -430,6 +430,13 @@ CREATE TABLE trainer_client_note (
 ```sql
 CREATE TYPE complaint_priority AS ENUM ('low', 'medium', 'high');
 CREATE TYPE complaint_status AS ENUM ('open', 'in_review', 'closed');
+CREATE TYPE complaint_resolution AS ENUM (
+  'no_action',
+  'warning_to_trainer',
+  'refund_recommended',
+  'duplicate',
+  'spam'
+);
 CREATE TYPE refund_status AS ENUM ('pending', 'approved', 'rejected');
 ```
 
@@ -443,6 +450,7 @@ CREATE TABLE complaint (
   target_booking_id   uuid REFERENCES booking(id) ON DELETE SET NULL,
   priority            complaint_priority NOT NULL DEFAULT 'medium',
   status              complaint_status NOT NULL DEFAULT 'open',
+  resolution          complaint_resolution,
   reason              text NOT NULL,
   admin_notes         text,
   resolved_by_id      uuid REFERENCES "user"(id) ON DELETE SET NULL,

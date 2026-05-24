@@ -65,7 +65,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 | **Implementation contracts** | [`docs/implementation/mvp/contracts/`](docs/implementation/mvp/contracts/) |
 | **Implementation specs** | [`docs/implementation/mvp/specs/`](docs/implementation/mvp/specs/) |
 | **Implementation guides** | [`docs/implementation/mvp/guides/`](docs/implementation/mvp/guides/) |
-| **Implementation phases (P01–P15)** | [`docs/implementation/mvp/phases_tasks_descriptions/`](docs/implementation/mvp/phases_tasks_descriptions/) + [`tasks/`](docs/implementation/mvp/tasks/) + [`ui_component_phase_matrix.md`](docs/implementation/mvp/ui_component_phase_matrix.md) |
+| **Implementation phases (P01–P15, P20 planned)** | [`docs/implementation/mvp/phases_tasks_descriptions/`](docs/implementation/mvp/phases_tasks_descriptions/) + [`tasks/`](docs/implementation/mvp/tasks/) + [`ui_component_phase_matrix.md`](docs/implementation/mvp/ui_component_phase_matrix.md) |
 | HTML-прототип | [`docs/prototypes/Fitness_Platform_Prototype_v1.html`](docs/prototypes/Fitness_Platform_Prototype_v1.html) |
 | Runtime / стек | [`docs/prds/07_governance/adr_001_stack_and_runtime.md`](docs/prds/07_governance/adr_001_stack_and_runtime.md), [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
 
@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P12 complete (trainer schedule `/trainer/schedule`, clients `/trainer/clients`, income, dashboard KPI, `CompleteBooking`). Следующая фаза: **P13** (admin moderation).  
+**Текущая фаза:** P13 complete (admin moderation). Следующая фаза: **P14** (quality gate). **P20** (complaint resolution v2) — implementation in progress / post-P14 — см. [`P20_phase_description.md`](docs/implementation/mvp/phases_tasks_descriptions/P20_phase_description.md).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

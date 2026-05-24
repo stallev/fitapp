@@ -27,8 +27,11 @@ export default async function ClientBookingDetailPage({
       actions={
         <ClientBookingDetailActions
           bookingId={booking.id}
+          priceCents={booking.priceCents}
           canCancel={booking.canCancel}
           canLeaveReview={booking.canLeaveReview}
+          canFileComplaint={booking.canFileComplaint}
+          canRequestRefund={booking.canRequestRefund}
         />
       }
     />

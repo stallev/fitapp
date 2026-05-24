@@ -112,7 +112,7 @@
 |----------|-------|---------|-----------|-----|------------------------|
 | `FileComplaint` | client | New complaint open | → open | — | complaint_refund_spec |
 | `StartComplaintReview` | admin | open → in_review | | — | complaint_refund_spec |
-| `CloseComplaint` | admin | → closed | | — | complaint_refund_spec |
+| `CloseComplaint` | admin | → closed + **resolution** (P20) | | — | complaint_refund_spec, ADR-008 |
 | `RequestRefund` | client | New refund pending | → pending | — | complaint_refund_spec |
 | `ApproveRefund` | admin | pending → approved | Approve | FM-013 | complaint_refund_spec |
 | `RejectRefund` | admin | pending → rejected | Reject | FM-013 | complaint_refund_spec |
