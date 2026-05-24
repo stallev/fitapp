@@ -1,3 +1,9 @@
+/**
+ * Root prefix for every Pulse S3 object key.
+ * MUST end with `/`. Used in initiateUpload before presigned PUT.
+ */
+export const FILE_UPLOAD_OBJECT_KEY_PREFIX = "pulse/" as const;
+
 /** File asset upload purposes per file_upload_contract. */
 export const FILE_UPLOAD_PURPOSES = [
   "profile_photo",

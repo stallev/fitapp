@@ -52,7 +52,10 @@ Configure in Vercel Dashboard → Project → Settings → Environment Variables
 | `DIRECT_URL` | ✅ | ✅ | Neon **direct** — for migrate step |
 | `AUTH_SECRET` | ✅ | ✅ | Unique per env recommended |
 | `AUTH_URL` | ✅ | ✅ | `https://<preview-url>` / `https://<prod-domain>` |
-| `BLOB_READ_WRITE_TOKEN` | ✅ | ✅ | When upload feature enabled |
+| `AWS_ACCESS_KEY_ID` | ✅ | ✅ | When upload feature enabled |
+| `AWS_SECRET_ACCESS_KEY` | ✅ | ✅ | When upload feature enabled |
+| `AWS_REGION` | ✅ | ✅ | S3 bucket region |
+| `AWS_S3_BUCKET_NAME` | ✅ | ✅ | When upload feature enabled |
 | `CRON_SECRET` | ❌ MVP | ❌ MVP | P15 post-MVP |
 | `RESEND_API_KEY` | ❌ MVP | ❌ MVP | P15 post-MVP |
 
@@ -130,7 +133,7 @@ Set Vercel Build Command to `npm run vercel-build` from root if migrate should r
 | Auth redirect loop | Wrong `AUTH_URL` | Match exact deployment URL |
 | DB SSL errors | Missing `sslmode=require` | Fix connection string |
 | 500 on all pages post-deploy | Schema not migrated | Run `migrate deploy` |
-| Blob upload 401 | Missing token | Add `BLOB_READ_WRITE_TOKEN` |
+| S3 upload 403 | Missing/invalid AWS credentials | Add S3 env vars per [`s3-upload-agent-instruction.md`](../../../guidelines/nextjs/s3-upload-agent-instruction.md) |
 
 ---
 

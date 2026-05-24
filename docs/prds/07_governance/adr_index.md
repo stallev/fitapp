@@ -34,7 +34,7 @@
 | ADR-004 | [`adr_004_timezone_scheduling_model.md`](./adr_004_timezone_scheduling_model.md) | **ACCEPTED** | Timezone | `TrainerProfile.timezone` (IANA) — source of truth; local weekly times → UTC `timestamptz` |
 | ADR-005 | [`adr_005_mvp_booking_without_payment.md`](./adr_005_mvp_booking_without_payment.md) | **ACCEPTED** | Booking MVP | Бронирование без Stripe; `pending` → trainer confirm; service snapshot |
 | ADR-006 | [`adr_006_idempotent_email_delivery.md`](./adr_006_idempotent_email_delivery.md) | **ACCEPTED** | Email jobs | Post-MVP runtime; `idempotency_key` + `delivery_log`; Resend; не в request path |
-| ADR-007 | [`adr_007_file_asset_blob_lifecycle.md`](./adr_007_file_asset_blob_lifecycle.md) | **ACCEPTED** | File storage | Vercel Blob + `file_asset`; `pending` → `ready`; FK only after ready |
+| ADR-007 | [`adr_007_file_asset_blob_lifecycle.md`](./adr_007_file_asset_blob_lifecycle.md) | **ACCEPTED** | File storage | AWS S3 + `file_asset`; `pending` → `ready`; FK only after ready |
 
 ### Lampto reference (не применять как Pulse ADR)
 

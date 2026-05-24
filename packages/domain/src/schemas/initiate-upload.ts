@@ -12,7 +12,15 @@ export type InitiateUploadInput = z.infer<typeof initiateUploadInputSchema>;
 
 export const confirmUploadInputSchema = z.object({
   fileAssetId: z.string().uuid(),
-  blobUrl: z.string().url(),
+  expectedSize: z.number().int().positive(),
 });
 
 export type ConfirmUploadInput = z.infer<typeof confirmUploadInputSchema>;
+
+export const presignUploadInputSchema = z.object({
+  fileAssetId: z.string().uuid(),
+  mimeType: z.string().min(1),
+  sizeBytes: z.number().int().positive(),
+});
+
+export type PresignUploadInput = z.infer<typeof presignUploadInputSchema>;

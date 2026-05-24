@@ -59,7 +59,7 @@ The web app deploys on **Vercel**. Framework and hosting choices must align with
 | Interception | **`proxy.ts`** |
 | Database | Neon PostgreSQL 17 |
 | Async / heavy work | Cron + jobs, not `unstable_after` |
-| Storage | Vercel Blob |
+| Storage | AWS S3 |
 | Email | Resend |
 
 **Reference:** lampto [`ai_vercel_runtime_compatibility.md`](../../examples/lampto/docs/guidelines/nextjs/ai_vercel_runtime_compatibility.md) — Netlify baseline replaced per ADR-001.

@@ -479,7 +479,11 @@ CREATE INDEX idx_refund_status ON refund_request(status, created_at DESC);
 
 ---
 
-## 9) Media (Vercel Blob)
+## 9) Media (AWS S3)
+
+**Pattern:** upload → `pending` → client PUT to S3 (presigned) → HeadObject confirm → mark `ready`. FK from certificates/documents after ready.
+
+**Object key:** `{FILE_UPLOAD_OBJECT_KEY_PREFIX}{ownerUserId}/{purpose}/{uuid}` — prefix constant `pulse/` in `@pulse/domain`. Stored in `blob_pathname`.
 
 ### 9.1 file_asset
 
@@ -500,8 +504,6 @@ CREATE TABLE file_asset (
 
 CREATE INDEX idx_file_asset_owner ON file_asset(owner_user_id);
 ```
-
-**Pattern:** upload → `pending` → client PUT to Vercel Blob → mark `ready`. FK from certificates/documents after ready.
 
 ---
 
@@ -639,7 +641,7 @@ Package: `packages/db/prisma/schema.prisma` — единственное DDL в 
 | [`indexing_strategy.md`](./indexing_strategy.md) | Index canon + Wave 1 additions |
 | [`seed_data_spec.md`](./seed_data_spec.md) | Dev/CI seed fixtures |
 | [`adr_004_timezone_scheduling_model.md`](../07_governance/adr_004_timezone_scheduling_model.md) | Timezone & schedule ADR |
-| [`adr_007_file_asset_blob_lifecycle.md`](../07_governance/adr_007_file_asset_blob_lifecycle.md) | `file_asset` + Blob |
+| [`adr_007_file_asset_blob_lifecycle.md`](../07_governance/adr_007_file_asset_blob_lifecycle.md) | `file_asset` + S3 |
 | [`../06_operations/migration_runbook.md`](../06_operations/migration_runbook.md) | Migrate deploy procedures (W12) |
 | [`../../implementation/mvp/guides/neon_prisma_migrations_guide.md`](../../implementation/mvp/guides/neon_prisma_migrations_guide.md) | Neon + Prisma how-to |
 | Lampto reference | [`database_schema_v3.md`](../../examples/lampto/docs/prds/03_data_model/database_schema_v3.md) |

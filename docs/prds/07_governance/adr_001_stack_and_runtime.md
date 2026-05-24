@@ -29,7 +29,7 @@ Pulse — MVP маркetplace фитнес-тренеров. Продуктов�
 | Auth | **Auth.js v5**, Credentials provider, JWT sessions, role in token |
 | ORM | **Prisma v7** |
 | Database | **Neon PostgreSQL 17** — pooled `DATABASE_URL`, `DIRECT_URL` for migrations |
-| File storage | **Vercel Blob** — profile photos, certificates |
+| File storage | **AWS S3** — profile photos, certificates, verification documents (presigned PUT/GET) |
 | Transactional email | **Resend** (post-MVP send; schema `delivery_log` on MVP) |
 | Toasts | Sonner |
 
@@ -60,7 +60,7 @@ Identical **structure** to lampto:
 
 ## Обоснование
 
-1. **Product docs explicitly specify Vercel** — optimized for Next.js, preview deployments, Blob storage co-location.
+1. **Product docs specify Vercel hosting** — optimized for Next.js, preview deployments; **object storage is S3** (not Vercel Blob) for portable file lifecycle and alignment with lampto FileAsset pattern.
 2. **Credentials auth** matches MVP (email/password, bcrypt) — no Google OAuth dependency for launch.
 3. **Resend** — simpler transactional email than AWS SES for MVP team size; aligns with Vercel ecosystem.
 4. **Vercel Cron** — sufficient for 24h reminders and low-volume batch jobs at MVP scale; lampto idempotency pattern still applies.
@@ -108,3 +108,13 @@ Identical **structure** to lampto:
 - [ ] Use Vercel env vars pattern (`DATABASE_URL`, `DIRECT_URL`, `AUTH_SECRET`, `AUTH_URL`)
 - [ ] Use Resend for email when post-MVP email ships — not SES; **do not** wire Resend on MVP unless scope changes
 - [ ] Follow lampto **package boundaries**, not lampto **hosting** config
+- [ ] File uploads: **AWS S3** presigned URLs — see [ADR-007](./adr_007_file_asset_blob_lifecycle.md), [`s3-upload-agent-instruction.md`](../../guidelines/nextjs/s3-upload-agent-instruction.md)
+
+---
+
+## Change log
+
+| Date | Change |
+|------|--------|
+| 2026-05-23 | v1.0 — ACCEPTED |
+| 2026-05-24 | v1.1 — File storage: Vercel Blob → **AWS S3** (presigned PUT/GET) |

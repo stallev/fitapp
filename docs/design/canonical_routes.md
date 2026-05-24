@@ -105,7 +105,7 @@
 |------|---------|-----|
 | `/api/auth/[...nextauth]` | Auth.js handlers | ✅ |
 | `/api/jobs/*` | Cron-triggered job endpoints (planned) | ✅ |
-| `/api/upload` | Vercel Blob presigned flow (planned) | ✅ |
+| `/api/files/[fileAssetId]` | S3 presigned read proxy (ready assets) | ✅ |
 
 ---
 

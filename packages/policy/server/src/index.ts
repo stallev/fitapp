@@ -14,6 +14,7 @@ export {
   assertCanReadPrivateDoc,
 } from "./stubs";
 export { assertCanInitiateUpload } from "./file-upload/assert-can-initiate-upload";
+export { assertCanReadFileAsset } from "./file-upload/assert-can-read-file-asset";
 export { assertCanMutateTrainerProfile } from "./trainer/assert-can-mutate-trainer-profile";
 export { assertCanCreateBooking } from "./booking/assert-can-create-booking";
 export {

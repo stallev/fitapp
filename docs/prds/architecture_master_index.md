@@ -135,7 +135,7 @@ Purpose: define **how the system executes requests and jobs**.
 | [`07_governance/adr_004_timezone_scheduling_model.md`](07_governance/adr_004_timezone_scheduling_model.md) | **Accepted** | Trainer timezone model |
 | [`07_governance/adr_005_mvp_booking_without_payment.md`](07_governance/adr_005_mvp_booking_without_payment.md) | **Accepted** | MVP booking without payment |
 | [`07_governance/adr_006_idempotent_email_delivery.md`](07_governance/adr_006_idempotent_email_delivery.md) | **Accepted** | Post-MVP idempotent email |
-| [`07_governance/adr_007_file_asset_blob_lifecycle.md`](07_governance/adr_007_file_asset_blob_lifecycle.md) | **Accepted** | Vercel Blob file lifecycle |
+| [`07_governance/adr_007_file_asset_blob_lifecycle.md`](07_governance/adr_007_file_asset_blob_lifecycle.md) | **Accepted** | S3 file lifecycle |
 | [`05_runtime/README.md`](05_runtime/README.md) | **Canonical** | Runtime layer entry |
 | [`05_runtime/backend_requirements.md`](05_runtime/backend_requirements.md) | **Canonical** | Web + jobs contours |
 | [`05_runtime/monorepo_packages.md`](05_runtime/monorepo_packages.md) | **Canonical** | Workspaces, package boundaries |

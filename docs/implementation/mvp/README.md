@@ -72,7 +72,7 @@ npm run lint        # apps/web + все packages/* (не только web)
 | [`contracts/booking_lifecycle_contract.md`](contracts/booking_lifecycle_contract.md) | Booking mutations |
 | [`contracts/wishlist_contract.md`](contracts/wishlist_contract.md) | Idempotent wishlist |
 | [`contracts/trainer_verification_contract.md`](contracts/trainer_verification_contract.md) | Admin moderation |
-| [`contracts/file_upload_contract.md`](contracts/file_upload_contract.md) | Vercel Blob lifecycle |
+| [`contracts/file_upload_contract.md`](contracts/file_upload_contract.md) | S3 file lifecycle |
 | [`contracts/review_moderation_contract.md`](contracts/review_moderation_contract.md) | Reviews |
 | [`contracts/email_notifications_contract.md`](contracts/email_notifications_contract.md) | Post-MVP email jobs |
 

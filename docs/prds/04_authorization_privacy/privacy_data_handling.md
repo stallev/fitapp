@@ -63,7 +63,7 @@
 3. **MUST** — verification documents visible to admin and uploading trainer only until approved; not on public profile tabs.
 4. **MUST** — booking detail for client shows trainer contact fields allowed by product (name, no private email unless product adds — MVP: in-app only).
 5. **MUST NOT** — log passwords, reset tokens, or `CRON_SECRET` in application logs.
-6. **SHOULD** — avatar/certificate URLs from Vercel Blob use non-guessable paths ([ADR-007](../07_governance/adr_007_file_asset_blob_lifecycle.md)).
+6. **SHOULD** — avatar/certificate URLs use non-guessable S3 object keys with project prefix ([ADR-007](../07_governance/adr_007_file_asset_blob_lifecycle.md)).
 7. **MAY** — admin views full user email for moderation; audit optional.
 
 ---

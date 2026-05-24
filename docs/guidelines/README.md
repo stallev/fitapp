@@ -34,7 +34,7 @@
 | `auth-security.mdc` | Auth.js, defense in depth |
 | `nextjs-vercel-app-router.mdc` | Next.js **16.2.6** + Vercel + **`proxy.ts`** |
 | `app-router-streaming-loading.mdc` | Suspense, `loading.tsx`, page performance (§4–§18) |
-| `vercel-blob-uploads.mdc` | FileAsset + Vercel Blob |
+| `s3-file-asset-uploads.mdc` | FileAsset + AWS S3 |
 | `admin-forms-layout.mdc` | Admin forms layout |
 | `patterns-tables-dnd.mdc` | Responsive tables |
 | `react-ui-components.mdc` | RSC/client, components |

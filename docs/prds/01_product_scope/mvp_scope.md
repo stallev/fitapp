@@ -55,7 +55,7 @@ Pulse — онлайн-маркетплейс, соединяющий клиен
 | Auth | Auth.js v5, **Credentials** (email + password), JWT | [ADR-003](../07_governance/adr_003_auth_credentials_jwt_rbac.md) |
 | ORM / DB | Prisma v7, Neon PostgreSQL 17 | [database_schema_v1.md](../03_data_model/database_schema_v1.md) |
 | UI | shadcn/ui + Tailwind CSS v4, Warm Forest | Guidelines + prototype |
-| Storage | Vercel Blob | [ADR-007](../07_governance/adr_007_file_asset_blob_lifecycle.md) |
+| Storage | AWS S3 | [ADR-007](../07_governance/adr_007_file_asset_blob_lifecycle.md) |
 | Email (sending) | Resend — **post-MVP** | [ADR-006](../07_governance/adr_006_idempotent_email_delivery.md), [`email_notifications_matrix.md`](./email_notifications_matrix.md) |
 | Booking (MVP) | Без оплаты, `pending` → confirm | [ADR-005](../07_governance/adr_005_mvp_booking_without_payment.md) |
 | Jobs / `delivery_log` | Таблицы в schema — **post-MVP runtime** | [database_schema_v1.md](../03_data_model/database_schema_v1.md) §10 |
@@ -234,7 +234,7 @@ flowchart LR
 | [`../02_domain_model/failure_modes_catalog.md`](../02_domain_model/failure_modes_catalog.md) | FM-xxx failure index |
 | [`../07_governance/adr_003_auth_credentials_jwt_rbac.md`](../07_governance/adr_003_auth_credentials_jwt_rbac.md) | Auth MVP |
 | [`../07_governance/adr_005_mvp_booking_without_payment.md`](../07_governance/adr_005_mvp_booking_without_payment.md) | Booking without payment |
-| [`../07_governance/adr_007_file_asset_blob_lifecycle.md`](../07_governance/adr_007_file_asset_blob_lifecycle.md) | Blob uploads |
+| [`../07_governance/adr_007_file_asset_blob_lifecycle.md`](../07_governance/adr_007_file_asset_blob_lifecycle.md) | S3 file uploads |
 
 **Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — wave W1-03
 
