@@ -23,6 +23,8 @@ export const containerVariants = cva("mx-auto w-full", {
       content: "md:max-w-4xl",
       wide: "md:max-w-5xl",
       full: "max-w-none",
+      /** Public landing / marketing sections — standalone prototype max width */
+      marketing: "max-w-[1280px] px-6 md:px-14",
     },
   },
   defaultVariants: { variant: "shell" },

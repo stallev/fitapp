@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { FeaturedTrainersSkeleton } from "@/components/landing/FeaturedTrainersSkeleton";
 import { LandingAuthenticatedRedirect } from "@/components/landing/LandingAuthenticatedRedirect.server";
-import { LandingCategoryChips } from "@/components/landing/LandingCategoryChips";
+import { LandingFaq } from "@/components/landing/LandingFaq.client";
 import { LandingFeaturedTrainers } from "@/components/landing/LandingFeaturedTrainers.server";
+import { LandingFeaturedTrainersSkeleton } from "@/components/landing/LandingFeaturedTrainersSkeleton";
+import { LandingFinalCta } from "@/components/landing/LandingFinalCta";
+import { LandingFooter } from "@/components/landing/LandingFooter";
+import { LandingFooterSkeleton } from "@/components/landing/LandingFooterSkeleton";
+import { LandingForTrainers } from "@/components/landing/LandingForTrainers";
 import { LandingHero } from "@/components/landing/LandingHero";
-import { LandingValueProps } from "@/components/landing/LandingValueProps";
-import { SiteFooter } from "@/components/landing/SiteFooter";
-import { Container } from "@/components/ui/container";
+import { LandingHowItWorks } from "@/components/landing/LandingHowItWorks";
+import { LandingNav } from "@/components/landing/LandingNav.client";
+import { LandingSpecialtyPills } from "@/components/landing/LandingSpecialtyPills";
+import { LandingTestimonials } from "@/components/landing/LandingTestimonials";
+import { LandingTrustBar } from "@/components/landing/LandingTrustBar.client";
 import { MESSAGES } from "@/lib/messages";
 
 export function generateMetadata(): Metadata {
@@ -24,16 +30,21 @@ export default function HomePage() {
       <Suspense fallback={null}>
         <LandingAuthenticatedRedirect />
       </Suspense>
-      <Container variant="page" className="space-y-12 py-8 md:py-12">
-        <LandingHero />
-        <LandingValueProps />
-        <LandingCategoryChips />
-        <Suspense fallback={<FeaturedTrainersSkeleton />}>
-          <LandingFeaturedTrainers />
-        </Suspense>
-      </Container>
-      <SiteFooter />
+      <LandingNav />
+      <LandingHero />
+      <LandingTrustBar />
+      <LandingHowItWorks />
+      <LandingSpecialtyPills />
+      <Suspense fallback={<LandingFeaturedTrainersSkeleton />}>
+        <LandingFeaturedTrainers />
+      </Suspense>
+      <LandingTestimonials />
+      <LandingForTrainers />
+      <LandingFaq />
+      <LandingFinalCta />
+      <Suspense fallback={<LandingFooterSkeleton />}>
+        <LandingFooter />
+      </Suspense>
     </>
   );
 }
-

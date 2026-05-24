@@ -281,7 +281,7 @@ Minimum rating
   "Anna Romanova  ✓ Verified"   font-display text-[26px]
   tagline                        text-[13px] text-ink-2
   ★★★★★ 4.9  · 124 reviews
-  📍 Moscow · 8 years experience
+  📍 New York · 8 years experience
 
 [Tabs — overflow-x-auto, edge-to-edge scroll]
   About | Services | Schedule | Reviews
@@ -516,7 +516,7 @@ Cancelled:  — (нет кнопок)
 "Profile"  ← font-display
 
 [Avatar lg] [Alyona Sokolova]   [✎ edit button]
-            [alyona@mail.ru]
+            [alyona@example.com]
 
 Card — settings list:
   🔔 Notifications      →

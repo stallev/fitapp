@@ -3,6 +3,11 @@ export { SectionTitle, type SectionTitleProps } from "./SectionTitle/SectionTitl
 export { ContentText, type ContentTextProps } from "./ContentText/ContentText";
 export { AlertText, type AlertTextProps } from "./AlertText/AlertText";
 export {
+  SectionEyebrow,
+  type SectionEyebrowProps,
+  sectionEyebrowVariants,
+} from "./SectionEyebrow/SectionEyebrow";
+export {
   contentTextVariants,
   type ContentTextVariant,
 } from "./content-text-variants";

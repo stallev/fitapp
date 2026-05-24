@@ -264,6 +264,7 @@ Design kit uses `BsfyCard` / `bsfyCardVariants` (lampto legacy).
 | Component | Key props | Variants / notes |
 |-----------|-----------|------------------|
 | `Heading` | `as`, `visualLevel?`, `variant?` | `visualLevel`: display, h1–h6; `variant`: default, brand |
+| `SectionEyebrow` | `tone?` | Outline pill for marketing section labels (P16 landing); `components/atoms/SectionEyebrow/` |
 | `SectionTitle` | `as?`, `variant?` | Composes Heading; centered marketing titles |
 | `ContentText` | `as?`, `variant?` | See § ContentText variants (Pulse MVP set) |
 | `AlertText` | — | Fixed `role="alert"`; form-level errors |
@@ -622,6 +623,19 @@ Composed blocks from [`styleguide.md`](../../../design/styleguide.md) — **not*
 | Status badge row | `c.bookings`, `a.trainers` | Badge |
 | Section header + «Все →» | `c.home` | Section header |
 | Empty state block | any list empty | ui_states + `Empty` shadcn |
+
+#### L3 — Marketing / Landing (P16, `#marketing`)
+
+**Showcase:** `/design-system` → `DesignLabMarketing` (`id="marketing"`). **Product import:** `@/components/atoms`, `@/components/ui/*`, `@/components/catalog/*` only — **MUST NOT** import `@/components/design-lab/**` on product routes.
+
+| Wave | Components | Path |
+|------|------------|------|
+| **Wave A** | `SectionEyebrow`, `Container` (`variant="marketing"`), `MarketingSectionHeader`, `TrustFeaturePill`, `StepCard`, `DiscoveryPill`, `TestimonialCard`, `StatMetricCell`, `StatsBar`, `BenefitRow`, `DarkStatTile`, `BrandSection`, `CtaBand`, `Reveal`, `MarketingAccordion` | `components/atoms/`, `components/ui/` |
+| **L3 patterns** | `FeaturedTrainerCard` (vertical marketing card) | `components/catalog/FeaturedTrainerCard.tsx` |
+| **Hooks** | `use-reveal-on-scroll`, `use-count-up`, `use-landing-scrolled`, `use-prefers-reduced-motion` | `lib/ui/` |
+| **Fixtures (showcase)** | `marketing-fixtures.ts` | `lib/design-lab/` (dev-only) |
+
+**Prototype:** [`Pulse Landing Page -Standalone-.html`](../../../prototypes/Pulse Landing Page -Standalone-.html) · **Spec:** [`public_landing_spec.md`](./public_landing_spec.md)
 
 Phase 2 (partial — Forms L2): Input/Field/Textarea/Checkbox/Radio/Switch tokenization + `DesignLabForms` section.
 

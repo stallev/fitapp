@@ -170,4 +170,5 @@ export const LAB_SECTIONS = [
   { id: "media", label: "Media" },
   { id: "patterns", label: "Patterns" },
   { id: "catalog-patterns", label: "Catalog" },
+  { id: "marketing", label: "Marketing" },
 ] as const;

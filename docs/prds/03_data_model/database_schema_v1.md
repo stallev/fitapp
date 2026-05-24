@@ -181,7 +181,7 @@ CREATE TABLE trainer_profile (
   id                  uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id             uuid UNIQUE NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
   status              trainer_status NOT NULL DEFAULT 'pending',
-  timezone            text NOT NULL,  -- IANA, e.g. 'Europe/Moscow'
+  timezone            text NOT NULL,  -- IANA, e.g. 'America/New_York'
   bio                 text,
   photo_url           text,
   experience_years    smallint CHECK (experience_years IS NULL OR experience_years >= 0),

@@ -1,340 +1,128 @@
-<!DOCTYPE html>
-<html lang="ru">
+<!doctype html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pulse — Ваш персональный тренер рядом</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pulse — Find Your Certified Personal Trainer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-<style>
-/* ═══ TOKENS ═══ */
-:root {
-  --forest: #2D5A40; --forest-dk: #1A3028; --forest-lt: #3D7A58; --forest-faint: #E4F0E8;
-  --gold: #C4973A; --gold-lt: #E8C070; --gold-soft: #F5E6C8;
-  --cream: #F5F0E8; --cream-dk: #EDE5D4; --cream-bd: #D8CCB4;
-  --ink: #1A3028; --ink2: #4A5A50; --ink3: #8A8578;
-  --serif: 'DM Serif Display', Georgia, serif;
-  --sans: 'DM Sans', system-ui, sans-serif;
-  --sh1: 0 1px 4px rgba(26,48,40,.07), 0 2px 8px rgba(26,48,40,.05);
-  --sh2: 0 4px 16px rgba(26,48,40,.10), 0 2px 6px rgba(26,48,40,.06);
-  --sh3: 0 8px 32px rgba(26,48,40,.13), 0 4px 12px rgba(26,48,40,.07);
-  --sh4: 0 16px 48px rgba(26,48,40,.18), 0 8px 20px rgba(26,48,40,.10);
-}
 
-/* ═══ RESET ═══ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { font-family: var(--sans); background: var(--cream); color: var(--ink); -webkit-font-smoothing: antialiased; line-height: 1.6; }
-p, h1, h2, h3, h4 { text-wrap: pretty; }
-a { text-decoration: none; color: inherit; }
-button { cursor: pointer; border: none; background: none; font: inherit; }
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-/* ═══ NAV ═══ */
-.nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  height: 72px; padding: 0 52px;
-  display: flex; align-items: center; justify-content: space-between;
-  transition: background .3s, box-shadow .3s;
-}
-.nav.scrolled { background: rgba(245,240,232,.95); backdrop-filter: blur(16px); box-shadow: 0 1px 0 rgba(26,48,40,.09); }
-.nav-logo { font-family: var(--serif); font-size: 22px; letter-spacing: -.03em; }
-.nav-links { display: flex; gap: 32px; list-style: none; }
-.nav-links a { font-size: 14px; font-weight: 500; color: var(--ink2); transition: color .2s; white-space: nowrap; }
-.nav-links a:hover { color: var(--forest); }
-.nav-right { display: flex; align-items: center; gap: 10px; }
-
-/* ═══ BUTTONS ═══ */
-.btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--sans); font-weight: 500; cursor: pointer; border: none; white-space: nowrap; transition: all .2s; }
-.btn-ghost { background: none; color: var(--ink2); font-size: 14px; padding: 8px 14px; border-radius: 999px; }
-.btn-ghost:hover { background: var(--forest-faint); color: var(--forest); }
-.btn-pill { background: var(--forest); color: white; font-size: 14px; font-weight: 600; padding: 10px 22px; border-radius: 999px; }
-.btn-pill:hover { background: var(--forest-dk); box-shadow: 0 2px 12px rgba(26,48,40,.3); transform: translateY(-1px); }
-.btn-lg { background: var(--forest); color: white; font-size: 16px; font-weight: 600; padding: 16px 36px; border-radius: 999px; }
-.btn-lg:hover { background: var(--forest-dk); box-shadow: 0 4px 24px rgba(26,48,40,.35); transform: translateY(-2px); }
-.btn-lg:active { transform: scale(.97); }
-.btn-outline { background: transparent; color: var(--ink); font-size: 16px; font-weight: 500; padding: 15px 32px; border-radius: 999px; border: 1.5px solid var(--cream-bd); }
-.btn-outline:hover { background: var(--cream-dk); border-color: var(--ink3); }
-.btn-white { background: white; color: var(--forest-dk); font-size: 16px; font-weight: 600; padding: 16px 36px; border-radius: 999px; }
-.btn-white:hover { background: var(--cream); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,0,0,.15); }
-.btn-outline-white { background: transparent; color: white; font-size: 16px; font-weight: 500; padding: 15px 32px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,.35); }
-.btn-outline-white:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); }
-
-/* ═══ LAYOUT ═══ */
-.wrap { max-width: 1280px; margin: 0 auto; }
-.sec { padding: 96px 56px; }
-.slabel { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--forest); background: var(--forest-faint); padding: 6px 16px; border-radius: 999px; margin-bottom: 20px; }
-.stitle { font-family: var(--serif); font-size: clamp(36px, 4vw, 52px); color: var(--ink); line-height: 1.05; letter-spacing: -.03em; margin-bottom: 14px; }
-.ssub { font-size: 18px; color: var(--ink2); line-height: 1.65; max-width: 540px; }
-.shead { text-align: center; margin-bottom: 68px; }
-.shead .ssub { margin: 0 auto; }
-
-/* ═══ REVEAL ═══ */
-.rv { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s ease; }
-.rv.in { opacity: 1; transform: none; }
-.rv.d1 { transition-delay: .1s; } .rv.d2 { transition-delay: .2s; }
-.rv.d3 { transition-delay: .3s; } .rv.d4 { transition-delay: .4s; }
-.rv.d5 { transition-delay: .5s; }
-
-/* ═══ HERO ═══ */
-.hero { min-height: 100vh; display: flex; align-items: center; padding-top: 72px; overflow: hidden; position: relative; }
-.hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 800px; height: 800px; background: radial-gradient(ellipse at center, rgba(228,240,232,.7) 0%, transparent 65%); pointer-events: none; }
-.hero-inner { max-width: 1280px; margin: 0 auto; padding: 0 56px; width: 100%; display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: center; }
-.hero-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: var(--forest); background: var(--forest-faint); border: 1px solid rgba(45,90,64,.12); padding: 7px 16px; border-radius: 999px; margin-bottom: 28px; }
-.hero-title { font-family: var(--serif); font-size: clamp(50px, 5.8vw, 82px); color: var(--ink); line-height: .97; letter-spacing: -.045em; margin-bottom: 24px; }
-.hero-title em { font-style: italic; color: var(--forest); }
-.hero-sub { font-size: 18px; color: var(--ink2); line-height: 1.65; max-width: 460px; margin-bottom: 40px; }
-.hero-ctas { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; flex-wrap: wrap; }
-.hero-trust { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-.trust-chip { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; color: var(--ink2); background: white; border: 1px solid var(--cream-bd); padding: 6px 12px; border-radius: 999px; box-shadow: var(--sh1); }
-.hero-proof { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-.proof-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink3); font-weight: 500; }
-.proof-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--cream-bd); flex-shrink: 0; }
-
-/* ═══ HERO VISUAL ═══ */
-.hero-visual { position: relative; height: 540px; }
-.hero-blob { position: absolute; inset: -60px; background: radial-gradient(ellipse 75% 75% at 55% 50%, rgba(228,240,232,.85) 0%, transparent 65%); border-radius: 60% 40% 50% 50% / 50% 50% 60% 40%; pointer-events: none; }
-.fc { position: absolute; background: white; border-radius: 20px; box-shadow: var(--sh4); width: 215px; overflow: hidden; transition: transform .35s cubic-bezier(.34,1.4,.64,1), box-shadow .35s; }
-.fc:hover { transform: translateY(-10px) rotate(0deg) !important; box-shadow: 0 28px 64px rgba(26,48,40,.22) !important; }
-.fc-photo { height: 128px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.fc-photo::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.13) 1px, transparent 1px); background-size: 14px 14px; }
-.fc-init { font-family: var(--serif); font-size: 44px; color: rgba(255,255,255,.55); font-style: italic; letter-spacing: -.04em; position: relative; z-index: 1; }
-.fc-badge { position: absolute; top: 9px; right: 9px; background: white; border-radius: 999px; padding: 3px 8px; font-size: 11px; font-weight: 600; color: var(--forest); display: flex; align-items: center; gap: 3px; z-index: 2; box-shadow: var(--sh1); }
-.fc-body { padding: 13px 15px; }
-.fc-name { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
-.fc-spec { font-size: 12px; color: var(--ink3); margin-bottom: 9px; }
-.fc-foot { display: flex; align-items: center; justify-content: space-between; }
-.fc-price { font-size: 13px; font-weight: 700; color: var(--forest); }
-
-/* ═══ TRUST BAR ═══ */
-.trust-bar { background: var(--forest-dk); }
-.trust-bar-inner { max-width: 1280px; margin: 0 auto; padding: 0 56px; display: grid; grid-template-columns: repeat(4,1fr); }
-.ts { padding: 36px 20px; text-align: center; border-right: 1px solid rgba(255,255,255,.07); }
-.ts:last-child { border-right: none; }
-.ts-num { font-family: var(--serif); font-size: 46px; color: white; line-height: 1; letter-spacing: -.04em; display: block; margin-bottom: 7px; }
-.ts-lbl { font-size: 13px; color: rgba(255,255,255,.5); }
-
-/* ═══ HOW IT WORKS ═══ */
-.steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
-.step-card { background: white; border-radius: 22px; padding: 36px 32px; box-shadow: var(--sh1); border: 1px solid rgba(26,48,40,.05); }
-.step-num { font-family: var(--serif); font-size: 88px; color: var(--forest-faint); line-height: .88; letter-spacing: -.04em; margin-bottom: 24px; }
-.step-icon { width: 48px; height: 48px; background: var(--forest-faint); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: var(--forest); margin-bottom: 16px; }
-.step-title { font-size: 20px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 10px; }
-.step-desc { font-size: 15px; color: var(--ink2); line-height: 1.6; }
-
-/* ═══ DISCIPLINES ═══ */
-.disc-wrap { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
-.disc-pill { display: flex; align-items: center; gap: 10px; background: white; border: 1px solid var(--cream-bd); padding: 14px 26px; border-radius: 999px; font-size: 15px; font-weight: 500; cursor: pointer; transition: all .2s; box-shadow: var(--sh1); }
-.disc-pill:hover { background: var(--forest); color: white; border-color: var(--forest); transform: translateY(-2px); box-shadow: var(--sh2); }
-.disc-pill:hover .disc-ct { color: rgba(255,255,255,.6); }
-.disc-ct { font-size: 12px; color: var(--ink3); font-weight: 400; }
-
-/* ═══ TRAINER CARDS ═══ */
-.trainers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-.tc { background: white; border-radius: 22px; overflow: hidden; box-shadow: var(--sh1); border: 1px solid rgba(26,48,40,.05); transition: transform .25s, box-shadow .25s; cursor: pointer; }
-.tc:hover { transform: translateY(-7px); box-shadow: var(--sh3); }
-.tc-photo { height: 200px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-.tc-photo::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(rgba(255,255,255,.12) 1px, transparent 1px); background-size: 14px 14px; }
-.tc-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,48,40,.4) 0%, transparent 60%); z-index: 1; }
-.tc-init { font-family: var(--serif); font-size: 56px; color: rgba(255,255,255,.45); font-style: italic; letter-spacing: -.04em; position: relative; z-index: 0; }
-.tc-price { position: absolute; bottom: 14px; right: 14px; background: white; border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; box-shadow: var(--sh1); z-index: 2; }
-.tc-body { padding: 18px 20px; }
-.tc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
-.tc-name { font-size: 17px; font-weight: 700; }
-.tc-check { width: 22px; height: 22px; background: var(--forest-faint); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--forest); flex-shrink: 0; }
-.tc-spec { font-size: 13px; color: var(--ink3); margin-bottom: 10px; }
-.tc-rating { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink2); margin-bottom: 12px; }
-.tc-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.tc-tag { font-size: 12px; font-weight: 500; color: var(--forest); background: var(--forest-faint); padding: 4px 10px; border-radius: 999px; }
-.trainers-ft { text-align: center; margin-top: 42px; }
-
-/* ═══ TESTIMONIALS ═══ */
-.testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-.testi { background: white; border-radius: 22px; padding: 36px 32px; box-shadow: var(--sh1); border: 1px solid rgba(26,48,40,.05); display: flex; flex-direction: column; }
-.testi-mark { font-family: var(--serif); font-size: 72px; color: var(--forest-faint); line-height: .65; margin-bottom: 18px; }
-.testi-stars { color: var(--gold); font-size: 14px; letter-spacing: 2px; margin-bottom: 14px; }
-.testi-text { font-size: 16px; color: var(--ink); line-height: 1.65; margin-bottom: 28px; flex: 1; }
-.testi-author { display: flex; align-items: center; gap: 12px; }
-.testi-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; color: white; flex-shrink: 0; }
-.testi-name { font-size: 14px; font-weight: 700; }
-.testi-role { font-size: 12px; color: var(--ink3); margin-top: 2px; }
-
-/* ═══ FOR TRAINERS ═══ */
-.for-trainers { background: var(--forest-dk); padding: 96px 56px; }
-.ft-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr .9fr; gap: 80px; align-items: center; }
-.ft-label { color: rgba(255,255,255,.5); background: rgba(255,255,255,.1); }
-.ft-title { color: white; }
-.ft-title em { font-style: italic; color: var(--gold-lt); }
-.ft-sub { color: rgba(255,255,255,.6); max-width: 480px; }
-.ft-benefits { display: flex; flex-direction: column; gap: 26px; margin: 36px 0; }
-.ft-ben { display: flex; align-items: flex-start; gap: 16px; }
-.ft-ben-icon { width: 44px; height: 44px; background: rgba(255,255,255,.08); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--gold-lt); flex-shrink: 0; }
-.ft-ben-title { font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px; }
-.ft-ben-desc { font-size: 14px; color: rgba(255,255,255,.52); line-height: 1.5; }
-.ft-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.ft-stat { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 28px 24px; }
-.ft-stat-n { font-family: var(--serif); font-size: 40px; color: white; letter-spacing: -.04em; line-height: 1; margin-bottom: 8px; }
-.ft-stat-l { font-size: 13px; color: rgba(255,255,255,.42); line-height: 1.4; }
-
-/* ═══ FAQ ═══ */
-.faq-list { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 6px; }
-.faq-item { background: white; border-radius: 18px; overflow: hidden; border: 1px solid rgba(26,48,40,.06); }
-.faq-q { display: flex; align-items: center; justify-content: space-between; padding: 22px 28px; cursor: pointer; transition: background .2s; user-select: none; }
-.faq-q:hover { background: var(--cream); }
-.faq-qt { font-size: 16px; font-weight: 600; color: var(--ink); }
-.faq-ico { width: 28px; height: 28px; border-radius: 50%; background: var(--forest-faint); display: flex; align-items: center; justify-content: center; color: var(--forest); flex-shrink: 0; transition: transform .3s, background .2s; }
-.faq-item.open .faq-ico { transform: rotate(45deg); background: var(--forest); color: white; }
-.faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease; }
-.faq-item.open .faq-a { max-height: 220px; }
-.faq-ai { padding: 0 28px 22px; font-size: 15px; color: var(--ink2); line-height: 1.65; }
-
-/* ═══ FINAL CTA ═══ */
-.final-cta { padding: 104px 56px; text-align: center; position: relative; overflow: hidden; }
-.cta-wrap { max-width: 680px; margin: 0 auto; position: relative; z-index: 1; }
-.cta-title { font-family: var(--serif); font-size: clamp(44px, 5.5vw, 70px); color: white; line-height: .97; letter-spacing: -.045em; margin-bottom: 20px; }
-.cta-title em { font-style: italic; color: var(--gold-lt); }
-.cta-sub { font-size: 18px; color: rgba(255,255,255,.68); line-height: 1.6; margin-bottom: 48px; }
-.cta-btns { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
-.cta-circle { position: absolute; border-radius: 50%; background: rgba(255,255,255,.05); pointer-events: none; }
-
-/* ═══ FOOTER ═══ */
-.footer { background: var(--cream-dk); padding: 44px 56px; border-top: 1px solid var(--cream-bd); }
-.footer-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
-.footer-logo { font-family: var(--serif); font-size: 20px; letter-spacing: -.03em; }
-.footer-tag { font-size: 12px; color: var(--ink3); margin-top: 4px; }
-.footer-links { display: flex; gap: 28px; }
-.footer-links a { font-size: 13px; color: var(--ink3); transition: color .2s; }
-.footer-links a:hover { color: var(--forest); }
-.footer-copy { font-size: 12px; color: var(--ink3); }
-
-/* ═══ TWEAKS PANEL ═══ */
-.tweaks-panel { position: fixed; bottom: 24px; right: 24px; z-index: 1000; background: white; border-radius: 20px; box-shadow: var(--sh4); padding: 22px; width: 258px; border: 1px solid rgba(26,48,40,.08); }
-.tp-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-.tp-title { font-size: 13px; font-weight: 700; color: var(--ink); }
-.tp-close { width: 26px; height: 26px; border-radius: 50%; background: var(--cream); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--ink2); cursor: pointer; border: none; transition: background .15s; }
-.tp-close:hover { background: var(--cream-bd); }
-.tp-group { margin-bottom: 18px; }
-.tp-group:last-child { margin-bottom: 0; }
-.tp-glabel { font-size: 11px; font-weight: 600; color: var(--ink3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
-.tp-swatches { display: flex; gap: 9px; }
-.tp-swatch { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all .15s; box-shadow: var(--sh1); }
-.tp-swatch.on { border-color: var(--ink); transform: scale(1.12); }
-.tp-opts { display: flex; gap: 7px; flex-wrap: wrap; }
-.tp-opt { font-size: 12px; font-weight: 500; padding: 6px 12px; border-radius: 999px; cursor: pointer; background: var(--cream); color: var(--ink2); border: 1px solid var(--cream-bd); transition: all .15s; }
-.tp-opt.on { background: var(--forest-faint); color: var(--forest); border-color: transparent; }
-.tp-row { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--ink2); }
-.tp-toggle { width: 40px; height: 22px; border-radius: 11px; background: var(--cream-bd); cursor: pointer; position: relative; transition: background .2s; flex-shrink: 0; }
-.tp-toggle.on { background: var(--forest); }
-.tp-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: white; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
-.tp-toggle.on::after { transform: translateX(18px); }
-
-/* ═══ RESPONSIVE ═══ */
-@media (max-width: 1024px) {
-  .hero-inner { grid-template-columns: 1fr; }
-  .hero-visual { display: none; }
-  .ft-inner { grid-template-columns: 1fr; gap: 48px; }
-  .ft-stats { display: grid; grid-template-columns: repeat(4,1fr); }
-  .trainers-grid { grid-template-columns: repeat(2,1fr); }
-}
-@media (max-width: 768px) {
-  .nav-links { display: none; }
-  .nav { padding: 0 24px; }
-  .sec { padding: 64px 24px; }
-  .hero-inner { padding: 0 24px; }
-  .trust-bar-inner { padding: 0 24px; grid-template-columns: repeat(2,1fr); }
-  .ts { border-right: none; border-bottom: 1px solid rgba(255,255,255,.07); padding: 24px 16px; }
-  .ts:nth-child(3), .ts:last-child { border-bottom: none; }
-  .steps-grid, .trainers-grid, .testi-grid { grid-template-columns: 1fr; }
-  .for-trainers { padding: 64px 24px; }
-  .ft-stats { grid-template-columns: repeat(2,1fr); }
-  .final-cta { padding: 72px 24px; }
-  .footer { padding: 40px 24px; }
-  .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
-  .footer-links { flex-wrap: wrap; justify-content: center; gap: 20px; }
-}
-
+<style type="text/tailwindcss">
+  @theme {
+    --color-primary:              #2D5A40;
+    --color-primary-hover:        #1A3028;
+    --color-primary-light:        #3D7A58;
+    --color-primary-container:    #E4F0E8;
+    --color-on-primary-container: #1A3028;
+    --color-secondary:            #C4973A;
+    --color-secondary-hover:      #A37D28;
+    --color-secondary-light:      #E8C070;
+    --color-secondary-container:  #F5E6C8;
+    --color-on-secondary-container: #5C4014;
+    --color-bg:                   #F5F0E8;
+    --color-surface:              #FFFFFF;
+    --color-surface-variant:      #EDE5D4;
+    --color-surface-container:    #E6DCC6;
+    --color-surface-dim:          #D8CCB4;
+    --color-ink:                  #1A3028;
+    --color-ink-2:                #4A5A50;
+    --color-ink-3:                #8A8578;
+    --font-display: "DM Serif Display", ui-serif, Georgia, serif;
+    --font-sans:    "DM Sans", ui-sans-serif, system-ui, sans-serif;
+    --radius-xs: 4px;  --radius-sm: 6px;
+    --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px;
+  }
+  html, body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  body { font-feature-settings: "ss01","cv11"; }
+  p, h1, h2, h3, h4 { text-wrap: pretty; }
 </style>
+
+<!-- class-registry for dynamic tailwind scanning -->
+<div hidden class="
+  opacity-0 translate-y-5 transition-[opacity,transform] duration-700 ease-out
+  data-[revealed]:opacity-100 data-[revealed]:translate-y-0
+  delay-100 delay-200 delay-300 delay-400 delay-500
+  rotate-45 bg-primary text-white bg-primary-container text-primary
+  bg-bg/95 backdrop-blur-xl shadow-[0_1px_0_rgba(26,48,40,0.09)]
+"></div>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="min-h-screen">
 <div id="root"></div>
-<script type="text/babel">
-const { useState, useEffect, useRef, useCallback } = React;
 
-/* ─── TWEAKS DEFAULTS ─── */
-const TWEAKS = /*EDITMODE-BEGIN*/{
-  "primaryColor": "#2D5A40",
-  "heroVariant": "split",
-  "showTrustBar": true,
-  "cardStyle": "rounded"
-}/*EDITMODE-END*/;
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
 
-/* ─── DATA ─── */
+/* ── TWEAKS DEFAULTS ── */
+const TWEAKS = /*EDITMODE-BEGIN*/{"primaryColor":"#2D5A40","heroVariant":"split","showTrustBar":true}/*EDITMODE-END*/;
+
+/* ── DATA ── */
 const HERO_CARDS = [
   { name:"Maria P.", spec:"Yoga & Pilates", cert:"NASM-CPT", rating:"5.0", price:"From $32/hr",
     grad:"linear-gradient(145deg,#3D7A58,#2D5A40)", init:"MP",
-    pos:{ top:"10px", left:"0px", transform:"rotate(-4.5deg)", zIndex:1 } },
-  { name:"Anna V.", spec:"Stretching", cert:"ACE-CPT", rating:"4.8", price:"From $35/hr",
+    pos:{ position:"absolute", top:"10px",  left:"0px",   transform:"rotate(-4.5deg)", zIndex:1, width:"215px" } },
+  { name:"Anna V.",  spec:"Stretching",     cert:"ACE-CPT",  rating:"4.8", price:"From $35/hr",
     grad:"linear-gradient(145deg,#C4973A,#A37D28)", init:"AV",
-    pos:{ top:"90px", left:"150px", transform:"rotate(2.5deg)", zIndex:3 } },
-  { name:"Sergey K.", spec:"Strength", cert:"NSCA-CSCS", rating:"4.9", price:"From $48/hr",
+    pos:{ position:"absolute", top:"90px",  left:"150px", transform:"rotate(2.5deg)",  zIndex:3, width:"215px" } },
+  { name:"Sergey K.", spec:"Strength",      cert:"NSCA-CSCS",rating:"4.9", price:"From $48/hr",
     grad:"linear-gradient(145deg,#5A7265,#3A4E45)", init:"SK",
-    pos:{ top:"265px", left:"22px", transform:"rotate(-1.5deg)", zIndex:2 } },
-];
-
-const TRAINERS = [
-  { id:1, name:"Maria Pilates", cert:"NASM-CPT", spec:"Pilates & Flexibility", rating:"5.0", reviews:1, price:"32",
-    tags:["Pilates","Stretching"], grad:"linear-gradient(145deg,#3D7A58,#2D5A40)", init:"MP" },
-  { id:2, name:"Sergey Power", cert:"NSCA-CSCS", spec:"Strength & Conditioning", rating:"4.9", reviews:28, price:"48",
-    tags:["Strength Training"], grad:"linear-gradient(145deg,#5A7265,#3A4E45)", init:"SP" },
-  { id:3, name:"Anna Yoga", cert:"RYT-200", spec:"Yoga & Pilates", rating:"4.8", reviews:32, price:"35",
-    tags:["Yoga","Pilates"], grad:"linear-gradient(145deg,#C4973A,#A37D28)", init:"AY" },
+    pos:{ position:"absolute", top:"265px", left:"22px",  transform:"rotate(-1.5deg)", zIndex:2, width:"215px" } },
 ];
 
 const DISCIPLINES = [
-  { name:"Personal Training", ct:"64 trainers" },
-  { name:"Yoga", ct:"48 trainers" },
-  { name:"Pilates", ct:"35 trainers" },
-  { name:"HIIT", ct:"29 trainers" },
-  { name:"Strength & Conditioning", ct:"52 trainers" },
-  { name:"Stretching", ct:"41 trainers" },
-  { name:"CrossFit", ct:"22 trainers" },
-  { name:"Running", ct:"18 trainers" },
+  { name:"Personal Training", ct:"64 trainers" }, { name:"Yoga", ct:"48 trainers" },
+  { name:"Pilates", ct:"35 trainers" },           { name:"HIIT", ct:"29 trainers" },
+  { name:"Strength & Conditioning", ct:"52 trainers" }, { name:"Stretching", ct:"41 trainers" },
+  { name:"CrossFit", ct:"22 trainers" },          { name:"Running", ct:"18 trainers" },
+];
+
+const TRAINERS = [
+  { id:1, name:"Maria Pilates", cert:"NASM-CPT", spec:"Pilates & Flexibility", rating:"5.0", reviews:1,  price:"32", tags:["Pilates","Stretching"],    grad:"linear-gradient(145deg,#3D7A58,#2D5A40)", init:"MP" },
+  { id:2, name:"Sergey Power",  cert:"NSCA-CSCS",spec:"Strength & Conditioning",rating:"4.9",reviews:28, price:"48", tags:["Strength Training"],       grad:"linear-gradient(145deg,#5A7265,#3A4E45)", init:"SP" },
+  { id:3, name:"Anna Yoga",     cert:"RYT-200",  spec:"Yoga & Pilates",         rating:"4.8",reviews:32, price:"35", tags:["Yoga","Pilates"],           grad:"linear-gradient(145deg,#C4973A,#A37D28)", init:"AY" },
 ];
 
 const TESTIMONIALS = [
   { text:"Lost 18 lbs in 3 months with Anna. I used to think fitness wasn't for me — now I train 5 days a week and feel the best I have in years.",
-    author:"Maria S.", meta:"29 · New York City", color:"#2D5A40", stars:"★★★★★" },
+    author:"Maria S.", meta:"29 · New York City",   color:"#2D5A40", stars:"★★★★★" },
   { text:"Sergey fixed my deadlift form and eliminated the back pain I'd had for years. Six months in, zero injuries, and I've hit three personal bests.",
-    author:"Alex V.", meta:"34 · Los Angeles", color:"#C4973A", stars:"★★★★★" },
+    author:"Alex V.",  meta:"34 · Los Angeles",      color:"#C4973A", stars:"★★★★★" },
   { text:"Flexible scheduling, 100% online, not a single missed session in half a year. Pulse completely changed my relationship with working out.",
-    author:"Kate L.", meta:"26 · Austin, TX", color:"#3D7A58", stars:"★★★★★" },
+    author:"Kate L.",  meta:"26 · Austin, TX",        color:"#3D7A58", stars:"★★★★★" },
 ];
 
 const FAQS = [
   { q:"Are all trainers background-checked and certified?",
-    a:"Yes. Every trainer on Pulse goes through identity verification, credential confirmation (NASM, ACE, NSCA, RYT, and others), and a background screening. Only fully approved specialists appear in the catalog." },
+    a:"Yes. Every trainer on Pulse undergoes identity verification, credential confirmation (NASM, ACE, NSCA, RYT, and others), and a background screening. Only fully approved specialists appear in the catalog." },
   { q:"How do online sessions work?",
     a:"Sessions happen through a built-in video call — no Zoom or third-party apps needed. Just click 'Join Session' at the scheduled time. Reminders are sent automatically." },
   { q:"Can I cancel or reschedule a session?",
     a:"Yes. You can cancel or reschedule up to 24 hours before your session at no charge. For late cancellations, policies vary by trainer and are shown on their profile before you book." },
   { q:"What are the payment options?",
-    a:"We accept all major US credit and debit cards (Visa, Mastercard, Amex) and Apple Pay. Payment is processed securely at booking. Funds are only released to the trainer after a successful session." },
+    a:"We accept all major US credit and debit cards (Visa, Mastercard, Amex) and Apple Pay. Payment is processed securely at booking; funds are only released to the trainer after a successful session." },
   { q:"Is there a subscription or commitment required?",
-    a:"No subscriptions, no contracts. You pay per session — book as few or as many as you like. Cancel anytime with no hidden fees." },
+    a:"No subscriptions, no contracts. You pay per session — book as few or as many as you like, and cancel anytime with no hidden fees." },
   { q:"How do I find the right trainer for my goals?",
-    a:"Use filters by specialty, format (online or in-person), price, and rating. Every profile includes a short intro video, their certifications, schedule, and verified reviews from real clients." },
+    a:"Use filters by specialty, format (online or in-person), price, and rating. Every profile includes a short intro video, certifications, real schedule, and verified reviews from actual clients." },
 ];
 
-/* ─── ICONS ─── */
-const Svg = ({sz=20,cl="",ch,...p}) => (
+/* ── ICONS ── */
+const Svg = ({ sz=20, ch, className="" }) => (
   <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className={cl} {...p}>{ch}</svg>
+    strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">{ch}</svg>
 );
-const icons = {
+const I = {
   Search:  (p) => <Svg {...p} ch={<><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></>}/>,
   Check:   (p) => <Svg {...p} ch={<path d="m5 12 5 5L20 7"/>}/>,
   Arrow:   (p) => <Svg {...p} ch={<><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></>}/>,
@@ -342,18 +130,17 @@ const icons = {
   Users:   (p) => <Svg {...p} ch={<><circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-7 7-7s7 3 7 7"/><circle cx="17" cy="9" r="3"/><path d="M22 20c0-3-2-5-5-5"/></>}/>,
   Dollar:  (p) => <Svg {...p} ch={<><path d="M12 3v18"/><path d="M17 6H10a3.5 3.5 0 0 0 0 7h4a3.5 3.5 0 0 1 0 7H7"/></>}/>,
   Shield:  (p) => <Svg {...p} ch={<path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6l-8-3Z"/>}/>,
-  Plus:    (p) => <Svg {...p} ch={<><path d="M12 5v14"/><path d="M5 12h14"/></>}/>,
   Lock:    (p) => <Svg {...p} ch={<><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></>}/>,
-  Star:    (p) => <svg width={p.sz||16} height={p.sz||16} viewBox="0 0 24 24" fill="#C4973A" className={p.cl||""}><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3Z"/></svg>,
+  Plus:    (p) => <Svg {...p} ch={<><path d="M12 5v14"/><path d="M5 12h14"/></>}/>,
+  StarFill:(p) => <svg width={p.sz||16} height={p.sz||16} viewBox="0 0 24 24" fill="#C4973A" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3Z"/></svg>,
 };
 
-/* ─── HOOKS ─── */
+/* ── HOOKS ── */
 function useScrolled() {
   const [s, setS] = useState(false);
   useEffect(() => {
     const fn = () => setS(window.scrollY > 8);
-    window.addEventListener('scroll', fn, {passive:true});
-    fn();
+    window.addEventListener('scroll', fn, { passive:true }); fn();
     return () => window.removeEventListener('scroll', fn);
   }, []);
   return s;
@@ -361,28 +148,17 @@ function useScrolled() {
 
 function useReveal() {
   useEffect(() => {
-    const els = Array.from(document.querySelectorAll('.rv'));
-    els.forEach(el => {
-      const r = el.getBoundingClientRect();
-      if (r.top < window.innerHeight * 1.1) {
-        el.style.transition = 'none';
-        el.style.transitionDelay = '0s';
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-        el.classList.add('in');
-      }
+    const reveal = el => {
+      if (el.dataset.delay) el.style.transitionDelay = el.dataset.delay;
+      el.setAttribute('data-revealed','');
+    };
+    const ob = new IntersectionObserver(entries =>
+      entries.forEach(e => { if (e.isIntersecting) { reveal(e.target); ob.unobserve(e.target); } }),
+      { threshold:0.08, rootMargin:'0px 0px -40px 0px' }
+    );
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      el.getBoundingClientRect().top < window.innerHeight * 1.05 ? reveal(el) : ob.observe(el);
     });
-    const ob = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.style.transition = '';
-          e.target.style.transitionDelay = '';
-          e.target.classList.add('in');
-          ob.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    els.forEach(el => { if (!el.classList.contains('in')) ob.observe(el); });
     return () => ob.disconnect();
   }, []);
 }
@@ -402,98 +178,134 @@ function useCount(target, go) {
   return n;
 }
 
-/* ─── NAV ─── */
-function Nav({ color }) {
+/* ── REVEAL WRAPPER ── */
+const Rv = ({ delay, className="", children, as:Tag="div", ...rest }) => (
+  <Tag data-reveal data-delay={delay}
+    className={`opacity-0 translate-y-5 transition-[opacity,transform] duration-700 ease-out data-[revealed]:opacity-100 data-[revealed]:translate-y-0 ${className}`}
+    {...rest}>
+    {children}
+  </Tag>
+);
+
+/* ── SECTION LABEL ── */
+const Label = ({ children }) => (
+  <span className="inline-block text-[11px] font-bold tracking-[0.1em] uppercase text-primary bg-primary-container px-4 py-1.5 rounded-full mb-5">
+    {children}
+  </span>
+);
+
+/* ── SECTION HEAD ── */
+const SHead = ({ label, title, sub }) => (
+  <div className="text-center mb-16">
+    <Rv><Label>{label}</Label></Rv>
+    <Rv delay="100ms" className="font-display text-[clamp(36px,4vw,52px)] text-ink leading-[1.05] tracking-tight mb-3.5"
+        as="h2">{title}</Rv>
+    {sub && <Rv delay="200ms" className="text-[18px] text-ink-2 leading-relaxed max-w-[540px] mx-auto" as="p">{sub}</Rv>}
+  </div>
+);
+
+/* ── NAV ── */
+function Nav() {
   const scrolled = useScrolled();
   return (
-    <nav className={`nav${scrolled?' scrolled':''}`}>
-      <a href="#" className="nav-logo">Pulse</a>
-      <ul className="nav-links">
-        <li><a href="#how">How It Works</a></li>
-        <li><a href="#trainers">Trainers</a></li>
-        <li><a href="#reviews">Reviews</a></li>
-        <li><a href="#faq">FAQ</a></li>
+    <nav className={`fixed top-0 inset-x-0 z-50 h-[72px] px-12 flex items-center justify-between transition-all duration-300 ${scrolled ? 'bg-bg/95 backdrop-blur-xl shadow-[0_1px_0_rgba(26,48,40,0.09)]' : ''}`}>
+      <a href="#" className="font-display text-[22px] tracking-tight text-ink">Pulse</a>
+      <ul className="hidden md:flex gap-8 list-none m-0 p-0">
+        {[["#how","How It Works"],["#trainers","Trainers"],["#reviews","Reviews"],["#faq","FAQ"]].map(([h,l])=>(
+          <li key={h}><a href={h} className="text-[14px] font-medium text-ink-2 hover:text-primary transition-colors whitespace-nowrap">{l}</a></li>
+        ))}
       </ul>
-      <div className="nav-right">
-        <button className="btn btn-ghost">Sign In</button>
-        <button className="btn btn-pill" style={{background:color}}>Get Started</button>
+      <div className="flex items-center gap-2.5">
+        <button className="text-[14px] font-medium text-ink-2 px-3.5 py-2 rounded-full hover:bg-primary-container hover:text-primary transition-all">Sign In</button>
+        <button className="text-[14px] font-semibold text-white bg-primary px-[22px] py-2.5 rounded-full hover:bg-primary-hover transition-all hover:-translate-y-px hover:shadow-[0_2px_12px_rgba(26,48,40,0.3)]">Get Started</button>
       </div>
     </nav>
   );
 }
 
-/* ─── FLOATING TRAINER CARD ─── */
+/* ── FLOATING TRAINER CARD ── */
 function FloatCard({ d }) {
   return (
-    <div className="fc" style={d.pos}>
-      <div className="fc-photo" style={{background:d.grad}}>
-        <span className="fc-init">{d.init}</span>
-        <div className="fc-badge"><icons.Check sz={9}/> Verified</div>
-      </div>
-      <div className="fc-body">
-        <div className="fc-name">{d.name}</div>
-        <div className="fc-spec">{d.spec}</div>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'6px'}}>
-          <div style={{display:'flex',alignItems:'center',gap:'4px',fontSize:'12px',color:'#4A5A50',fontWeight:500}}>
-            <icons.Star sz={12}/>{d.rating}
-          </div>
-          <span style={{fontSize:'11px',fontWeight:600,color:'#2D5A40',background:'#E4F0E8',padding:'2px 7px',borderRadius:'999px'}}>{d.cert}</span>
+    <div style={d.pos} className="bg-surface rounded-[20px] overflow-hidden shadow-[0_16px_48px_rgba(26,48,40,0.18),0_4px_12px_rgba(26,48,40,0.10)] hover:-translate-y-2.5 transition-transform duration-300 cursor-default">
+      <div className="h-32 flex items-center justify-center relative overflow-hidden" style={{background:d.grad}}>
+        <span className="font-display text-[44px] italic" style={{color:'rgba(255,255,255,0.55)'}}>{d.init}</span>
+        <div className="absolute top-2 right-2 bg-surface rounded-full px-2 py-0.5 text-[11px] font-semibold text-primary flex items-center gap-0.5 shadow-sm z-10">
+          <I.Check sz={9}/>Verified
         </div>
-        <div className="fc-price">{d.price}</div>
+      </div>
+      <div className="p-3.5">
+        <div className="text-[14px] font-bold text-ink mb-0.5">{d.name}</div>
+        <div className="text-[12px] text-ink-3 mb-2">{d.spec}</div>
+        <div className="flex items-center justify-between mb-1.5">
+          <div className="flex items-center gap-1 text-[13px] font-medium text-ink-2"><I.StarFill sz={12}/>{d.rating}</div>
+          <span className="text-[11px] font-semibold text-primary bg-primary-container px-1.5 py-0.5 rounded-full">{d.cert}</span>
+        </div>
+        <div className="text-[13px] font-bold text-primary">{d.price}</div>
       </div>
     </div>
   );
 }
 
-/* ─── HERO ─── */
-function Hero({ color, variant }) {
+/* ── HERO ── */
+function Hero({ variant }) {
   return (
-    <section className="hero">
-      <div className="hero-inner">
+    <section className="min-h-screen flex items-center pt-[72px] overflow-hidden relative">
+      <div className="absolute -top-48 -right-48 w-[800px] h-[800px] rounded-full pointer-events-none"
+           style={{background:'radial-gradient(ellipse at center, rgba(228,240,232,0.7) 0%, transparent 65%)'}}></div>
+      <div className="max-w-[1280px] mx-auto px-14 w-full grid gap-16 items-center" style={{gridTemplateColumns: variant==='split' ? '1.15fr 0.85fr' : '1fr'}}>
         <div>
-          <div className="hero-badge rv">
-            <icons.Shield sz={14}/>
-            Background-Checked Personal Trainers
-          </div>
-          <h1 className="hero-title rv d1">
-            Find a trainer<br/>
-            <em>who changes everything</em>
-          </h1>
-          <p className="hero-sub rv d2">
-            Book online or in-person sessions with NASM, ACE & NSCA certified specialists. No phone calls, no waitlists.
-          </p>
-          <div className="hero-ctas rv d3">
-            <button className="btn btn-lg" style={{background:color}}>
-              Find My Trainer <icons.Arrow sz={18}/>
+          <Rv className="mb-7">
+            <span className="inline-flex items-center gap-1.5 text-[13px] font-medium text-primary bg-primary-container border border-primary/10 px-4 py-1.5 rounded-full">
+              <I.Shield sz={14}/>Background-Checked Personal Trainers
+            </span>
+          </Rv>
+          <Rv delay="100ms">
+            <h1 className="font-display text-[clamp(50px,5.8vw,82px)] text-ink leading-[0.97] tracking-[-0.045em] mb-6">
+              Find a trainer,<br/><em className="text-primary">who changes everything</em>
+            </h1>
+          </Rv>
+          <Rv delay="200ms">
+            <p className="text-[18px] text-ink-2 leading-relaxed max-w-[460px] mb-10">
+              Book online or in-person sessions with NASM, ACE & NSCA certified specialists. No phone calls, no waitlists.
+            </p>
+          </Rv>
+          <Rv delay="300ms" className="flex items-center gap-3.5 mb-5 flex-wrap">
+            <button className="inline-flex items-center gap-2 bg-primary text-white text-[16px] font-semibold px-9 py-4 rounded-full hover:bg-primary-hover transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_24px_rgba(26,48,40,0.35)] active:scale-[0.97]">
+              Find My Trainer <I.Arrow sz={18}/>
             </button>
-            <button className="btn btn-outline">Become a Trainer</button>
-          </div>
-          <div className="hero-trust rv d4">
-            <div className="trust-chip"><icons.Check sz={12}/>Background-checked</div>
-            <div className="trust-chip"><icons.Check sz={12}/>Cancel anytime</div>
-            <div className="trust-chip"><icons.Lock sz={12}/>Secure checkout</div>
-          </div>
-          <div className="hero-proof rv d5">
-            <div className="proof-item"><icons.Star sz={15}/> 4.9 rated</div>
-            <div className="proof-dot"></div>
-            <div className="proof-item">200+ certified trainers</div>
-            <div className="proof-dot"></div>
-            <div className="proof-item">10,000+ sessions booked</div>
-          </div>
+            <button className="inline-flex items-center gap-2 text-ink text-[16px] font-medium px-8 py-[15px] rounded-full border border-surface-dim hover:bg-surface-variant transition-all">
+              Become a Trainer
+            </button>
+          </Rv>
+          <Rv delay="400ms" className="flex items-center gap-2.5 mb-6 flex-wrap">
+            {[["check","Background-checked"],["check","Cancel anytime"],["lock","Secure checkout"]].map(([ic,l])=>(
+              <span key={l} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-2 bg-surface border border-surface-dim px-3 py-1.5 rounded-full shadow-sm">
+                {ic==="lock" ? <I.Lock sz={12}/> : <I.Check sz={12}/>}{l}
+              </span>
+            ))}
+          </Rv>
+          <Rv delay="500ms" className="flex items-center gap-4 flex-wrap">
+            <span className="flex items-center gap-1.5 text-[14px] font-medium text-ink-2"><I.StarFill sz={15}/>4.9 rated</span>
+            <span className="w-1 h-1 rounded-full bg-surface-dim"></span>
+            <span className="text-[14px] font-medium text-ink-3">200+ certified trainers</span>
+            <span className="w-1 h-1 rounded-full bg-surface-dim"></span>
+            <span className="text-[14px] font-medium text-ink-3">10,000+ sessions booked</span>
+          </Rv>
         </div>
 
         {variant === 'split' && (
-          <div className="hero-visual rv d2">
-            <div className="hero-blob"></div>
+          <Rv delay="200ms" className="relative h-[540px]">
+            <div className="absolute inset-[-60px] pointer-events-none"
+                 style={{background:'radial-gradient(ellipse 75% 75% at 55% 50%, rgba(228,240,232,0.85) 0%, transparent 65%)', borderRadius:'60% 40% 50% 50% / 50% 50% 60% 40%'}}></div>
             {HERO_CARDS.map(d => <FloatCard key={d.name} d={d}/>)}
-          </div>
+          </Rv>
         )}
       </div>
     </section>
   );
 }
 
-/* ─── TRUST BAR ─── */
+/* ── TRUST BAR ── */
 function TrustBar({ show }) {
   const ref = useRef(null);
   const [vis, setVis] = useState(false);
@@ -503,46 +315,44 @@ function TrustBar({ show }) {
     ob.observe(ref.current);
     return () => ob.disconnect();
   }, [show]);
-  const c1 = useCount(200, vis), c2 = useCount(10000, vis), c3 = useCount(98, vis), c4 = useCount(49, vis);
+  const c1=useCount(200,vis), c2=useCount(10000,vis), c3=useCount(98,vis), c4=useCount(49,vis);
   if (!show) return null;
   return (
-    <div className="trust-bar" ref={ref}>
-      <div className="trust-bar-inner">
-        <div className="ts"><span className="ts-num">{c1}+</span><span className="ts-lbl">Certified Trainers</span></div>
-        <div className="ts"><span className="ts-num">{c2.toLocaleString('en-US')}+</span><span className="ts-lbl">Sessions Booked</span></div>
-        <div className="ts"><span className="ts-num">{c3}%</span><span className="ts-lbl">Client Satisfaction</span></div>
-        <div className="ts"><span className="ts-num">{(c4/10).toFixed(1)}★</span><span className="ts-lbl">Average Rating</span></div>
+    <div className="bg-primary-hover" ref={ref}>
+      <div className="max-w-[1280px] mx-auto px-14 grid grid-cols-2 md:grid-cols-4">
+        {[[`${c1}+`,"Certified Trainers"],[`${c2.toLocaleString('en-US')}+`,"Sessions Booked"],[`${c3}%`,"Client Satisfaction"],[`${(c4/10).toFixed(1)}★`,"Average Rating"]].map(([n,l])=>(
+          <div key={l} className="py-9 px-5 text-center border-r border-white/10 last:border-r-0">
+            <span className="font-display text-[46px] text-white block leading-none tracking-tight mb-1.5">{n}</span>
+            <span className="text-[13px]" style={{color:'rgba(255,255,255,0.5)'}}>{l}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-/* ─── HOW IT WORKS ─── */
+/* ── HOW IT WORKS ── */
 function HowItWorks() {
   const steps = [
-    { n:"01", icon:<icons.Search sz={22}/>, title:"Choose Your Goal",
+    { n:"01", icon:<I.Search sz={22}/>, title:"Choose Your Goal",
       desc:"Yoga, strength, HIIT, pilates — filter by goal, format (online or in-person), and budget." },
-    { n:"02", icon:<icons.Users sz={22}/>, title:"Find Your Trainer",
+    { n:"02", icon:<I.Users sz={22}/>,  title:"Find Your Trainer",
       desc:"Browse certified profiles, video intros, real client reviews, and live availability." },
-    { n:"03", icon:<icons.Calendar sz={22}/>, title:"Book Your Session",
+    { n:"03", icon:<I.Calendar sz={22}/>, title:"Book Your Session",
       desc:"Online or in-person. Pay securely in one click and get an automatic reminder." },
   ];
   return (
-    <section className="sec" id="how" style={{background:'white'}}>
-      <div className="wrap">
-        <div className="shead">
-          <div className="rv"><span className="slabel">How It Works</span></div>
-          <h2 className="stitle rv d1">Get started in 3 minutes</h2>
-          <p className="ssub rv d2">From choosing your goal to your first session — it's that simple.</p>
-        </div>
-        <div className="steps-grid">
+    <section className="py-24 px-14 bg-surface" id="how">
+      <div className="max-w-[1280px] mx-auto">
+        <SHead label="How It Works" title="Get started in 3 minutes" sub="From choosing your goal to your first session — it's that simple."/>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
           {steps.map((s,i) => (
-            <div key={i} className={`step-card rv d${i+1}`}>
-              <div className="step-num">{s.n}</div>
-              <div className="step-icon">{s.icon}</div>
-              <div className="step-title">{s.title}</div>
-              <p className="step-desc">{s.desc}</p>
-            </div>
+            <Rv key={i} delay={`${(i+1)*100}ms`} className="bg-bg rounded-[22px] p-9 border border-ink/5">
+              <div className="font-display text-[88px] leading-[0.88] tracking-tight mb-6 text-primary-container">{s.n}</div>
+              <div className="w-12 h-12 bg-primary-container rounded-[14px] flex items-center justify-center text-primary mb-4">{s.icon}</div>
+              <h3 className="text-[20px] font-bold tracking-tight mb-2.5 text-ink">{s.title}</h3>
+              <p className="text-[15px] text-ink-2 leading-relaxed">{s.desc}</p>
+            </Rv>
           ))}
         </div>
       </div>
@@ -550,99 +360,89 @@ function HowItWorks() {
   );
 }
 
-/* ─── DISCIPLINES ─── */
+/* ── DISCIPLINES ── */
 function Disciplines() {
   return (
-    <section className="sec">
-      <div className="wrap">
-        <div className="shead">
-          <div className="rv"><span className="slabel">Specialties</span></div>
-          <h2 className="stitle rv d1">Every goal. Every style.</h2>
-          <p className="ssub rv d2">Hundreds of certified specialists across every fitness discipline, in one place.</p>
-        </div>
-        <div className="disc-wrap rv d1">
+    <section className="py-24 px-14">
+      <div className="max-w-[1280px] mx-auto">
+        <SHead label="Specialties" title="Every goal. Every style." sub="Hundreds of certified specialists across every fitness discipline, in one place."/>
+        <Rv delay="100ms" className="flex flex-wrap gap-3 justify-center">
           {DISCIPLINES.map((d,i) => (
-            <div key={i} className="disc-pill">
+            <div key={i} className="group flex items-center gap-2.5 bg-surface border border-surface-dim px-[26px] py-3.5 rounded-full text-[15px] font-medium cursor-pointer shadow-sm hover:bg-primary hover:text-white hover:border-primary hover:-translate-y-0.5 hover:shadow-md transition-all duration-200">
               <span>{d.name}</span>
-              <span className="disc-ct">{d.ct}</span>
+              <span className="text-[12px] text-ink-3 group-hover:text-white/60 transition-colors">{d.ct}</span>
             </div>
           ))}
-        </div>
+        </Rv>
       </div>
     </section>
   );
 }
 
-/* ─── FEATURED TRAINERS ─── */
-function FeaturedTrainers({ color }) {
+/* ── FEATURED TRAINERS ── */
+function FeaturedTrainers() {
   return (
-    <section className="sec" id="trainers" style={{background:'white'}}>
-      <div className="wrap">
-        <div className="shead">
-          <div className="rv"><span className="slabel">Trainers</span></div>
-          <h2 className="stitle rv d1">Trainers clients trust</h2>
-          <p className="ssub rv d2">Every trainer is background-checked and holds a nationally recognized certification.</p>
-        </div>
-        <div className="trainers-grid">
+    <section className="py-24 px-14 bg-surface" id="trainers">
+      <div className="max-w-[1280px] mx-auto">
+        <SHead label="Trainers" title="Trainers clients trust" sub="Every trainer is background-checked and holds a nationally recognized certification."/>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {TRAINERS.map((t,i) => (
-            <div key={t.id} className={`tc rv d${i+1}`}>
-              <div className="tc-photo" style={{background:t.grad}}>
-                <span className="tc-init">{t.init}</span>
-                <div className="tc-overlay"></div>
-                <div className="tc-price">From ${t.price}/hr</div>
+            <Rv key={t.id} delay={`${(i+1)*100}ms`} className="bg-surface rounded-[22px] overflow-hidden shadow-sm border border-ink/5 hover:-translate-y-2 hover:shadow-[0_8px_32px_rgba(26,48,40,0.13)] transition-all duration-250 cursor-pointer">
+              <div className="h-[200px] relative flex items-center justify-center overflow-hidden" style={{background:t.grad}}>
+                <span className="font-display text-[56px] italic" style={{color:'rgba(255,255,255,0.45)'}}>{t.init}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/40 to-transparent z-10"></div>
+                <div className="absolute bottom-3.5 right-3.5 bg-surface rounded-full px-3.5 py-1.5 text-[13px] font-bold shadow-sm z-20 text-ink">From ${t.price}/hr</div>
               </div>
-              <div className="tc-body">
-                <div className="tc-head">
-                  <div className="tc-name">{t.name}</div>
-                  <div className="tc-check"><icons.Check sz={12}/></div>
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[17px] font-bold text-ink">{t.name}</span>
+                  <div className="w-[22px] h-[22px] bg-primary-container rounded-full flex items-center justify-center text-primary flex-shrink-0"><I.Check sz={12}/></div>
                 </div>
-                <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'8px'}}>
-                  <div className="tc-spec">{t.spec}</div>
-                  <span style={{fontSize:'11px',fontWeight:600,color:'#2D5A40',background:'#E4F0E8',padding:'2px 7px',borderRadius:'999px',flexShrink:0}}>{t.cert}</span>
+                <div className="flex items-center gap-2 mb-2.5">
+                  <span className="text-[13px] text-ink-3">{t.spec}</span>
+                  <span className="text-[11px] font-semibold text-primary bg-primary-container px-1.5 py-0.5 rounded-full flex-shrink-0">{t.cert}</span>
                 </div>
-                <div className="tc-rating">
-                  <icons.Star sz={14}/><strong>{t.rating}</strong>
-                  <span style={{color:'var(--ink3)'}}>· {t.reviews} review{t.reviews!==1?'s':''}</span>
+                <div className="flex items-center gap-1.5 text-[13px] text-ink-2 mb-3">
+                  <I.StarFill sz={14}/><strong>{t.rating}</strong>
+                  <span className="text-ink-3">· {t.reviews} review{t.reviews!==1?'s':''}</span>
                 </div>
-                <div className="tc-tags">
-                  {t.tags.map(tg => <span key={tg} className="tc-tag">{tg}</span>)}
+                <div className="flex gap-1.5 flex-wrap">
+                  {t.tags.map(tg=><span key={tg} className="text-[12px] font-medium text-primary bg-primary-container px-2.5 py-1 rounded-full">{tg}</span>)}
                 </div>
               </div>
-            </div>
+            </Rv>
           ))}
         </div>
-        <div className="trainers-ft rv">
-          <button className="btn btn-outline">Browse All Trainers <icons.Arrow sz={18}/></button>
-        </div>
+        <Rv className="text-center mt-10">
+          <button className="inline-flex items-center gap-2 text-ink text-[16px] font-medium px-8 py-[15px] rounded-full border border-surface-dim hover:bg-surface-variant transition-all">
+            Browse All Trainers <I.Arrow sz={18}/>
+          </button>
+        </Rv>
       </div>
     </section>
   );
 }
 
-/* ─── TESTIMONIALS ─── */
+/* ── TESTIMONIALS ── */
 function Testimonials() {
   return (
-    <section className="sec" id="reviews">
-      <div className="wrap">
-        <div className="shead">
-          <div className="rv"><span className="slabel">Client Reviews</span></div>
-          <h2 className="stitle rv d1">Real people, real results</h2>
-          <p className="ssub rv d2">Verified reviews from clients who found their trainer on Pulse.</p>
-        </div>
-        <div className="testi-grid">
+    <section className="py-24 px-14" id="reviews">
+      <div className="max-w-[1280px] mx-auto">
+        <SHead label="Client Reviews" title="Real people, real results" sub="Verified reviews from clients who found their trainer on Pulse."/>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {TESTIMONIALS.map((t,i) => (
-            <div key={i} className={`testi rv d${i+1}`}>
-              <div className="testi-mark">"</div>
-              <div className="testi-stars">{t.stars}</div>
-              <p className="testi-text">{t.text}</p>
-              <div className="testi-author">
-                <div className="testi-avatar" style={{background:t.color}}>{t.author[0]}</div>
+            <Rv key={i} delay={`${(i+1)*100}ms`} className="bg-surface rounded-[22px] p-9 shadow-sm border border-ink/5 flex flex-col">
+              <div className="font-display text-[72px] text-primary-container leading-[0.65] mb-4">"</div>
+              <div className="text-secondary text-[14px] tracking-[2px] mb-3.5">{t.stars}</div>
+              <p className="text-[16px] text-ink leading-relaxed flex-1 mb-7">{t.text}</p>
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full flex items-center justify-center font-bold text-[15px] text-white flex-shrink-0" style={{background:t.color}}>{t.author[0]}</div>
                 <div>
-                  <div className="testi-name">{t.author}</div>
-                  <div className="testi-role">{t.meta}</div>
+                  <div className="text-[14px] font-bold text-ink">{t.author}</div>
+                  <div className="text-[12px] text-ink-3 mt-0.5">{t.meta}</div>
                 </div>
               </div>
-            </div>
+            </Rv>
           ))}
         </div>
       </div>
@@ -650,14 +450,14 @@ function Testimonials() {
   );
 }
 
-/* ─── FOR TRAINERS ─── */
+/* ── FOR TRAINERS ── */
 function ForTrainers() {
   const benefits = [
-    { icon:<icons.Users sz={20}/>, title:"Grow your client base",
+    { icon:<I.Users sz={20}/>,    title:"Grow your client base",
       desc:"Create your profile and receive booking requests from thousands of potential clients across the US." },
-    { icon:<icons.Calendar sz={20}/>, title:"Own your schedule",
+    { icon:<I.Calendar sz={20}/>, title:"Own your schedule",
       desc:"Flexible calendar with automated reminders. Set your hours, rates, and availability your way." },
-    { icon:<icons.Dollar sz={20}/>, title:"Get paid reliably",
+    { icon:<I.Dollar sz={20}/>,   title:"Get paid reliably",
       desc:"Direct deposits to your US bank account. No cash, no invoicing, no payment chasing." },
   ];
   const stats = [
@@ -667,30 +467,36 @@ function ForTrainers() {
     ["$3.5K–8K","avg. monthly trainer earnings"],
   ];
   return (
-    <section className="for-trainers">
-      <div className="ft-inner wrap">
+    <section className="py-24 px-14 bg-primary-hover">
+      <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-20 items-center">
         <div>
-          <span className="slabel ft-label">For Trainers</span>
-          <h2 className="stitle ft-title">Grow your practice <em>with Pulse</em></h2>
-          <p className="ssub ft-sub">Join a community of NASM, ACE, and NSCA certified professionals. You focus on training — we handle everything else.</p>
-          <div className="ft-benefits">
-            {benefits.map((b,i) => (
-              <div key={i} className="ft-ben">
-                <div className="ft-ben-icon">{b.icon}</div>
+          <span className="inline-block text-[11px] font-bold tracking-[0.1em] uppercase px-4 py-1.5 rounded-full mb-5" style={{color:'rgba(255,255,255,0.5)',background:'rgba(255,255,255,0.1)'}}>For Trainers</span>
+          <h2 className="font-display text-[clamp(36px,4vw,52px)] text-white leading-[1.05] tracking-tight mb-3.5">
+            Grow your practice <em className="text-secondary-light">with Pulse</em>
+          </h2>
+          <p className="text-[18px] leading-relaxed max-w-[480px] mb-9" style={{color:'rgba(255,255,255,0.6)'}}>
+            Join a community of NASM, ACE, and NSCA certified professionals. You focus on training — we handle everything else.
+          </p>
+          <div className="flex flex-col gap-6 mb-9">
+            {benefits.map((b,i)=>(
+              <div key={i} className="flex items-start gap-4">
+                <div className="w-11 h-11 rounded-[12px] flex items-center justify-center flex-shrink-0" style={{background:'rgba(255,255,255,0.08)',color:'#E8C070'}}>{b.icon}</div>
                 <div>
-                  <div className="ft-ben-title">{b.title}</div>
-                  <div className="ft-ben-desc">{b.desc}</div>
+                  <div className="text-[16px] font-semibold text-white mb-1">{b.title}</div>
+                  <div className="text-[14px] leading-snug" style={{color:'rgba(255,255,255,0.52)'}}>{b.desc}</div>
                 </div>
               </div>
             ))}
           </div>
-          <button className="btn btn-white">Apply as a Trainer <icons.Arrow sz={18}/></button>
+          <button className="inline-flex items-center gap-2 bg-surface text-primary-hover text-[16px] font-semibold px-9 py-4 rounded-full hover:bg-bg hover:-translate-y-px transition-all hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)]">
+            Apply as a Trainer <I.Arrow sz={18}/>
+          </button>
         </div>
-        <div className="ft-stats">
-          {stats.map(([n,l],i) => (
-            <div key={i} className="ft-stat">
-              <div className="ft-stat-n">{n}</div>
-              <div className="ft-stat-l">{l}</div>
+        <div className="grid grid-cols-2 gap-4">
+          {stats.map(([n,l],i)=>(
+            <div key={i} className="rounded-[18px] p-7 border" style={{background:'rgba(255,255,255,0.06)',borderColor:'rgba(255,255,255,0.1)'}}>
+              <div className="font-display text-[40px] text-white tracking-tight leading-none mb-2">{n}</div>
+              <div className="text-[13px] leading-snug" style={{color:'rgba(255,255,255,0.42)'}}>{l}</div>
             </div>
           ))}
         </div>
@@ -699,24 +505,26 @@ function ForTrainers() {
   );
 }
 
-/* ─── FAQ ─── */
+/* ── FAQ ── */
 function FAQ() {
   const [open, setOpen] = useState(null);
   return (
-    <section className="sec" id="faq" style={{background:'white'}}>
-      <div className="wrap">
-        <div className="shead">
-          <div className="rv"><span className="slabel">FAQ</span></div>
-          <h2 className="stitle rv d1">Common questions</h2>
-        </div>
-        <div className="faq-list">
-          {FAQS.map((f,i) => (
-            <div key={i} className={`faq-item${open===i?' open':''}`}>
-              <div className="faq-q" onClick={()=>setOpen(open===i?null:i)}>
-                <span className="faq-qt">{f.q}</span>
-                <div className="faq-ico"><icons.Plus sz={14}/></div>
+    <section className="py-24 px-14 bg-surface" id="faq">
+      <div className="max-w-[1280px] mx-auto">
+        <SHead label="FAQ" title="Common questions"/>
+        <div className="max-w-[720px] mx-auto flex flex-col gap-1.5">
+          {FAQS.map((f,i)=>(
+            <div key={i} className="bg-bg rounded-[18px] overflow-hidden border border-ink/6">
+              <div className="flex items-center justify-between px-7 py-[22px] cursor-pointer hover:bg-surface-variant transition-colors select-none"
+                   onClick={()=>setOpen(open===i?null:i)}>
+                <span className="text-[16px] font-semibold text-ink pr-4">{f.q}</span>
+                <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${open===i ? 'bg-primary text-white rotate-45' : 'bg-primary-container text-primary'}`}>
+                  <I.Plus sz={14}/>
+                </div>
               </div>
-              <div className="faq-a"><div className="faq-ai">{f.a}</div></div>
+              <div style={{maxHeight: open===i ? '220px' : '0', overflow:'hidden', transition:'max-height 0.35s ease'}}>
+                <div className="px-7 pb-[22px] text-[15px] text-ink-2 leading-relaxed">{f.a}</div>
+              </div>
             </div>
           ))}
         </div>
@@ -725,26 +533,32 @@ function FAQ() {
   );
 }
 
-/* ─── FINAL CTA ─── */
-function FinalCTA({ color }) {
+/* ── FINAL CTA ── */
+function FinalCTA() {
   return (
-    <section className="final-cta" style={{background:color}}>
-      <div className="cta-circle" style={{width:'700px',height:'700px',top:'-280px',right:'-200px'}}></div>
-      <div className="cta-circle" style={{width:'350px',height:'350px',bottom:'-140px',left:'-100px'}}></div>
-      <div className="cta-wrap">
-        <span className="slabel" style={{background:'rgba(255,255,255,.14)',color:'rgba(255,255,255,.8)',marginBottom:'20px',display:'inline-block'}}>
-          Start Today
-        </span>
-        <h2 className="cta-title">Your first session — <em>this week</em></h2>
-        <p className="cta-sub">Choose a certified trainer, book your session, and take the first real step toward your goal.</p>
-        <div className="cta-btns">
-          <button className="btn btn-white">Find My Trainer <icons.Arrow sz={18}/></button>
-          <button className="btn btn-outline-white">Apply as a Trainer</button>
+    <section className="bg-primary py-[104px] px-14 text-center relative overflow-hidden">
+      <div className="absolute w-[700px] h-[700px] -top-[280px] -right-[200px] rounded-full pointer-events-none" style={{background:'rgba(255,255,255,0.05)'}}></div>
+      <div className="absolute w-[350px] h-[350px] -bottom-[140px] -left-[100px] rounded-full pointer-events-none" style={{background:'rgba(255,255,255,0.05)'}}></div>
+      <div className="relative z-10 max-w-[680px] mx-auto">
+        <span className="inline-block text-[11px] font-bold tracking-[0.1em] uppercase px-4 py-1.5 rounded-full mb-5" style={{background:'rgba(255,255,255,0.14)',color:'rgba(255,255,255,0.8)'}}>Start Today</span>
+        <h2 className="font-display text-[clamp(44px,5.5vw,70px)] text-white leading-[0.97] tracking-[-0.045em] mb-5">
+          Your first session — <em className="text-secondary-light">this week</em>
+        </h2>
+        <p className="text-[18px] leading-relaxed mb-12" style={{color:'rgba(255,255,255,0.68)'}}>
+          Choose a certified trainer, book your session, and take the first real step toward your goal.
+        </p>
+        <div className="flex items-center justify-center gap-4 flex-wrap mb-7">
+          <button className="inline-flex items-center gap-2 bg-surface text-primary-hover text-[16px] font-semibold px-9 py-4 rounded-full hover:bg-bg hover:-translate-y-px transition-all hover:shadow-[0_4px_20px_rgba(0,0,0,0.15)]">
+            Find My Trainer <I.Arrow sz={18}/>
+          </button>
+          <button className="inline-flex items-center gap-2 text-white text-[16px] font-medium px-8 py-4 rounded-full border hover:bg-white/10 transition-all" style={{borderColor:'rgba(255,255,255,0.35)'}}>
+            Apply as a Trainer
+          </button>
         </div>
-        <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'24px',marginTop:'28px',flexWrap:'wrap'}}>
-          {["No subscription required","Cancel anytime","Secure US payments"].map((t,i)=>(
-            <div key={i} style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'13px',color:'rgba(255,255,255,.6)'}}>
-              <icons.Check sz={14}/>{t}
+        <div className="flex items-center justify-center gap-6 flex-wrap">
+          {["No subscription required","Cancel anytime","Secure US payments"].map(t=>(
+            <div key={t} className="flex items-center gap-1.5 text-[13px]" style={{color:'rgba(255,255,255,0.6)'}}>
+              <I.Check sz={14}/>{t}
             </div>
           ))}
         </div>
@@ -753,71 +567,68 @@ function FinalCTA({ color }) {
   );
 }
 
-/* ─── FOOTER ─── */
+/* ── FOOTER ── */
 function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer-inner wrap">
+    <footer className="bg-surface-variant py-11 px-14 border-t border-surface-dim">
+      <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         <div>
-          <div className="footer-logo">Pulse</div>
-          <div className="footer-tag">Personal Trainer Marketplace · United States</div>
+          <div className="font-display text-[20px] tracking-tight text-ink">Pulse</div>
+          <div className="text-[12px] text-ink-3 mt-1">Personal Trainer Marketplace · United States</div>
         </div>
-        <div className="footer-links">
-          <a href="#">About</a>
-          <a href="#">For Trainers</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
+        <div className="flex gap-7 flex-wrap justify-center">
+          {["About","For Trainers","Privacy Policy","Terms of Service"].map(l=>(
+            <a key={l} href="#" className="text-[13px] text-ink-3 hover:text-primary transition-colors">{l}</a>
+          ))}
         </div>
-        <div className="footer-copy">© 2025 Pulse, Inc. All rights reserved.</div>
+        <div className="text-[12px] text-ink-3">© 2025 Pulse, Inc. All rights reserved.</div>
       </div>
     </footer>
   );
 }
 
-/* ─── TWEAKS PANEL ─── */
+/* ── TWEAKS PANEL ── */
 function TweaksPanel({ t, set, onClose }) {
-  const COLORS = [
-    { v:'#2D5A40', label:'Forest' },
-    { v:'#1A3D5C', label:'Ocean' },
-    { v:'#3D2A5C', label:'Amethyst' },
-  ];
+  const COLORS = [{ v:'#2D5A40',label:'Forest'},{v:'#1A3D5C',label:'Ocean'},{v:'#3D2A5C',label:'Amethyst'}];
   return (
-    <div className="tweaks-panel">
-      <div className="tp-head">
-        <span className="tp-title">⚙ Tweaks</span>
-        <button className="tp-close" onClick={onClose}>✕</button>
+    <div className="fixed bottom-6 right-6 z-[1000] bg-surface rounded-[20px] shadow-[0_16px_48px_rgba(26,48,40,0.18)] p-5 w-[258px] border border-ink/8">
+      <div className="flex items-center justify-between mb-5">
+        <span className="text-[13px] font-bold text-ink">⚙ Tweaks</span>
+        <button onClick={onClose} className="w-6 h-6 rounded-full bg-bg flex items-center justify-center text-[11px] text-ink-2 hover:bg-surface-container transition-colors">✕</button>
       </div>
-      <div className="tp-group">
-        <div className="tp-glabel">Brand Color</div>
-        <div className="tp-swatches">
-          {COLORS.map(c => (
-            <div key={c.v} className={`tp-swatch${t.primaryColor===c.v?' on':''}`}
-              style={{background:c.v}} title={c.label}
-              onClick={()=>set('primaryColor',c.v)}></div>
+      <div className="mb-4">
+        <div className="text-[11px] font-semibold text-ink-3 tracking-[0.06em] uppercase mb-2.5">Brand Color</div>
+        <div className="flex gap-2.5">
+          {COLORS.map(c=>(
+            <div key={c.v} title={c.label} onClick={()=>set('primaryColor',c.v)}
+              className={`w-7 h-7 rounded-full cursor-pointer transition-all shadow-sm ${t.primaryColor===c.v?'ring-2 ring-offset-2 ring-ink scale-110':''}`}
+              style={{background:c.v}}></div>
           ))}
         </div>
       </div>
-      <div className="tp-group">
-        <div className="tp-glabel">Hero Layout</div>
-        <div className="tp-opts">
-          {[['split','Split'],['centered','Centered']].map(([v,l]) => (
-            <div key={v} className={`tp-opt${t.heroVariant===v?' on':''}`}
-              onClick={()=>set('heroVariant',v)}>{l}</div>
+      <div className="mb-4">
+        <div className="text-[11px] font-semibold text-ink-3 tracking-[0.06em] uppercase mb-2.5">Hero Layout</div>
+        <div className="flex gap-2 flex-wrap">
+          {[['split','Split'],['centered','Centered']].map(([v,l])=>(
+            <div key={v} onClick={()=>set('heroVariant',v)}
+              className={`text-[12px] font-medium px-3 py-1.5 rounded-full cursor-pointer border transition-all ${t.heroVariant===v?'bg-primary-container text-primary border-transparent':'bg-bg text-ink-2 border-surface-dim'}`}>
+              {l}
+            </div>
           ))}
         </div>
       </div>
-      <div className="tp-group">
-        <div className="tp-row">
-          <span>Stats Bar</span>
-          <div className={`tp-toggle${t.showTrustBar?' on':''}`}
-            onClick={()=>set('showTrustBar',!t.showTrustBar)}></div>
+      <div className="flex items-center justify-between text-[13px] text-ink-2">
+        <span>Stats Bar</span>
+        <div onClick={()=>set('showTrustBar',!t.showTrustBar)}
+          className={`w-10 h-[22px] rounded-full cursor-pointer relative transition-colors ${t.showTrustBar?'bg-primary':'bg-surface-dim'}`}>
+          <div className={`absolute top-[3px] w-4 h-4 rounded-full bg-surface shadow transition-transform ${t.showTrustBar?'translate-x-[22px]':'translate-x-[3px]'}`}></div>
         </div>
       </div>
     </div>
   );
 }
 
-/* ─── APP ─── */
+/* ── APP ── */
 function App() {
   const [tweaks, setTweaks] = useState(TWEAKS);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -830,7 +641,7 @@ function App() {
 
   useEffect(() => {
     const handler = e => {
-      if (e.data?.type==='__activate_edit_mode') setPanelOpen(true);
+      if (e.data?.type==='__activate_edit_mode')   setPanelOpen(true);
       if (e.data?.type==='__deactivate_edit_mode') setPanelOpen(false);
     };
     window.addEventListener('message', handler);
@@ -838,18 +649,23 @@ function App() {
     return () => window.removeEventListener('message', handler);
   }, []);
 
+  // Apply dynamic primary color via CSS variable override
+  useEffect(() => {
+    document.documentElement.style.setProperty('--color-primary', tweaks.primaryColor);
+  }, [tweaks.primaryColor]);
+
   return (
     <>
-      <Nav color={tweaks.primaryColor}/>
-      <Hero color={tweaks.primaryColor} variant={tweaks.heroVariant}/>
+      <Nav/>
+      <Hero variant={tweaks.heroVariant}/>
       <TrustBar show={tweaks.showTrustBar}/>
       <HowItWorks/>
       <Disciplines/>
-      <FeaturedTrainers color={tweaks.primaryColor}/>
+      <FeaturedTrainers/>
       <Testimonials/>
       <ForTrainers/>
       <FAQ/>
-      <FinalCTA color={tweaks.primaryColor}/>
+      <FinalCTA/>
       <Footer/>
       {panelOpen && (
         <TweaksPanel t={tweaks} set={set} onClose={()=>{
@@ -862,7 +678,6 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-
 </script>
 </body>
 </html>

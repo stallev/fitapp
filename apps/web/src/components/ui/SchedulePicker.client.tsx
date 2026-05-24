@@ -41,7 +41,7 @@ export function SchedulePicker({
   selectedSlotId,
   onDayChange,
   onSlotSelect,
-  timezoneLabel = "UTC+3",
+  timezoneLabel = "America/New_York (UTC−5)",
   title = "This week",
   emptySlotsTitle,
   emptySlotsDescription,

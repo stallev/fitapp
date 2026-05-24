@@ -231,7 +231,7 @@ Card (без внешних отступов):
 
 ```
 "Working schedule"
-"UTC+3 · Moscow"  ← text-[12.5px] text-ink-2
+"UTC−5 · New York"  ← text-[12.5px] text-ink-2
 
 [Regular] [Exceptions]  ← Pill tabs
 ```

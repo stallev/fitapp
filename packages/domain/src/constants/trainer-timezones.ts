@@ -1,6 +1,6 @@
 /** Curated IANA timezones for trainer onboarding dropdown (MVP). */
 export const TRAINER_TIMEZONES = [
-  "Europe/Moscow",
+  "Europe/Paris",
   "Europe/Berlin",
   "Europe/London",
   "America/New_York",

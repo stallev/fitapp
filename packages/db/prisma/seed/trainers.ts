@@ -32,7 +32,7 @@ type ApprovedTrainerFixture = {
 const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
   {
     key: "anna",
-    timezone: "Europe/Moscow",
+    timezone: "Europe/Berlin",
     bio: "Certified yoga and pilates instructor with 8 years of experience.",
     experienceYears: 8,
     ratingAvg: 4.8,
@@ -42,8 +42,7 @@ const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
   },
   {
     key: "dmitry",
-    timezone: "Europe/Moscow",
-    bio: "Strength and HIIT coach focused on functional fitness.",
+    timezone: "America/Chicago",
     experienceYears: 10,
     ratingAvg: 4.7,
     ratingCount: 24,
@@ -62,8 +61,7 @@ const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
   },
   {
     key: "ivan",
-    timezone: "Europe/Moscow",
-    bio: "CrossFit and HIIT coach for high-intensity group and solo sessions.",
+    timezone: "Europe/London",
     experienceYears: 7,
     ratingAvg: 4.6,
     ratingCount: 21,
@@ -82,8 +80,7 @@ const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
   },
   {
     key: "sergey",
-    timezone: "Europe/Moscow",
-    bio: "Powerlifting and strength coach for progressive overload programs.",
+    timezone: "America/Los_Angeles",
     experienceYears: 12,
     ratingAvg: 4.9,
     ratingCount: 28,
@@ -94,7 +91,7 @@ const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
 
 const PENDING_TRAINER_FIXTURE = {
   key: "pending" as const,
-  timezone: "Europe/Moscow",
+  timezone: "Europe/Paris",
   bio: "New trainer awaiting verification.",
   experienceYears: 3,
   specializationSlugs: ["yoga"],
