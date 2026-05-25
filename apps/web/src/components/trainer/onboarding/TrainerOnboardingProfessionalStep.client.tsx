@@ -23,7 +23,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { SpecChip } from "@/components/ui/SpecChip";
 import { Textarea } from "@/components/ui/textarea";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import {
   validateOnboardingStep2Input,
   type OnboardingStep2FieldErrors,
@@ -47,13 +48,14 @@ export type TrainerOnboardingProfessionalStepProps = {
   onNext: () => void;
 };
 
-export function TrainerOnboardingProfessionalStep({
-  initialBio,
+export function TrainerOnboardingProfessionalStep({  initialBio,
   initialExperienceYears,
   initialSpecializations,
   onBack,
   onNext,
 }: TrainerOnboardingProfessionalStepProps) {
+  const messages = useMessages();
+
   const [bio, setBio] = useState(initialBio);
   const [experienceYears, setExperienceYears] = useState(
     initialExperienceYears?.toString() ?? "",
@@ -81,7 +83,7 @@ export function TrainerOnboardingProfessionalStep({
 
   const handleNext = () => {
     const payload = buildPayload();
-    const nextErrors = validateOnboardingStep2Input(payload);
+    const nextErrors = validateOnboardingStep2Input(payload, messages);
 
     if (Object.keys(nextErrors).length > 0) {
       setFieldErrors(nextErrors);
@@ -95,11 +97,11 @@ export function TrainerOnboardingProfessionalStep({
 
       if (!result?.ok) {
         if (result?.code === TRAINER_MUTATION_ERROR_CODES.VALIDATION) {
-          setFieldErrors(validateOnboardingStep2Input(payload));
+          setFieldErrors(validateOnboardingStep2Input(payload, messages));
           return;
         }
 
-        toast.error(result?.message ?? MESSAGES.trainer.onboarding.errors.generic, {
+        toast.error(result?.message ?? messages.trainer.onboarding.errors.generic, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
         return;
@@ -113,9 +115,9 @@ export function TrainerOnboardingProfessionalStep({
     <div className="space-y-6">
       <FieldGroup>
         <Field data-invalid={fieldErrors.bio ? true : undefined}>
-          <FieldLabel htmlFor="bio">{MESSAGES.trainer.onboarding.bioLabel}</FieldLabel>
+          <FieldLabel htmlFor="bio">{messages.trainer.onboarding.bioLabel}</FieldLabel>
           <ContentText variant="mutedMicro" as="p" className="mb-2">
-            {MESSAGES.trainer.onboarding.bioHint}
+            {messages.trainer.onboarding.bioHint}
           </ContentText>
           <Textarea
             id="bio"
@@ -136,7 +138,7 @@ export function TrainerOnboardingProfessionalStep({
           ) : null}
         </Field>
         <Field data-invalid={fieldErrors.specializationSlugs ? true : undefined}>
-          <FieldLabel>{MESSAGES.trainer.onboarding.specializationsLabel}</FieldLabel>
+          <FieldLabel>{messages.trainer.onboarding.specializationsLabel}</FieldLabel>
           <div className="flex flex-wrap gap-2">
             {SPECIALIZATION_SLUGS.map((slug) => {
               const selected = selectedSpecs.includes(slug);
@@ -165,7 +167,7 @@ export function TrainerOnboardingProfessionalStep({
         </Field>
         <Field data-invalid={fieldErrors.experienceYears ? true : undefined}>
           <FieldLabel htmlFor="experience">
-            {MESSAGES.trainer.onboarding.experienceLabel}
+            {messages.trainer.onboarding.experienceLabel}
           </FieldLabel>
           <Input
             id="experience"
@@ -193,16 +195,16 @@ export function TrainerOnboardingProfessionalStep({
 
       <div className="flex gap-3">
         <Button type="button" variant="outline" onClick={onBack} disabled={isPending}>
-          {MESSAGES.trainer.onboarding.back}
+          {messages.trainer.onboarding.back}
         </Button>
         <Button type="button" className="flex-1" onClick={handleNext} disabled={isPending} aria-busy={isPending}>
           {isPending ? (
             <>
               <Loader2Icon aria-hidden className="size-4 animate-spin" />
-              {MESSAGES.trainer.onboarding.nextSaving}
+              {messages.trainer.onboarding.nextSaving}
             </>
           ) : (
-            MESSAGES.trainer.onboarding.next
+            messages.trainer.onboarding.next
           )}
         </Button>
       </div>

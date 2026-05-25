@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { ContentText } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 type StrippedBookingHeaderProps = {
   step?: number;
@@ -14,11 +15,12 @@ type StrippedBookingHeaderProps = {
   backHref?: string;
 };
 
-export function StrippedBookingHeader({
-  step = 1,
+export function StrippedBookingHeader({  step = 1,
   totalSteps = 3,
   backHref,
 }: StrippedBookingHeaderProps) {
+  const messages = useMessages();
+
   const router = useRouter();
 
   return (
@@ -28,7 +30,7 @@ export function StrippedBookingHeader({
           type="button"
           variant="ghost"
           size="icon"
-          aria-label={MESSAGES.shell.back}
+          aria-label={messages.shell.back}
           onClick={() => {
             if (backHref) {
               router.push(backHref);
@@ -40,7 +42,7 @@ export function StrippedBookingHeader({
           <ArrowLeftIcon aria-hidden className="size-4" />
         </Button>
         <ContentText variant="statusLabel" as="p" className="font-mono uppercase">
-          {MESSAGES.shell.bookingStep
+          {messages.shell.bookingStep
             .replace("{step}", String(step))
             .replace("{total}", String(totalSteps))}
         </ContentText>

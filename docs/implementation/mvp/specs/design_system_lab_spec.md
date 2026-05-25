@@ -97,7 +97,7 @@ Implementation-spec для AI-агента: перенос **shared UI primitive
 
 | Rule file | Что проверять |
 |-----------|---------------|
-| [`ui-warm-forest-shadcn.mdc`](../../../../.cursor/rules/ui-warm-forest-shadcn.mdc) | Semantic tokens only (`bg-primary`, `text-muted-foreground`); DM Serif/Sans/Mono; states empty/loading/error |
+| [`ui-warm-forest-shadcn.mdc`](../../../../.cursor/rules/ui-warm-forest-shadcn.mdc) | Semantic tokens only (`bg-primary`, `text-muted-foreground`); Onest/Cormorant Garamond/Mono; states empty/loading/error |
 | [`ui-prototype-fidelity.mdc`](../../../../.cursor/rules/ui-prototype-fidelity.mdc) | Сверка каждого L2/L3 блока с прототипом: font, size, weight, radius, spacing |
 | [`ui-mobile-first.mdc`](../../../../.cursor/rules/ui-mobile-first.mdc) | Base = mobile; touch targets ≥ **44×44px**; Design Lab viewport control 390px |
 | [`ui-semantics-a11y.mdc`](../../../../.cursor/rules/ui-semantics-a11y.mdc) | Semantic HTML; icon-only `aria-label`; `AlertText role="alert"`; WCAG 2.1 AA contrast |
@@ -704,7 +704,7 @@ apps/web/src/components/design-lab/
 ### Step 1 — Tokens
 
 - [ ] Add missing CSS variables to `globals.css` (`:root`, `.dark`, `@theme inline`)
-- [ ] Verify fonts wired in root `layout.tsx` (DM Serif Display, DM Sans, JetBrains Mono)
+- [ ] Verify fonts wired in root `layout.tsx` (Cormorant Garamond, Onest, JetBrains Mono; `latin` + `cyrillic` subsets)
 - [ ] Optional: `lib/ui/elevation.ts`
 
 ### Step 2 — Atoms

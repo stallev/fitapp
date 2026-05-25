@@ -11,7 +11,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Slider } from "@/components/ui/slider";
 import type { CatalogFilterOptions } from "@/data/catalog/get-catalog-filter-options.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 import { CatalogSpecialtyList } from "./CatalogSpecialtyList.client";
 
@@ -37,11 +38,12 @@ function getMaxPriceDollars(
   return Math.round(ceilingCents / 100);
 }
 
-export function CatalogFilterFields({
-  draft,
+export function CatalogFilterFields({  draft,
   options,
   onDraftChange,
 }: CatalogFilterFieldsProps) {
+  const messages = useMessages();
+
   const maxPriceDollars = getMaxPriceDollars(
     draft.maxPriceCents,
     options.maxPriceCeilingCents,
@@ -55,7 +57,7 @@ export function CatalogFilterFields({
           htmlFor="catalog-max-price"
           className="text-[13px] font-medium text-muted-foreground"
         >
-          {MESSAGES.catalog.maxPriceLabel}: ${maxPriceDollars}
+          {messages.catalog.maxPriceLabel}: ${maxPriceDollars}
         </Label>
         <Slider
           id="catalog-max-price"
@@ -82,7 +84,7 @@ export function CatalogFilterFields({
 
       <div className="space-y-3">
         <ContentText variant="blockLabel" as="p" className="text-muted-foreground">
-          {MESSAGES.catalog.ratingLabel}
+          {messages.catalog.ratingLabel}
         </ContentText>
         <RadioGroup
           value={draft.minRating?.toString() ?? "any"}
@@ -95,7 +97,7 @@ export function CatalogFilterFields({
           className="grid grid-cols-2 gap-1.5"
         >
           <RadioGroupItem variant="tile" value="any" className="h-9 text-[12px]">
-            {MESSAGES.catalog.ratingAny}
+            {messages.catalog.ratingAny}
           </RadioGroupItem>
           {CATALOG_MIN_RATINGS.map((rating) => (
             <RadioGroupItem
@@ -104,7 +106,7 @@ export function CatalogFilterFields({
               value={String(rating)}
               className="h-9 text-[12px]"
             >
-              {MESSAGES.catalog.ratingTier.replace("{value}", String(rating))}
+              {messages.catalog.ratingTier.replace("{value}", String(rating))}
             </RadioGroupItem>
           ))}
         </RadioGroup>
@@ -112,7 +114,7 @@ export function CatalogFilterFields({
 
       <div className="space-y-3">
         <ContentText variant="blockLabel" as="p" className="text-muted-foreground">
-          {MESSAGES.catalog.specialtyLabel}
+          {messages.catalog.specialtyLabel}
         </ContentText>
         <CatalogSpecialtyList
           draft={draft}

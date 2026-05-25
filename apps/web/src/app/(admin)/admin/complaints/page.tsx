@@ -7,28 +7,30 @@ import { AdminQueueGridSkeleton } from "@/components/admin/AdminQueueGridSkeleto
 import { ComplaintsTabPanel } from "@/components/admin/ComplaintsTabPanel.server";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { getComplaintCounts } from "@/data/admin/list-complaints.server";
-import { COMPLAINT_MODERATION_TABS, resolveComplaintTab } from "@/lib/admin/complaint-moderation-tabs";
-import { MESSAGES } from "@/lib/messages";
+import { getComplaintModerationTabs, resolveComplaintTab } from "@/lib/admin/complaint-moderation-tabs";
+import { getMessages } from "@/lib/messages/server";
+
 
 type AdminComplaintsPageProps = {
   searchParams: Promise<{ tab?: string }>;
 };
 
-export default async function AdminComplaintsPage({
-  searchParams,
+export default async function AdminComplaintsPage({  searchParams,
 }: AdminComplaintsPageProps) {
+  const messages = await getMessages();
+
   const params = await searchParams;
-  const activeTab = resolveComplaintTab(params.tab);
+  const activeTab = resolveComplaintTab(params.tab, messages);
   const counts = await getComplaintCounts();
 
-  const tabs = COMPLAINT_MODERATION_TABS.map((tab) => ({
+  const tabs = getComplaintModerationTabs(messages).map((tab) => ({
     value: tab.value,
     label: tab.label,
   }));
 
   return (
     <>
-      <PageHeader title={MESSAGES.admin.complaints.title} />
+      <PageHeader title={messages.admin.complaints.title} />
 
       <AdminPillTabs
         activeTab={activeTab}
@@ -36,7 +38,7 @@ export default async function AdminComplaintsPage({
         counts={counts}
         basePath="/admin/complaints"
         defaultTab={COMPLAINT_STATUS.OPEN}
-        ariaLabel={MESSAGES.admin.complaints.tabsAriaLabel}
+        ariaLabel={messages.admin.complaints.tabsAriaLabel}
       >
         <Suspense fallback={<AdminQueueGridSkeleton count={4} />}>
           <ComplaintsTabPanel status={activeTab} />

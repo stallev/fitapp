@@ -6,9 +6,11 @@ import {
 } from "@pulse/domain";
 
 import { rejectTrainerWithCacheInvalidation } from "@/data/admin/reject-trainer.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function POST(request: Request) {
+  const messages = await getMessages();
   const body = await request.json().catch(() => null);
   const parsed = rejectTrainerInputSchema.safeParse(body);
 
@@ -17,7 +19,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.admin.moderation.rejectionReasonRequired,
+        message: messages.admin.moderation.rejectionReasonRequired,
       },
       { status: 400 },
     );
@@ -27,8 +29,8 @@ export async function POST(request: Request) {
   if (!result.ok) {
     const message =
       result.code === TRAINER_MUTATION_ERROR_CODES.ALREADY_PROCESSED
-        ? MESSAGES.admin.moderation.alreadyProcessed
-        : MESSAGES.admin.errors.generic;
+        ? messages.admin.moderation.alreadyProcessed
+        : messages.admin.errors.generic;
 
     return NextResponse.json({ ...result, message }, { status: 400 });
   }

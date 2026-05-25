@@ -12,7 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { buildCatalogHref } from "@/lib/catalog/build-catalog-search-params";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 const SORT_OPTIONS: CatalogSort[] = [
   CATALOG_SORT.RATING,
@@ -25,6 +26,7 @@ export type CatalogSortSelectProps = {
 };
 
 export function CatalogSortSelect({ query }: CatalogSortSelectProps) {
+  const messages = useMessages();
   const router = useRouter();
 
   return (
@@ -36,13 +38,13 @@ export function CatalogSortSelect({ query }: CatalogSortSelectProps) {
         );
       }}
     >
-      <SelectTrigger size="sm" aria-label={MESSAGES.catalog.sortLabel}>
+      <SelectTrigger size="sm" aria-label={messages.catalog.sortLabel}>
         <SelectValue />
       </SelectTrigger>
       <SelectContent align="end">
         {SORT_OPTIONS.map((sort) => (
           <SelectItem key={sort} value={sort}>
-            {MESSAGES.catalog.sort[sort]}
+            {messages.catalog.sort[sort]}
           </SelectItem>
         ))}
       </SelectContent>

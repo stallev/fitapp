@@ -1,4 +1,8 @@
-export const MESSAGES = {
+import type { Messages } from "./types";
+import { howItWasBuiltRu } from "./how-it-was-built-ru";
+import { platformFeaturesRu } from "./platform-features-ru";
+
+export const ruMessages = {
   auth: {
     login: {
       title: "Вход",
@@ -74,6 +78,11 @@ export const MESSAGES = {
     bookingStep: "Шаг {step} из {total}",
     sessionTitle: "Сессия",
     skipToContent: "Перейти к содержимому",
+    mainNavAriaLabel: "Основная навигация",
+    sidebarNavAriaLabel: "Боковая навигация",
+    badgeInQueue: "{count} в очереди",
+    themeToggleLight: "Включить светлую тему",
+    themeToggleDark: "Включить тёмную тему",
   },
   common: {
     segmentError: {
@@ -86,6 +95,9 @@ export const MESSAGES = {
       description: "У вас нет прав для просмотра этой страницы.",
       homeCta: "На главную",
     },
+    durationMinutes: "{minutes} мин",
+    perHourSuffix: "/ч",
+    guestClientName: "Клиент",
   },
   empty: {
     clientDashboard: {
@@ -127,6 +139,7 @@ export const MESSAGES = {
     specialtyAll: "Все",
     resultsCount: "{count} тренеров",
     resultsCountOne: "{count} тренер",
+    resultsCountFew: "{count} тренера",
     sortLabel: "Сортировка",
     sort: {
       rating: "По рейтингу",
@@ -194,6 +207,7 @@ export const MESSAGES = {
         trainers: "200+ сертифицированных тренеров",
         sessions: "10 000+ забронированных занятий",
       },
+      floatCardPrice: "от {amount}",
     },
     trustBar: {
       metrics: [
@@ -397,13 +411,25 @@ export const MESSAGES = {
       subtitle: "Маркетплейс персональных тренеров",
       navLabel: "Ссылки в подвале",
       links: {
-        about: "О платформе",
+        trainers: "Каталог тренеров",
+        features: "Функционал платформы",
+        howItWasBuilt: "Как создано",
         forTrainers: "Для тренеров",
         privacy: "Конфиденциальность",
         terms: "Условия использования",
       },
       copyright: "© {year} Pulse. Все права защищены.",
     },
+  },
+  locale: {
+    settingsLabel: "Язык",
+    switcherLabel: "Выбор языка",
+    english: "English",
+    russian: "Русский",
+    enShort: "EN",
+    ruShort: "RU",
+    setError: "Не удалось изменить язык",
+    navAriaLabel: "Главная навигация",
   },
   toast: {
     saved: "Изменения сохранены",
@@ -650,6 +676,9 @@ export const MESSAGES = {
       addSlot: "Добавить слот",
       addException: "Добавить исключение",
       dayOff: "Выходной",
+      dayToggleOn: "{day}, включён",
+      dayToggleOff: "{day}, выключен",
+      removeIntervalAriaLabel: "Удалить интервал {start}–{end}",
       intervalCount: "{count} интервал(ов)",
       blocked: "Заблокировано",
       deleteException: "Удалить",
@@ -1055,6 +1084,8 @@ export const MESSAGES = {
       notFound: "Запись не найдена",
     },
   },
+  howItWasBuilt: howItWasBuiltRu,
+  platformFeatures: platformFeaturesRu,
   clientComplaint: {
     reportIssue: "Сообщить о проблеме",
     requestRefund: "Запросить возврат",
@@ -1079,6 +1110,4 @@ export const MESSAGES = {
       duplicateRefund: "Запрос на возврат уже отправлен",
     },
   },
-} as const;
-
-export type Messages = typeof MESSAGES;
+} satisfies Messages;

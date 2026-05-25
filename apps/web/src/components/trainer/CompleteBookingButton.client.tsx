@@ -6,7 +6,8 @@ import { toast } from "sonner";
 
 import { completeBookingAction } from "@/actions/trainer/complete-booking";
 import { Button } from "@/components/ui/button";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type CompleteBookingButtonProps = {
@@ -14,6 +15,7 @@ export type CompleteBookingButtonProps = {
 };
 
 export function CompleteBookingButton({ bookingId }: CompleteBookingButtonProps) {
+  const messages = useMessages();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -25,7 +27,7 @@ export function CompleteBookingButton({ bookingId }: CompleteBookingButtonProps)
         return;
       }
 
-      toast.success(MESSAGES.trainer.clients.completeSuccess, {
+      toast.success(messages.trainer.clients.completeSuccess, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
       router.refresh();
@@ -41,8 +43,8 @@ export function CompleteBookingButton({ bookingId }: CompleteBookingButtonProps)
       aria-busy={isPending}
     >
       {isPending
-        ? MESSAGES.trainer.clients.completingSession
-        : MESSAGES.trainer.clients.completeSession}
+        ? messages.trainer.clients.completingSession
+        : messages.trainer.clients.completeSession}
     </Button>
   );
 }

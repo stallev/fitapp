@@ -162,7 +162,7 @@ Role prefix enforcement: [`auth_runtime_spec.md`](../../../prds/05_runtime/auth_
 |----------|-------|
 | `next-themes` | `attribute="class"` on `<html>` |
 | `Toaster` (Sonner) | One instance; see interaction contract |
-| Fonts | DM Serif Display, DM Sans, JetBrains Mono via `next/font` |
+| Fonts | Cormorant Garamond, Onest, JetBrains Mono via `next/font` (`latin`, `cyrillic`) |
 
 ---
 

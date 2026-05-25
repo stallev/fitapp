@@ -23,10 +23,12 @@ import {
   registerClientAction,
   type RegisterClientFormState,
 } from "@/actions/auth/register-client";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export const RegisterClientForm = () => {
+  const messages = useMessages();
   const router = useRouter();
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [state, formAction, pending] = useActionState<
@@ -55,15 +57,15 @@ export const RegisterClientForm = () => {
       <div className="grid gap-3">
         <ChoiceCard
           selected
-          title={MESSAGES.auth.register.clientTileTitle}
-          meta={MESSAGES.auth.register.clientTileDescription}
+          title={messages.auth.register.clientTileTitle}
+          meta={messages.auth.register.clientTileDescription}
           trailing="🧍"
           disabled
           aria-pressed
         />
         <ChoiceCard
-          title={MESSAGES.auth.register.trainerTileTitle}
-          meta={MESSAGES.auth.register.trainerTileDescription}
+          title={messages.auth.register.trainerTileTitle}
+          meta={messages.auth.register.trainerTileDescription}
           trailing="🏋"
           onClick={() => router.push("/auth/register/trainer")}
         />
@@ -76,7 +78,7 @@ export const RegisterClientForm = () => {
       <FieldGroup>
         <Field>
           <FieldLabel htmlFor="fullName">
-            {MESSAGES.auth.register.fullNameLabel}
+            {messages.auth.register.fullNameLabel}
           </FieldLabel>
           <Input
             id="fullName"
@@ -89,7 +91,7 @@ export const RegisterClientForm = () => {
 
         <Field data-invalid={emailError ? true : undefined}>
           <FieldLabel htmlFor="email">
-            {MESSAGES.auth.register.emailLabel}
+            {messages.auth.register.emailLabel}
           </FieldLabel>
           <Input
             id="email"
@@ -105,7 +107,7 @@ export const RegisterClientForm = () => {
 
         <Field>
           <FieldLabel htmlFor="password">
-            {MESSAGES.auth.register.passwordLabel}
+            {messages.auth.register.passwordLabel}
           </FieldLabel>
           <Input
             id="password"
@@ -120,7 +122,7 @@ export const RegisterClientForm = () => {
 
         <Field>
           <FieldLabel htmlFor="confirmPassword">
-            {MESSAGES.auth.register.confirmPasswordLabel}
+            {messages.auth.register.confirmPasswordLabel}
           </FieldLabel>
           <Input
             id="confirmPassword"
@@ -141,7 +143,7 @@ export const RegisterClientForm = () => {
             disabled={pending}
           />
           <FieldLabel htmlFor="acceptedTerms" className="font-normal">
-            {MESSAGES.auth.register.termsLabel}
+            {messages.auth.register.termsLabel}
           </FieldLabel>
         </Field>
       </FieldGroup>
@@ -155,17 +157,17 @@ export const RegisterClientForm = () => {
         {pending ? (
           <>
             <Loader2Icon className="size-4 animate-spin" aria-hidden />
-            {MESSAGES.auth.register.submitting}
+            {messages.auth.register.submitting}
           </>
         ) : (
-          MESSAGES.auth.register.submit
+          messages.auth.register.submit
         )}
       </Button>
 
       <ContentText variant="small" className="text-center">
-        {MESSAGES.auth.register.hasAccount}{" "}
+        {messages.auth.register.hasAccount}{" "}
         <CustomLink href="/auth/login">
-          {MESSAGES.auth.register.loginLink}
+          {messages.auth.register.loginLink}
         </CustomLink>
       </ContentText>
     </form>

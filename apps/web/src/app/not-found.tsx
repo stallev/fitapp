@@ -3,9 +3,11 @@ import Link from "next/link";
 import { ContentText, Heading } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export default function NotFoundPage() {
+
+export default async function NotFoundPage() {
+  const messages = await getMessages();
   return (
     <main
       id="main-content"
@@ -13,13 +15,13 @@ export default function NotFoundPage() {
     >
       <Container variant="narrow" className="text-center">
         <Heading as="h1" visualLevel="h2">
-          {MESSAGES.notFound.title}
+          {messages.notFound.title}
         </Heading>
         <ContentText variant="bodyMuted" className="mt-3">
-          {MESSAGES.notFound.description}
+          {messages.notFound.description}
         </ContentText>
         <Button asChild className="mt-6">
-          <Link href="/">{MESSAGES.notFound.homeCta}</Link>
+          <Link href="/">{messages.notFound.homeCta}</Link>
         </Button>
       </Container>
     </main>

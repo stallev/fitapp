@@ -6,22 +6,25 @@ import {
 } from "@pulse/domain";
 
 import { updateTrainerProfile } from "@/data/trainer/update-trainer-profile.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-function mapUpdateError(code: string): string {
+import type { Messages } from "@/lib/messages/types";
+
+function mapUpdateError(code: string, messages: Messages): string {
   switch (code) {
     case TRAINER_MUTATION_ERROR_CODES.VALIDATION:
-      return MESSAGES.trainer.editProfile.errors.validation;
+      return messages.trainer.editProfile.errors.validation;
     case TRAINER_MUTATION_ERROR_CODES.UNAUTHORIZED:
-      return MESSAGES.trainer.editProfile.errors.unauthorized;
+      return messages.trainer.editProfile.errors.unauthorized;
     case TRAINER_MUTATION_ERROR_CODES.FORBIDDEN:
-      return MESSAGES.trainer.editProfile.errors.forbidden;
+      return messages.trainer.editProfile.errors.forbidden;
     default:
-      return MESSAGES.trainer.editProfile.errors.generic;
+      return messages.trainer.editProfile.errors.generic;
   }
 }
 
 export async function POST(request: Request) {
+  const messages = await getMessages();
   const body = await request.json().catch(() => null);
   const parsed = updateTrainerProfileSchema.safeParse(body);
 
@@ -30,7 +33,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.trainer.editProfile.errors.validation,
+        message: messages.trainer.editProfile.errors.validation,
       },
       { status: 400 },
     );
@@ -39,7 +42,7 @@ export async function POST(request: Request) {
   const result = await updateTrainerProfile(parsed.data);
   if (!result.ok) {
     return NextResponse.json(
-      { ...result, message: mapUpdateError(result.code) },
+      { ...result, message: mapUpdateError(result.code, messages) },
       { status: result.code === TRAINER_MUTATION_ERROR_CODES.UNAUTHORIZED ? 401 : 400 },
     );
   }

@@ -5,13 +5,15 @@ import { RatingStars } from "@/components/ui/RatingStars";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import type { ReviewModerationItem } from "@/data/admin/list-reviews-for-moderation.server";
 import { formatAdminRelativeDate } from "@/lib/date/format-admin-relative";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 
 export type ReviewModerationCardProps = {
   review: ReviewModerationItem;
 };
 
-export function ReviewModerationCard({ review }: ReviewModerationCardProps) {
+export async function ReviewModerationCard({ review }: ReviewModerationCardProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
   return (
     <PulseCard variant="base" className="h-full rounded-2xl">
       <PulseCardContent density="sm" className="space-y-3">
@@ -24,12 +26,12 @@ export function ReviewModerationCard({ review }: ReviewModerationCardProps) {
           </ContentText>
           <RatingStars value={review.rating} size="sm" />
           <ContentText as="span" className="text-[11.5px] text-muted-foreground">
-            · {formatAdminRelativeDate(review.createdAt)}
+            · {formatAdminRelativeDate(review.createdAt, locale)}
           </ContentText>
           <StatusBadge status={review.isHidden ? "cancelled" : "verified"}>
             {review.isHidden
-              ? MESSAGES.admin.reviews.hidden
-              : MESSAGES.admin.reviews.visible}
+              ? messages.admin.reviews.hidden
+              : messages.admin.reviews.visible}
           </StatusBadge>
         </div>
 

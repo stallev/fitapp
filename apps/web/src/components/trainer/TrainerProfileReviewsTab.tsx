@@ -2,27 +2,22 @@ import { ContentText, Heading, SectionTitle } from "@/components/atoms";
 import { PulseCard } from "@/components/ui/card";
 import { RatingStars } from "@/components/ui/RatingStars";
 import type { TrainerReviewsResult } from "@/data/trainer/get-trainer-reviews.server";
-import { MESSAGES } from "@/lib/messages";
+import { formatDateTime } from "@/lib/i18n/format";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 
 export type TrainerProfileReviewsTabProps = {
   reviews: TrainerReviewsResult;
 };
 
-function formatReviewDate(iso: string): string {
-  return new Intl.DateTimeFormat("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(iso));
-}
-
-export function TrainerProfileReviewsTab({ reviews }: TrainerProfileReviewsTabProps) {
+export async function TrainerProfileReviewsTab({ reviews }: TrainerProfileReviewsTabProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
   if (reviews.items.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-border p-6 text-center">
-        <SectionTitle as="h3">{MESSAGES.trainer.profile.reviewsEmpty.title}</SectionTitle>
+        <SectionTitle as="h3">{messages.trainer.profile.reviewsEmpty.title}</SectionTitle>
         <ContentText variant="muted" as="p" className="mt-2">
-          {MESSAGES.trainer.profile.reviewsEmpty.description}
+          {messages.trainer.profile.reviewsEmpty.description}
         </ContentText>
       </div>
     );
@@ -37,7 +32,7 @@ export function TrainerProfileReviewsTab({ reviews }: TrainerProfileReviewsTabPr
         <div>
           <RatingStars value={reviews.ratingAvg} size="md" />
           <ContentText variant="mutedMicro" as="p" className="mt-1">
-            {reviews.ratingCount} {MESSAGES.landing.featured.reviewsLabel}
+            {reviews.ratingCount} {messages.landing.featured.reviewsLabel}
           </ContentText>
         </div>
       </div>
@@ -52,7 +47,12 @@ export function TrainerProfileReviewsTab({ reviews }: TrainerProfileReviewsTabPr
               <RatingStars value={review.rating} size="sm" />
             </div>
             <ContentText variant="mutedMicro" as="p" className="mt-1">
-              {formatReviewDate(review.createdAt)}
+              {formatDateTime(review.createdAt, {
+                locale,
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </ContentText>
             <ContentText as="p" className="mt-3">
               {review.body}

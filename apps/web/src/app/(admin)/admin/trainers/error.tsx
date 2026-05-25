@@ -5,23 +5,25 @@ import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 
-export default function AdminTrainersError({
-  reset,
+
+export default function AdminTrainersError({  reset,
 }: {
   reset: () => void;
 }) {
+  const messages = useMessages();
+
   return (
     <>
-      <PageHeader title={MESSAGES.admin.moderation.title} />
+      <PageHeader title={messages.admin.moderation.title} />
       <Alert variant="destructive" className="mt-6">
         <AlertCircleIcon aria-hidden />
-        <AlertTitle>{MESSAGES.admin.moderation.loadError}</AlertTitle>
+        <AlertTitle>{messages.admin.moderation.loadError}</AlertTitle>
         <AlertDescription className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <span>{MESSAGES.admin.moderation.loadErrorDescription}</span>
+          <span>{messages.admin.moderation.loadErrorDescription}</span>
           <Button type="button" variant="outline" size="sm" onClick={reset}>
-            {MESSAGES.admin.moderation.retry}
+            {messages.admin.moderation.retry}
           </Button>
         </AlertDescription>
       </Alert>

@@ -8,17 +8,20 @@ import {
 } from "@pulse/domain";
 
 import { requestRefundMutation } from "@/data/client/request-refund.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function requestRefundAction(
   input: RequestRefundInput,
 ): Promise<MutationResult<{ refundRequestId: string }>> {
+  const messages = await getMessages();
+
   const parsed = requestRefundInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.clientComplaint.errors.validation,
+      message: messages.clientComplaint.errors.validation,
     };
   }
 

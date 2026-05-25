@@ -5,7 +5,12 @@ import { toast } from "sonner";
 
 import { ContentText } from "@/components/atoms";
 import { Textarea } from "@/components/ui/textarea";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
+import {
+  setSubmitTransportTag,
+  SUBMIT_TRANSPORT_TAGS,
+} from "@/lib/sentry/pulse-tags";
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 import { resilientPostFetch } from "@/lib/ui/resilient-post-fetch";
 
@@ -14,10 +19,11 @@ export type TrainerClientNotesFieldProps = {
   initialNotes: string;
 };
 
-export function TrainerClientNotesField({
-  clientId,
+export function TrainerClientNotesField({  clientId,
   initialNotes,
 }: TrainerClientNotesFieldProps) {
+  const messages = useMessages();
+
   const [notes, setNotes] = useState(initialNotes);
   const [isPending, startTransition] = useTransition();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -32,6 +38,8 @@ export function TrainerClientNotesField({
 
   function saveNotes(nextNotes: string) {
     startTransition(async () => {
+      setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.ROUTE_HANDLER_PRIMARY);
+
       try {
         const response = await resilientPostFetch(
           `/api/trainer/clients/${clientId}/notes`,
@@ -44,12 +52,12 @@ export function TrainerClientNotesField({
         const result = (await response.json()) as { ok: boolean; message?: string };
 
         if (!response.ok || !result.ok) {
-          toast.error(result.message ?? MESSAGES.trainer.clients.errors.notesSave, {
+          toast.error(result.message ?? messages.trainer.clients.errors.notesSave, {
             duration: PRODUCT_TOAST_DURATION_MS,
           });
         }
       } catch {
-        toast.error(MESSAGES.trainer.clients.errors.notesSave, {
+        toast.error(messages.trainer.clients.errors.notesSave, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
       }
@@ -75,12 +83,12 @@ export function TrainerClientNotesField({
         rows={5}
         aria-busy={isPending}
         disabled={isPending}
-        placeholder={MESSAGES.trainer.clients.privateNotesHint}
+        placeholder={messages.trainer.clients.privateNotesHint}
       />
       <ContentText variant="hint" as="p">
         {isPending
-          ? MESSAGES.trainer.clients.notesSaving
-          : MESSAGES.trainer.clients.notesSaved}
+          ? messages.trainer.clients.notesSaving
+          : messages.trainer.clients.notesSaved}
       </ContentText>
     </div>
   );

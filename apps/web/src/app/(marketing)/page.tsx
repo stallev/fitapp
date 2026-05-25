@@ -18,7 +18,7 @@ import { LandingTestimonials } from "@/components/landing/LandingTestimonials";
 import { LandingTrustBar } from "@/components/landing/LandingTrustBar.client";
 import { buildLandingMetadata } from "@/lib/landing/landing-metadata";
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata(): Promise<Metadata> {
   return buildLandingMetadata();
 }
 

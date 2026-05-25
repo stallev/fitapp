@@ -7,9 +7,11 @@ import { ContentText } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 export function ClientDashboardFeaturedTrainersError() {
+  const messages = useMessages();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
@@ -21,9 +23,9 @@ export function ClientDashboardFeaturedTrainersError() {
 
   return (
     <section>
-      <SectionHeader title={MESSAGES.dashboard.client.topTrainersTitle} />
+      <SectionHeader title={messages.dashboard.client.topTrainersTitle} />
       <ContentText variant="muted" as="p">
-        {MESSAGES.dashboard.client.topTrainersError}
+        {messages.dashboard.client.topTrainersError}
       </ContentText>
       <Button
         type="button"
@@ -34,8 +36,8 @@ export function ClientDashboardFeaturedTrainersError() {
         onClick={handleRetry}
       >
         {pending
-          ? MESSAGES.landing.featured.error.retrying
-          : MESSAGES.common.segmentError.retry}
+          ? messages.landing.featured.error.retrying
+          : messages.common.segmentError.retry}
       </Button>
     </section>
   );

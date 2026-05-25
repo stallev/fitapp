@@ -173,12 +173,12 @@ All routes in [`canonical_routes.md`](../../../design/canonical_routes.md) — l
 
 ## Definition of done
 
-- [ ] All [`P17_tasks.md`](../tasks/P17_tasks.md) checked (waves A–E)
-- [ ] ADR-009 **ACCEPTED**; contract canonical
-- [ ] `npm run typecheck` + `npm run lint`
-- [ ] No product hardcoded `"ru-RU"` outside `@/lib/i18n/format.ts`
-- [ ] Docs synced: matrix, canonical_routes, copy guide, wireframe, registry
-- [ ] Manual smoke paths above (EN + RU)
+- [x] All [`P17_tasks.md`](../tasks/P17_tasks.md) checked (waves A–E)
+- [x] ADR-009 **ACCEPTED**; contract canonical
+- [x] `npm run typecheck` + `npm run lint`
+- [x] No product hardcoded `"ru-RU"` outside `@/lib/i18n/format.ts`
+- [x] Docs synced: matrix, canonical_routes, copy guide, wireframe, registry
+- [x] Manual smoke paths above (EN + RU)
 
 ---
 

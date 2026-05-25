@@ -11,8 +11,8 @@ Typography for **`apps/web`** using shared atoms (on scaffold), semantic HTML, W
 
 | Role | Font | CSS token |
 |------|------|-----------|
-| Headings / display | **DM Serif Display** | `font-heading` |
-| UI / body | **DM Sans** | `font-sans` |
+| Headings / display | **Cormorant Garamond** | `font-heading` |
+| UI / body | **Onest** | `font-sans` |
 | Code / times / IDs | **JetBrains Mono** | `font-mono` |
 
 Wire via `next/font/google` in root `layout.tsx`; map in `globals.css` `@theme inline`.

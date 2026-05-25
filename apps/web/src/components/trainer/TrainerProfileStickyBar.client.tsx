@@ -6,7 +6,12 @@ import { ContentText } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
 import type { PublicTrainerProfile } from "@/lib/trainer/trainer-profile";
 import { cn } from "@/lib/utils";
-import { MESSAGES } from "@/lib/messages";
+import {
+  useLocale,
+  useMessages,
+} from "@/components/i18n/LocaleProvider.client";
+import { formatMoney } from "@/lib/format-money";
+
 
 export type TrainerProfileStickyBarProps = {
   profile: PublicTrainerProfile;
@@ -14,19 +19,13 @@ export type TrainerProfileStickyBarProps = {
   withBottomNavOffset?: boolean;
 };
 
-function formatTrainerPrice(cents: number, currency: string): string {
-  return new Intl.NumberFormat("ru-RU", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: 0,
-  }).format(cents / 100);
-}
-
-export function TrainerProfileStickyBar({
-  profile,
+export function TrainerProfileStickyBar({  profile,
   isAuthenticated,
   withBottomNavOffset = false,
 }: TrainerProfileStickyBarProps) {
+  const messages = useMessages();
+  const locale = useLocale();
+
   const base = `/book/${profile.id}`;
   const bookHref = isAuthenticated
     ? base
@@ -45,15 +44,15 @@ export function TrainerProfileStickyBar({
         {profile.fromPriceCents !== null && profile.currency ? (
           <div className="min-w-0">
             <ContentText variant="mutedMicro" as="p">
-              {MESSAGES.trainer.profile.fromPriceLabel}
+              {messages.trainer.profile.fromPriceLabel}
             </ContentText>
             <ContentText variant="smallEmphasis" as="p" className="font-heading">
-              {formatTrainerPrice(profile.fromPriceCents, profile.currency)}
+              {formatMoney(profile.fromPriceCents, profile.currency, locale)}
             </ContentText>
           </div>
         ) : null}
         <Button asChild size="lg" className="ml-auto min-w-[140px] shrink-0">
-          <Link href={bookHref}>{MESSAGES.trainer.profile.bookNow}</Link>
+          <Link href={bookHref}>{messages.trainer.profile.bookNow}</Link>
         </Button>
       </div>
     </div>

@@ -72,21 +72,22 @@ Your project should already use Tailwind v4. Shadcn UI components (Slot, Dialog,
 ### 3. Load fonts in `app/layout.tsx`
 
 ```tsx
-import { DM_Serif_Display, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Cormorant_Garamond, JetBrains_Mono, Onest } from "next/font/google";
 import "./globals.css";
 
-const display = DM_Serif_Display({
-  subsets: ["latin"],
+const display = Cormorant_Garamond({
+  subsets: ["latin", "cyrillic"],
   weight: ["400"],
+  style: ["normal", "italic"],
   variable: "--font-display",
 });
-const body = DM_Sans({
-  subsets: ["latin"],
+const body = Onest({
+  subsets: ["latin", "cyrillic"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-body",
 });
 const mono = JetBrains_Mono({
-  subsets: ["latin"],
+  subsets: ["latin", "cyrillic"],
   weight: ["400", "500"],
   variable: "--font-monospace",
 });

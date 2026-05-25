@@ -1,7 +1,5 @@
-import Link from "next/link";
-
-import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { CustomLink } from "@/components/ui/CustomLink";
 import {
   Empty,
   EmptyContent,
@@ -10,10 +8,12 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export function LandingFeaturedTrainersEmpty() {
-  const { featured } = MESSAGES.landing;
+
+export async function LandingFeaturedTrainersEmpty() {
+  const messages = await getMessages();
+  const { featured } = messages.landing;
 
   return (
     <section id="trainers" className="bg-card py-24">
@@ -29,9 +29,9 @@ export function LandingFeaturedTrainersEmpty() {
             <EmptyDescription>{featured.empty.description}</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Button asChild variant="outline">
-              <Link href="/trainers">{featured.empty.cta}</Link>
-            </Button>
+            <CustomLink as="button" href="/trainers" variant="outline">
+              {featured.empty.cta}
+            </CustomLink>
           </EmptyContent>
         </Empty>
       </Container>

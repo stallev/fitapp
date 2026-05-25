@@ -15,7 +15,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { SummaryCard } from "@/components/ui/SummaryCard";
 import type { TrainerOnboardingDraft } from "@/data/trainer/get-trainer-onboarding-draft.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
+import {
+  setSubmitTransportTag,
+  SUBMIT_TRANSPORT_TAGS,
+} from "@/lib/sentry/pulse-tags";
 import { isIosSafari } from "@/lib/ui/is-ios-safari";
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 import { resilientPostFetch } from "@/lib/ui/resilient-post-fetch";
@@ -25,10 +30,11 @@ export type TrainerOnboardingPreviewStepProps = {
   onBack: () => void;
 };
 
-export function TrainerOnboardingPreviewStep({
-  draft,
+export function TrainerOnboardingPreviewStep({  draft,
   onBack,
 }: TrainerOnboardingPreviewStepProps) {
+  const messages = useMessages();
+
   const router = useRouter();
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [state, formAction, isActionPending] = useActionState<
@@ -43,13 +49,15 @@ export function TrainerOnboardingPreviewStep({
       return;
     }
 
-    toast.error(state.message ?? MESSAGES.trainer.onboarding.errors.generic, {
+    toast.error(state.message ?? messages.trainer.onboarding.errors.generic, {
       duration: PRODUCT_TOAST_DURATION_MS,
     });
   }, [state]);
 
   const handleIosFallbackSubmit = () => {
     startFallbackTransition(async () => {
+      setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.ROUTE_HANDLER_FALLBACK);
+
       try {
         const response = await resilientPostFetch("/api/trainer/onboarding/submit", {
           method: "POST",
@@ -61,7 +69,7 @@ export function TrainerOnboardingPreviewStep({
         if (!result || !result.ok) {
           toast.error(
             (result && !result.ok && result.message) ||
-              MESSAGES.trainer.onboarding.errors.generic,
+              messages.trainer.onboarding.errors.generic,
             { duration: PRODUCT_TOAST_DURATION_MS },
           );
           return;
@@ -69,7 +77,7 @@ export function TrainerOnboardingPreviewStep({
 
         router.push("/trainer/dashboard?submitted=1");
       } catch {
-        toast.error(MESSAGES.trainer.onboarding.errors.generic, {
+        toast.error(messages.trainer.onboarding.errors.generic, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
       }
@@ -93,10 +101,10 @@ export function TrainerOnboardingPreviewStep({
   return (
     <div className="space-y-6">
       <ContentText variant="muted" as="p">
-        {MESSAGES.trainer.onboarding.previewHint}
+        {messages.trainer.onboarding.previewHint}
       </ContentText>
 
-      <SummaryCard title={MESSAGES.trainer.onboarding.stepPreview} rows={rows} />
+      <SummaryCard title={messages.trainer.onboarding.stepPreview} rows={rows} />
 
       <form
         action={formAction}
@@ -104,13 +112,16 @@ export function TrainerOnboardingPreviewStep({
           if (isIosSafari()) {
             event.preventDefault();
             if (!termsAccepted) {
-              toast.error(MESSAGES.trainer.onboarding.errors.termsRequired, {
+              toast.error(messages.trainer.onboarding.errors.termsRequired, {
                 duration: PRODUCT_TOAST_DURATION_MS,
               });
               return;
             }
             handleIosFallbackSubmit();
+            return;
           }
+
+          setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.SERVER_ACTION);
         }}
         className="space-y-4"
         aria-busy={pending}
@@ -125,14 +136,14 @@ export function TrainerOnboardingPreviewStep({
               disabled={pending}
             />
             <FieldLabel htmlFor="trainer-terms">
-              {MESSAGES.trainer.onboarding.termsLabel}
+              {messages.trainer.onboarding.termsLabel}
             </FieldLabel>
           </Field>
         </FieldGroup>
 
         <div className="flex gap-3">
           <Button type="button" variant="outline" onClick={onBack} disabled={pending}>
-            {MESSAGES.trainer.onboarding.back}
+            {messages.trainer.onboarding.back}
           </Button>
           <Button
             type="submit"
@@ -143,10 +154,10 @@ export function TrainerOnboardingPreviewStep({
             {pending ? (
               <>
                 <Loader2Icon aria-hidden className="size-4 animate-spin" />
-                {MESSAGES.trainer.onboarding.submitting}
+                {messages.trainer.onboarding.submitting}
               </>
             ) : (
-              MESSAGES.trainer.onboarding.submit
+              messages.trainer.onboarding.submit
             )}
           </Button>
         </div>

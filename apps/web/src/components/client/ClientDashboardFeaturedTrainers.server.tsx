@@ -4,11 +4,13 @@ import { ClientDashboardFeaturedTrainersError } from "@/components/client/Client
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
 import { getFeaturedTrainers } from "@/data/catalog/get-featured-trainers.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 const DASHBOARD_FEATURED_TRAINERS_LIMIT = 6;
 
 export async function ClientDashboardFeaturedTrainers() {
+  const messages = await getMessages();
   let trainers;
 
   try {
@@ -24,9 +26,9 @@ export async function ClientDashboardFeaturedTrainers() {
   return (
     <section>
       <SectionHeader
-        title={MESSAGES.dashboard.client.topTrainersTitle}
+        title={messages.dashboard.client.topTrainersTitle}
         actionHref="/trainers"
-        actionLabel={MESSAGES.dashboard.client.topTrainersAll}
+        actionLabel={messages.dashboard.client.topTrainersAll}
       />
       <div className="grid min-w-0 grid-cols-1 gap-2.5 lg:grid-cols-2">
         {trainers.map((trainer, index) => (

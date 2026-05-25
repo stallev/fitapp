@@ -1,12 +1,17 @@
+"use client";
+
 import { SummaryCard, type SummaryCardRow } from "@/components/ui/SummaryCard";
 import { UserAvatar } from "@/components/ui/UserAvatar";
+import {
+  useLocale,
+  useMessages,
+} from "@/components/i18n/LocaleProvider.client";
 
 import {
   formatBookingDateTime,
   formatBookingPrice,
 } from "@/lib/booking/booking-wizard-utils";
 import type { TrainerServiceItem } from "@/lib/trainer/trainer-profile";
-import { MESSAGES } from "@/lib/messages";
 
 export type BookingWizardSidebarProps = {
   trainerName: string;
@@ -25,31 +30,34 @@ export function BookingWizardSidebar({
   timezone,
   className,
 }: BookingWizardSidebarProps) {
+  const messages = useMessages();
+  const locale = useLocale();
+
   if (!service) {
     return null;
   }
 
   const rows: SummaryCardRow[] = [
     {
-      label: MESSAGES.booking.detail.trainerLabel,
+      label: messages.booking.detail.trainerLabel,
       value: trainerName,
     },
     {
-      label: MESSAGES.booking.detail.serviceLabel,
+      label: messages.booking.detail.serviceLabel,
       value: service.name,
     },
   ];
 
   if (startsAtUtc) {
     rows.push({
-      label: MESSAGES.booking.detail.timeLabel,
-      value: formatBookingDateTime(startsAtUtc, timezone),
+      label: messages.booking.detail.timeLabel,
+      value: formatBookingDateTime(startsAtUtc, timezone, locale),
     });
   }
 
   return (
     <SummaryCard
-      title={MESSAGES.booking.wizard.summaryTitle}
+      title={messages.booking.wizard.summaryTitle}
       className={className}
       header={
         <div className="flex items-center gap-3">
@@ -60,8 +68,8 @@ export function BookingWizardSidebar({
       rows={rows}
       totals={[
         {
-          label: MESSAGES.booking.detail.priceLabel,
-          value: formatBookingPrice(service.priceCents, service.currency),
+          label: messages.booking.detail.priceLabel,
+          value: formatBookingPrice(service.priceCents, service.currency, locale),
         },
       ]}
     />

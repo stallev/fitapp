@@ -8,15 +8,17 @@ import {
 } from "@/lib/admin/complaint-badges";
 import { formatBookingReference } from "@/lib/admin/format-booking-reference";
 import { formatAdminRelativeDate } from "@/lib/date/format-admin-relative";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 
 export type ComplaintDetailCardProps = {
   complaint: ComplaintDetail;
 };
 
-export function ComplaintDetailCard({ complaint }: ComplaintDetailCardProps) {
-  const priorityBadge = getComplaintPriorityBadge(complaint.priority);
-  const statusBadge = getComplaintStatusBadge(complaint.status);
+export async function ComplaintDetailCard({ complaint }: ComplaintDetailCardProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
+  const priorityBadge = getComplaintPriorityBadge(complaint.priority, messages);
+  const statusBadge = getComplaintStatusBadge(complaint.status, messages);
 
   return (
     <PulseCard variant="base" className="rounded-2xl">
@@ -29,21 +31,21 @@ export function ComplaintDetailCard({ complaint }: ComplaintDetailCardProps) {
             {statusBadge.label}
           </StatusBadge>
           <ContentText as="span" className="text-[11.5px] text-muted-foreground">
-            · {formatAdminRelativeDate(complaint.createdAt)}
+            · {formatAdminRelativeDate(complaint.createdAt, locale)}
           </ContentText>
         </div>
 
         <div className="space-y-1 text-sm">
           <ContentText as="p">
             <span className="text-muted-foreground">
-              {MESSAGES.admin.complaints.fromLabel}
+              {messages.admin.complaints.fromLabel}
             </span>{" "}
             {complaint.reporterName}
           </ContentText>
           {complaint.trainerName ? (
             <ContentText as="p">
               <span className="text-muted-foreground">
-                {MESSAGES.admin.complaints.onLabel}
+                {messages.admin.complaints.onLabel}
               </span>{" "}
               {complaint.trainerName}
             </ContentText>
@@ -58,13 +60,13 @@ export function ComplaintDetailCard({ complaint }: ComplaintDetailCardProps) {
           <dl className="grid gap-3 text-sm md:max-w-xl">
             <div>
               <dt className="text-muted-foreground">
-                {MESSAGES.admin.complaints.booking}
+                {messages.admin.complaints.booking}
               </dt>
               <dd
                 title={complaint.bookingId}
                 className="font-mono text-[13px]"
               >
-                {MESSAGES.admin.complaints.bookingReference.replace(
+                {messages.admin.complaints.bookingReference.replace(
                   "{ref}",
                   formatBookingReference(complaint.bookingId),
                 )}

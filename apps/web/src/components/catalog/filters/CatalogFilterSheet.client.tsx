@@ -19,7 +19,8 @@ import { SlidersHorizontalIcon } from "lucide-react";
 import type { CatalogFilterOptions } from "@/data/catalog/get-catalog-filter-options.server";
 import { buildCatalogHref } from "@/lib/catalog/build-catalog-search-params";
 import { countActiveCatalogFilters } from "@/lib/catalog/catalog-filter-utils";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 import {
   CatalogFilterFields,
@@ -40,6 +41,7 @@ function pickFilterDraft(query: CatalogTrainersQuery): CatalogFilterDraft {
 }
 
 export function CatalogFilterSheet({ query, options }: CatalogFilterSheetProps) {
+  const messages = useMessages();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<CatalogFilterDraft>(() => pickFilterDraft(query));
@@ -76,7 +78,7 @@ export function CatalogFilterSheet({ query, options }: CatalogFilterSheetProps) 
       <SheetTrigger asChild>
         <Button type="button" variant="outline" className="lg:hidden">
           <SlidersHorizontalIcon aria-hidden />
-          {MESSAGES.catalog.filtersButton}
+          {messages.catalog.filtersButton}
           {activeCount > 0 ? (
             <IconBadge count={activeCount} aria-label={`${activeCount} active filters`} />
           ) : null}
@@ -84,7 +86,7 @@ export function CatalogFilterSheet({ query, options }: CatalogFilterSheetProps) 
       </SheetTrigger>
       <SheetContent side="bottom" className="max-h-[85dvh] overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>{MESSAGES.catalog.filtersTitle}</SheetTitle>
+          <SheetTitle>{messages.catalog.filtersTitle}</SheetTitle>
         </SheetHeader>
         <div className="px-4 py-2">
           <CatalogFilterFields
@@ -95,10 +97,10 @@ export function CatalogFilterSheet({ query, options }: CatalogFilterSheetProps) 
         </div>
         <SheetFooter className="flex-row gap-2">
           <Button type="button" variant="ghost" onClick={handleClear}>
-            {MESSAGES.catalog.clearFilters}
+            {messages.catalog.clearFilters}
           </Button>
           <Button type="button" onClick={handleApply}>
-            {MESSAGES.catalog.applyFilters}
+            {messages.catalog.applyFilters}
           </Button>
         </SheetFooter>
       </SheetContent>

@@ -4,25 +4,27 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import type { ComplaintDetail } from "@/data/admin/get-complaint-detail.server";
 import { getComplaintResolutionBadge } from "@/lib/admin/complaint-badges";
 import { formatAdminRelativeDate } from "@/lib/date/format-admin-relative";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 
 export type ComplaintClosedSummaryProps = {
   complaint: ComplaintDetail;
 };
 
-export function ComplaintClosedSummary({
-  complaint,
+export async function ComplaintClosedSummary({  complaint,
 }: ComplaintClosedSummaryProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
+
   if (!complaint.resolution) {
     return null;
   }
 
-  const resolutionBadge = getComplaintResolutionBadge(complaint.resolution);
+  const resolutionBadge = getComplaintResolutionBadge(complaint.resolution, messages);
 
   return (
     <PulseCard variant="base" className="rounded-2xl">
       <PulseCardContent density="sm" className="space-y-3">
-        <SectionTitle>{MESSAGES.admin.complaints.closedSummaryTitle}</SectionTitle>
+        <SectionTitle>{messages.admin.complaints.closedSummaryTitle}</SectionTitle>
 
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge status={resolutionBadge.variant}>
@@ -33,7 +35,7 @@ export function ComplaintClosedSummary({
         {complaint.adminNotes ? (
           <div className="space-y-1">
             <ContentText as="p" className="text-sm text-muted-foreground">
-              {MESSAGES.admin.complaints.adminNotes}
+              {messages.admin.complaints.adminNotes}
             </ContentText>
             <ContentText as="p" className="text-sm">
               {complaint.adminNotes}
@@ -45,7 +47,7 @@ export function ComplaintClosedSummary({
           {complaint.resolvedByName ? (
             <div className="flex flex-wrap gap-2">
               <dt className="text-muted-foreground">
-                {MESSAGES.admin.complaints.closedBy}
+                {messages.admin.complaints.closedBy}
               </dt>
               <dd>{complaint.resolvedByName}</dd>
             </div>
@@ -53,9 +55,9 @@ export function ComplaintClosedSummary({
           {complaint.resolvedAt ? (
             <div className="flex flex-wrap gap-2">
               <dt className="text-muted-foreground">
-                {MESSAGES.admin.complaints.closedAt}
+                {messages.admin.complaints.closedAt}
               </dt>
-              <dd>{formatAdminRelativeDate(complaint.resolvedAt)}</dd>
+              <dd>{formatAdminRelativeDate(complaint.resolvedAt, locale)}</dd>
             </div>
           ) : null}
         </dl>

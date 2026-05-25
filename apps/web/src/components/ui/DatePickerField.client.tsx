@@ -3,9 +3,9 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { format, isAfter, isBefore, startOfDay } from "date-fns";
 import type { Locale } from "date-fns";
-import { ru } from "date-fns/locale";
 import { ChevronDownIcon } from "lucide-react";
 
+import { useLocale } from "@/components/i18n/LocaleProvider.client";
 import { buttonVariants } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
@@ -14,6 +14,7 @@ import {
   formatDateToIsoDateOnly,
   getDatePickerProps,
 } from "@/lib/date/iso-date-picker";
+import { getDateFnsLocale } from "@/lib/i18n/format";
 import { cn } from "@/lib/utils";
 
 export type DatePickerFieldProps = {
@@ -28,7 +29,7 @@ export type DatePickerFieldProps = {
   invalid?: boolean;
   error?: string;
   className?: string;
-  /** date-fns locale; default Russian */
+  /** Override date-fns locale; defaults to active app locale */
   dateLocale?: Locale;
   /** Disables dates after today (e.g. birth date) */
   disableFuture?: boolean;
@@ -51,13 +52,15 @@ export const DatePickerField = ({
   invalid = false,
   error,
   className,
-  dateLocale = ru,
+  dateLocale: dateLocaleOverride,
   disableFuture = false,
   disablePast = false,
   isDateDisabled,
   startMonth,
   endMonth,
 }: DatePickerFieldProps) => {
+  const appLocale = useLocale();
+  const dateLocale = dateLocaleOverride ?? getDateFnsLocale(appLocale);
   const [open, setOpen] = useState(false);
   const [iso, setIso] = useState(defaultValue);
 

@@ -687,7 +687,7 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 
 **Документация MVP-complete (W0–W24).** Core MVP: P01–P14 (W16). **Post-P14:** **P16** (Public Landing v2), **P17** (UI i18n EN/RU), **P19** (Complaint Resolution v2), **P18** (Admin People Ops spec), **P21** (Email, post-MVP).
 
-**После W24** имплементация post-P14: P17 i18n, P16 landing replace, P19 complaints (in progress), P18 people ops, P21 email after deferral unlock.
+**После W24** имплементация post-P14: **P17 i18n complete**, P16 landing replace, P19 complaints (in progress), P18 people ops, P21 email after deferral unlock.
 
 ---
 
@@ -695,6 +695,7 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 
 | Date | Change |
 |------|--------|
+| 2026-05-25 | **P17 implementation complete** — cookie-first EN/RU i18n in `apps/web`; `getMessages`/`useMessages`; formatters; LocaleSwitcher; auth `user.locale` persist |
 | 2026-05-25 | **W24 complete** — P17 UI i18n (EN/RU): ADR-009, i18n_runtime_spec, P17 phase/tasks, client_profile wireframe v2, matrix + cross-ref sync |
 | 2026-05-25 | **W23 complete** — Complaint Resolution v2 P17→P19; P17 slot reallocated W24; `_migration_P17_to_P19.md`; matrix + cross-ref sync |
 | 2026-05-25 | **W22 complete** — P16 landing v2 (`public_landing_spec`, phase/tasks, wireframe v2); renumber P15→P21, P20→P17; Admin People Ops P16→P18; `_migration_P15-P20_renumbering.md`; matrix + cross-ref sync |

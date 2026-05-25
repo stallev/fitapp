@@ -11,15 +11,17 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { listTrainerClients } from "@/data/trainer/list-trainer-clients.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export default async function TrainerClientsPage() {
+  const messages = await getMessages();
   const clients = await listTrainerClients();
 
   return (
     <>
       <Heading as="h1" visualLevel="h3">
-        {MESSAGES.trainer.clients.title}
+        {messages.trainer.clients.title}
       </Heading>
       {clients.length === 0 ? (
         <Empty className="mt-6 border-border bg-card">
@@ -27,9 +29,9 @@ export default async function TrainerClientsPage() {
             <EmptyMedia variant="icon">
               <UsersIcon aria-hidden />
             </EmptyMedia>
-            <EmptyTitle>{MESSAGES.trainer.clients.emptyTitle}</EmptyTitle>
+            <EmptyTitle>{messages.trainer.clients.emptyTitle}</EmptyTitle>
             <EmptyDescription>
-              {MESSAGES.trainer.clients.emptyDescription}
+              {messages.trainer.clients.emptyDescription}
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent />

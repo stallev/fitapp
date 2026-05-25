@@ -11,7 +11,8 @@ import {
 import { signIn } from "@/auth";
 import { verifyUserCredentials } from "@/data/auth/verify-user-credentials.server";
 import { resolveSafeCallbackUrl } from "@/lib/auth/safe-callback-url";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export type LoginFormState = MutationResult | null;
 
@@ -19,6 +20,7 @@ export async function loginAction(
   _prevState: LoginFormState,
   formData: FormData,
 ): Promise<LoginFormState> {
+  const messages = await getMessages();
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
   const callbackUrl = String(formData.get("callbackUrl") ?? "").trim() || null;
@@ -28,7 +30,7 @@ export async function loginAction(
     return {
       ok: false,
       code: AUTH_MUTATION_ERROR_CODES.INVALID_CREDENTIALS,
-      message: MESSAGES.auth.login.invalidCredentials,
+      message: messages.auth.login.invalidCredentials,
     };
   }
 
@@ -43,7 +45,7 @@ export async function loginAction(
       return {
         ok: false,
         code: AUTH_MUTATION_ERROR_CODES.INVALID_CREDENTIALS,
-        message: MESSAGES.auth.login.invalidCredentials,
+        message: messages.auth.login.invalidCredentials,
       };
     }
   } catch (error) {
@@ -51,7 +53,7 @@ export async function loginAction(
       return {
         ok: false,
         code: AUTH_MUTATION_ERROR_CODES.INVALID_CREDENTIALS,
-        message: MESSAGES.auth.login.invalidCredentials,
+        message: messages.auth.login.invalidCredentials,
       };
     }
 

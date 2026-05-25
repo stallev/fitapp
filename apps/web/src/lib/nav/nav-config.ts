@@ -1,6 +1,6 @@
 import { USER_ROLE, type UserRole } from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
+import type { Messages } from "@/lib/messages/types";
 
 export type NavBadgeKey =
   | "pendingTrainers"
@@ -30,109 +30,115 @@ export type NavItemConfig = {
 
 export type AdminNavBadges = Partial<Record<NavBadgeKey, number>>;
 
-const CLIENT_NAV: NavItemConfig[] = [
-  {
-    label: MESSAGES.nav.client.home,
-    href: "/client/dashboard",
-    iconKey: "home",
-  },
-  {
-    label: MESSAGES.nav.client.trainers,
-    href: "/trainers",
-    iconKey: "search",
-  },
-  {
-    label: MESSAGES.nav.client.sessions,
-    href: "/client/bookings",
-    iconKey: "calendar",
-  },
-  {
-    label: MESSAGES.nav.client.profile,
-    href: "/client/profile",
-    iconKey: "user",
-  },
-];
+function buildClientNav(messages: Messages): NavItemConfig[] {
+  return [
+    {
+      label: messages.nav.client.home,
+      href: "/client/dashboard",
+      iconKey: "home",
+    },
+    {
+      label: messages.nav.client.trainers,
+      href: "/trainers",
+      iconKey: "search",
+    },
+    {
+      label: messages.nav.client.sessions,
+      href: "/client/bookings",
+      iconKey: "calendar",
+    },
+    {
+      label: messages.nav.client.profile,
+      href: "/client/profile",
+      iconKey: "user",
+    },
+  ];
+}
 
-const TRAINER_NAV: NavItemConfig[] = [
-  {
-    label: MESSAGES.nav.trainer.today,
-    href: "/trainer/dashboard",
-    iconKey: "home",
-  },
-  {
-    label: MESSAGES.nav.trainer.schedule,
-    href: "/trainer/schedule",
-    iconKey: "calendar",
-  },
-  {
-    label: MESSAGES.nav.trainer.services,
-    href: "/trainer/services",
-    iconKey: "dumbbell",
-  },
-  {
-    label: MESSAGES.nav.trainer.clients,
-    href: "/trainer/clients",
-    iconKey: "users",
-  },
-  {
-    label: MESSAGES.nav.trainer.income,
-    href: "/trainer/income",
-    iconKey: "dollar",
-  },
-];
+function buildTrainerNav(messages: Messages): NavItemConfig[] {
+  return [
+    {
+      label: messages.nav.trainer.today,
+      href: "/trainer/dashboard",
+      iconKey: "home",
+    },
+    {
+      label: messages.nav.trainer.schedule,
+      href: "/trainer/schedule",
+      iconKey: "calendar",
+    },
+    {
+      label: messages.nav.trainer.services,
+      href: "/trainer/services",
+      iconKey: "dumbbell",
+    },
+    {
+      label: messages.nav.trainer.clients,
+      href: "/trainer/clients",
+      iconKey: "users",
+    },
+    {
+      label: messages.nav.trainer.income,
+      href: "/trainer/income",
+      iconKey: "dollar",
+    },
+  ];
+}
 
-const ADMIN_NAV: NavItemConfig[] = [
-  {
-    label: MESSAGES.nav.admin.overview,
-    href: "/admin/dashboard",
-    iconKey: "home",
-  },
-  {
-    label: MESSAGES.nav.admin.trainers,
-    href: "/admin/trainers",
-    iconKey: "shield",
-    badgeKey: "pendingTrainers",
-  },
-  {
-    label: MESSAGES.nav.admin.complaints,
-    href: "/admin/complaints",
-    iconKey: "flag",
-    badgeKey: "openComplaints",
-  },
-  {
-    label: MESSAGES.nav.admin.refunds,
-    href: "/admin/refunds",
-    iconKey: "refresh",
-    badgeKey: "pendingRefunds",
-  },
-  {
-    label: MESSAGES.nav.admin.reviews,
-    href: "/admin/reviews",
-    iconKey: "star",
-  },
-];
+function buildAdminNav(messages: Messages): NavItemConfig[] {
+  return [
+    {
+      label: messages.nav.admin.overview,
+      href: "/admin/dashboard",
+      iconKey: "home",
+    },
+    {
+      label: messages.nav.admin.trainers,
+      href: "/admin/trainers",
+      iconKey: "shield",
+      badgeKey: "pendingTrainers",
+    },
+    {
+      label: messages.nav.admin.complaints,
+      href: "/admin/complaints",
+      iconKey: "flag",
+      badgeKey: "openComplaints",
+    },
+    {
+      label: messages.nav.admin.refunds,
+      href: "/admin/refunds",
+      iconKey: "refresh",
+      badgeKey: "pendingRefunds",
+    },
+    {
+      label: messages.nav.admin.reviews,
+      href: "/admin/reviews",
+      iconKey: "star",
+    },
+  ];
+}
 
-export function getNavItems(role: UserRole): NavItemConfig[] {
+export function getNavItems(role: UserRole, messages: Messages): NavItemConfig[] {
   switch (role) {
     case USER_ROLE.CLIENT:
-      return CLIENT_NAV;
+      return buildClientNav(messages);
     case USER_ROLE.TRAINER:
-      return TRAINER_NAV;
+      return buildTrainerNav(messages);
     case USER_ROLE.ADMIN:
-      return ADMIN_NAV;
+      return buildAdminNav(messages);
     default:
       return [];
   }
 }
 
-export function getNavSectionTitle(role: UserRole): string {
+export function getNavSectionTitle(role: UserRole, messages: Messages): string {
   switch (role) {
     case USER_ROLE.CLIENT:
-      return MESSAGES.shell.sectionClient;
+      return messages.shell.sectionClient;
     case USER_ROLE.TRAINER:
-      return MESSAGES.shell.sectionTrainer;
+      return messages.shell.sectionTrainer;
     case USER_ROLE.ADMIN:
-      return MESSAGES.shell.sectionAdmin;
+      return messages.shell.sectionAdmin;
     default:
       return "";
   }

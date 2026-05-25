@@ -10,24 +10,30 @@ import { CatalogFilterSidebar } from "@/components/catalog/filters/CatalogFilter
 import { CatalogSearchInput } from "@/components/catalog/filters/CatalogSearchInput.client";
 import { getCatalogFilterOptions } from "@/data/catalog/get-catalog-filter-options.server";
 import { parseCatalogSearchParams } from "@/lib/catalog/parse-catalog-search-params";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export const metadata: Metadata = {
-  title: MESSAGES.catalog.meta.title,
-  description: MESSAGES.catalog.meta.description,
-};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const messages = await getMessages();
+  return {
+    title: messages.catalog.meta.title,
+    description: messages.catalog.meta.description,
+  };
+}
 
 type TrainersPageProps = {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default async function TrainersPage({ searchParams }: TrainersPageProps) {
+export default async function TrainersPage({  searchParams,
+}: TrainersPageProps) {
+  const messages = await getMessages();
   const query = parseCatalogSearchParams(await searchParams);
   const filterOptions = await getCatalogFilterOptions();
 
   return (
     <div className="space-y-4">
-      <PageHeader title={MESSAGES.catalog.title} />
+      <PageHeader title={messages.catalog.title} />
 
       <div className="lg:grid lg:grid-cols-[280px_1fr] lg:gap-6">
         <CatalogFilterSidebar query={query} options={filterOptions} />

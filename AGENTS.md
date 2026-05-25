@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P14 complete (quality gate). **Post-P14 tracks:** **P16** (public landing v2), **P17** (UI i18n EN/RU — documented), **P19** (complaint resolution v2 — in progress), **P18** (admin people ops, spec only), **P21** (email & jobs, post-MVP deferral). См. [`_migration_P17_to_P19.md`](docs/implementation/mvp/phases_tasks_descriptions/_migration_P17_to_P19.md) (complaints renumber only).  
+**Текущая фаза:** P14 complete (quality gate). **Post-P14 tracks:** **P16** (public landing v2), **P17** (UI i18n EN/RU — **complete**), **P19** (complaint resolution v2 — in progress), **P18** (admin people ops, spec only), **P21** (email & jobs, post-MVP deferral). См. [`_migration_P17_to_P19.md`](docs/implementation/mvp/phases_tasks_descriptions/_migration_P17_to_P19.md) (complaints renumber only).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

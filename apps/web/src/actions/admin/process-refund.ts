@@ -13,34 +13,37 @@ import {
   approveRefundMutation,
   rejectRefundMutation,
 } from "@/data/admin/process-refund.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-function mapRefundError(code: string): string {
+
+function mapRefundError(code: string, messages: Awaited<ReturnType<typeof getMessages>>): string {
   switch (code) {
     case REFUND_MUTATION_ERROR_CODES.ALREADY_PROCESSED:
-      return MESSAGES.admin.refunds.alreadyProcessed;
+      return messages.admin.refunds.alreadyProcessed;
     case REFUND_MUTATION_ERROR_CODES.VALIDATION:
-      return MESSAGES.admin.refunds.adminCommentRequired;
+      return messages.admin.refunds.adminCommentRequired;
     default:
-      return MESSAGES.admin.errors.generic;
+      return messages.admin.errors.generic;
   }
 }
 
 export async function approveRefundAction(
   input: ApproveRefundInput,
 ): Promise<MutationResult<{ refundRequestId: string }>> {
+  const messages = await getMessages();
+
   const parsed = approveRefundInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.admin.errors.validation,
+      message: messages.admin.errors.validation,
     };
   }
 
   const result = await approveRefundMutation(parsed.data);
   if (!result.ok) {
-    return { ...result, message: mapRefundError(result.code) };
+    return { ...result, message: mapRefundError(result.code, messages) };
   }
 
   return result;
@@ -49,18 +52,20 @@ export async function approveRefundAction(
 export async function rejectRefundAction(
   input: RejectRefundInput,
 ): Promise<MutationResult<{ refundRequestId: string }>> {
+  const messages = await getMessages();
+
   const parsed = rejectRefundInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.admin.refunds.adminCommentRequired,
+      message: messages.admin.refunds.adminCommentRequired,
     };
   }
 
   const result = await rejectRefundMutation(parsed.data);
   if (!result.ok) {
-    return { ...result, message: mapRefundError(result.code) };
+    return { ...result, message: mapRefundError(result.code, messages) };
   }
 
   return result;

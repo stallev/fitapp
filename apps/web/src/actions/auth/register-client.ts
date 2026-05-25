@@ -11,7 +11,7 @@ import {
 
 import { signIn } from "@/auth";
 import { registerClientUser } from "@/data/auth/register-client.server";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
 import { getRoleHome } from "@pulse/policy-edge";
 
 export type RegisterClientFormState = MutationResult | null;
@@ -20,12 +20,13 @@ export async function registerClientAction(
   _prevState: RegisterClientFormState,
   formData: FormData,
 ): Promise<RegisterClientFormState> {
+  const messages = await getMessages();
   const acceptedTerms = formData.get("acceptedTerms") === "on";
   if (!acceptedTerms) {
     return {
       ok: false,
       code: AUTH_MUTATION_ERROR_CODES.TERMS_REQUIRED,
-      message: MESSAGES.auth.register.termsRequired,
+      message: messages.auth.register.termsRequired,
     };
   }
 
@@ -38,7 +39,7 @@ export async function registerClientAction(
     return {
       ok: false,
       code: AUTH_MUTATION_ERROR_CODES.PASSWORD_MISMATCH,
-      message: MESSAGES.auth.register.passwordMismatch,
+      message: messages.auth.register.passwordMismatch,
     };
   }
 
@@ -47,24 +48,25 @@ export async function registerClientAction(
     return {
       ok: false,
       code: AUTH_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.auth.register.validationError,
+      message: messages.auth.register.validationError,
     };
   }
 
-  const result = await registerClientUser(parsed.data);
+  const locale = await getLocale();
+  const result = await registerClientUser(parsed.data, locale);
   if (!result.ok) {
     if (result.code === AUTH_MUTATION_ERROR_CODES.DUPLICATE_EMAIL) {
       return {
         ok: false,
         code: AUTH_MUTATION_ERROR_CODES.DUPLICATE_EMAIL,
-        message: MESSAGES.auth.register.duplicateEmail,
+        message: messages.auth.register.duplicateEmail,
       };
     }
 
     return {
       ok: false,
       code: result.code,
-      message: MESSAGES.auth.register.validationError,
+      message: messages.auth.register.validationError,
     };
   }
 

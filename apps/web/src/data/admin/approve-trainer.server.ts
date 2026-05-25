@@ -14,49 +14,52 @@ import { getPrisma } from "@pulse/db";
 import { assertCanApproveTrainer, PolicyError } from "@pulse/policy-server";
 
 import { CACHE_TAGS } from "@/lib/cache/tags";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 export type ApproveTrainerResult = MutationResult<{ trainerProfileId: string }>;
 
-function mapPolicyError(error: PolicyError): ApproveTrainerResult {
+function mapPolicyError(error: PolicyError, messages: Messages): ApproveTrainerResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: TRAINER_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
   return {
     ok: false,
     code: TRAINER_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.admin.errors.forbidden,
+    message: messages.admin.errors.forbidden,
   };
 }
 
 function mapValidationError(
   code: (typeof TRAINER_MUTATION_ERROR_CODES)[keyof typeof TRAINER_MUTATION_ERROR_CODES],
+  messages: Messages,
 ): ApproveTrainerResult {
   switch (code) {
     case TRAINER_MUTATION_ERROR_CODES.APPLICATION_INCOMPLETE:
       return {
         ok: false,
         code,
-        message: MESSAGES.admin.moderation.incomplete,
+        message: messages.admin.moderation.incomplete,
       };
     case TRAINER_MUTATION_ERROR_CODES.INVALID_STATUS_TRANSITION:
     case TRAINER_MUTATION_ERROR_CODES.ALREADY_PROCESSED:
       return {
         ok: false,
         code: TRAINER_MUTATION_ERROR_CODES.ALREADY_PROCESSED,
-        message: MESSAGES.admin.moderation.alreadyProcessed,
+        message: messages.admin.moderation.alreadyProcessed,
       };
     default:
       return {
         ok: false,
         code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.admin.errors.validation,
+        message: messages.admin.errors.validation,
       };
   }
 }
@@ -64,6 +67,7 @@ function mapValidationError(
 async function runApproveTrainerTransaction(
   actorUserId: string,
   trainerProfileId: string,
+  messages: Messages,
 ): Promise<ApproveTrainerResult> {
   const prisma = getPrisma();
 
@@ -85,7 +89,7 @@ async function runApproveTrainerTransaction(
       return {
         ok: false,
         code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.admin.errors.notFound,
+        message: messages.admin.errors.notFound,
       };
     }
 
@@ -100,7 +104,7 @@ async function runApproveTrainerTransaction(
     });
 
     if (validation) {
-      return mapValidationError(validation.code);
+      return mapValidationError(validation.code, messages);
     }
 
     const updated = await tx.trainerProfile.updateMany({
@@ -117,7 +121,7 @@ async function runApproveTrainerTransaction(
     });
 
     if (updated.count === 0) {
-      return mapValidationError(TRAINER_MUTATION_ERROR_CODES.ALREADY_PROCESSED);
+      return mapValidationError(TRAINER_MUTATION_ERROR_CODES.ALREADY_PROCESSED, messages);
     }
 
     await tx.auditLog.create({
@@ -136,12 +140,13 @@ async function runApproveTrainerTransaction(
 export async function approveTrainerMutation(
   input: ApproveTrainerInput,
 ): Promise<ApproveTrainerResult> {
+  const messages = await getMessages();
   const parsed = approveTrainerInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.admin.errors.validation,
+      message: messages.admin.errors.validation,
     };
   }
 
@@ -150,7 +155,7 @@ export async function approveTrainerMutation(
     return {
       ok: false,
       code: TRAINER_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
@@ -158,19 +163,19 @@ export async function approveTrainerMutation(
     assertCanApproveTrainer(ctx);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
   }
 
-  return runApproveTrainerTransaction(ctx.userId, parsed.data.trainerProfileId);
+  return runApproveTrainerTransaction(ctx.userId, parsed.data.trainerProfileId, messages);
 }
 
 export async function approveTrainerWithCacheInvalidation(
   input: ApproveTrainerInput,
 ): Promise<ApproveTrainerResult> {
-  const result = await approveTrainerMutation(input);
+    const result = await approveTrainerMutation(input);
 
   if (result.ok) {
     updateTag(CACHE_TAGS.trainersCatalog);

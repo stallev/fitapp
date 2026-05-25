@@ -1,10 +1,16 @@
+"use client";
+
 import { ContentText } from "@/components/atoms";
-import { ClientBookingReviewListAction } from "@/components/client/ClientBookingReviewListAction";
+import { ClientBookingReviewListAction } from "@/components/client/ClientBookingReviewListAction.client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CustomLink } from "@/components/ui/CustomLink";
 import { PulseCard } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import {
+  useLocale,
+  useMessages,
+} from "@/components/i18n/LocaleProvider.client";
 
 import type { ClientBookingListEntry } from "@/data/client/get-client-bookings.server";
 import { formatBookingDateTimeLocal } from "@/lib/booking/format-booking-datetime-local";
@@ -13,7 +19,6 @@ import {
   getBookingStatusLabel,
 } from "@/lib/booking/booking-status-ui";
 import type { ClientBookingTab } from "@/lib/booking/booking-tab-utils";
-import { MESSAGES } from "@/lib/messages";
 import { cn } from "@/lib/utils";
 
 function getInitials(name: string): string {
@@ -43,6 +48,9 @@ export function BookingListItem({
   onJoinClick,
   className,
 }: BookingListItemProps) {
+  const messages = useMessages();
+  const locale = useLocale();
+
   const status = booking.status;
   const showUpcomingActions = tab === "upcoming" && booking.canCancel;
   const showPastReviewActions = tab === "past";
@@ -80,14 +88,14 @@ export function BookingListItem({
               status={getBookingStatusBadgeVariant(status)}
               className="shrink-0"
             >
-              {getBookingStatusLabel(status)}
+              {getBookingStatusLabel(status, messages)}
             </StatusBadge>
           </div>
           <ContentText variant="metaSecondary" as="p" className="mt-0.5 line-clamp-1">
             {booking.serviceNameSnapshot}
           </ContentText>
           <ContentText variant="metaPrimary" as="p" className="mt-1.5">
-            {formatBookingDateTimeLocal(booking.startsAtUtc)}
+            {formatBookingDateTimeLocal(booking.startsAtUtc, locale)}
           </ContentText>
         </div>
       </CustomLink>
@@ -101,7 +109,7 @@ export function BookingListItem({
             className="min-h-11 flex-1"
             onClick={onJoinClick}
           >
-            {MESSAGES.booking.actions.join}
+            {messages.booking.actions.join}
           </Button>
           <Button
             type="button"
@@ -110,7 +118,7 @@ export function BookingListItem({
             className="min-h-11 shrink-0"
             onClick={onCancelClick}
           >
-            {MESSAGES.booking.cancel.button}
+            {messages.booking.cancel.button}
           </Button>
         </div>
       ) : null}

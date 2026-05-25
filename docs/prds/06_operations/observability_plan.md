@@ -22,7 +22,7 @@
 
 **In scope:** Vercel logs, Next.js error boundaries, structured server logging conventions, Neon health signals, post-MVP job/delivery observability, PII redaction rules.
 
-**Out of scope:** Full APM vendor selection ADR, custom metrics dashboard build, AWS CloudWatch (deferred), detailed Sentry setup YAML (integrate when adopted in P14+).
+**Out of scope:** Full APM vendor selection ADR, custom metrics dashboard build, AWS CloudWatch (deferred). Session Replay deferred (privacy review).
 
 ---
 
@@ -57,7 +57,7 @@ flowchart TB
 |-------|-----|----------|
 | Vercel function logs | ✅ | ✅ |
 | `error.tsx` / `global-error.tsx` | ✅ per route group | ✅ |
-| Sentry (or equivalent) | SHOULD P14 | ✅ |
+| Sentry (or equivalent) | SHOULD P14 | ✅ Integrated — `@sentry/nextjs` in `apps/web`; DSN via `NEXT_PUBLIC_SENTRY_DSN`; source maps on build |
 | Custom metrics | ❌ | MAY |
 | Email delivery audit | ❌ runtime | ✅ `delivery_log` |
 | Cron run audit | ❌ | ✅ `job_execution` |
@@ -169,7 +169,7 @@ Aligns with [`ui_states_contract.md`](../../design/ui_states_contract.md).
 | DB connectivity | Neon dashboard | Check pool limits |
 | Cron miss (P21) | Vercel Cron history | Alert when jobs enabled |
 
-**SHOULD (P14):** integrate error tracking (e.g. Sentry) for unhandled server exceptions with release tagging.
+**SHOULD (P14):** integrate error tracking (e.g. Sentry) for unhandled server exceptions with release tagging — **done** in `apps/web` via `@sentry/nextjs`, `instrumentation.ts`, `global-error.tsx`, and build-time source map upload (`SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`).
 
 ---
 

@@ -11,7 +11,8 @@ import { RatingStars } from "@/components/ui/RatingStars";
 import { Textarea } from "@/components/ui/textarea";
 import type { MutationResult } from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 const BODY_MAX = 500;
@@ -21,6 +22,7 @@ export type ReviewFormProps = {
 };
 
 export function ReviewForm({ bookingId }: ReviewFormProps) {
+  const messages = useMessages();
   const [rating, setRating] = useState(0);
   const [bodyLength, setBodyLength] = useState(0);
   const [ratingError, setRatingError] = useState<string | null>(null);
@@ -45,7 +47,7 @@ export function ReviewForm({ bookingId }: ReviewFormProps) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     if (rating < 1) {
       event.preventDefault();
-      setRatingError(MESSAGES.review.ratingRequired);
+      setRatingError(messages.review.ratingRequired);
       return;
     }
 
@@ -58,7 +60,7 @@ export function ReviewForm({ bookingId }: ReviewFormProps) {
       <input type="hidden" name="rating" value={rating > 0 ? String(rating) : ""} />
 
       <Field data-invalid={Boolean(ratingError)}>
-        <FieldLabel>{MESSAGES.review.ratingLabel}</FieldLabel>
+        <FieldLabel>{messages.review.ratingLabel}</FieldLabel>
         <RatingStars
           interactive
           value={rating}
@@ -67,13 +69,13 @@ export function ReviewForm({ bookingId }: ReviewFormProps) {
             setRating(value);
             setRatingError(null);
           }}
-          aria-label={MESSAGES.review.ratingLabel}
+          aria-label={messages.review.ratingLabel}
         />
         {ratingError ? <FieldError>{ratingError}</FieldError> : null}
       </Field>
 
       <Field>
-        <FieldLabel htmlFor="review-body">{MESSAGES.review.bodyLabel}</FieldLabel>
+        <FieldLabel htmlFor="review-body">{messages.review.bodyLabel}</FieldLabel>
         <Textarea
           id="review-body"
           name="body"
@@ -82,7 +84,7 @@ export function ReviewForm({ bookingId }: ReviewFormProps) {
           maxLength={BODY_MAX}
           rows={5}
           disabled={pending}
-          placeholder={MESSAGES.review.bodyPlaceholder}
+          placeholder={messages.review.bodyPlaceholder}
           onChange={(event) => setBodyLength(event.target.value.length)}
         />
         <ContentText
@@ -90,7 +92,7 @@ export function ReviewForm({ bookingId }: ReviewFormProps) {
           as="p"
           className="mt-1 text-right font-mono"
         >
-          {MESSAGES.review.charCount
+          {messages.review.charCount
             .replace("{count}", String(bodyLength))
             .replace("{max}", String(BODY_MAX))}
         </ContentText>
@@ -98,10 +100,10 @@ export function ReviewForm({ bookingId }: ReviewFormProps) {
 
       <div className="space-y-3">
         <Button type="submit" className="w-full" disabled={pending} aria-busy={pending}>
-          {pending ? MESSAGES.review.submitting : MESSAGES.review.submit}
+          {pending ? messages.review.submitting : messages.review.submit}
         </Button>
         <ContentText variant="mutedMicro" as="p" className="text-center">
-          {MESSAGES.review.disclaimer}
+          {messages.review.disclaimer}
         </ContentText>
       </div>
     </form>

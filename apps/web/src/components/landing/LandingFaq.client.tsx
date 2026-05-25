@@ -3,10 +3,12 @@
 import { Container } from "@/components/ui/container";
 import { MarketingAccordion } from "@/components/ui/MarketingAccordion.client";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 export function LandingFaq() {
-  const { faq } = MESSAGES.landing;
+  const messages = useMessages();
+  const { faq } = messages.landing;
 
   return (
     <section id="faq" className="bg-card py-24">

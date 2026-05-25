@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react";
 
+import type { Messages } from "@/lib/messages/types";
+
 export type LandingHeroFloatCardTone = "forest" | "gold" | "slate";
 
 export type LandingHeroFloatCardData = {
@@ -14,14 +16,18 @@ export type LandingHeroFloatCardData = {
   style: CSSProperties;
 };
 
-export const LANDING_HERO_FLOAT_CARDS: LandingHeroFloatCardData[] = [
+type LandingHeroFloatCardSeed = Omit<LandingHeroFloatCardData, "price"> & {
+  priceAmount: string;
+};
+
+const LANDING_HERO_FLOAT_CARD_SEEDS: LandingHeroFloatCardSeed[] = [
   {
     id: "float-1",
     name: "Maria P.",
     spec: "Cardio & Pilates",
     cert: "NASM-CPT",
     rating: "5.0",
-    price: "от $32/ч",
+    priceAmount: "$32",
     initials: "MP",
     tone: "forest",
     style: {
@@ -39,7 +45,7 @@ export const LANDING_HERO_FLOAT_CARDS: LandingHeroFloatCardData[] = [
     spec: "Stretching",
     cert: "ACE-CPT",
     rating: "4.8",
-    price: "от $35/ч",
+    priceAmount: "$35",
     initials: "AV",
     tone: "gold",
     style: {
@@ -57,7 +63,7 @@ export const LANDING_HERO_FLOAT_CARDS: LandingHeroFloatCardData[] = [
     spec: "Strength",
     cert: "NSCA-CSCS",
     rating: "4.9",
-    price: "от $48/ч",
+    priceAmount: "$48",
     initials: "SK",
     tone: "slate",
     style: {
@@ -70,3 +76,14 @@ export const LANDING_HERO_FLOAT_CARDS: LandingHeroFloatCardData[] = [
     },
   },
 ];
+
+export function getLandingHeroFloatCards(
+  messages: Messages,
+): LandingHeroFloatCardData[] {
+  const priceTemplate = messages.landing.hero.floatCardPrice;
+
+  return LANDING_HERO_FLOAT_CARD_SEEDS.map(({ priceAmount, ...card }) => ({
+    ...card,
+    price: `${priceTemplate.replace("{amount}", priceAmount)}${messages.common.perHourSuffix}`,
+  }));
+}

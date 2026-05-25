@@ -17,16 +17,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type ClientFileComplaintDialogProps = {
   bookingId: string;
 };
 
-export function ClientFileComplaintDialog({
-  bookingId,
+export function ClientFileComplaintDialog({  bookingId,
 }: ClientFileComplaintDialogProps) {
+  const messages = useMessages();
+
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState("");
@@ -46,7 +48,7 @@ export function ClientFileComplaintDialog({
         return;
       }
 
-      toast.success(MESSAGES.clientComplaint.success, {
+      toast.success(messages.clientComplaint.success, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
       setOpen(false);
@@ -66,35 +68,35 @@ export function ClientFileComplaintDialog({
           disabled={isPending}
           aria-busy={isPending}
         >
-          {MESSAGES.clientComplaint.reportIssue}
+          {messages.clientComplaint.reportIssue}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{MESSAGES.clientComplaint.reportIssue}</DialogTitle>
+          <DialogTitle>{messages.clientComplaint.reportIssue}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="complaint-category">
-              {MESSAGES.clientComplaint.categoryLabel}
+              {messages.clientComplaint.categoryLabel}
             </Label>
             <Input
               id="complaint-category"
               value={category}
               onChange={(event) => setCategory(event.target.value)}
-              placeholder={MESSAGES.clientComplaint.categoryPlaceholder}
+              placeholder={messages.clientComplaint.categoryPlaceholder}
               className="max-w-[300px]"
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="complaint-description">
-              {MESSAGES.clientComplaint.descriptionLabel}
+              {messages.clientComplaint.descriptionLabel}
             </Label>
             <Textarea
               id="complaint-description"
               value={description}
               onChange={(event) => setDescription(event.target.value)}
-              placeholder={MESSAGES.clientComplaint.descriptionPlaceholder}
+              placeholder={messages.clientComplaint.descriptionPlaceholder}
               className="max-w-[650px]"
               rows={4}
             />
@@ -108,8 +110,8 @@ export function ClientFileComplaintDialog({
             aria-busy={isPending}
           >
             {isPending
-              ? MESSAGES.clientComplaint.submitting
-              : MESSAGES.clientComplaint.submit}
+              ? messages.clientComplaint.submitting
+              : messages.clientComplaint.submit}
           </Button>
         </DialogFooter>
       </DialogContent>

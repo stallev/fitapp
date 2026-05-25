@@ -1,19 +1,21 @@
 "use client";
 
 import { AdminPageError } from "@/components/admin/AdminPageError";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 
-export default function AdminReviewsError({
-  reset,
+
+export default function AdminReviewsError({  reset,
 }: {
   reset: () => void;
 }) {
+  const messages = useMessages();
+
   return (
     <AdminPageError
-      pageTitle={MESSAGES.admin.reviews.title}
-      title={MESSAGES.admin.shared.loadError}
-      description={MESSAGES.admin.shared.loadErrorDescription}
-      retryLabel={MESSAGES.admin.shared.retry}
+      pageTitle={messages.admin.reviews.title}
+      title={messages.admin.shared.loadError}
+      description={messages.admin.shared.loadErrorDescription}
+      retryLabel={messages.admin.shared.retry}
       reset={reset}
     />
   );

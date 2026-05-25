@@ -16,7 +16,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type HideReviewDialogProps = {
@@ -24,6 +25,7 @@ export type HideReviewDialogProps = {
 };
 
 export function HideReviewDialog({ reviewId }: HideReviewDialogProps) {
+  const messages = useMessages();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -36,7 +38,7 @@ export function HideReviewDialog({ reviewId }: HideReviewDialogProps) {
         return;
       }
 
-      toast.success(MESSAGES.admin.reviews.hideSuccess, {
+      toast.success(messages.admin.reviews.hideSuccess, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
       router.refresh();
@@ -54,19 +56,19 @@ export function HideReviewDialog({ reviewId }: HideReviewDialogProps) {
           disabled={isPending}
           aria-busy={isPending}
         >
-          {MESSAGES.admin.reviews.hide}
+          {messages.admin.reviews.hide}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{MESSAGES.admin.reviews.hide}</AlertDialogTitle>
+          <AlertDialogTitle>{messages.admin.reviews.hide}</AlertDialogTitle>
           <AlertDialogDescription>
-            {MESSAGES.admin.reviews.confirmHide}
+            {messages.admin.reviews.confirmHide}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>
-            {MESSAGES.shell.back}
+            {messages.shell.back}
           </AlertDialogCancel>
           <Button
             type="button"
@@ -76,8 +78,8 @@ export function HideReviewDialog({ reviewId }: HideReviewDialogProps) {
             aria-busy={isPending}
           >
             {isPending
-              ? MESSAGES.admin.reviews.hiding
-              : MESSAGES.admin.reviews.hide}
+              ? messages.admin.reviews.hiding
+              : messages.admin.reviews.hide}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

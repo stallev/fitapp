@@ -9,39 +9,48 @@ import {
 } from "@pulse/policy-edge";
 
 import authConfig from "./auth.config";
+import {
+  bootstrapLocaleCookie,
+  readRequestLocaleCookie,
+  redirectWithLocaleCookie,
+} from "./lib/i18n/bootstrap-locale-cookie";
 
 const { auth } = NextAuth(authConfig);
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const hasLocaleCookie = readRequestLocaleCookie(request) !== null;
+  const session = hasLocaleCookie ? null : await auth();
+
+  const localeOptions = {
+    sessionLocale: session?.user?.locale,
+  };
 
   if (!requiresAuth(pathname)) {
-    return NextResponse.next();
+    return bootstrapLocaleCookie(request, localeOptions);
   }
 
-  const session = await auth();
+  const authSession = session ?? (await auth());
 
-  if (!session?.user?.role) {
+  if (!authSession?.user?.role) {
     const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
+    return redirectWithLocaleCookie(request, loginUrl, localeOptions);
   }
 
-  if (!isRoleAllowedForPath(session.user.role, pathname)) {
-    return NextResponse.redirect(
-      new URL(getRoleHome(session.user.role), request.url),
+  if (!isRoleAllowedForPath(authSession.user.role, pathname)) {
+    return redirectWithLocaleCookie(
+      request,
+      new URL(getRoleHome(authSession.user.role), request.url),
+      localeOptions,
     );
   }
 
-  return NextResponse.next();
+  return bootstrapLocaleCookie(request, localeOptions);
 }
 
 export const config = {
   matcher: [
-    "/client/:path*",
-    "/trainer/:path*",
-    "/admin/:path*",
-    "/book/:path*",
-    "/sessions/:path*",
+    "/((?!monitoring|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$|api/).*)",
   ],
 };

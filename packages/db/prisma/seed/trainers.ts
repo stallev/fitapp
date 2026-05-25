@@ -43,6 +43,7 @@ const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
   {
     key: "dmitry",
     timezone: "America/Chicago",
+    bio: "Strength and HIIT coach focused on progressive overload and form.",
     experienceYears: 10,
     ratingAvg: 4.7,
     ratingCount: 24,
@@ -62,6 +63,7 @@ const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
   {
     key: "ivan",
     timezone: "Europe/London",
+    bio: "HIIT and strength trainer for busy professionals.",
     experienceYears: 7,
     ratingAvg: 4.6,
     ratingCount: 21,
@@ -81,6 +83,7 @@ const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
   {
     key: "sergey",
     timezone: "America/Los_Angeles",
+    bio: "Powerlifting specialist with twelve years of competitive coaching.",
     experienceYears: 12,
     ratingAvg: 4.9,
     ratingCount: 28,

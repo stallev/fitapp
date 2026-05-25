@@ -8,7 +8,8 @@ import { SearchIcon } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import { buildCatalogHref } from "@/lib/catalog/build-catalog-search-params";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { cn } from "@/lib/utils";
 
 export type CatalogSearchInputProps = {
@@ -17,6 +18,7 @@ export type CatalogSearchInputProps = {
 };
 
 export function CatalogSearchInput({ query, className }: CatalogSearchInputProps) {
+  const messages = useMessages();
   const router = useRouter();
   const [draft, setDraft] = useState<string | null>(null);
   const value = draft ?? query.q;
@@ -50,8 +52,8 @@ export function CatalogSearchInput({ query, className }: CatalogSearchInputProps
         size="search"
         value={value}
         onChange={(event) => setDraft(event.target.value)}
-        placeholder={MESSAGES.catalog.searchPlaceholder}
-        aria-label={MESSAGES.catalog.searchPlaceholder}
+        placeholder={messages.catalog.searchPlaceholder}
+        aria-label={messages.catalog.searchPlaceholder}
         className="w-full"
       />
     </div>

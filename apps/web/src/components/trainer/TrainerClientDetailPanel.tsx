@@ -10,13 +10,15 @@ import { BOOKING_STATUS } from "@pulse/domain";
 
 import { formatBookingDateTimeLocal } from "@/lib/booking/format-booking-datetime-local";
 import { formatServicePrice } from "@/lib/trainer/format-service-price";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 
 export type TrainerClientDetailPanelProps = {
   detail: TrainerClientDetail;
 };
 
-export function TrainerClientDetailPanel({ detail }: TrainerClientDetailPanelProps) {
+export async function TrainerClientDetailPanel({ detail }: TrainerClientDetailPanelProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
@@ -26,7 +28,7 @@ export function TrainerClientDetailPanel({ detail }: TrainerClientDetailPanelPro
             {detail.displayName}
           </Heading>
           <Badge variant="secondary">
-            {MESSAGES.trainer.clients.sessionsCount.replace(
+            {messages.trainer.clients.sessionsCount.replace(
               "{count}",
               String(detail.sessionCount),
             )}
@@ -35,17 +37,24 @@ export function TrainerClientDetailPanel({ detail }: TrainerClientDetailPanelPro
       </div>
 
       <section className="space-y-3">
-        <SectionTitle>{MESSAGES.trainer.clients.sessionHistory}</SectionTitle>
+        <SectionTitle>{messages.trainer.clients.sessionHistory}</SectionTitle>
         <div className="space-y-2">
           {detail.bookings.map((booking) => (
             <PulseCard key={booking.id} className="space-y-2 p-4">
               <KeyValueRow
-                label={formatBookingDateTimeLocal(booking.startsAtUtc)}
+                label={formatBookingDateTimeLocal(booking.startsAtUtc, locale)}
                 value={booking.serviceName}
               />
               <KeyValueRow
-                label={`${booking.durationMinutes} мин`}
-                value={formatServicePrice(booking.priceCents, booking.currency)}
+                label={messages.common.durationMinutes.replace(
+                  "{minutes}",
+                  String(booking.durationMinutes),
+                )}
+                value={formatServicePrice(
+                  booking.priceCents,
+                  booking.currency,
+                  locale,
+                )}
               />
               {booking.status === BOOKING_STATUS.CONFIRMED ? (
                 <CompleteBookingButton bookingId={booking.id} />
@@ -56,7 +65,7 @@ export function TrainerClientDetailPanel({ detail }: TrainerClientDetailPanelPro
       </section>
 
       <section className="space-y-2">
-        <SectionTitle>{MESSAGES.trainer.clients.privateNotes}</SectionTitle>
+        <SectionTitle>{messages.trainer.clients.privateNotes}</SectionTitle>
         <TrainerClientNotesField
           clientId={detail.clientId}
           initialNotes={detail.notes}

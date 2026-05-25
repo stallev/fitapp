@@ -12,7 +12,8 @@ import {
   getSpecializationName,
   hasActiveCatalogFilters,
 } from "@/lib/catalog/catalog-filter-utils";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { cn } from "@/lib/utils";
 
 export type CatalogActiveFilterChipsProps = {
@@ -21,11 +22,12 @@ export type CatalogActiveFilterChipsProps = {
   className?: string;
 };
 
-export function CatalogActiveFilterChips({
-  query,
+export function CatalogActiveFilterChips({  query,
   options,
   className,
 }: CatalogActiveFilterChipsProps) {
+  const messages = useMessages();
+
   const router = useRouter();
 
   if (!hasActiveCatalogFilters(query)) {
@@ -68,7 +70,7 @@ export function CatalogActiveFilterChips({
             router.push(buildCatalogHref(query, { minRating: undefined, page: 1 }))
           }
         >
-          {MESSAGES.catalog.ratingTier.replace("{value}", String(query.minRating))}
+          {messages.catalog.ratingTier.replace("{value}", String(query.minRating))}
         </FilterChip>
       ) : null}
       {query.specializations.map((slug) => (
@@ -93,7 +95,7 @@ export function CatalogActiveFilterChips({
         className="inline-flex min-h-9 shrink-0 items-center px-2 text-[13px] font-medium text-primary"
       >
         <ContentText variant="smallEmphasis" as="span">
-          {MESSAGES.catalog.clearAllFilters}
+          {messages.catalog.clearAllFilters}
         </ContentText>
       </button>
     </div>

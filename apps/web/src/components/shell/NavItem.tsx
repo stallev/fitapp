@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createElement } from "react";
 
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 import { cn } from "@/lib/utils";
 import { isNavItemActive, type NavIconKey } from "@/lib/nav/nav-config";
 import { getNavIcon } from "@/lib/nav/nav-icons.client";
@@ -32,8 +33,13 @@ export function NavItem({
   layout = "bottom",
 }: NavItemProps) {
   const pathname = usePathname();
+  const messages = useMessages();
   const isActive = isNavItemActive(pathname, href);
   const showBadge = badgeCount > 0;
+  const badgeAriaLabel = messages.shell.badgeInQueue.replace(
+    "{count}",
+    String(badgeCount),
+  );
 
   if (layout === "sidebar") {
     return (
@@ -51,7 +57,7 @@ export function NavItem({
         <span className="truncate">{label}</span>
         {showBadge ? (
           <span
-            aria-label={`${badgeCount} в очереди`}
+            aria-label={badgeAriaLabel}
             className="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-destructive px-1.5 py-0.5 text-[10px] font-semibold text-destructive-foreground"
           >
             {badgeCount > 99 ? "99+" : badgeCount}
@@ -78,7 +84,7 @@ export function NavItem({
         {renderNavIcon(iconKey, "size-5 shrink-0")}
         {showBadge ? (
           <span
-            aria-label={`${badgeCount} в очереди`}
+            aria-label={badgeAriaLabel}
             className="absolute -top-0.5 right-1.5 inline-flex size-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[9px] font-bold text-destructive-foreground"
           >
             {badgeCount > 9 ? "9+" : badgeCount}

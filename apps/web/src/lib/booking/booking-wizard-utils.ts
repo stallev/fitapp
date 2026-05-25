@@ -1,25 +1,29 @@
 import type { TrainerServiceItem } from "@/lib/trainer/trainer-profile";
+import { type AppLocale, DEFAULT_LOCALE } from "@/lib/i18n/constants";
+import { formatDateTime, formatMoney } from "@/lib/i18n/format";
 
-export function formatBookingPrice(cents: number, currency: string): string {
-  return new Intl.NumberFormat("ru-RU", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: 0,
-  }).format(cents / 100);
+export function formatBookingPrice(
+  cents: number,
+  currency: string,
+  locale: AppLocale = DEFAULT_LOCALE,
+): string {
+  return formatMoney(cents, currency, locale);
 }
 
 export function formatBookingDateTime(
   startsAtUtc: string,
   timezone: string,
+  locale: AppLocale = DEFAULT_LOCALE,
 ): string {
-  return new Intl.DateTimeFormat("ru-RU", {
+  return formatDateTime(startsAtUtc, {
+    locale,
     timeZone: timezone,
     weekday: "long",
-    day: "numeric",
     month: "long",
+    day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-  }).format(new Date(startsAtUtc));
+  });
 }
 
 export function findSelectedService(

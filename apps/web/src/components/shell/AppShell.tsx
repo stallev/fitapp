@@ -7,11 +7,11 @@ import { PageContainer } from "@/components/shell/PageContainer";
 import { SidebarNav } from "@/components/shell/SidebarNav.client";
 import { TopBar } from "@/components/shell/TopBar";
 import type { AdminNavBadges, NavItemConfig } from "@/lib/nav/nav-config";
-import { getNavSectionTitle } from "@/lib/nav/nav-config";
 
 type AppShellProps = {
   role: UserRole;
   navItems: NavItemConfig[];
+  sectionTitle: string;
   badges?: AdminNavBadges;
   banner?: React.ReactNode;
   children: React.ReactNode;
@@ -20,11 +20,11 @@ type AppShellProps = {
 export function AppShell({
   role,
   navItems,
+  sectionTitle,
   badges,
   banner,
   children,
 }: AppShellProps) {
-  const sectionTitle = getNavSectionTitle(role);
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">

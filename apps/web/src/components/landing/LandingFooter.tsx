@@ -1,13 +1,16 @@
 import { connection } from "next/server";
 
 import { ContentText } from "@/components/atoms";
+import { LocaleSwitcher } from "@/components/i18n/LocaleSwitcher.client";
 import { Container } from "@/components/ui/container";
 import { CustomLink } from "@/components/ui/CustomLink";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function LandingFooter() {
+  const messages = await getMessages();
   await connection();
-  const { footer } = MESSAGES.landing;
+  const { footer } = messages.landing;
   const year = new Date().getFullYear();
 
   return (
@@ -29,7 +32,13 @@ export async function LandingFooter() {
           className="flex flex-wrap justify-center gap-7"
         >
           <CustomLink href="/trainers" variant="quiet">
-            {footer.links.about}
+            {footer.links.trainers}
+          </CustomLink>
+          <CustomLink href="/features" variant="quiet">
+            {footer.links.features}
+          </CustomLink>
+          <CustomLink href="/how-it-was-built" variant="quiet">
+            {footer.links.howItWasBuilt}
           </CustomLink>
           <CustomLink href="/auth/register/trainer" variant="quiet">
             {footer.links.forTrainers}
@@ -41,9 +50,12 @@ export async function LandingFooter() {
             {footer.links.terms}
           </CustomLink>
         </nav>
-        <ContentText variant="muted" as="p" className="text-center text-[12px]">
-          {footer.copyright.replace("{year}", String(year))}
-        </ContentText>
+        <div className="flex flex-col items-center gap-4">
+          <LocaleSwitcher variant="footer" />
+          <ContentText variant="muted" as="p" className="text-center text-[12px]">
+            {footer.copyright.replace("{year}", String(year))}
+          </ContentText>
+        </div>
       </Container>
     </footer>
   );

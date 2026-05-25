@@ -32,6 +32,8 @@
 | Path | Route file (target) | Role | MVP | Notes |
 |------|----------------------|------|-----|-------|
 | `/` | `(marketing)/page.tsx` | public | ✅ | Landing; auth users → role home via redirect |
+| `/how-it-was-built` | `(marketing)/how-it-was-built/page.tsx` | public | ✅ | Development case study; EN/RU via cookie locale |
+| `/features` | `(marketing)/features/page.tsx` | public | ✅ | Live MVP feature overview; EN/RU via cookie locale |
 | `/trainers` | `(discovery)/trainers/page.tsx` | public | ✅ | Catalog + filters; shell when authenticated |
 | `/trainers/[id]` | `(discovery)/trainers/[id]/page.tsx` | public | ✅ | Trainer public profile; shell when authenticated |
 | `/auth/login` | `(marketing)/auth/login/page.tsx` | public | ✅ | Credentials login |

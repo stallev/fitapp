@@ -101,6 +101,18 @@ Visual and interaction canon — **do not invent** ad-hoc styles:
 
 Full index: [`docs/guidelines/README.md`](../../docs/guidelines/README.md).
 
+## Observability (Sentry)
+
+Error tracking via `@sentry/nextjs` — config in `src/instrumentation*.ts`, `src/sentry.*.config.ts`, `src/app/global-error.tsx`.
+
+| Variable | Purpose |
+|----------|---------|
+| `NEXT_PUBLIC_SENTRY_DSN` | Client + server DSN |
+| `SENTRY_AUTH_TOKEN` | Source map upload (build only, secret) |
+| `SENTRY_ORG` / `SENTRY_PROJECT` | Release + source map target |
+
+Mutation flows tag `submit_transport` via `@/lib/sentry/pulse-tags` (see ios-safari incident docs). Session Replay deferred.
+
 ## Dev & verification
 
 From `apps/web/`:

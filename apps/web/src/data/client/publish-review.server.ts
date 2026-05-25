@@ -14,16 +14,18 @@ import { assertCanPublishReview, PolicyError } from "@pulse/policy-server";
 
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 import { CACHE_TAGS } from "@/lib/cache/tags";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 
 export type PublishReviewResult = MutationResult<{ reviewId: string; bookingId: string }>;
 
-function mapPolicyError(error: PolicyError): PublishReviewResult {
+function mapPolicyError(error: PolicyError, messages: Messages): PublishReviewResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: REVIEW_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.review.errors.unauthorized,
+      message: messages.review.errors.unauthorized,
     };
   }
 
@@ -31,38 +33,39 @@ function mapPolicyError(error: PolicyError): PublishReviewResult {
     return {
       ok: false,
       code: REVIEW_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.review.errors.validation,
+      message: messages.review.errors.validation,
     };
   }
 
   return {
     ok: false,
     code: REVIEW_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.review.errors.forbidden,
+    message: messages.review.errors.forbidden,
   };
 }
 
 function mapValidationError(
   code: (typeof REVIEW_MUTATION_ERROR_CODES)[keyof typeof REVIEW_MUTATION_ERROR_CODES],
+  messages: Messages,
 ): PublishReviewResult {
   switch (code) {
     case REVIEW_MUTATION_ERROR_CODES.BOOKING_NOT_REVIEWABLE:
       return {
         ok: false,
         code,
-        message: MESSAGES.review.errors.notReviewable,
+        message: messages.review.errors.notReviewable,
       };
     case REVIEW_MUTATION_ERROR_CODES.REVIEW_ALREADY_EXISTS:
       return {
         ok: false,
         code,
-        message: MESSAGES.review.errors.alreadyExists,
+        message: messages.review.errors.alreadyExists,
       };
     default:
       return {
         ok: false,
         code: REVIEW_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.review.errors.validation,
+        message: messages.review.errors.validation,
       };
   }
 }
@@ -70,6 +73,7 @@ function mapValidationError(
 async function runPublishReviewTransaction(
   actorUserId: string,
   input: PublishReviewInput,
+  messages: Messages,
 ): Promise<PublishReviewResult> {
   const prisma = getPrisma();
 
@@ -89,7 +93,7 @@ async function runPublishReviewTransaction(
         return {
           ok: false,
           code: REVIEW_MUTATION_ERROR_CODES.VALIDATION,
-          message: MESSAGES.review.errors.validation,
+          message: messages.review.errors.validation,
         };
       }
 
@@ -99,7 +103,7 @@ async function runPublishReviewTransaction(
       });
 
       if (validation) {
-        return mapValidationError(validation.code);
+        return mapValidationError(validation.code, messages);
       }
 
       const review = await tx.review.create({
@@ -149,7 +153,7 @@ async function runPublishReviewTransaction(
       return {
         ok: false,
         code: REVIEW_MUTATION_ERROR_CODES.REVIEW_ALREADY_EXISTS,
-        message: MESSAGES.review.errors.alreadyExists,
+        message: messages.review.errors.alreadyExists,
       };
     }
 
@@ -160,12 +164,13 @@ async function runPublishReviewTransaction(
 export async function publishReviewMutation(
   input: PublishReviewInput,
 ): Promise<PublishReviewResult> {
+  const messages = await getMessages();
   const parsed = publishReviewInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: REVIEW_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.review.errors.validation,
+      message: messages.review.errors.validation,
     };
   }
 
@@ -175,7 +180,7 @@ export async function publishReviewMutation(
     await assertCanPublishReview(ctx, parsed.data.bookingId);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
@@ -185,11 +190,11 @@ export async function publishReviewMutation(
     return {
       ok: false,
       code: REVIEW_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.review.errors.unauthorized,
+      message: messages.review.errors.unauthorized,
     };
   }
 
-  return runPublishReviewTransaction(ctx.userId, parsed.data);
+  return runPublishReviewTransaction(ctx.userId, parsed.data, messages);
 }
 
 async function invalidatePublishReviewCache(
@@ -205,7 +210,7 @@ async function invalidatePublishReviewCache(
 export async function publishReviewWithCacheInvalidation(
   input: PublishReviewInput,
 ): Promise<PublishReviewResult> {
-  const ctx = await getPolicySessionContext();
+    const ctx = await getPolicySessionContext();
   const result = await publishReviewMutation(input);
 
   if (result.ok && ctx) {

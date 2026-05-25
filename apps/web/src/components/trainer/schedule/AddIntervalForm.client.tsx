@@ -16,7 +16,8 @@ import {
   isScheduleIntervalValid,
   isValidScheduleTime,
 } from "@/lib/trainer/format-schedule-time";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 import { ScheduleTimeInput } from "./ScheduleTimeInput.client";
 
@@ -34,13 +35,14 @@ type FieldErrors = {
   endTime?: string;
 };
 
-export function AddIntervalForm({
-  formId,
+export function AddIntervalForm({  formId,
   disabled = false,
   onSubmit,
   onCancel,
   mobileSheet = false,
 }: AddIntervalFormProps) {
+  const messages = useMessages();
+
   const startId = useId();
   const endId = useId();
   const [startTime, setStartTime] = useState(DEFAULT_SCHEDULE_START_TIME);
@@ -51,11 +53,11 @@ export function AddIntervalForm({
     const nextErrors: FieldErrors = {};
 
     if (!isValidScheduleTime(startTime)) {
-      nextErrors.startTime = MESSAGES.trainer.schedule.errors.invalidStartTime;
+      nextErrors.startTime = messages.trainer.schedule.errors.invalidStartTime;
     }
 
     if (!isValidScheduleTime(endTime)) {
-      nextErrors.endTime = MESSAGES.trainer.schedule.errors.invalidEndTime;
+      nextErrors.endTime = messages.trainer.schedule.errors.invalidEndTime;
     }
 
     if (
@@ -63,7 +65,7 @@ export function AddIntervalForm({
       !nextErrors.endTime &&
       !isScheduleIntervalValid(startTime, endTime)
     ) {
-      nextErrors.endTime = MESSAGES.trainer.schedule.errors.invalidInterval;
+      nextErrors.endTime = messages.trainer.schedule.errors.invalidInterval;
     }
 
     return nextErrors;
@@ -104,7 +106,7 @@ export function AddIntervalForm({
         <div className={fieldsGridClassName}>
           <Field data-invalid={Boolean(fieldErrors.startTime)}>
             <FieldLabel htmlFor={startId}>
-              {MESSAGES.trainer.schedule.startTimeLabel}
+              {messages.trainer.schedule.startTimeLabel}
             </FieldLabel>
             <ScheduleTimeInput
               id={startId}
@@ -132,7 +134,7 @@ export function AddIntervalForm({
           </Field>
           <Field data-invalid={Boolean(fieldErrors.endTime)}>
             <FieldLabel htmlFor={endId}>
-              {MESSAGES.trainer.schedule.endTimeLabel}
+              {messages.trainer.schedule.endTimeLabel}
             </FieldLabel>
             <ScheduleTimeInput
               id={endId}
@@ -158,7 +160,7 @@ export function AddIntervalForm({
           </Field>
         </div>
         {mobileSheet ? (
-          <FieldDescription>{MESSAGES.trainer.schedule.timeFormatHint}</FieldDescription>
+          <FieldDescription>{messages.trainer.schedule.timeFormatHint}</FieldDescription>
         ) : null}
       </FieldGroup>
       {mobileSheet ? null : (
@@ -170,7 +172,7 @@ export function AddIntervalForm({
             onClick={onCancel}
             disabled={disabled}
           >
-            {MESSAGES.trainer.schedule.cancel}
+            {messages.trainer.schedule.cancel}
           </Button>
           <Button
             type="submit"
@@ -178,7 +180,7 @@ export function AddIntervalForm({
             disabled={disabled}
             aria-busy={disabled}
           >
-            {MESSAGES.trainer.schedule.addSlot}
+            {messages.trainer.schedule.addSlot}
           </Button>
         </div>
       )}

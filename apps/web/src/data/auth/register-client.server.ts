@@ -11,10 +11,13 @@ import {
 } from "@pulse/domain";
 import { getPrisma } from "@pulse/db";
 
+import type { AppLocale } from "@/lib/i18n/constants";
+
 const BCRYPT_COST = 12;
 
 export async function registerClientUser(
   input: RegisterClientInput,
+  locale: AppLocale,
 ): Promise<MutationResult<{ userId: string }>> {
   const parsed = registerClientSchema.safeParse(input);
   if (!parsed.success) {
@@ -32,6 +35,7 @@ export async function registerClientUser(
         fullName,
         passwordHash,
         role: USER_ROLE.CLIENT,
+        locale,
       },
       select: { id: true },
     });

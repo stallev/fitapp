@@ -7,6 +7,7 @@ import { getPrisma } from "@pulse/db";
 
 import { formatBookingDateTimeLocal } from "@/lib/booking/format-booking-datetime-local";
 import { formatServicePrice } from "@/lib/trainer/format-service-price";
+import { getLocale } from "@/lib/messages/server";
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 import { getTrainerProfileOwnershipFacts } from "./get-trainer-schedule-for-edit.server";
@@ -70,16 +71,24 @@ export async function getTrainerIncomeSnapshot(): Promise<TrainerIncomeSnapshot>
   );
 
   const currency = monthBookings[0]?.currency ?? bookings[0]?.currency ?? "USD";
+  const locale = await getLocale();
 
   return {
-    monthTotalLabel: formatServicePrice(monthTotalCents, currency),
+    monthTotalLabel: formatServicePrice(monthTotalCents, currency, locale),
     sessionCount: monthBookings.length,
     transactions: bookings.map((booking) => ({
       id: booking.id,
-      dateLabel: formatBookingDateTimeLocal(booking.startsAt.toISOString()),
+      dateLabel: formatBookingDateTimeLocal(
+        booking.startsAt.toISOString(),
+        locale,
+      ),
       clientName: booking.client.fullName,
       serviceName: booking.serviceNameSnapshot,
-      amountLabel: formatServicePrice(booking.priceCents, booking.currency),
+      amountLabel: formatServicePrice(
+        booking.priceCents,
+        booking.currency,
+        locale,
+      ),
       status: BOOKING_STATUS.COMPLETED,
     })),
   };

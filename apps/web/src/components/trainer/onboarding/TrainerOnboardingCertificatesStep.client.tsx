@@ -12,7 +12,8 @@ import { FileUploadZone } from "@/components/ui/FileUploadZone.client";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { getCertificateUploadFormatsHint } from "@/lib/files/certificate-upload-hint";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type TrainerOnboardingCertificatesStepProps = {
@@ -25,11 +26,12 @@ function emptyCertificate(): OnboardingCertificateRow {
   return { title: "", fileAssetId: undefined };
 }
 
-export function TrainerOnboardingCertificatesStep({
-  initialCertificates,
+export function TrainerOnboardingCertificatesStep({  initialCertificates,
   onBack,
   onNext,
 }: TrainerOnboardingCertificatesStepProps) {
+  const messages = useMessages();
+
   const [rows, setRows] = useState<OnboardingCertificateRow[]>(
     initialCertificates.length > 0 ? initialCertificates : [emptyCertificate()],
   );
@@ -49,7 +51,7 @@ export function TrainerOnboardingCertificatesStep({
       const result = await saveOnboardingStep3Action({ certificates });
 
       if (!result?.ok) {
-        toast.error(result?.message ?? MESSAGES.trainer.onboarding.errors.generic, {
+        toast.error(result?.message ?? messages.trainer.onboarding.errors.generic, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
         return;
@@ -67,7 +69,7 @@ export function TrainerOnboardingCertificatesStep({
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor={`cert-title-${index}`}>
-                  {MESSAGES.trainer.onboarding.certificateTitleLabel}
+                  {messages.trainer.onboarding.certificateTitleLabel}
                 </FieldLabel>
                 <Input
                   id={`cert-title-${index}`}
@@ -80,8 +82,8 @@ export function TrainerOnboardingCertificatesStep({
             <FileUploadZone
               purpose={FILE_UPLOAD_PURPOSE.CERTIFICATE}
               accept="image/jpeg,image/png,image/webp,application/pdf"
-              label={MESSAGES.trainer.onboarding.certificateUpload}
-              formatsHint={getCertificateUploadFormatsHint()}
+              label={messages.trainer.onboarding.certificateUpload}
+              formatsHint={getCertificateUploadFormatsHint(messages)}
               disabled={isPending}
               onUploaded={({ fileAssetId }) => updateRow(index, { fileAssetId })}
             />
@@ -108,21 +110,21 @@ export function TrainerOnboardingCertificatesStep({
         disabled={isPending}
       >
         <PlusIcon aria-hidden className="size-4" />
-        {MESSAGES.trainer.onboarding.addCertificate}
+        {messages.trainer.onboarding.addCertificate}
       </Button>
 
       <div className="flex gap-3">
         <Button type="button" variant="outline" onClick={onBack} disabled={isPending}>
-          {MESSAGES.trainer.onboarding.back}
+          {messages.trainer.onboarding.back}
         </Button>
         <Button type="button" className="flex-1" onClick={handleNext} disabled={isPending} aria-busy={isPending}>
           {isPending ? (
             <>
               <Loader2Icon aria-hidden className="size-4 animate-spin" />
-              {MESSAGES.trainer.onboarding.nextSaving}
+              {messages.trainer.onboarding.nextSaving}
             </>
           ) : (
-            MESSAGES.trainer.onboarding.next
+            messages.trainer.onboarding.next
           )}
         </Button>
       </div>

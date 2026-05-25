@@ -1,13 +1,14 @@
-import Link from "next/link";
 import { ArrowRightIcon, CheckIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { CtaBand } from "@/components/ui/CtaBand";
+import { CustomLink } from "@/components/ui/CustomLink";
 import { TrustFeaturePill } from "@/components/ui/TrustFeaturePill";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export function LandingFinalCta() {
-  const { final } = MESSAGES.landing;
+
+export async function LandingFinalCta() {
+  const messages = await getMessages();
+  const { final } = messages.landing;
 
   return (
     <CtaBand
@@ -23,20 +24,25 @@ export function LandingFinalCta() {
       description={final.description}
       actions={
         <>
-          <Button asChild size="lg" variant="secondary" className="rounded-full px-9">
-            <Link href="/trainers">
-              {final.primaryCta}
-              <ArrowRightIcon aria-hidden className="size-[18px]" />
-            </Link>
-          </Button>
-          <Button
-            asChild
+          <CustomLink
+            as="button"
+            href="/trainers"
+            variant="secondary"
+            size="lg"
+            className="rounded-full px-9"
+          >
+            {final.primaryCta}
+            <ArrowRightIcon aria-hidden className="size-[18px]" />
+          </CustomLink>
+          <CustomLink
+            as="button"
+            href="/auth/register/trainer"
             variant="outline"
             size="lg"
             className="rounded-full border-primary-foreground/35 bg-transparent px-8 text-primary-foreground hover:bg-primary-foreground/10"
           >
-            <Link href="/auth/register/trainer">{final.secondaryCta}</Link>
-          </Button>
+            {final.secondaryCta}
+          </CustomLink>
         </>
       }
       footnotes={

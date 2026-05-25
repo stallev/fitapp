@@ -6,9 +6,10 @@ import type { TrainerStatus } from "@pulse/domain";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   formatModerationTabLabel,
-  TRAINER_MODERATION_TABS,
+  getTrainerModerationTabs,
 } from "@/lib/admin/trainer-moderation-tabs";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { cn } from "@/lib/utils";
 
 export type AdminTrainersTabsProps = {
@@ -22,11 +23,13 @@ export function AdminTrainersTabs({
   counts,
   children,
 }: AdminTrainersTabsProps) {
+  const messages = useMessages();
+  const tabs = getTrainerModerationTabs(messages);
   const router = useRouter();
 
   const handleTabChange = (value: string) => {
     const nextUrl =
-      value === TRAINER_MODERATION_TABS[0]?.value
+      value === tabs[0]?.value
         ? "/admin/trainers"
         : `/admin/trainers?tab=${value}`;
     router.replace(nextUrl);
@@ -36,7 +39,7 @@ export function AdminTrainersTabs({
     <Tabs value={activeTab} onValueChange={handleTabChange} className="mt-6">
       <TabsList
         variant="pill"
-        aria-label={MESSAGES.admin.moderation.tabsAriaLabel}
+        aria-label={messages.admin.moderation.tabsAriaLabel}
         className={cn(
           "max-w-full",
           "w-fit",
@@ -44,7 +47,7 @@ export function AdminTrainersTabs({
           "md:mx-0 md:px-0 md:overflow-visible",
         )}
       >
-        {TRAINER_MODERATION_TABS.map((tab) => (
+        {tabs.map((tab) => (
           <TabsTrigger key={tab.value} value={tab.value}>
             {formatModerationTabLabel(tab.label, counts[tab.value])}
           </TabsTrigger>

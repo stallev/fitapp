@@ -16,7 +16,12 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import type { TrainerServiceForEdit } from "@/data/trainer/get-trainer-services-for-edit.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
+import {
+  setSubmitTransportTag,
+  SUBMIT_TRANSPORT_TAGS,
+} from "@/lib/sentry/pulse-tags";
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 import { resilientPostFetch } from "@/lib/ui/resilient-post-fetch";
 
@@ -48,6 +53,7 @@ function applyOptimisticAction(
 }
 
 export function TrainerServicesList({ initialServices }: TrainerServicesListProps) {
+  const messages = useMessages();
   const [services, setServices] = useState(initialServices);
   const [optimisticServices, setOptimisticServices] = useOptimistic(
     services,
@@ -65,6 +71,8 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
     startToggleTransition(async () => {
       setOptimisticServices({ type: "toggle", serviceId });
 
+      setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.ROUTE_HANDLER_PRIMARY);
+
       try {
         const response = await resilientPostFetch(
           `/api/trainer/services/${serviceId}/toggle`,
@@ -77,7 +85,7 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
         };
 
         if (!result.ok || !result.data) {
-          toast.error(result.message ?? MESSAGES.trainer.services.toggleError, {
+          toast.error(result.message ?? messages.trainer.services.toggleError, {
             duration: PRODUCT_TOAST_DURATION_MS,
           });
           return;
@@ -91,7 +99,7 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
           ),
         );
       } catch {
-        toast.error(MESSAGES.trainer.services.toggleError, {
+        toast.error(messages.trainer.services.toggleError, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
       }
@@ -106,7 +114,7 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
     startDeleteTransition(async () => {
       const result = await deleteTrainerServiceAction(deletingService.id);
       if (!result.ok) {
-        toast.error(result.message ?? MESSAGES.trainer.services.errors.generic, {
+        toast.error(result.message ?? messages.trainer.services.errors.generic, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
         return;
@@ -135,7 +143,7 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-3">
         <Heading as="h1" visualLevel="h2">
-          {MESSAGES.trainer.services.title}
+          {messages.trainer.services.title}
         </Heading>
         <Button
           type="button"
@@ -149,7 +157,7 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
           aria-busy={pending}
         >
           <PlusIcon aria-hidden className="size-4" />
-          {MESSAGES.trainer.services.addNew}
+          {messages.trainer.services.addNew}
         </Button>
       </div>
 
@@ -159,9 +167,9 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
             <EmptyMedia variant="icon">
               <PlusIcon aria-hidden />
             </EmptyMedia>
-            <EmptyTitle>{MESSAGES.trainer.services.emptyTitle}</EmptyTitle>
+            <EmptyTitle>{messages.trainer.services.emptyTitle}</EmptyTitle>
             <EmptyDescription>
-              {MESSAGES.trainer.services.emptyDescription}
+              {messages.trainer.services.emptyDescription}
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
@@ -175,7 +183,7 @@ export function TrainerServicesList({ initialServices }: TrainerServicesListProp
               aria-busy={pending}
             >
               <PlusIcon aria-hidden className="size-4" />
-              {MESSAGES.trainer.services.addNew}
+              {messages.trainer.services.addNew}
             </Button>
           </EmptyContent>
         </Empty>

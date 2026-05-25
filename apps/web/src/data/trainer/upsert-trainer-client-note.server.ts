@@ -13,7 +13,9 @@ import {
   PolicyError,
 } from "@pulse/policy-server";
 
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 import { getTrainerProfileOwnershipFacts } from "./get-trainer-schedule-for-edit.server";
@@ -36,31 +38,32 @@ async function trainerHasClientRelationship(
   return Boolean(booking);
 }
 
-function mapPolicyError(error: PolicyError): UpsertTrainerClientNoteResult {
+function mapPolicyError(error: PolicyError, messages: Messages): UpsertTrainerClientNoteResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.trainer.clients.errors.unauthorized,
+      message: messages.trainer.clients.errors.unauthorized,
     };
   }
 
   return {
     ok: false,
     code: SCHEDULE_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.trainer.clients.errors.forbidden,
+    message: messages.trainer.clients.errors.forbidden,
   };
 }
 
 export async function upsertTrainerClientNoteMutation(
   input: UpsertTrainerClientNoteInput,
 ): Promise<UpsertTrainerClientNoteResult> {
+  const messages = await getMessages();
   const parsed = upsertTrainerClientNoteInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.trainer.clients.errors.generic,
+      message: messages.trainer.clients.errors.generic,
     };
   }
 
@@ -71,7 +74,7 @@ export async function upsertTrainerClientNoteMutation(
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.trainer.clients.errors.unauthorized,
+      message: messages.trainer.clients.errors.unauthorized,
     };
   }
 
@@ -81,7 +84,7 @@ export async function upsertTrainerClientNoteMutation(
     });
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
@@ -95,7 +98,7 @@ export async function upsertTrainerClientNoteMutation(
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.FORBIDDEN,
-      message: MESSAGES.trainer.clients.errors.forbidden,
+      message: messages.trainer.clients.errors.forbidden,
     };
   }
 

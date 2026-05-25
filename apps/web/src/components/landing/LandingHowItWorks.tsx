@@ -4,12 +4,14 @@ import { Container } from "@/components/ui/container";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
 import { Reveal } from "@/components/ui/Reveal.client";
 import { StepCard } from "@/components/ui/StepCard";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 const STEP_ICONS = [SearchIcon, UsersIcon, CalendarIcon] as const;
 
-export function LandingHowItWorks() {
-  const { howItWorks } = MESSAGES.landing;
+export async function LandingHowItWorks() {
+  const messages = await getMessages();
+  const { howItWorks } = messages.landing;
 
   return (
     <section id="how" className="bg-card py-24">

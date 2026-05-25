@@ -8,7 +8,12 @@ import type { MutationResult } from "@pulse/domain";
 
 import { approveTrainerAction } from "@/actions/admin/approve-trainer";
 import { Button } from "@/components/ui/button";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
+import {
+  setSubmitTransportTag,
+  SUBMIT_TRANSPORT_TAGS,
+} from "@/lib/sentry/pulse-tags";
 import { isIosSafari } from "@/lib/ui/is-ios-safari";
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 import { resilientPostFetch } from "@/lib/ui/resilient-post-fetch";
@@ -17,9 +22,10 @@ export type ApproveTrainerButtonProps = {
   trainerProfileId: string;
 };
 
-export function ApproveTrainerButton({
-  trainerProfileId,
+export function ApproveTrainerButton({  trainerProfileId,
 }: ApproveTrainerButtonProps) {
+  const messages = useMessages();
+
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -28,13 +34,19 @@ export function ApproveTrainerButton({
       const payload = { trainerProfileId };
 
       try {
-        const result: MutationResult<{ trainerProfileId: string }> = isIosSafari()
-          ? await resilientPostFetch("/api/admin/trainers/approve", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload),
-            }).then((response) => response.json())
-          : await approveTrainerAction(payload);
+        let result: MutationResult<{ trainerProfileId: string }>;
+
+        if (isIosSafari()) {
+          setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.ROUTE_HANDLER_FALLBACK);
+          result = await resilientPostFetch("/api/admin/trainers/approve", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }).then((response) => response.json());
+        } else {
+          setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.SERVER_ACTION);
+          result = await approveTrainerAction(payload);
+        }
 
         if (!result.ok) {
           toast.error(result.message, { duration: PRODUCT_TOAST_DURATION_MS });
@@ -42,12 +54,12 @@ export function ApproveTrainerButton({
           return;
         }
 
-        toast.success(MESSAGES.admin.moderation.approveSuccess, {
+        toast.success(messages.admin.moderation.approveSuccess, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
         router.refresh();
       } catch {
-        toast.error(MESSAGES.admin.errors.generic, {
+        toast.error(messages.admin.errors.generic, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
         router.refresh();
@@ -63,8 +75,8 @@ export function ApproveTrainerButton({
       aria-busy={isPending}
     >
       {isPending
-        ? MESSAGES.admin.moderation.approving
-        : MESSAGES.admin.moderation.approve}
+        ? messages.admin.moderation.approving
+        : messages.admin.moderation.approve}
     </Button>
   );
 }

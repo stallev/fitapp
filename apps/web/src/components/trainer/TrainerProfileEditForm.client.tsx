@@ -19,6 +19,7 @@ import {
 import { updateTrainerProfileAction } from "@/actions/trainer/update-trainer-profile";
 import { AlertText, ContentText, Heading } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
+import { PulseCard } from "@/components/ui/card";
 import { FileUploadZone } from "@/components/ui/FileUploadZone.client";
 import {
   Field,
@@ -38,7 +39,13 @@ import {
 import { SpecChip } from "@/components/ui/SpecChip";
 import { Textarea } from "@/components/ui/textarea";
 import type { TrainerProfileForEdit } from "@/data/trainer/get-trainer-profile-for-edit.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+import { LocaleSettingsRow } from "@/components/i18n/LocaleSettingsRow";
+
+import {
+  setSubmitTransportTag,
+  SUBMIT_TRANSPORT_TAGS,
+} from "@/lib/sentry/pulse-tags";
 import { isIosSafari } from "@/lib/ui/is-ios-safari";
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 import { resilientPostFetch } from "@/lib/ui/resilient-post-fetch";
@@ -73,6 +80,7 @@ function mapCertificates(
 }
 
 export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps) {
+  const messages = useMessages();
   const router = useRouter();
   const [timezone, setTimezone] = useState<TrainerTimezone>(profile.timezone);
   const [photoUrl, setPhotoUrl] = useState<string | null>(profile.photoUrl);
@@ -113,7 +121,7 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
     event.preventDefault();
 
     if (!timezone) {
-      setTimezoneError(MESSAGES.trainer.onboarding.errors.timezoneRequired);
+      setTimezoneError(messages.trainer.onboarding.errors.timezoneRequired);
       return;
     }
 
@@ -123,6 +131,7 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
       const payload = buildPayload();
 
       if (isIosSafari()) {
+        setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.ROUTE_HANDLER_FALLBACK);
         const response = await resilientPostFetch("/api/trainer/profile", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -132,7 +141,7 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
 
         if (!result.ok) {
           toast.error(
-            result.message ?? MESSAGES.trainer.editProfile.errors.generic,
+            result.message ?? messages.trainer.editProfile.errors.generic,
             { duration: PRODUCT_TOAST_DURATION_MS },
           );
           return;
@@ -142,10 +151,11 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
         return;
       }
 
+      setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.SERVER_ACTION);
       const result = await updateTrainerProfileAction(payload);
       if (result && !result.ok) {
         toast.error(
-          result.message ?? MESSAGES.trainer.editProfile.errors.generic,
+          result.message ?? messages.trainer.editProfile.errors.generic,
           { duration: PRODUCT_TOAST_DURATION_MS },
         );
       }
@@ -155,12 +165,12 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
   return (
     <form onSubmit={handleSubmit} className="mx-auto max-w-2xl space-y-8" aria-busy={isPending}>
       <Heading as="h1" visualLevel="h2">
-        {MESSAGES.trainer.editProfile.title}
+        {messages.trainer.editProfile.title}
       </Heading>
 
       <div className="mx-auto size-28 md:mx-0">
         <PhotoSlot
-          label={MESSAGES.trainer.onboarding.photoLabel}
+          label={messages.trainer.onboarding.photoLabel}
           src={photoUrl}
           aspect="square"
           className="size-28 rounded-full"
@@ -171,7 +181,7 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
       <FileUploadZone
         purpose={FILE_UPLOAD_PURPOSE.PROFILE_PHOTO}
         accept="image/jpeg,image/png,image/webp"
-        label={MESSAGES.trainer.onboarding.photoUpload}
+        label={messages.trainer.onboarding.photoUpload}
         disabled={isPending}
         onUploaded={({ fileAssetId, readUrl }) => {
           setPhotoFileAssetId(fileAssetId);
@@ -181,14 +191,14 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
 
       <FieldGroup>
         <Field data-invalid={timezoneError ? true : undefined}>
-          <FieldLabel>{MESSAGES.trainer.onboarding.timezoneLabel}</FieldLabel>
+          <FieldLabel>{messages.trainer.onboarding.timezoneLabel}</FieldLabel>
           <Select
             value={timezone}
             onValueChange={(value) => setTimezone(value as TrainerTimezone)}
             disabled={isPending}
           >
             <SelectTrigger aria-invalid={timezoneError ? true : undefined}>
-              <SelectValue placeholder={MESSAGES.trainer.onboarding.timezonePlaceholder} />
+              <SelectValue placeholder={messages.trainer.onboarding.timezonePlaceholder} />
             </SelectTrigger>
             <SelectContent>
               {TRAINER_TIMEZONES.map((entry) => (
@@ -201,15 +211,15 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
           {timezoneError ? <FieldError>{timezoneError}</FieldError> : null}
           {timezoneChanged ? (
             <AlertText className="mt-2">
-              {MESSAGES.trainer.editProfile.timezoneChangeWarning}
+              {messages.trainer.editProfile.timezoneChangeWarning}
             </AlertText>
           ) : null}
         </Field>
 
         <Field>
-          <FieldLabel htmlFor="profile-bio">{MESSAGES.trainer.onboarding.bioLabel}</FieldLabel>
+          <FieldLabel htmlFor="profile-bio">{messages.trainer.onboarding.bioLabel}</FieldLabel>
           <ContentText variant="mutedMicro" as="p" className="mb-2">
-            {MESSAGES.trainer.onboarding.bioHint}
+            {messages.trainer.onboarding.bioHint}
           </ContentText>
           <Textarea
             id="profile-bio"
@@ -221,7 +231,7 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
         </Field>
 
         <Field>
-          <FieldLabel>{MESSAGES.trainer.onboarding.specializationsLabel}</FieldLabel>
+          <FieldLabel>{messages.trainer.onboarding.specializationsLabel}</FieldLabel>
           <div className="flex flex-wrap gap-2">
             {SPECIALIZATION_SLUGS.map((slug) => {
               const selected = selectedSpecs.includes(slug);
@@ -246,7 +256,7 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
 
         <Field>
           <FieldLabel htmlFor="profile-experience">
-            {MESSAGES.trainer.onboarding.experienceLabel}
+            {messages.trainer.onboarding.experienceLabel}
           </FieldLabel>
           <Input
             id="profile-experience"
@@ -262,7 +272,7 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
 
       <section className="space-y-4">
         <Heading as="h2" visualLevel="h4">
-          {MESSAGES.trainer.editProfile.certificatesSection}
+          {messages.trainer.editProfile.certificatesSection}
         </Heading>
         <TrainerProfileCertificateRows
           rows={certificates}
@@ -271,14 +281,20 @@ export function TrainerProfileEditForm({ profile }: TrainerProfileEditFormProps)
         />
       </section>
 
+      <PulseCard className="p-4">
+        <ul className="list-none">
+          <LocaleSettingsRow />
+        </ul>
+      </PulseCard>
+
       <Button type="submit" className="w-full" disabled={isPending} aria-busy={isPending}>
         {isPending ? (
           <>
             <Loader2Icon aria-hidden className="size-4 animate-spin" />
-            {MESSAGES.trainer.editProfile.saving}
+            {messages.trainer.editProfile.saving}
           </>
         ) : (
-          MESSAGES.trainer.editProfile.save
+          messages.trainer.editProfile.save
         )}
       </Button>
     </form>

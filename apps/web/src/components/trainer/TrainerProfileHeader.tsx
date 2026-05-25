@@ -7,7 +7,8 @@ import { RatingStars } from "@/components/ui/RatingStars";
 import { SpecChip } from "@/components/ui/SpecChip";
 import { VerifiedBadge } from "@/components/ui/VerifiedBadge";
 import type { PublicTrainerProfile } from "@/lib/trainer/trainer-profile";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 import { cn } from "@/lib/utils";
 
 export type TrainerProfileHeaderProps = {
@@ -15,7 +16,8 @@ export type TrainerProfileHeaderProps = {
   className?: string;
 };
 
-export function TrainerProfileHeader({ profile, className }: TrainerProfileHeaderProps) {
+export async function TrainerProfileHeader({ profile, className }: TrainerProfileHeaderProps) {
+  const messages = await getMessages();
   const photoLabel = profile.fullName.split(" ")[0]?.toUpperCase() ?? "PHOTO";
 
   return (
@@ -35,7 +37,7 @@ export function TrainerProfileHeader({ profile, className }: TrainerProfileHeade
             <Link
               href="/trainers"
               className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full bg-card/95 shadow-sm backdrop-blur-sm"
-              aria-label={MESSAGES.shell.back}
+              aria-label={messages.shell.back}
             >
               <ArrowLeftIcon className="size-5" aria-hidden />
             </Link>
@@ -48,7 +50,7 @@ export function TrainerProfileHeader({ profile, className }: TrainerProfileHeade
               <Heading as="h1" visualLevel="h2" className="font-heading md:text-[34px]">
                 {profile.fullName}
               </Heading>
-              <VerifiedBadge>{MESSAGES.landing.featured.verifiedBadge}</VerifiedBadge>
+              <VerifiedBadge>{messages.landing.featured.verifiedBadge}</VerifiedBadge>
             </div>
 
             {profile.bio ? (
@@ -63,12 +65,12 @@ export function TrainerProfileHeader({ profile, className }: TrainerProfileHeade
                 {profile.ratingAvg.toFixed(1)}
               </ContentText>
               <ContentText variant="mutedMicro" as="span">
-                · {profile.ratingCount} {MESSAGES.landing.featured.reviewsLabel}
+                · {profile.ratingCount} {messages.landing.featured.reviewsLabel}
               </ContentText>
               {profile.experienceYears ? (
                 <ContentText variant="mutedMicro" as="span">
                   ·{" "}
-                  {MESSAGES.trainer.profile.experienceLabel.replace(
+                  {messages.trainer.profile.experienceLabel.replace(
                     "{years}",
                     String(profile.experienceYears),
                   )}

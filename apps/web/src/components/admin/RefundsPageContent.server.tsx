@@ -5,9 +5,11 @@ import {
   getAdminRefundsKpi,
   listPendingRefunds,
 } from "@/data/admin/list-refunds.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function RefundsPageContent() {
+  const messages = await getMessages();
   const [kpi, refunds] = await Promise.all([
     getAdminRefundsKpi(),
     listPendingRefunds(),
@@ -16,7 +18,7 @@ export async function RefundsPageContent() {
   return (
     <div className="space-y-6">
       <ContentText as="p" className="text-sm text-muted-foreground">
-        {MESSAGES.admin.refunds.manualNote}
+        {messages.admin.refunds.manualNote}
       </ContentText>
       <AdminRefundsKpiGrid kpi={kpi} />
       <RefundsList refunds={refunds} />

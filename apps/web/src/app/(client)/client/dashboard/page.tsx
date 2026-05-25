@@ -12,16 +12,20 @@ import {
   ClientNextSessionCard,
 } from "@/components/client/ClientNextSessionCard";
 import { getClientNextSession } from "@/data/client/get-client-bookings.server";
+import { getMessages } from "@/lib/messages/server";
 
 export async function generateMetadata(): Promise<Metadata> {
+  const messages = await getMessages();
   return {
-    title: "Главная — Pulse",
+    title: messages.dashboard.clientTitle,
   };
 }
 
 export default async function ClientDashboardPage() {
+  const messages = await getMessages();
   const session = await auth();
-  const displayName = session?.user?.name?.trim() || "Клиент";
+  const displayName =
+    session?.user?.name?.trim() || messages.common.guestClientName;
   const nextSession = await getClientNextSession();
 
   if (!session?.user) {

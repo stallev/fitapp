@@ -1,13 +1,16 @@
 import Link from "next/link";
 
 import { auth } from "@/auth";
+import { LocaleSwitcher } from "@/components/i18n/LocaleSwitcher.client";
 import { TopBarAuthActions } from "@/components/shell/TopBarAuthActions.client";
 import { TopBarNotifications } from "@/components/shell/TopBarNotifications.client";
 import { ThemeToggle } from "@/components/shell/ThemeToggle.client";
 import { Container } from "@/components/ui/container";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function TopBar() {
+  const messages = await getMessages();
   const session = await auth();
   const isAuthenticated = Boolean(session?.user);
 
@@ -21,9 +24,12 @@ export async function TopBar() {
           href="/"
           className="inline-flex min-h-11 min-w-11 items-center rounded-full px-2 font-heading text-xl tracking-tight text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          {MESSAGES.site.logoLabel}
+          {messages.site.logoLabel}
         </Link>
         <div className="ml-auto flex items-center gap-1">
+          <div className="hidden md:block">
+            <LocaleSwitcher variant="compact" />
+          </div>
           {isAuthenticated ? <TopBarNotifications /> : null}
           <ThemeToggle />
           <TopBarAuthActions

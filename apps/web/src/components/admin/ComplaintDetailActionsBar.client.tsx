@@ -9,7 +9,8 @@ import { COMPLAINT_STATUS } from "@pulse/domain";
 import { startComplaintReviewAction } from "@/actions/admin/manage-complaint";
 import { ResolveComplaintDialog } from "@/components/admin/ResolveComplaintDialog.client";
 import { Button } from "@/components/ui/button";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type ComplaintDetailActionsBarProps = {
@@ -19,12 +20,13 @@ export type ComplaintDetailActionsBarProps = {
   canClose: boolean;
 };
 
-export function ComplaintDetailActionsBar({
-  complaintId,
+export function ComplaintDetailActionsBar({  complaintId,
   status,
   canStartReview,
   canClose,
 }: ComplaintDetailActionsBarProps) {
+  const messages = useMessages();
+
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const isInReview = status === COMPLAINT_STATUS.IN_REVIEW;
@@ -38,7 +40,7 @@ export function ComplaintDetailActionsBar({
         return;
       }
 
-      toast.success(MESSAGES.admin.complaints.startReviewSuccess, {
+      toast.success(messages.admin.complaints.startReviewSuccess, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
       router.refresh();
@@ -60,8 +62,8 @@ export function ComplaintDetailActionsBar({
             aria-busy={isPending}
           >
             {isPending
-              ? MESSAGES.admin.complaints.startingReview
-              : MESSAGES.admin.complaints.startReview}
+              ? messages.admin.complaints.startingReview
+              : messages.admin.complaints.startReview}
           </Button>
         ) : null}
         {canClose && isInReview ? (

@@ -3,24 +3,26 @@ import { NextResponse } from "next/server";
 import { TRAINER_SERVICE_MUTATION_ERROR_CODES } from "@pulse/domain";
 
 import { toggleTrainerServiceActive } from "@/data/trainer/trainer-service-mutations.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function POST(
   _request: Request,
   context: { params: Promise<{ serviceId: string }> },
 ) {
+  const messages = await getMessages();
   const { serviceId } = await context.params;
   const result = await toggleTrainerServiceActive(serviceId);
 
   if (!result.ok) {
     const message =
       result.code === TRAINER_SERVICE_MUTATION_ERROR_CODES.NOT_FOUND
-        ? MESSAGES.trainer.services.errors.notFound
+        ? messages.trainer.services.errors.notFound
         : result.code === TRAINER_SERVICE_MUTATION_ERROR_CODES.UNAUTHORIZED
-          ? MESSAGES.trainer.services.errors.unauthorized
+          ? messages.trainer.services.errors.unauthorized
           : result.code === TRAINER_SERVICE_MUTATION_ERROR_CODES.FORBIDDEN
-            ? MESSAGES.trainer.services.errors.forbidden
-            : MESSAGES.trainer.services.toggleError;
+            ? messages.trainer.services.errors.forbidden
+            : messages.trainer.services.toggleError;
 
     return NextResponse.json(
       { ...result, message },

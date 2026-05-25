@@ -3,7 +3,8 @@ import { CheckCircleIcon, XCircleIcon } from "lucide-react";
 import { TRAINER_STATUS } from "@pulse/domain";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 import { cn } from "@/lib/utils";
 
 export type TrainerApplicationProcessedBannerProps = {
@@ -11,10 +12,11 @@ export type TrainerApplicationProcessedBannerProps = {
   rejectionReason?: string | null;
 };
 
-export function TrainerApplicationProcessedBanner({
-  status,
+export async function TrainerApplicationProcessedBanner({  status,
   rejectionReason,
 }: TrainerApplicationProcessedBannerProps) {
+  const messages = await getMessages();
+
   if (status === TRAINER_STATUS.APPROVED) {
     return (
       <Alert
@@ -26,9 +28,9 @@ export function TrainerApplicationProcessedBanner({
           className="text-[hsl(var(--color-success))]"
           aria-hidden
         />
-        <AlertTitle>{MESSAGES.admin.moderation.statusApproved}</AlertTitle>
+        <AlertTitle>{messages.admin.moderation.statusApproved}</AlertTitle>
         <AlertDescription>
-          {MESSAGES.admin.moderation.approveSuccess}
+          {messages.admin.moderation.approveSuccess}
         </AlertDescription>
       </Alert>
     );
@@ -38,11 +40,11 @@ export function TrainerApplicationProcessedBanner({
     return (
       <Alert variant="destructive">
         <XCircleIcon aria-hidden />
-        <AlertTitle>{MESSAGES.admin.moderation.statusRejected}</AlertTitle>
+        <AlertTitle>{messages.admin.moderation.statusRejected}</AlertTitle>
         {rejectionReason ? (
           <AlertDescription className="space-y-1">
             <p className="font-medium">
-              {MESSAGES.admin.moderation.rejectionReasonTitle}
+              {messages.admin.moderation.rejectionReasonTitle}
             </p>
             <p>{rejectionReason}</p>
           </AlertDescription>

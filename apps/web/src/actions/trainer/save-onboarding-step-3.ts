@@ -9,19 +9,21 @@ import {
 
 import { saveOnboardingStep3 } from "@/data/trainer/save-trainer-onboarding-step.server";
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export type SaveOnboardingStep3State = MutationResult<{ profileId: string }> | null;
 
 export async function saveOnboardingStep3Action(
   input: SaveOnboardingStep3Input,
 ): Promise<SaveOnboardingStep3State> {
+  const messages = await getMessages();
   const ctx = await getPolicySessionContext();
   if (!ctx) {
     return {
       ok: false,
       code: TRAINER_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.trainer.onboarding.errors.unauthorized,
+      message: messages.trainer.onboarding.errors.unauthorized,
     };
   }
 
@@ -30,7 +32,7 @@ export async function saveOnboardingStep3Action(
     return {
       ok: false,
       code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.trainer.onboarding.errors.validation,
+      message: messages.trainer.onboarding.errors.validation,
     };
   }
 
@@ -38,7 +40,7 @@ export async function saveOnboardingStep3Action(
   if (!result.ok) {
     return {
       ...result,
-      message: MESSAGES.trainer.onboarding.errors.generic,
+      message: messages.trainer.onboarding.errors.generic,
     };
   }
 

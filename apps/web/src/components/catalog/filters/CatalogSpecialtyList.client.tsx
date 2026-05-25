@@ -6,7 +6,8 @@ import {
 } from "@pulse/domain";
 
 import type { CatalogFilterOptions } from "@/data/catalog/get-catalog-filter-options.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { cn } from "@/lib/utils";
 
 import type { CatalogFilterDraft } from "./CatalogFilterFields.client";
@@ -17,11 +18,12 @@ export type CatalogSpecialtyListProps = {
   onDraftChange: (patch: Partial<CatalogFilterDraft>) => void;
 };
 
-export function CatalogSpecialtyList({
-  draft,
+export function CatalogSpecialtyList({  draft,
   options,
   onDraftChange,
 }: CatalogSpecialtyListProps) {
+  const messages = useMessages();
+
   const isAllActive = draft.specializations.length === 0;
 
   return (
@@ -38,7 +40,7 @@ export function CatalogSpecialtyList({
             : "text-muted-foreground hover:bg-muted",
         )}
       >
-        {MESSAGES.catalog.specialtyAll}
+        {messages.catalog.specialtyAll}
       </button>
       {options.specializations.map((item) => {
         if (!isSpecializationSlug(item.slug)) {

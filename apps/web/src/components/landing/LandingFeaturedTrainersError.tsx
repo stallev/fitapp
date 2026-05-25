@@ -3,12 +3,14 @@ import { AlertCircleIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Container } from "@/components/ui/container";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 import { LandingFeaturedTrainersRetryButton } from "./LandingFeaturedTrainersRetryButton.client";
 
-export function LandingFeaturedTrainersError() {
-  const { featured } = MESSAGES.landing;
+export async function LandingFeaturedTrainersError() {
+  const messages = await getMessages();
+  const { featured } = messages.landing;
 
   return (
     <section id="trainers" className="bg-card py-24">

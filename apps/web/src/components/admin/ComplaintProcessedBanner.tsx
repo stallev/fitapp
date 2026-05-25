@@ -3,7 +3,8 @@ import { InfoIcon, CheckCircleIcon } from "lucide-react";
 import { COMPLAINT_STATUS } from "@pulse/domain";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 import { cn } from "@/lib/utils";
 
 export type ComplaintProcessedBannerProps = {
@@ -11,10 +12,11 @@ export type ComplaintProcessedBannerProps = {
   assigneeName?: string | null;
 };
 
-export function ComplaintProcessedBanner({
-  status,
+export async function ComplaintProcessedBanner({  status,
   assigneeName,
 }: ComplaintProcessedBannerProps) {
+  const messages = await getMessages();
+
   if (status === COMPLAINT_STATUS.CLOSED) {
     return (
       <Alert
@@ -26,9 +28,9 @@ export function ComplaintProcessedBanner({
           className="text-[hsl(var(--color-success))]"
           aria-hidden
         />
-        <AlertTitle>{MESSAGES.admin.complaints.statusClosed}</AlertTitle>
+        <AlertTitle>{messages.admin.complaints.statusClosed}</AlertTitle>
         <AlertDescription>
-          {MESSAGES.admin.complaints.closeSuccess}
+          {messages.admin.complaints.closeSuccess}
         </AlertDescription>
       </Alert>
     );
@@ -36,11 +38,11 @@ export function ComplaintProcessedBanner({
 
   if (status === COMPLAINT_STATUS.IN_REVIEW) {
     const title = assigneeName
-      ? MESSAGES.admin.complaints.inReviewBannerAssignee.replace(
+      ? messages.admin.complaints.inReviewBannerAssignee.replace(
           "{name}",
           assigneeName,
         )
-      : MESSAGES.admin.complaints.inReviewBanner;
+      : messages.admin.complaints.inReviewBanner;
 
     return (
       <Alert

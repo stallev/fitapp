@@ -5,7 +5,8 @@ import { SchedulePicker } from "@/components/ui/SchedulePicker.client";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import type { SchedulePickerDay, SchedulePickerSlot } from "@/lib/booking/map-slots-to-schedule-picker";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 export type BookingWizardSlotStepProps = {
   days: SchedulePickerDay[];
@@ -18,8 +19,7 @@ export type BookingWizardSlotStepProps = {
   onSlotSelect: (slotId: string) => void;
 };
 
-export function BookingWizardSlotStep({
-  days,
+export function BookingWizardSlotStep({  days,
   slots,
   activeDayId,
   selectedSlotId,
@@ -28,6 +28,8 @@ export function BookingWizardSlotStep({
   onDayChange,
   onSlotSelect,
 }: BookingWizardSlotStepProps) {
+  const messages = useMessages();
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -40,10 +42,10 @@ export function BookingWizardSlotStep({
     return (
       <div className="space-y-2 py-6 text-center">
         <Heading as="h2" visualLevel="h3">
-          {MESSAGES.booking.wizard.noSlotsTitle}
+          {messages.booking.wizard.noSlotsTitle}
         </Heading>
         <ContentText variant="muted" as="p">
-          {MESSAGES.booking.wizard.noSlotsDescription}
+          {messages.booking.wizard.noSlotsDescription}
         </ContentText>
       </div>
     );
@@ -56,10 +58,10 @@ export function BookingWizardSlotStep({
       activeDayId={activeDayId}
       selectedSlotId={selectedSlotId ?? undefined}
       timezoneLabel={timezoneLabel}
-      title={MESSAGES.booking.wizard.scheduleTitle}
-      emptySlotsTitle={MESSAGES.booking.wizard.noSlotsTitle}
-      emptySlotsDescription={MESSAGES.booking.wizard.noSlotsDescription}
-      swipeDaysHint={MESSAGES.booking.wizard.swipeDaysHint}
+      title={messages.booking.wizard.scheduleTitle}
+      emptySlotsTitle={messages.booking.wizard.noSlotsTitle}
+      emptySlotsDescription={messages.booking.wizard.noSlotsDescription}
+      swipeDaysHint={messages.booking.wizard.swipeDaysHint}
       onDayChange={onDayChange}
       onSlotSelect={onSlotSelect}
     />

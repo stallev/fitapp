@@ -24,7 +24,9 @@ import {
 } from "@/data/trainer/load-trainer-schedule-facts.server";
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 import { CACHE_TAGS } from "@/lib/cache/tags";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { formatPrismaDate, formatPrismaTime } from "@/lib/trainer/schedule-time";
 
 export type CreateBookingResult = MutationResult<{ id: string }>;
@@ -32,25 +34,26 @@ export type CreateBookingResult = MutationResult<{ id: string }>;
 const TRANSACTION_RETRIES = 3;
 const OVERLAP_LOOKBACK_MS = 4 * 60 * 60 * 1000;
 
-function mapPolicyError(error: PolicyError): CreateBookingResult {
+function mapPolicyError(error: PolicyError, messages: Messages): CreateBookingResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: BOOKING_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.booking.errors.unauthorized,
+      message: messages.booking.errors.unauthorized,
     };
   }
 
   return {
     ok: false,
     code: BOOKING_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.booking.errors.forbidden,
+    message: messages.booking.errors.forbidden,
   };
 }
 
 async function runCreateBookingTransaction(
   clientId: string,
   input: CreateBookingInput,
+  messages: Messages,
 ): Promise<CreateBookingResult> {
   const prisma = getPrisma();
   const slotStart = new Date(input.startsAtUtc);
@@ -95,7 +98,7 @@ async function runCreateBookingTransaction(
         return {
           ok: false,
           code: BOOKING_MUTATION_ERROR_CODES.TRAINER_NOT_BOOKABLE,
-          message: MESSAGES.booking.errors.trainerNotBookable,
+          message: messages.booking.errors.trainerNotBookable,
         };
       }
 
@@ -103,7 +106,7 @@ async function runCreateBookingTransaction(
         return {
           ok: false,
           code: BOOKING_MUTATION_ERROR_CODES.SERVICE_INACTIVE,
-          message: MESSAGES.booking.errors.serviceInactive,
+          message: messages.booking.errors.serviceInactive,
         };
       }
 
@@ -161,8 +164,8 @@ async function runCreateBookingTransaction(
       if (slotValidation) {
         const message =
           slotValidation.code === BOOKING_MUTATION_ERROR_CODES.SLOT_IN_PAST
-            ? MESSAGES.booking.errors.slotInPast
-            : MESSAGES.booking.errors.slotUnavailable;
+            ? messages.booking.errors.slotInPast
+            : messages.booking.errors.slotUnavailable;
 
         return {
           ok: false,
@@ -181,7 +184,7 @@ async function runCreateBookingTransaction(
         return {
           ok: false,
           code: BOOKING_MUTATION_ERROR_CODES.SLOT_UNAVAILABLE,
-          message: MESSAGES.booking.errors.slotUnavailable,
+          message: messages.booking.errors.slotUnavailable,
         };
       }
 
@@ -230,12 +233,13 @@ async function runCreateBookingTransaction(
 export async function createBookingMutation(
   input: CreateBookingInput,
 ): Promise<CreateBookingResult> {
+  const messages = await getMessages();
   const parsed = createBookingInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: BOOKING_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.booking.errors.validation,
+      message: messages.booking.errors.validation,
     };
   }
 
@@ -245,7 +249,7 @@ export async function createBookingMutation(
     assertCanCreateBooking(ctx);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
@@ -253,7 +257,11 @@ export async function createBookingMutation(
 
   for (let attempt = 0; attempt < TRANSACTION_RETRIES; attempt += 1) {
     try {
-      return await runCreateBookingTransaction(ctx.userId, parsed.data);
+      return await runCreateBookingTransaction(
+        ctx.userId,
+        parsed.data,
+        messages,
+      );
     } catch (error) {
       if (isPrismaWriteConflict(error) && attempt < TRANSACTION_RETRIES - 1) {
         continue;
@@ -266,7 +274,7 @@ export async function createBookingMutation(
   return {
     ok: false,
     code: BOOKING_MUTATION_ERROR_CODES.SLOT_UNAVAILABLE,
-    message: MESSAGES.booking.errors.slotUnavailable,
+    message: messages.booking.errors.slotUnavailable,
   };
 }
 
@@ -285,7 +293,7 @@ async function invalidateBookingCreatedCache(
 export async function createBookingWithCacheInvalidation(
   input: CreateBookingInput,
 ): Promise<CreateBookingResult> {
-  const result = await createBookingMutation(input);
+    const result = await createBookingMutation(input);
 
   if (result.ok) {
     await invalidateBookingCreatedCache(input.trainerProfileId, result.data.id);

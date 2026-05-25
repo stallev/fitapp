@@ -12,21 +12,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import type { TrainerScheduleExceptionForEdit } from "@/data/trainer/get-trainer-schedule-for-edit.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 import { formatPrismaDate } from "@/lib/trainer/schedule-time";
 
-import { ExceptionCard } from "./ExceptionCard";
+import { ExceptionCard } from "./ExceptionCard.client";
 
 export type TrainerScheduleExceptionsTabProps = {
   exceptions: TrainerScheduleExceptionForEdit[];
   onExceptionsChange: (exceptions: TrainerScheduleExceptionForEdit[]) => void;
 };
 
-export function TrainerScheduleExceptionsTab({
-  exceptions,
+export function TrainerScheduleExceptionsTab({  exceptions,
   onExceptionsChange,
 }: TrainerScheduleExceptionsTabProps) {
+  const messages = useMessages();
+
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [isBlocked, setIsBlocked] = useState(true);
   const [reason, setReason] = useState("");
@@ -96,7 +98,7 @@ export function TrainerScheduleExceptionsTab({
       <div className="grid gap-3 rounded-2xl border border-border bg-card p-4">
         <div className="flex items-center justify-between gap-3">
           <Label htmlFor="exception-blocked">
-            {MESSAGES.trainer.schedule.exceptionBlockedLabel}
+            {messages.trainer.schedule.exceptionBlockedLabel}
           </Label>
           <Switch
             id="exception-blocked"
@@ -107,7 +109,7 @@ export function TrainerScheduleExceptionsTab({
         </div>
         <div className="grid gap-2">
           <Label htmlFor="exception-reason">
-            {MESSAGES.trainer.schedule.exceptionReasonLabel}
+            {messages.trainer.schedule.exceptionReasonLabel}
           </Label>
           <Input
             id="exception-reason"
@@ -124,16 +126,16 @@ export function TrainerScheduleExceptionsTab({
           disabled={isPending || !selectedDate}
           aria-busy={isPending}
         >
-          {MESSAGES.trainer.schedule.addException}
+          {messages.trainer.schedule.addException}
         </Button>
       </div>
       <div className="space-y-2">
         <Heading as="h2" visualLevel="h5">
-          {MESSAGES.trainer.schedule.tabs.exceptions}
+          {messages.trainer.schedule.tabs.exceptions}
         </Heading>
         {exceptions.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            {MESSAGES.trainer.schedule.addException}
+            {messages.trainer.schedule.addException}
           </p>
         ) : (
           exceptions.map((exception) => (

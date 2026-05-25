@@ -283,12 +283,13 @@
 
 ---
 
-## P17 — UI Internationalization (EN/RU)
+## P17 — UI Internationalization (EN/RU) — **Complete**
 
 | Component | Action | Route / placement | Notes |
 |-----------|--------|-------------------|-------|
 | `LocaleSwitcher` | CREATE | Design Lab `#settings`; `LandingNav`, `LandingFooter`; `TopBar` `md+` | Segmented EN \| RU; `aria-pressed` |
 | `LocaleProvider` | CREATE | Root / app shell layout | Seeds `useMessages()` |
+| `LocaleQueryHandler` | CREATE | Root layout | `?lang=en\|ru` → cookie + strip query |
 | `LocaleSettingsRow` | CREATE | `/client/profile`, `/trainer/profile` | Language row; wireframe v2 |
 | `ProductQueryToast` | USE (extend) | Any route | Strip `?lang=` after cookie set (pattern) |
 | Typography atoms, `Button`, `PulseCard` | USE | Profile settings | Settings list pattern |

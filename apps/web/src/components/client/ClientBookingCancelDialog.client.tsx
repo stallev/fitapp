@@ -17,7 +17,8 @@ import {
 import { Button } from "@/components/ui/button";
 import type { MutationResult } from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type ClientBookingCancelDialogProps = {
@@ -26,11 +27,12 @@ export type ClientBookingCancelDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-export function ClientBookingCancelDialog({
-  bookingId,
+export function ClientBookingCancelDialog({  bookingId,
   open,
   onOpenChange,
 }: ClientBookingCancelDialogProps) {
+  const messages = useMessages();
+
   const router = useRouter();
   const [state, formAction, pending] = useActionState<
     MutationResult<{ id: string; status: string }> | null,
@@ -46,7 +48,7 @@ export function ClientBookingCancelDialog({
     lastHandledState.current = state;
 
     if (state.ok) {
-      toast.success(MESSAGES.toast.cancelled, {
+      toast.success(messages.toast.cancelled, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
       onOpenChange(false);
@@ -67,16 +69,16 @@ export function ClientBookingCancelDialog({
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{MESSAGES.booking.cancel.confirmTitle}</AlertDialogTitle>
+          <AlertDialogTitle>{messages.booking.cancel.confirmTitle}</AlertDialogTitle>
           <AlertDialogDescription>
-            {MESSAGES.booking.cancel.confirmDescription}
+            {messages.booking.cancel.confirmDescription}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <form action={formAction}>
           <input type="hidden" name="bookingId" value={bookingId} />
           <AlertDialogFooter>
             <AlertDialogCancel type="button" disabled={pending}>
-              {MESSAGES.booking.cancel.confirmDismiss}
+              {messages.booking.cancel.confirmDismiss}
             </AlertDialogCancel>
             <Button
               type="submit"
@@ -85,8 +87,8 @@ export function ClientBookingCancelDialog({
               aria-busy={pending}
             >
               {pending
-                ? MESSAGES.booking.cancel.pending
-                : MESSAGES.booking.cancel.confirmAction}
+                ? messages.booking.cancel.pending
+                : messages.booking.cancel.confirmAction}
             </Button>
           </AlertDialogFooter>
         </form>

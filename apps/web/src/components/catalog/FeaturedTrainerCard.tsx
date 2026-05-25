@@ -1,112 +1,18 @@
-import Link from "next/link";
+import {
+  FeaturedTrainerCardView,
+  type FeaturedTrainerCardViewProps,
+} from "@/components/catalog/FeaturedTrainerCardView";
+import { getLocale, getMessages } from "@/lib/messages/server";
 
-import { ContentText, Heading } from "@/components/atoms";
-import { PulseCard } from "@/components/ui/card";
-import { PhotoSlot } from "@/components/ui/PhotoSlot";
-import { RatingStars } from "@/components/ui/RatingStars";
-import { SpecChip } from "@/components/ui/SpecChip";
-import { VerifiedBadge } from "@/components/ui/VerifiedBadge";
-import type { CatalogTrainerCard } from "@/lib/catalog/catalog-trainer-card";
-import { MESSAGES } from "@/lib/messages";
-import { cn } from "@/lib/utils";
+export type FeaturedTrainerCardProps = Omit<
+  FeaturedTrainerCardViewProps,
+  "messages" | "locale"
+>;
 
-export type FeaturedTrainerCardProps = {
-  trainer: CatalogTrainerCard;
-  className?: string;
-  imagePriority?: boolean;
-};
-
-function formatFeaturedPrice(cents: number, currency: string): string {
-  return new Intl.NumberFormat("ru-RU", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: 0,
-  }).format(cents / 100);
-}
-
-function getFeaturedTagline(trainer: CatalogTrainerCard): string {
-  if (trainer.bio?.trim()) {
-    return trainer.bio.trim();
-  }
-  return trainer.specializations.map((item) => item.name).join(" · ");
-}
-
-export function FeaturedTrainerCard({
-  trainer,
-  className,
-  imagePriority = false,
-}: FeaturedTrainerCardProps) {
-  const tagline = getFeaturedTagline(trainer);
-  const visibleSpecs = trainer.specializations.slice(0, 2);
-  const firstName = trainer.fullName.split(" ")[0]?.toUpperCase() ?? "PHOTO";
+export async function FeaturedTrainerCard(props: FeaturedTrainerCardProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
 
   return (
-    <Link
-      href={`/trainers/${trainer.id}`}
-      className={cn("group block", className)}
-    >
-      <PulseCard
-        variant="elevated"
-        interactive
-        className="overflow-hidden rounded-[22px] border-foreground/5 shadow-sm transition-all duration-250 hover:-translate-y-2 hover:shadow-[var(--shadow-overlay)]"
-      >
-        <div className="relative h-[200px] overflow-hidden">
-          <PhotoSlot
-            label={`PHOTO · ${firstName}`}
-            src={trainer.photoUrl}
-            alt={trainer.fullName}
-            aspect="cover"
-            className="size-full rounded-none"
-            sizes="(max-width: 768px) 100vw, 400px"
-            priority={imagePriority}
-          />
-          <div
-            aria-hidden
-            className="absolute inset-0 z-10 bg-gradient-to-t from-foreground/40 to-transparent"
-          />
-          {trainer.fromPriceCents !== null && trainer.currency ? (
-            <div className="absolute right-3.5 bottom-3.5 z-20 rounded-full bg-card px-3.5 py-1.5 text-[13px] font-bold text-foreground shadow-sm">
-              {MESSAGES.landing.featured.fromPriceLabel}{" "}
-              {formatFeaturedPrice(trainer.fromPriceCents, trainer.currency)}/ч
-            </div>
-          ) : null}
-        </div>
-        <div className="p-5">
-          <div className="mb-1 flex items-center justify-between gap-2">
-            <Heading as="h3" visualLevel="h4" className="truncate font-sans font-bold">
-              {trainer.fullName}
-            </Heading>
-            <VerifiedBadge iconOnly className="shrink-0">
-              {MESSAGES.landing.featured.verifiedBadge}
-            </VerifiedBadge>
-          </div>
-          <div className="mb-2.5 flex flex-wrap items-center gap-2">
-            <ContentText variant="subtle" as="span" className="text-[13px]">
-              {tagline}
-            </ContentText>
-          </div>
-          <div className="mb-3 flex items-center gap-1.5">
-            <RatingStars value={trainer.ratingAvg} size="sm" />
-            <ContentText variant="small" as="span" className="font-semibold">
-              {trainer.ratingAvg.toFixed(1)}
-            </ContentText>
-            <ContentText variant="subtle" as="span">
-              · {trainer.ratingCount}{" "}
-              {MESSAGES.landing.featured.reviewsLabel}
-            </ContentText>
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {visibleSpecs.map((spec) => (
-              <SpecChip
-                key={spec.slug}
-                className="bg-primary-container text-primary"
-              >
-                {spec.name}
-              </SpecChip>
-            ))}
-          </div>
-        </div>
-      </PulseCard>
-    </Link>
+    <FeaturedTrainerCardView {...props} messages={messages} locale={locale} />
   );
 }

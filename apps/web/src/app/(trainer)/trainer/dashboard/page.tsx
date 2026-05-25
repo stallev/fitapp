@@ -7,9 +7,11 @@ import { TrainerRecentReviews } from "@/components/trainer/TrainerRecentReviews"
 import { TrainerTodaySessionsList } from "@/components/trainer/TrainerTodaySessionsList";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { getTrainerDashboardSnapshot } from "@/data/trainer/get-trainer-dashboard.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export default async function TrainerDashboardPage() {
+  const messages = await getMessages();
   const snapshot = await getTrainerDashboardSnapshot();
 
   return (
@@ -18,12 +20,12 @@ export default async function TrainerDashboardPage() {
         <TrainerDashboardSubmittedToast />
       </Suspense>
       <Heading as="h1" visualLevel="h3">
-        {MESSAGES.dashboard.trainerTitle}
+        {messages.dashboard.trainerTitle}
       </Heading>
       {!snapshot.isApproved ? (
         <Alert className="mt-4">
-          <AlertTitle>{MESSAGES.trainerReviewBanner.title}</AlertTitle>
-          <AlertDescription>{MESSAGES.trainerReviewBanner.description}</AlertDescription>
+          <AlertTitle>{messages.trainerReviewBanner.title}</AlertTitle>
+          <AlertDescription>{messages.trainerReviewBanner.description}</AlertDescription>
         </Alert>
       ) : null}
       <div className="mt-6 space-y-6">

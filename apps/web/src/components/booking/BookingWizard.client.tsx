@@ -12,7 +12,7 @@ import {
 import { fetchBookingWizardSlotsAction } from "@/actions/client/fetch-booking-wizard-slots";
 import { ContentText, Heading } from "@/components/atoms";
 import { BookingWizardConfirmStep } from "@/components/booking/BookingWizardConfirmStep.client";
-import { BookingWizardServiceStep } from "@/components/booking/BookingWizardServiceStep";
+import { BookingWizardServiceStep } from "@/components/booking/BookingWizardServiceStep.client";
 import { BookingWizardSidebar } from "@/components/booking/BookingWizardSidebar";
 import { BookingWizardSlotStep } from "@/components/booking/BookingWizardSlotStep.client";
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,11 @@ import {
   type SchedulePickerDay,
   type SchedulePickerSlot,
 } from "@/lib/booking/map-slots-to-schedule-picker";
-import { MESSAGES } from "@/lib/messages";
+import {
+  useLocale,
+  useMessages,
+} from "@/components/i18n/LocaleProvider.client";
+
 
 export type BookingWizardProps = {
   profile: PublicTrainerProfile;
@@ -37,11 +41,13 @@ export type BookingWizardProps = {
   initialStep?: number;
 };
 
-export function BookingWizard({
-  profile,
+export function BookingWizard({  profile,
   initialServiceId,
   initialStep = BOOKING_WIZARD_STEP.service,
 }: BookingWizardProps) {
+  const messages = useMessages();
+  const locale = useLocale();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const [step, setStep] = useState(initialStep);
@@ -64,10 +70,10 @@ export function BookingWizard({
 
   const stepLabel =
     step === BOOKING_WIZARD_STEP.service
-      ? MESSAGES.booking.wizard.stepService
+      ? messages.booking.wizard.stepService
       : step === BOOKING_WIZARD_STEP.slot
-        ? MESSAGES.booking.wizard.stepSlot
-        : MESSAGES.booking.wizard.stepConfirm;
+        ? messages.booking.wizard.stepSlot
+        : messages.booking.wizard.stepConfirm;
 
   const syncUrl = useCallback(
     (nextStep: number, serviceId: string | null) => {
@@ -96,14 +102,18 @@ export function BookingWizard({
           return;
         }
 
-        const mapped = mapSlotsToSchedulePicker(result.timezone, result.slots);
+        const mapped = mapSlotsToSchedulePicker(
+          result.timezone,
+          result.slots,
+          locale,
+        );
         setDays(mapped.days);
         setSlotsByDay(mapped.slotsByDay);
         setTimezoneLabel(result.timezoneLabel);
         setActiveDayId(mapped.days[0]?.id ?? "");
       });
     },
-    [profile.id],
+    [locale, profile.id],
   );
 
   useEffect(() => {
@@ -146,7 +156,7 @@ export function BookingWizard({
         ? Boolean(selectedSlotId)
         : false;
 
-  const stepCaption = MESSAGES.booking.wizard.stepOf
+  const stepCaption = messages.booking.wizard.stepOf
     .replace("{step}", String(step))
     .replace("{total}", "3");
 
@@ -157,12 +167,13 @@ export function BookingWizard({
         totalSteps={3}
         stepLabel={stepLabel}
         stepCaption={stepCaption}
-        backAriaLabel={MESSAGES.shell.back}
+        backAriaLabel={messages.shell.back}
         totalLabel={
           selectedService
             ? formatBookingPrice(
                 selectedService.priceCents,
                 selectedService.currency,
+                locale,
               )
             : undefined
         }
@@ -234,7 +245,7 @@ export function BookingWizard({
             disabled={!canProceed || isSlotsPending}
             onClick={handleNext}
           >
-            {MESSAGES.booking.wizard.next}
+            {messages.booking.wizard.next}
           </Button>
         ) : null}
       </div>

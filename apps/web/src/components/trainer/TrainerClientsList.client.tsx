@@ -4,15 +4,17 @@ import { useMemo, useState } from "react";
 
 import { Input } from "@/components/ui/input";
 import type { TrainerClientListItem } from "@/data/trainer/list-trainer-clients.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 
-import { ClientListCard } from "./ClientListCard";
+
+import { ClientListCard } from "./ClientListCard.client";
 
 export type TrainerClientsListProps = {
   clients: TrainerClientListItem[];
 };
 
 export function TrainerClientsList({ clients }: TrainerClientsListProps) {
+  const messages = useMessages();
   const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
@@ -31,8 +33,8 @@ export function TrainerClientsList({ clients }: TrainerClientsListProps) {
       <Input
         value={query}
         onChange={(event) => setQuery(event.target.value)}
-        placeholder={MESSAGES.trainer.clients.searchPlaceholder}
-        aria-label={MESSAGES.trainer.clients.searchAriaLabel}
+        placeholder={messages.trainer.clients.searchPlaceholder}
+        aria-label={messages.trainer.clients.searchAriaLabel}
         className="rounded-full md:max-w-md"
       />
       <div className="grid gap-3 md:grid-cols-2">

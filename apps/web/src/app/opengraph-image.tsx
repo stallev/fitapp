@@ -1,13 +1,13 @@
 import { ImageResponse } from "next/og";
 
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export const alt = MESSAGES.landing.meta.ogImageAlt;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OpenGraphImage() {
-  const { title, description } = MESSAGES.landing.meta;
+export default async function OpenGraphImage() {
+  const messages = await getMessages();
+  const { title, description } = messages.landing.meta;
 
   return new ImageResponse(
     (
@@ -36,7 +36,7 @@ export default function OpenGraphImage() {
             color: "#E8C070",
           }}
         >
-          {MESSAGES.site.logoLabel}
+          {messages.site.logoLabel}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 920 }}>
           <div
@@ -47,7 +47,7 @@ export default function OpenGraphImage() {
               letterSpacing: "-0.02em",
             }}
           >
-            {title.replace(`${MESSAGES.site.logoLabel} — `, "")}
+            {title.replace(`${messages.site.logoLabel} — `, "")}
           </div>
           <div
             style={{

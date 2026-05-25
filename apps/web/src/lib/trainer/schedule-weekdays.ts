@@ -1,19 +1,34 @@
-export const SCHEDULE_WEEKDAYS = [
-  { dayOfWeek: 0, short: "Пн", label: "Понедельник" },
-  { dayOfWeek: 1, short: "Вт", label: "Вторник" },
-  { dayOfWeek: 2, short: "Ср", label: "Среда" },
-  { dayOfWeek: 3, short: "Чт", label: "Четверг" },
-  { dayOfWeek: 4, short: "Пт", label: "Пятница" },
-  { dayOfWeek: 5, short: "Сб", label: "Суббота" },
-  { dayOfWeek: 6, short: "Вс", label: "Воскресенье" },
-] as const;
+import { type AppLocale, DEFAULT_LOCALE } from "@/lib/i18n/constants";
+import { formatDateTime } from "@/lib/i18n/format";
+
+export type ScheduleWeekday = {
+  dayOfWeek: number;
+  short: string;
+  label: string;
+};
+
+const MONDAY_REFERENCE_UTC = Date.UTC(2024, 0, 1);
+
+export function getScheduleWeekdays(
+  locale: AppLocale = DEFAULT_LOCALE,
+): ScheduleWeekday[] {
+  return Array.from({ length: 7 }, (_, dayOfWeek) => {
+    const date = new Date(MONDAY_REFERENCE_UTC + dayOfWeek * 86_400_000);
+    return {
+      dayOfWeek,
+      short: formatDateTime(date, { locale, weekday: "short" }).replace(".", ""),
+      label: formatDateTime(date, { locale, weekday: "long" }),
+    };
+  });
+}
 
 export function groupIntervalsByDay<T extends { dayOfWeek: number }>(
   intervals: T[],
+  locale: AppLocale = DEFAULT_LOCALE,
 ): Map<number, T[]> {
   const grouped = new Map<number, T[]>();
 
-  for (const day of SCHEDULE_WEEKDAYS) {
+  for (const day of getScheduleWeekdays(locale)) {
     grouped.set(day.dayOfWeek, []);
   }
 

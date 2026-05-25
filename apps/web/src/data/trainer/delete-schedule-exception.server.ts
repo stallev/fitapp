@@ -15,38 +15,41 @@ import {
 } from "@pulse/policy-server";
 
 import { CACHE_TAGS } from "@/lib/cache/tags";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 import { getTrainerProfileOwnershipFacts } from "./get-trainer-schedule-for-edit.server";
 
 export type DeleteScheduleExceptionResult = MutationResult<{ profileId: string }>;
 
-function mapPolicyError(error: PolicyError): DeleteScheduleExceptionResult {
+function mapPolicyError(error: PolicyError, messages: Messages): DeleteScheduleExceptionResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.trainer.schedule.errors.unauthorized,
+      message: messages.trainer.schedule.errors.unauthorized,
     };
   }
 
   return {
     ok: false,
     code: SCHEDULE_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.trainer.schedule.errors.forbidden,
+    message: messages.trainer.schedule.errors.forbidden,
   };
 }
 
 export async function deleteScheduleExceptionMutation(
   input: DeleteScheduleExceptionInput,
 ): Promise<DeleteScheduleExceptionResult> {
+  const messages = await getMessages();
   const parsed = deleteScheduleExceptionInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.trainer.schedule.errors.validation,
+      message: messages.trainer.schedule.errors.validation,
     };
   }
 
@@ -57,7 +60,7 @@ export async function deleteScheduleExceptionMutation(
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.trainer.schedule.errors.unauthorized,
+      message: messages.trainer.schedule.errors.unauthorized,
     };
   }
 
@@ -65,7 +68,7 @@ export async function deleteScheduleExceptionMutation(
     assertCanMutateSchedule(ctx, { ownerUserId: ownership.ownerUserId });
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
@@ -83,7 +86,7 @@ export async function deleteScheduleExceptionMutation(
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.NOT_FOUND,
-      message: MESSAGES.trainer.schedule.errors.notFound,
+      message: messages.trainer.schedule.errors.notFound,
     };
   }
 
@@ -93,7 +96,7 @@ export async function deleteScheduleExceptionMutation(
 export async function deleteScheduleExceptionWithCacheInvalidation(
   input: DeleteScheduleExceptionInput,
 ): Promise<DeleteScheduleExceptionResult> {
-  const result = await deleteScheduleExceptionMutation(input);
+    const result = await deleteScheduleExceptionMutation(input);
 
   if (result.ok) {
     updateTag(CACHE_TAGS.trainer(result.data.profileId));

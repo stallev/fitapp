@@ -5,7 +5,8 @@ import { PulseCard, PulseCardContent } from "@/components/ui/card";
 import { CustomLink } from "@/components/ui/CustomLink";
 import { SpecChip } from "@/components/ui/SpecChip";
 import type { TrainerApplicationListItem } from "@/data/admin/list-trainer-applications.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 import { cn } from "@/lib/utils";
 
 export type ModerationQueueRowProps = {
@@ -22,9 +23,10 @@ function getInitials(name: string): string {
     .toUpperCase();
 }
 
-export function ModerationQueueRow({ item, href }: ModerationQueueRowProps) {
+export async function ModerationQueueRow({ item, href }: ModerationQueueRowProps) {
+  const messages = await getMessages();
   const isLongWait = item.waitingDays >= 3;
-  const ariaLabel = MESSAGES.admin.moderation.openApplicationAria
+  const ariaLabel = messages.admin.moderation.openApplicationAria
     .replace("{name}", item.fullName)
     .replace("{days}", String(item.waitingDays));
 
@@ -69,7 +71,7 @@ export function ModerationQueueRow({ item, href }: ModerationQueueRowProps) {
           {item.submittedAt ? (
             <div className="flex items-center justify-between gap-2 text-[11.5px] text-muted-foreground">
               <span>
-                {MESSAGES.admin.moderation.submittedDaysAgo.replace(
+                {messages.admin.moderation.submittedDaysAgo.replace(
                   "{days}",
                   String(item.waitingDays),
                 )}
@@ -83,7 +85,7 @@ export function ModerationQueueRow({ item, href }: ModerationQueueRowProps) {
                 {isLongWait ? (
                   <ClockIcon className="size-3 shrink-0" aria-hidden />
                 ) : null}
-                {MESSAGES.admin.moderation.waitingDays.replace(
+                {messages.admin.moderation.waitingDays.replace(
                   "{days}",
                   String(item.waitingDays),
                 )}

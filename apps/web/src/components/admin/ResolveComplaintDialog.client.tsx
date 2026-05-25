@@ -32,7 +32,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { getComplaintResolutionOptions } from "@/lib/admin/complaint-resolution-options";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 import { cn } from "@/lib/utils";
 
@@ -45,14 +46,15 @@ export type ResolveComplaintDialogProps = {
   disabled?: boolean;
 };
 
-export function ResolveComplaintDialog({
-  complaintId,
+export function ResolveComplaintDialog({  complaintId,
   mode = "finish",
   triggerVariant = mode === "finish" ? "default" : "outline",
   triggerSize = "sm",
   className,
   disabled = false,
 }: ResolveComplaintDialogProps) {
+  const messages = useMessages();
+
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [resolution, setResolution] = useState<ComplaintResolution | "">("");
@@ -62,18 +64,18 @@ export function ResolveComplaintDialog({
 
   const isQuick = mode === "quick";
   const triggerLabel = isQuick
-    ? MESSAGES.admin.complaints.quickClose
-    : MESSAGES.admin.complaints.finishReview;
+    ? messages.admin.complaints.quickClose
+    : messages.admin.complaints.finishReview;
   const pendingLabel = isQuick
-    ? MESSAGES.admin.complaints.closing
-    : MESSAGES.admin.complaints.finishingReview;
+    ? messages.admin.complaints.closing
+    : messages.admin.complaints.finishingReview;
   const title = isQuick
-    ? MESSAGES.admin.complaints.quickCloseTitle
-    : MESSAGES.admin.complaints.resolveTitle;
+    ? messages.admin.complaints.quickCloseTitle
+    : messages.admin.complaints.resolveTitle;
   const description = isQuick
-    ? MESSAGES.admin.complaints.quickCloseDescription
-    : MESSAGES.admin.complaints.resolveDescription;
-  const resolutionOptions = getComplaintResolutionOptions();
+    ? messages.admin.complaints.quickCloseDescription
+    : messages.admin.complaints.resolveDescription;
+  const resolutionOptions = getComplaintResolutionOptions(messages);
 
   function handleOpenChange(nextOpen: boolean) {
     setOpen(nextOpen);
@@ -86,7 +88,7 @@ export function ResolveComplaintDialog({
 
   function handleConfirm() {
     if (!resolution) {
-      setFieldError(MESSAGES.admin.complaints.resolutionPlaceholder);
+      setFieldError(messages.admin.complaints.resolutionPlaceholder);
       return;
     }
 
@@ -94,7 +96,7 @@ export function ResolveComplaintDialog({
       complaintResolutionRequiresNotes(resolution) &&
       adminNotes.trim().length < 10
     ) {
-      setFieldError(MESSAGES.admin.complaints.notesRequired);
+      setFieldError(messages.admin.complaints.notesRequired);
       return;
     }
 
@@ -113,7 +115,7 @@ export function ResolveComplaintDialog({
         return;
       }
 
-      toast.success(MESSAGES.admin.complaints.closeSuccess, {
+      toast.success(messages.admin.complaints.closeSuccess, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
       handleOpenChange(false);
@@ -147,7 +149,7 @@ export function ResolveComplaintDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="complaint-resolution">
-              {MESSAGES.admin.complaints.resolutionLabel}
+              {messages.admin.complaints.resolutionLabel}
             </Label>
             <Select
               value={resolution}
@@ -161,7 +163,7 @@ export function ResolveComplaintDialog({
                 aria-invalid={fieldError && !resolution ? true : undefined}
               >
                 <SelectValue
-                  placeholder={MESSAGES.admin.complaints.resolutionPlaceholder}
+                  placeholder={messages.admin.complaints.resolutionPlaceholder}
                 />
               </SelectTrigger>
               <SelectContent>
@@ -176,7 +178,7 @@ export function ResolveComplaintDialog({
 
           <div className="space-y-2">
             <Label htmlFor="complaint-admin-notes">
-              {MESSAGES.admin.complaints.notesLabel}
+              {messages.admin.complaints.notesLabel}
             </Label>
             <Textarea
               id="complaint-admin-notes"
@@ -184,14 +186,14 @@ export function ResolveComplaintDialog({
               onChange={(event) => setAdminNotes(event.target.value)}
               className="max-w-[650px]"
               rows={4}
-              placeholder={MESSAGES.admin.complaints.notesPlaceholder}
+              placeholder={messages.admin.complaints.notesPlaceholder}
               aria-invalid={fieldError ? true : undefined}
             />
           </div>
 
           {showRefundHint ? (
             <p className="text-sm text-muted-foreground">
-              {MESSAGES.admin.complaints.refundRecommendedHint}
+              {messages.admin.complaints.refundRecommendedHint}
             </p>
           ) : null}
 
@@ -204,7 +206,7 @@ export function ResolveComplaintDialog({
 
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>
-            {MESSAGES.shell.back}
+            {messages.shell.back}
           </AlertDialogCancel>
           <Button
             type="button"

@@ -12,18 +12,20 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { getTrainerIncomeSnapshot } from "@/data/trainer/get-trainer-income.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export default async function TrainerIncomePage() {
+  const messages = await getMessages();
   const snapshot = await getTrainerIncomeSnapshot();
 
   return (
     <>
       <Heading as="h1" visualLevel="h3">
-        {MESSAGES.trainer.income.title}
+        {messages.trainer.income.title}
       </Heading>
       <Alert className="mt-4">
-        <AlertDescription>{MESSAGES.trainer.income.stripeBanner}</AlertDescription>
+        <AlertDescription>{messages.trainer.income.stripeBanner}</AlertDescription>
       </Alert>
       <div className="mt-6 space-y-6">
         <TrainerIncomeSummary snapshot={snapshot} />
@@ -33,9 +35,9 @@ export default async function TrainerIncomePage() {
               <EmptyMedia variant="icon">
                 <DollarSignIcon aria-hidden />
               </EmptyMedia>
-              <EmptyTitle>{MESSAGES.trainer.income.emptyTitle}</EmptyTitle>
+              <EmptyTitle>{messages.trainer.income.emptyTitle}</EmptyTitle>
               <EmptyDescription>
-                {MESSAGES.trainer.income.emptyDescription}
+                {messages.trainer.income.emptyDescription}
               </EmptyDescription>
             </EmptyHeader>
           </Empty>

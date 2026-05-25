@@ -1,6 +1,6 @@
 import { TRAINER_STATUS, type TrainerStatus } from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
+import type { Messages } from "@/lib/messages/types";
 
 export type TrainerModerationTabConfig = {
   value: TrainerStatus;
@@ -8,30 +8,35 @@ export type TrainerModerationTabConfig = {
   emptyMessage: string;
 };
 
-export const TRAINER_MODERATION_TABS: TrainerModerationTabConfig[] = [
-  {
-    value: TRAINER_STATUS.PENDING,
-    label: MESSAGES.admin.moderation.tabs.pending,
-    emptyMessage: MESSAGES.admin.moderation.emptyPending,
-  },
-  {
-    value: TRAINER_STATUS.APPROVED,
-    label: MESSAGES.admin.moderation.tabs.approved,
-    emptyMessage: MESSAGES.admin.moderation.emptyApproved,
-  },
-  {
-    value: TRAINER_STATUS.REJECTED,
-    label: MESSAGES.admin.moderation.tabs.rejected,
-    emptyMessage: MESSAGES.admin.moderation.emptyRejected,
-  },
-];
+export function getTrainerModerationTabs(
+  messages: Messages,
+): TrainerModerationTabConfig[] {
+  return [
+    {
+      value: TRAINER_STATUS.PENDING,
+      label: messages.admin.moderation.tabs.pending,
+      emptyMessage: messages.admin.moderation.emptyPending,
+    },
+    {
+      value: TRAINER_STATUS.APPROVED,
+      label: messages.admin.moderation.tabs.approved,
+      emptyMessage: messages.admin.moderation.emptyApproved,
+    },
+    {
+      value: TRAINER_STATUS.REJECTED,
+      label: messages.admin.moderation.tabs.rejected,
+      emptyMessage: messages.admin.moderation.emptyRejected,
+    },
+  ];
+}
 
 export function resolveTrainerModerationTab(
   tabParam: string | undefined,
+  messages: Messages,
 ): TrainerStatus {
   return (
-    TRAINER_MODERATION_TABS.find((tab) => tab.value === tabParam)?.value ??
-    TRAINER_STATUS.PENDING
+    getTrainerModerationTabs(messages).find((tab) => tab.value === tabParam)
+      ?.value ?? TRAINER_STATUS.PENDING
   );
 }
 

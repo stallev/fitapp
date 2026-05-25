@@ -13,24 +13,26 @@ import {
 import { getPrisma } from "@pulse/db";
 import { assertCanProcessRefund, PolicyError } from "@pulse/policy-server";
 
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 type RefundMutationResult = MutationResult<{ refundRequestId: string }>;
 
-function mapPolicyError(error: PolicyError): RefundMutationResult {
+function mapPolicyError(error: PolicyError, messages: Messages): RefundMutationResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
   return {
     ok: false,
     code: REFUND_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.admin.errors.forbidden,
+    message: messages.admin.errors.forbidden,
   };
 }
 
@@ -38,6 +40,7 @@ async function runProcessRefundTransaction(
   actorUserId: string,
   refundRequestId: string,
   status: typeof REFUND_STATUS.APPROVED | typeof REFUND_STATUS.REJECTED,
+  messages: Messages,
   adminComment?: string,
 ): Promise<RefundMutationResult> {
   const prisma = getPrisma();
@@ -52,7 +55,7 @@ async function runProcessRefundTransaction(
       return {
         ok: false,
         code: REFUND_MUTATION_ERROR_CODES.NOT_FOUND,
-        message: MESSAGES.admin.errors.notFound,
+        message: messages.admin.errors.notFound,
       };
     }
 
@@ -61,7 +64,7 @@ async function runProcessRefundTransaction(
       return {
         ok: false,
         code: REFUND_MUTATION_ERROR_CODES.ALREADY_PROCESSED,
-        message: MESSAGES.admin.refunds.alreadyProcessed,
+        message: messages.admin.refunds.alreadyProcessed,
       };
     }
 
@@ -79,7 +82,7 @@ async function runProcessRefundTransaction(
       return {
         ok: false,
         code: REFUND_MUTATION_ERROR_CODES.ALREADY_PROCESSED,
-        message: MESSAGES.admin.refunds.alreadyProcessed,
+        message: messages.admin.refunds.alreadyProcessed,
       };
     }
 
@@ -99,12 +102,13 @@ async function runProcessRefundTransaction(
 export async function approveRefundMutation(
   input: ApproveRefundInput,
 ): Promise<RefundMutationResult> {
+  const messages = await getMessages();
   const parsed = approveRefundInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.admin.errors.validation,
+      message: messages.admin.errors.validation,
     };
   }
 
@@ -113,7 +117,7 @@ export async function approveRefundMutation(
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
@@ -121,7 +125,7 @@ export async function approveRefundMutation(
     assertCanProcessRefund(ctx);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
@@ -131,6 +135,7 @@ export async function approveRefundMutation(
     ctx.userId,
     parsed.data.refundRequestId,
     REFUND_STATUS.APPROVED,
+    messages,
     parsed.data.adminComment,
   );
 }
@@ -138,12 +143,13 @@ export async function approveRefundMutation(
 export async function rejectRefundMutation(
   input: RejectRefundInput,
 ): Promise<RefundMutationResult> {
+  const messages = await getMessages();
   const parsed = rejectRefundInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.admin.refunds.adminCommentRequired,
+      message: messages.admin.refunds.adminCommentRequired,
     };
   }
 
@@ -152,7 +158,7 @@ export async function rejectRefundMutation(
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
@@ -160,7 +166,7 @@ export async function rejectRefundMutation(
     assertCanProcessRefund(ctx);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
@@ -170,6 +176,7 @@ export async function rejectRefundMutation(
     ctx.userId,
     parsed.data.refundRequestId,
     REFUND_STATUS.REJECTED,
+    messages,
     parsed.data.adminComment,
   );
 }

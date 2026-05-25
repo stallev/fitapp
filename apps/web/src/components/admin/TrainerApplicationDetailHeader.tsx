@@ -2,9 +2,11 @@ import { ChevronLeftIcon } from "lucide-react";
 
 import { CustomLink } from "@/components/ui/CustomLink";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export function TrainerApplicationDetailHeader() {
+
+export async function TrainerApplicationDetailHeader() {
+  const messages = await getMessages();
   return (
     <div className="space-y-4">
       <CustomLink
@@ -15,9 +17,9 @@ export function TrainerApplicationDetailHeader() {
         className="min-h-11 -ml-2"
       >
         <ChevronLeftIcon aria-hidden className="size-4" />
-        {MESSAGES.shell.back}
+        {messages.shell.back}
       </CustomLink>
-      <PageHeader title={MESSAGES.admin.moderation.applicationDetail} />
+      <PageHeader title={messages.admin.moderation.applicationDetail} />
     </div>
   );
 }

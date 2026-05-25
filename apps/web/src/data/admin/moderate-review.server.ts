@@ -16,24 +16,26 @@ import { getPrisma, type Prisma } from "@pulse/db";
 import { assertCanModerateReview, PolicyError } from "@pulse/policy-server";
 
 import { CACHE_TAGS } from "@/lib/cache/tags";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 type ReviewModerationResult = MutationResult<{ reviewId: string; trainerProfileId: string }>;
 
-function mapPolicyError(error: PolicyError): ReviewModerationResult {
+function mapPolicyError(error: PolicyError, messages: Messages): ReviewModerationResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: REVIEW_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
   return {
     ok: false,
     code: REVIEW_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.admin.errors.forbidden,
+    message: messages.admin.errors.forbidden,
   };
 }
 
@@ -59,6 +61,7 @@ async function recalcTrainerRating(
 async function runHideReviewTransaction(
   actorUserId: string,
   reviewId: string,
+  messages: Messages,
 ): Promise<ReviewModerationResult> {
   const prisma = getPrisma();
 
@@ -72,7 +75,7 @@ async function runHideReviewTransaction(
       return {
         ok: false,
         code: REVIEW_MUTATION_ERROR_CODES.NOT_FOUND,
-        message: MESSAGES.admin.errors.notFound,
+        message: messages.admin.errors.notFound,
       };
     }
 
@@ -81,7 +84,7 @@ async function runHideReviewTransaction(
       return {
         ok: false,
         code: REVIEW_MUTATION_ERROR_CODES.ALREADY_PROCESSED,
-        message: MESSAGES.admin.reviews.alreadyProcessed,
+        message: messages.admin.reviews.alreadyProcessed,
       };
     }
 
@@ -115,6 +118,7 @@ async function runHideReviewTransaction(
 async function runDeleteReviewTransaction(
   actorUserId: string,
   reviewId: string,
+  messages: Messages,
 ): Promise<ReviewModerationResult> {
   const prisma = getPrisma();
 
@@ -129,7 +133,7 @@ async function runDeleteReviewTransaction(
       return {
         ok: false,
         code: REVIEW_MUTATION_ERROR_CODES.NOT_FOUND,
-        message: MESSAGES.admin.errors.notFound,
+        message: messages.admin.errors.notFound,
       };
     }
 
@@ -137,7 +141,7 @@ async function runDeleteReviewTransaction(
       return {
         ok: false,
         code: REVIEW_MUTATION_ERROR_CODES.NOT_FOUND,
-        message: MESSAGES.admin.errors.notFound,
+        message: messages.admin.errors.notFound,
       };
     }
 
@@ -163,12 +167,13 @@ async function runDeleteReviewTransaction(
 export async function hideReviewMutation(
   input: HideReviewInput,
 ): Promise<ReviewModerationResult> {
+  const messages = await getMessages();
   const parsed = hideReviewInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: REVIEW_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.admin.errors.validation,
+      message: messages.admin.errors.validation,
     };
   }
 
@@ -177,7 +182,7 @@ export async function hideReviewMutation(
     return {
       ok: false,
       code: REVIEW_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
@@ -185,24 +190,25 @@ export async function hideReviewMutation(
     assertCanModerateReview(ctx);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
   }
 
-  return runHideReviewTransaction(ctx.userId, parsed.data.reviewId);
+  return runHideReviewTransaction(ctx.userId, parsed.data.reviewId, messages);
 }
 
 export async function deleteReviewMutation(
   input: DeleteReviewInput,
 ): Promise<ReviewModerationResult> {
+  const messages = await getMessages();
   const parsed = deleteReviewInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: REVIEW_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.admin.errors.validation,
+      message: messages.admin.errors.validation,
     };
   }
 
@@ -211,7 +217,7 @@ export async function deleteReviewMutation(
     return {
       ok: false,
       code: REVIEW_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
@@ -219,13 +225,13 @@ export async function deleteReviewMutation(
     assertCanModerateReview(ctx);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
   }
 
-  return runDeleteReviewTransaction(ctx.userId, parsed.data.reviewId);
+  return runDeleteReviewTransaction(ctx.userId, parsed.data.reviewId, messages);
 }
 
 async function invalidateReviewModerationCache(
@@ -249,7 +255,7 @@ export async function hideReviewWithCacheInvalidation(
 export async function deleteReviewWithCacheInvalidation(
   input: DeleteReviewInput,
 ): Promise<ReviewModerationResult> {
-  const result = await deleteReviewMutation(input);
+    const result = await deleteReviewMutation(input);
 
   if (result.ok) {
     await invalidateReviewModerationCache(result.data.trainerProfileId);

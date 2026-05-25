@@ -1,12 +1,17 @@
 import "server-only";
 
-import { MESSAGES } from "@/lib/messages";
+import { getMessages, getLocale } from "@/lib/messages/server";
+import { getIntlLocale } from "@/lib/i18n/format";
+
 import { getSiteUrl } from "@/lib/site/site-url";
 
-export function buildLandingJsonLd() {
+export async function buildLandingJsonLd() {
+  const messages = await getMessages();
+  const locale = await getLocale();
+  const inLanguage = getIntlLocale(locale);
   const siteUrl = getSiteUrl();
   const origin = siteUrl.origin;
-  const { title, description } = MESSAGES.landing.meta;
+  const { title, description } = messages.landing.meta;
 
   return {
     "@context": "https://schema.org",
@@ -15,9 +20,9 @@ export function buildLandingJsonLd() {
         "@type": "WebSite",
         "@id": `${origin}/#website`,
         url: origin,
-        name: MESSAGES.site.logoLabel,
-        description: MESSAGES.site.description,
-        inLanguage: "ru-RU",
+        name: messages.site.logoLabel,
+        description: messages.site.description,
+        inLanguage,
         publisher: { "@id": `${origin}/#organization` },
         potentialAction: {
           "@type": "SearchAction",
@@ -31,9 +36,9 @@ export function buildLandingJsonLd() {
       {
         "@type": "Organization",
         "@id": `${origin}/#organization`,
-        name: MESSAGES.site.logoLabel,
+        name: messages.site.logoLabel,
         url: origin,
-        description: MESSAGES.site.description,
+        description: messages.site.description,
         logo: {
           "@type": "ImageObject",
           url: `${origin}/opengraph-image`,
@@ -47,13 +52,13 @@ export function buildLandingJsonLd() {
         description,
         isPartOf: { "@id": `${origin}/#website` },
         about: { "@id": `${origin}/#organization` },
-        inLanguage: "ru-RU",
+        inLanguage,
       },
       {
         "@type": "FAQPage",
         "@id": `${origin}/#faq`,
         isPartOf: { "@id": `${origin}/#webpage` },
-        mainEntity: MESSAGES.landing.faq.items.map((item) => ({
+        mainEntity: messages.landing.faq.items.map((item) => ({
           "@type": "Question",
           name: item.question,
           acceptedAnswer: {

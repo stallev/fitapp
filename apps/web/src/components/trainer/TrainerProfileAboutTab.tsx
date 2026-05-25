@@ -2,24 +2,26 @@ import { ContentText, SectionTitle } from "@/components/atoms";
 import { PulseCard } from "@/components/ui/card";
 import { SpecChip } from "@/components/ui/SpecChip";
 import type { PublicTrainerProfile } from "@/lib/trainer/trainer-profile";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export type TrainerProfileAboutTabProps = {
   profile: PublicTrainerProfile;
 };
 
-export function TrainerProfileAboutTab({ profile }: TrainerProfileAboutTabProps) {
+export async function TrainerProfileAboutTab({ profile }: TrainerProfileAboutTabProps) {
+  const messages = await getMessages();
   return (
     <div className="space-y-4">
       <PulseCard className="p-4 md:p-6">
         <ContentText as="p">
-          {profile.bio?.trim() || MESSAGES.trainer.profile.aboutEmptyBio}
+          {profile.bio?.trim() || messages.trainer.profile.aboutEmptyBio}
         </ContentText>
       </PulseCard>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <PulseCard className="min-w-0 p-4 md:p-6">
-          <SectionTitle as="h3">{MESSAGES.trainer.profile.categoriesTitle}</SectionTitle>
+          <SectionTitle as="h3">{messages.trainer.profile.categoriesTitle}</SectionTitle>
           <div className="mt-3 flex flex-wrap gap-1.5">
             {profile.specializations.map((spec) => (
               <SpecChip key={spec.slug}>{spec.name}</SpecChip>
@@ -28,7 +30,7 @@ export function TrainerProfileAboutTab({ profile }: TrainerProfileAboutTabProps)
         </PulseCard>
 
         <PulseCard className="min-w-0 p-4 md:p-6">
-          <SectionTitle as="h3">{MESSAGES.trainer.profile.certificatesTitle}</SectionTitle>
+          <SectionTitle as="h3">{messages.trainer.profile.certificatesTitle}</SectionTitle>
           {profile.certificates.length > 0 ? (
             <ul className="mt-3 space-y-2">
               {profile.certificates.map((certificate) => (
@@ -39,7 +41,7 @@ export function TrainerProfileAboutTab({ profile }: TrainerProfileAboutTabProps)
             </ul>
           ) : (
             <ContentText variant="muted" as="p" className="mt-3">
-              {MESSAGES.trainer.profile.aboutEmptyBio}
+              {messages.trainer.profile.aboutEmptyBio}
             </ContentText>
           )}
         </PulseCard>

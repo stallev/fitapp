@@ -4,21 +4,23 @@ import { ComplaintQueueCard } from "@/components/admin/ComplaintQueueCard";
 import { ComplaintRowActions } from "@/components/admin/ComplaintRowActions.client";
 import { AdminQueueEmptyState } from "@/components/admin/AdminQueueEmptyState";
 import type { ComplaintListItem } from "@/data/admin/list-complaints.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export type ComplaintsListProps = {
   items: ComplaintListItem[];
   emptyMessage: string;
 };
 
-export function ComplaintsList({ items, emptyMessage }: ComplaintsListProps) {
+export async function ComplaintsList({ items, emptyMessage }: ComplaintsListProps) {
+  const messages = await getMessages();
   if (items.length === 0) {
     return (
       <AdminQueueEmptyState
         icon={CheckCircleIcon}
         variant="success"
         title={emptyMessage}
-        description={MESSAGES.admin.complaints.emptyAllClearDescription}
+        description={messages.admin.complaints.emptyAllClearDescription}
         className="md:col-span-2"
       />
     );
