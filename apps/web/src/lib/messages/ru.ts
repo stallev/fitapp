@@ -132,6 +132,7 @@ export const ruMessages = {
     applyFilters: "Применить",
     clearAllFilters: "Сбросить все",
     maxPriceLabel: "Макс. цена",
+    maxPriceAny: "Любая цена",
     ratingLabel: "Рейтинг",
     ratingAny: "Любой",
     ratingTier: "★ {value}+",

@@ -10,6 +10,7 @@ import { CatalogFilterSidebar } from "@/components/catalog/filters/CatalogFilter
 import { CatalogSearchInput } from "@/components/catalog/filters/CatalogSearchInput.client";
 import { getCatalogFilterOptions } from "@/data/catalog/get-catalog-filter-options.server";
 import { parseCatalogSearchParams } from "@/lib/catalog/parse-catalog-search-params";
+import { getCatalogFilterSidebarKey } from "@/lib/catalog/catalog-filter-draft";
 import { getMessages } from "@/lib/messages/server";
 
 
@@ -36,7 +37,11 @@ export default async function TrainersPage({  searchParams,
       <PageHeader title={messages.catalog.title} />
 
       <div className="lg:grid lg:grid-cols-[280px_1fr] lg:gap-6">
-        <CatalogFilterSidebar query={query} options={filterOptions} />
+        <CatalogFilterSidebar
+          key={getCatalogFilterSidebarKey(query)}
+          query={query}
+          options={filterOptions}
+        />
 
         <div className="min-w-0 space-y-4">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

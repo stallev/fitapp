@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { PageContainer } from "@/components/shell/PageContainer";
 import { SkipToMainLink } from "@/components/shell/SkipToMainLink";
 import { TopBar } from "@/components/shell/TopBar";
 import { TopBarFallback } from "@/components/shell/TopBarFallback";
@@ -15,9 +16,9 @@ export function PublicChrome({ children }: PublicChromeProps) {
       <Suspense fallback={<TopBarFallback />}>
         <TopBar />
       </Suspense>
-      <main id="main-content" className="flex flex-1 flex-col">
+      <PageContainer withBottomNav={false} className="flex flex-1 flex-col">
         {children}
-      </main>
+      </PageContainer>
     </div>
   );
 }

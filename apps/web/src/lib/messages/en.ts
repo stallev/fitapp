@@ -131,6 +131,7 @@ export const enMessages = {
     applyFilters: "Apply",
     clearAllFilters: "Clear all",
     maxPriceLabel: "Max price",
+    maxPriceAny: "Any price",
     ratingLabel: "Rating",
     ratingAny: "Any",
     ratingTier: "★ {value}+",

@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "npm run db:generate -w @pulse/db",
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run db:generate -w @pulse/db && next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

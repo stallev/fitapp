@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "npm run dev -w web",
     "build": "npm run build -w web",
+    "vercel-build": "npm run build -w web",
     "start": "npm run start -w web",
     "lint": "npm run lint --workspaces --if-present",
     "lint:all": "npm run lint --workspaces --if-present",
@@ -22,5 +23,8 @@
     "db:migrate:status": "npm run db:migrate:status -w @pulse/db",
     "db:seed": "npm run db:seed -w @pulse/db",
     "db:studio": "npm run db:studio -w @pulse/db"
+  },
+  "optionalDependencies": {
+    "lightningcss-linux-x64-gnu": "1.32.0"
   }
 }

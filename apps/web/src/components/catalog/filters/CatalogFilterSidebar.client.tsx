@@ -1,18 +1,16 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import type { CatalogTrainersQuery } from "@pulse/domain";
 
 import { Heading } from "@/components/atoms";
 import { PulseCard } from "@/components/ui/card";
 import type { CatalogFilterOptions } from "@/data/catalog/get-catalog-filter-options.server";
-import { buildCatalogHref } from "@/lib/catalog/build-catalog-search-params";
 import { useMessages } from "@/components/i18n/LocaleProvider.client";
 
 import { cn } from "@/lib/utils";
 
 import { CatalogFilterFields } from "./CatalogFilterFields.client";
+import { useCatalogSidebarFilterDraft } from "./use-catalog-sidebar-filter-draft";
 
 export type CatalogFilterSidebarProps = {
   query: CatalogTrainersQuery;
@@ -25,24 +23,7 @@ export function CatalogFilterSidebar({  query,
   className,
 }: CatalogFilterSidebarProps) {
   const messages = useMessages();
-
-  const router = useRouter();
-
-  const applyPatch = (patch: Partial<CatalogTrainersQuery>) => {
-    router.push(buildCatalogHref(query, { ...patch, page: 1 }));
-  };
-
-  const handleClear = () => {
-    router.push(
-      buildCatalogHref(query, {
-        maxPriceCents: undefined,
-        minRating: undefined,
-        specializations: [],
-        q: "",
-        page: 1,
-      }),
-    );
-  };
+  const { draft, handleDraftChange, handleClear } = useCatalogSidebarFilterDraft(query);
 
   return (
     <aside className={cn("hidden lg:block", className)}>
@@ -60,9 +41,9 @@ export function CatalogFilterSidebar({  query,
           </button>
         </div>
         <CatalogFilterFields
-          draft={query}
+          draft={draft}
           options={options}
-          onDraftChange={applyPatch}
+          onDraftChange={handleDraftChange}
         />
       </PulseCard>
     </aside>

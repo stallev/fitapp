@@ -6,7 +6,7 @@
 > **Database**: PostgreSQL v17 on Neon  
 > **Hosting**: Vercel  
 > **UI**: Shadcn UI + Tailwind CSS v4  
-> **Fonts**: Cormorant Garamond · Onest · JetBrains Mono *(runtime; see [`visual_identity_contract.md`](../design/visual_identity_contract.md) — supersedes latin-only DM pair in HTML prototype)*  
+> **Fonts**: Source Serif 4 · Manrope · JetBrains Mono *(runtime; see [`visual_identity_contract.md`](../design/visual_identity_contract.md) — supersedes latin-only DM pair in HTML prototype)*  
 > **Direction**: Warm Forest — тёплый природный, энергичный, человечный  
 > **Философия**: Material You (M3) — цвет как носитель смысла, выраженный характер компонентов
 
@@ -166,8 +166,8 @@ className="pb-6"  // минимум 24px над nav
   --color-info:              #2D5A6E;
   --color-info-container:    #E0EAF0;
 
-  --font-display: "Cormorant Garamond", ui-serif, Georgia, serif;
-  --font-sans:    "Onest", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Source Serif 4", ui-serif, Georgia, serif;
+  --font-sans:    "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-mono:    "JetBrains Mono", ui-monospace, monospace;
 
   --radius-xs:   4px;
@@ -235,21 +235,21 @@ p, h1, h2, h3, h4 { text-wrap: pretty; }
 
 | Роль | Шрифт | Характер |
 |---|---|---|
-| Display / Headings | Cormorant Garamond | Элегантные засечки, display. Экспертность и доверие. |
-| Body / UI | Onest | Геометрический гротеск с кириллицей. Читаемый, современный. |
+| Display / Headings | Source Serif 4 | Элегантные засечки из линии Source. Экспертность и доверие. |
+| Body / UI | Manrope | Геометрический гротеск с кириллицей. Читаемый, современный. |
 | Monospace | JetBrains Mono | Таймеры, ID, коды, timestamps |
 
 ### Next.js подключение
 
 ```typescript
 // app/layout.tsx
-import { Cormorant_Garamond, JetBrains_Mono, Onest } from 'next/font/google'
+import { JetBrains_Mono, Manrope, Source_Serif_4 } from 'next/font/google'
 
-const cormorantGaramond = Cormorant_Garamond({
+const sourceSerif4 = Source_Serif_4({
   weight: ['400'], style: ['normal', 'italic'],
   subsets: ['latin', 'cyrillic'], variable: '--font-display', display: 'swap',
 })
-const onest = Onest({
+const manrope = Manrope({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin', 'cyrillic'], variable: '--font-sans', display: 'swap',
 })
@@ -262,7 +262,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       {/* suppressHydrationWarning — тема меняется клиентским JS до гидрации */}
-      <body className={`${cormorantGaramond.variable} ${onest.variable} ${jetbrainsMono.variable}`}>
+      <body className={`${sourceSerif4.variable} ${manrope.variable} ${jetbrainsMono.variable}`}>
         {children}
       </body>
     </html>
@@ -278,7 +278,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 | Dashboard greeting | `text-[28–30px]` | `md:text-[40–44px]` | `font-display` |
 | Section title | `text-[22px]` | `text-[22px]` | `font-display` |
 | Card / trainer name | `text-[17–19px]` | `md:text-[19–22px]` | `font-display` |
-| Body / service desc | `text-[13–14px]` | `text-[14px]` | (Onest default) |
+| Body / service desc | `text-[13–14px]` | `text-[14px]` | (Manrope default) |
 | Button / label | `text-[13–15px]` | `text-[14–15px]` | `font-medium` |
 | Caption / meta | `text-[11–12px]` | `text-[11–12px]` | `text-ink-3` |
 | Monospace (time, ID) | `text-[11–13px]` | `text-[12–13px]` | `font-mono tabular-nums` |

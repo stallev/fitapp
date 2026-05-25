@@ -5,7 +5,9 @@ import { cacheLife, cacheTag } from "next/cache";
 import { getPrisma } from "@pulse/db";
 
 import { CACHE_TAGS } from "@/lib/cache/tags";
-import { getMessages } from "@/lib/messages/server";
+import { type AppLocale } from "@/lib/i18n/constants";
+import { getLocale } from "@/lib/messages/server";
+import { getMessagesForLocale } from "@/lib/messages/locale-catalog";
 
 export type TrainerReviewItem = {
   id: string;
@@ -32,16 +34,16 @@ function formatClientDisplayName(fullName: string, guestLabel: string): string {
   return trimmed.split(/\s+/)[0] ?? guestLabel;
 }
 
-export async function getTrainerReviews(
+async function loadTrainerReviews(
   trainerProfileId: string,
+  locale: AppLocale,
 ): Promise<TrainerReviewsResult> {
   "use cache";
   cacheTag(CACHE_TAGS.trainer(trainerProfileId));
   cacheLife("minutes");
 
   const prisma = getPrisma();
-  const messages = await getMessages();
-  const guestLabel = messages.common.guestClientName;
+  const guestLabel = getMessagesForLocale(locale).common.guestClientName;
   const [profile, reviews] = await Promise.all([
     prisma.trainerProfile.findUnique({
       where: { id: trainerProfileId },
@@ -78,4 +80,11 @@ export async function getTrainerReviews(
     ratingAvg: Number(profile?.ratingAvg ?? 0),
     ratingCount: profile?.ratingCount ?? 0,
   };
+}
+
+export async function getTrainerReviews(
+  trainerProfileId: string,
+): Promise<TrainerReviewsResult> {
+  const locale = await getLocale();
+  return loadTrainerReviews(trainerProfileId, locale);
 }

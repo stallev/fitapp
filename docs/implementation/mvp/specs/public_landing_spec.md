@@ -189,7 +189,7 @@ Map prototype CSS variables to Warm Forest semantic tokens in `globals.css` — 
 | `--gold` | `accent` / stars |
 | `--ink` | `foreground` |
 
-Typography: `font-heading` (Cormorant Garamond) for display titles; `font-sans` (Onest) for UI.
+Typography: `font-heading` (Source Serif 4) for display titles; `font-sans` (Manrope) for UI.
 
 ---
 
