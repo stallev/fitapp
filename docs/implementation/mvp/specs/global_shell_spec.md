@@ -146,7 +146,7 @@ Role prefix enforcement: [`auth_runtime_spec.md`](../../../prds/05_runtime/auth_
 |-----------|----------------|
 | `AppShell` | Compose TopBar + `AppShellCanvas` + BottomNav; props: `role`, `children` |
 | `AppShellCanvas` | `Container variant="shell"` flex row on md+ — sidebar + main share one `max-w-[1400px]` canvas (prototype parity) |
-| `PublicChrome` | TopBar + `<main>` wrapper for guest/marketing routes |
+| `PublicChrome` | TopBar + standalone `PageContainer` (`max-w-[1400px]`, gutters) for guest discovery and `/auth/*` |
 | `RoleAppShellGate` | Auth guard + role-specific shell (banner, badges) |
 | `HybridAppShellGate` | Session-aware: `RoleAppShellGate` when auth, else `PublicChrome` — `(discovery)` routes |
 | `TopBar` | Logo, theme toggle, notifications popover (placeholder MVP), avatar `hidden md:inline-flex` on mobile |
@@ -162,7 +162,7 @@ Role prefix enforcement: [`auth_runtime_spec.md`](../../../prds/05_runtime/auth_
 |----------|-------|
 | `next-themes` | `attribute="class"` on `<html>` |
 | `Toaster` (Sonner) | One instance; see interaction contract |
-| Fonts | Cormorant Garamond, Onest, JetBrains Mono via `next/font` (`latin`, `cyrillic`) |
+| Fonts | Source Serif 4, Manrope, JetBrains Mono via `next/font` (`latin`, `cyrillic`) |
 
 ---
 

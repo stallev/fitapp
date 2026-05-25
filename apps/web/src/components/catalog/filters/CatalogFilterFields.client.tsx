@@ -3,7 +3,6 @@
 import {
   CATALOG_MIN_RATINGS,
   type CatalogMinRating,
-  type CatalogTrainersQuery,
 } from "@pulse/domain";
 
 import { ContentText } from "@/components/atoms";
@@ -14,12 +13,11 @@ import type { CatalogFilterOptions } from "@/data/catalog/get-catalog-filter-opt
 import { useMessages } from "@/components/i18n/LocaleProvider.client";
 
 
+import type { CatalogFilterDraft } from "@/lib/catalog/catalog-filter-draft";
+
 import { CatalogSpecialtyList } from "./CatalogSpecialtyList.client";
 
-export type CatalogFilterDraft = Pick<
-  CatalogTrainersQuery,
-  "maxPriceCents" | "minRating" | "specializations"
->;
+export type { CatalogFilterDraft };
 
 export type CatalogFilterFieldsProps = {
   draft: CatalogFilterDraft;
@@ -44,11 +42,15 @@ export function CatalogFilterFields({  draft,
 }: CatalogFilterFieldsProps) {
   const messages = useMessages();
 
+  const isMaxPriceFiltered = draft.maxPriceCents !== undefined;
   const maxPriceDollars = getMaxPriceDollars(
     draft.maxPriceCents,
     options.maxPriceCeilingCents,
   );
   const ceilingDollars = Math.max(1, Math.round(options.maxPriceCeilingCents / 100));
+  const maxPriceLabel = isMaxPriceFiltered
+    ? `${messages.catalog.maxPriceLabel}: $${maxPriceDollars}`
+    : messages.catalog.maxPriceAny;
 
   return (
     <div className="space-y-4">
@@ -57,7 +59,7 @@ export function CatalogFilterFields({  draft,
           htmlFor="catalog-max-price"
           className="text-[13px] font-medium text-muted-foreground"
         >
-          {messages.catalog.maxPriceLabel}: ${maxPriceDollars}
+          {maxPriceLabel}
         </Label>
         <Slider
           id="catalog-max-price"

@@ -98,9 +98,9 @@ export function DesignLabTokenSwatches() {
           <VariantLabel>Type scale</VariantLabel>
           <div className="space-y-3 rounded-[var(--card-radius-lg)] border border-border bg-card p-4">
             <p className="font-heading text-[clamp(2rem,4vw,2.5rem)]">
-              font-heading — Cormorant Garamond
+              font-heading — Source Serif 4
             </p>
-            <p className="font-sans text-base">font-sans — Onest body</p>
+            <p className="font-sans text-base">font-sans — Manrope body</p>
             <p className="font-mono text-sm">font-mono — JetBrains Mono 14:30</p>
           </div>
         </div>

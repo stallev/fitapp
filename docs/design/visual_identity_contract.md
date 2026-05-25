@@ -45,13 +45,13 @@
 
 | Role | Font | Tailwind / CSS | Usage |
 |------|------|----------------|-------|
-| Display / headings | Cormorant Garamond | `font-heading` / `--font-display` | Page titles, trainer names, KPI headlines |
-| UI / body | Onest | `font-sans` / `--font-sans` | Buttons, labels, body copy |
+| Display / headings | Source Serif 4 | `font-heading` / `--font-display` | Page titles, trainer names, KPI headlines |
+| UI / body | Manrope | `font-sans` / `--font-sans` | Buttons, labels, body copy |
 | Mono | JetBrains Mono | `font-mono` / `--font-mono` | Times, booking IDs, badges «camera on» |
 
 **MUST** — load via `next/font/google` in root `layout.tsx`; map in `@theme inline`. Subsets **MUST** include `latin` and `cyrillic` for EN/RU UI (P17).
 
-**Historical note:** HTML prototype and early design docs referenced DM Serif Display + DM Sans (latin-only). Runtime stack post-P17 uses Onest + Cormorant Garamond for unified EN/RU typography; prototype remains visual reference only.
+**Historical note:** HTML prototype and early design docs referenced DM Serif Display + DM Sans (latin-only). Runtime stack post-P17 uses Manrope + Source Serif 4 for unified EN/RU typography; prototype remains visual reference only.
 
 **Typography atoms (on scaffold):** `Heading`, `SectionTitle`, `ContentText`, `AlertText` — see [`typography_text_guidelines.md`](../guidelines/typography_text_guidelines.md).
 

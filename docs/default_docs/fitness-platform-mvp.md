@@ -16,7 +16,7 @@ Online marketplace connecting fitness trainers with clients. Supports session di
 | ORM | **Prisma v7** | directUrl для миграций, pooled URL для runtime |
 | Database | **PostgreSQL v17 on Neon** | pgBouncer pooling для serverless |
 | UI | Shadcn UI + Tailwind CSS v4 | Dark mode через CSS vars |
-| Fonts | Cormorant Garamond · Onest · JetBrains Mono | next/font/google |
+| Fonts | Source Serif 4 · Manrope · JetBrains Mono | next/font/google |
 | Storage | AWS S3 | Фото профилей, сертификаты, verification docs |
 | Email | Resend | Транзакционные письма |
 | Video | Daily.co | **Post-MVP** |

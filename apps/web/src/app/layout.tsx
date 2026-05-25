@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, JetBrains_Mono, Onest } from "next/font/google";
+import { JetBrains_Mono, Manrope, Source_Serif_4 } from "next/font/google";
 import { Suspense } from "react";
 
 import { RootLayoutContent } from "@/components/i18n/RootLayoutContent.server";
@@ -11,13 +11,13 @@ import { getSiteUrl } from "@/lib/site/site-url";
 
 import "./globals.css";
 
-const onest = Onest({
+const manrope = Manrope({
   variable: "--font-sans",
   subsets: ["latin", "cyrillic"],
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const cormorantGaramond = Cormorant_Garamond({
+const sourceSerif4 = Source_Serif_4({
   variable: "--font-display",
   subsets: ["latin", "cyrillic"],
   weight: ["400"],
@@ -31,8 +31,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 const fontClassName = [
-  onest.variable,
-  cormorantGaramond.variable,
+  manrope.variable,
+  sourceSerif4.variable,
   jetbrainsMono.variable,
 ].join(" ");
 
