@@ -1,5 +1,6 @@
 "use client";
 
+import { StarIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -37,18 +38,27 @@ export function ClientBookingDetailActions({
     });
   };
 
-  const hasActions =
-    canCancel || canLeaveReview || canFileComplaint || canRequestRefund;
+  const hasSupportActions = canFileComplaint || canRequestRefund;
+  const hasPrimaryActions = canCancel || canLeaveReview;
 
-  if (!hasActions) {
+  if (!hasPrimaryActions && !hasSupportActions) {
     return null;
   }
 
   return (
     <>
-      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+      <div className="space-y-3">
+        {canLeaveReview ? (
+          <Button asChild variant="tonal" className="min-h-11 w-full">
+            <CustomLink href={`/client/reviews/${bookingId}`}>
+              <StarIcon className="size-3.5" aria-hidden />
+              {MESSAGES.booking.actions.leaveReview}
+            </CustomLink>
+          </Button>
+        ) : null}
+
         {canCancel ? (
-          <>
+          <div className="flex flex-col gap-2 sm:flex-row">
             <Button
               type="button"
               variant="default"
@@ -65,26 +75,21 @@ export function ClientBookingDetailActions({
             >
               {MESSAGES.booking.cancel.button}
             </Button>
-          </>
+          </div>
         ) : null}
 
-        {canLeaveReview ? (
-          <Button asChild variant="secondary" className="min-h-11 w-full sm:flex-1">
-            <CustomLink href={`/client/reviews/${bookingId}`}>
-              {MESSAGES.booking.actions.leaveReview}
-            </CustomLink>
-          </Button>
-        ) : null}
-
-        {canFileComplaint ? (
-          <ClientFileComplaintDialog bookingId={bookingId} />
-        ) : null}
-
-        {canRequestRefund ? (
-          <ClientRequestRefundDialog
-            bookingId={bookingId}
-            maxAmountCents={priceCents}
-          />
+        {hasSupportActions ? (
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            {canFileComplaint ? (
+              <ClientFileComplaintDialog bookingId={bookingId} />
+            ) : null}
+            {canRequestRefund ? (
+              <ClientRequestRefundDialog
+                bookingId={bookingId}
+                maxAmountCents={priceCents}
+              />
+            ) : null}
+          </div>
         ) : null}
       </div>
 

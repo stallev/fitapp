@@ -103,17 +103,42 @@ export function DesignLabPatterns() {
           </div>
         </PatternBlock>
 
-        <PatternBlock patternId="pattern-booking" title="Booking list item">
+        <PatternBlock patternId="c.bookings" title="Booking list item (past)">
+          <PulseCard className="flex flex-col rounded-2xl p-4 shadow-[var(--shadow-card)]">
+            <div className="flex items-start gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-start justify-between gap-2">
+                  <ContentText variant="smallEmphasis" as="p">
+                    Dmitry Sokolov
+                  </ContentText>
+                  <StatusBadge status="completed">Completed</StatusBadge>
+                </div>
+                <ContentText variant="metaSecondary" as="p" className="mt-0.5">
+                  Strength · 60 min
+                </ContentText>
+                <ContentText variant="metaPrimary" as="p" className="mt-1.5">
+                  May 15, 18:30
+                </ContentText>
+              </div>
+            </div>
+            <Button size="sm" variant="tonal" className="mt-3 min-h-11 w-full">
+              <StarIcon className="size-3.5" aria-hidden />
+              Leave a review
+            </Button>
+          </PulseCard>
+        </PatternBlock>
+
+        <PatternBlock patternId="pattern-booking" title="Booking list item (upcoming)">
           <PulseCard variant="compact" interactive tabIndex={0}>
             <div className="flex w-full items-start justify-between gap-3">
               <div>
                 <ContentText variant="smallEmphasis" as="p">
                   Anna Romanova
                 </ContentText>
-                <ContentText variant="muted" as="p" className="mt-0.5">
+                <ContentText variant="metaSecondary" as="p" className="mt-0.5">
                   Morning HIIT · 60 min
                 </ContentText>
-                <ContentText variant="smallEmphasisPrimary" as="p" className="mt-1.5">
+                <ContentText variant="metaPrimary" as="p" className="mt-1.5">
                   Tomorrow, 08:00
                 </ContentText>
               </div>

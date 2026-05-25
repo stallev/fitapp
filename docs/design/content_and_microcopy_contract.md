@@ -138,13 +138,17 @@
 
 Domain statuses: [`lifecycle_models.md`](../prds/02_domain_model/lifecycle_models.md).
 
-### C8 — i18n readiness
+### C8 — i18n (P17)
 
 | ID | Rule |
 |----|------|
+| C8-MUST-1 | User-visible copy in `@/lib/messages` — **`en.ts` + `ru.ts`** with shared `Messages` type |
+| C8-MUST-2 | New keys added to **both** locale files in same change |
 | C8-SHOULD-1 | No string concatenation with word order assumptions — use `{name}` placeholders |
-| C8-SHOULD-2 | Pluralization — design keys for future (`bookings.count.one/few/many`) |
-| C8-MAY-1 | Parallel locale file post-MVP — same key tree |
+| C8-SHOULD-2 | Pluralization — keyed branches (`bookings.count.one/few/many`) |
+| C8-SHOULD-3 | Dates/money via `@/lib/i18n/format.ts` — not embedded in message strings |
+
+**Canon:** [`adr_009_ui_locale_strategy.md`](../prds/07_governance/adr_009_ui_locale_strategy.md), [`i18n_runtime_spec.md`](../implementation/mvp/contracts/i18n_runtime_spec.md), [`copy_and_messages.md`](../guidelines/react/copy_and_messages.md).
 
 ---
 

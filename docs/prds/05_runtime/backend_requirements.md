@@ -80,10 +80,10 @@ Prefer Server Actions for MVP mutations unless streaming/binary required.
 | `DIRECT_URL` | Migrations CLI | ✅ |
 | `AUTH_SECRET` | Web | ✅ |
 | `AUTH_URL` | Web (Vercel) | ✅ production |
-| `AWS_ACCESS_KEY_ID` | Web upload | ✅ when upload ships |
-| `AWS_SECRET_ACCESS_KEY` | Web upload | ✅ when upload ships |
-| `AWS_REGION` | Web upload | ✅ when upload ships |
-| `AWS_S3_BUCKET_NAME` | Web upload | ✅ when upload ships |
+| `AWS_IAM_USER_ACCESS_KEY` | Web upload | ✅ when upload ships |
+| `AWS_IAM_USER_SECRET_ACCESS_KEY` | Web upload | ✅ when upload ships |
+| `S3_BUCKET_REGION` | Web upload | ✅ when upload ships |
+| `S3_BUCKET_NAME` | Web upload | ✅ when upload ships |
 | `CRON_SECRET` | Jobs | ✅ when cron ships |
 | `RESEND_API_KEY` | Jobs | ❌ post-MVP |
 

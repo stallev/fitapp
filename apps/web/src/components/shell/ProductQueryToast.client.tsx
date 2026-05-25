@@ -17,6 +17,7 @@ export function ProductQueryToast() {
   useEffect(() => {
     const saved = searchParams.get(PRODUCT_TOAST_QUERY_KEYS.saved);
     const booked = searchParams.get(PRODUCT_TOAST_QUERY_KEYS.booked);
+    const reviewed = searchParams.get(PRODUCT_TOAST_QUERY_KEYS.reviewed);
 
     if (saved) {
       toast.success(MESSAGES.toast.saved, {
@@ -30,16 +31,28 @@ export function ProductQueryToast() {
       return;
     }
 
-    if (!booked) {
+    if (booked) {
+      toast.success(MESSAGES.toast.booked, {
+        duration: PRODUCT_TOAST_DURATION_MS,
+      });
+
+      const nextParams = new URLSearchParams(searchParams.toString());
+      nextParams.delete(PRODUCT_TOAST_QUERY_KEYS.booked);
+      const query = nextParams.toString();
+      router.replace(query ? `?${query}` : ".", { scroll: false });
       return;
     }
 
-    toast.success(MESSAGES.toast.booked, {
+    if (!reviewed) {
+      return;
+    }
+
+    toast.success(MESSAGES.toast.reviewPublished, {
       duration: PRODUCT_TOAST_DURATION_MS,
     });
 
     const nextParams = new URLSearchParams(searchParams.toString());
-    nextParams.delete(PRODUCT_TOAST_QUERY_KEYS.booked);
+    nextParams.delete(PRODUCT_TOAST_QUERY_KEYS.reviewed);
     const query = nextParams.toString();
     router.replace(query ? `?${query}` : ".", { scroll: false });
   }, [router, searchParams]);

@@ -208,7 +208,7 @@ CREATE INDEX idx_trainer_profile_rating ON trainer_profile(status, rating_avg DE
 ```sql
 CREATE TABLE specialization (
   id    uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  slug  text UNIQUE NOT NULL,  -- yoga, pilates, strength, hiit, ...
+  slug  text UNIQUE NOT NULL,  -- cardio, pilates, strength, hiit, ...
   name  text NOT NULL
 );
 ```

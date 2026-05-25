@@ -35,7 +35,8 @@
 | ADR-005 | [`adr_005_mvp_booking_without_payment.md`](./adr_005_mvp_booking_without_payment.md) | **ACCEPTED** | Booking MVP | Бронирование без Stripe; `pending` → trainer confirm; service snapshot |
 | ADR-006 | [`adr_006_idempotent_email_delivery.md`](./adr_006_idempotent_email_delivery.md) | **ACCEPTED** | Email jobs | Post-MVP runtime; `idempotency_key` + `delivery_log`; Resend; не в request path |
 | ADR-007 | [`adr_007_file_asset_blob_lifecycle.md`](./adr_007_file_asset_blob_lifecycle.md) | **ACCEPTED** | File storage | AWS S3 + `file_asset`; `pending` → `ready`; FK only after ready |
-| ADR-008 | [`adr_008_complaint_resolution_model.md`](./adr_008_complaint_resolution_model.md) | **ACCEPTED** | Complaint resolution | `resolution` enum on close; status SM unchanged; P17 implementation |
+| ADR-008 | [`adr_008_complaint_resolution_model.md`](./adr_008_complaint_resolution_model.md) | **ACCEPTED** | Complaint resolution | `resolution` enum on close; status SM unchanged; P19 implementation |
+| ADR-009 | [`adr_009_ui_locale_strategy.md`](./adr_009_ui_locale_strategy.md) | **ACCEPTED** | UI locale (i18n) | EN/RU; cookie-first; default `en`; no URL prefix P17; P17 implementation |
 
 ### Lampto reference (не применять как Pulse ADR)
 
@@ -111,6 +112,7 @@
 
 | Date | Change |
 |------|--------|
-| 2026-05-25 | v1.2 — ADR-008 ACCEPTED (Complaint Resolution v2 / P17) |
+| 2026-05-25 | v1.3 — ADR-009 ACCEPTED (UI locale / P17 i18n) |
+| 2026-05-25 | v1.2 — ADR-008 ACCEPTED (Complaint Resolution v2 / P19) |
 | 2026-05-23 | v1.1 — ADR-003–007 ACCEPTED (wave W4) |
 | 2026-05-23 | v1.0 — initial index; ADR-001/002 ACCEPTED; ADR-003–007 planned |

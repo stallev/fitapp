@@ -33,12 +33,12 @@ const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
   {
     key: "anna",
     timezone: "Europe/Berlin",
-    bio: "Certified yoga and pilates instructor with 8 years of experience.",
+    bio: "Certified cardio and pilates instructor with 8 years of experience.",
     experienceYears: 8,
     ratingAvg: 4.8,
     ratingCount: 32,
     photoUrl: SEED_PHOTO_URLS.anna,
-    specializationSlugs: ["yoga", "pilates"],
+    specializationSlugs: ["cardio", "pilates"],
   },
   {
     key: "dmitry",
@@ -71,12 +71,12 @@ const APPROVED_TRAINER_FIXTURES: ApprovedTrainerFixture[] = [
   {
     key: "elena",
     timezone: "Europe/Berlin",
-    bio: "Mobility and yoga instructor helping clients restore balance and flexibility.",
+    bio: "Mobility and cardio instructor helping clients restore balance and endurance.",
     experienceYears: 5,
     ratingAvg: 4.8,
     ratingCount: 15,
     photoUrl: SEED_PHOTO_URLS.elena,
-    specializationSlugs: ["yoga", "stretching"],
+    specializationSlugs: ["cardio", "stretching"],
   },
   {
     key: "sergey",
@@ -94,8 +94,44 @@ const PENDING_TRAINER_FIXTURE = {
   timezone: "Europe/Paris",
   bio: "New trainer awaiting verification.",
   experienceYears: 3,
-  specializationSlugs: ["yoga"],
+  specializationSlugs: ["cardio"],
 } as const;
+
+async function syncTrainerSpecializations(
+  prisma: PrismaClient,
+  trainerProfileId: string,
+  slugs: readonly string[],
+  specializationMap: Map<string, string>,
+) {
+  const targetIds = slugs
+    .map((slug) => specializationMap.get(slug))
+    .filter((id): id is string => Boolean(id));
+
+  await prisma.trainerSpecialization.deleteMany({
+    where: {
+      trainerProfileId,
+      ...(targetIds.length > 0
+        ? { specializationId: { notIn: targetIds } }
+        : {}),
+    },
+  });
+
+  for (const specializationId of targetIds) {
+    await prisma.trainerSpecialization.upsert({
+      where: {
+        trainerProfileId_specializationId: {
+          trainerProfileId,
+          specializationId,
+        },
+      },
+      update: {},
+      create: {
+        trainerProfileId,
+        specializationId,
+      },
+    });
+  }
+}
 
 export async function seedTrainerProfiles(
   prisma: PrismaClient,
@@ -134,23 +170,12 @@ export async function seedTrainerProfiles(
       },
     });
 
-    for (const slug of fixture.specializationSlugs) {
-      const specializationId = specializationMap.get(slug);
-      if (!specializationId) continue;
-      await prisma.trainerSpecialization.upsert({
-        where: {
-          trainerProfileId_specializationId: {
-            trainerProfileId: profile.id,
-            specializationId,
-          },
-        },
-        update: {},
-        create: {
-          trainerProfileId: profile.id,
-          specializationId,
-        },
-      });
-    }
+    await syncTrainerSpecializations(
+      prisma,
+      profile.id,
+      fixture.specializationSlugs,
+      specializationMap,
+    );
 
     result[fixture.key] = { id: profile.id };
   }
@@ -178,23 +203,12 @@ export async function seedTrainerProfiles(
     },
   });
 
-  for (const slug of PENDING_TRAINER_FIXTURE.specializationSlugs) {
-    const specializationId = specializationMap.get(slug);
-    if (!specializationId) continue;
-    await prisma.trainerSpecialization.upsert({
-      where: {
-        trainerProfileId_specializationId: {
-          trainerProfileId: pendingProfile.id,
-          specializationId,
-        },
-      },
-      update: {},
-      create: {
-        trainerProfileId: pendingProfile.id,
-        specializationId,
-      },
-    });
-  }
+  await syncTrainerSpecializations(
+    prisma,
+    pendingProfile.id,
+    PENDING_TRAINER_FIXTURE.specializationSlugs,
+    specializationMap,
+  );
 
   result.pending = { id: pendingProfile.id };
   return result;

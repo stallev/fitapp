@@ -1,5 +1,5 @@
 export const SPECIALIZATION_SLUGS = [
-  "yoga",
+  "cardio",
   "pilates",
   "strength",
   "hiit",

@@ -263,7 +263,7 @@ Low    → status="info"      (bg-info-container text-info)
 
 **UX rule**: зелёный empty state при отсутствии жалоб — позитивный фидбек, что очередь пуста.
 
-### Complaint detail (P17)
+### Complaint detail (P19)
 
 **Route**: `/admin/complaints/[id]`
 

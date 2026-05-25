@@ -213,7 +213,7 @@ export const MESSAGES = {
           step: "01",
           title: "Выберите цель",
           description:
-            "Йога, силовые, HIIT, пилатес — фильтруйте по цели, формату и бюджету.",
+            "Кардио, силовые, HIIT, пилатес — фильтруйте по цели, формату и бюджету.",
         },
         {
           step: "02",
@@ -236,7 +236,7 @@ export const MESSAGES = {
         "Сотни сертифицированных специалистов по всем направлениям фитнеса.",
       items: [
         { slug: "personal-training", label: "Персональные тренировки", count: "64 тренера" },
-        { slug: "yoga", label: "Йога", count: "48 тренеров" },
+        { slug: "cardio", label: "Кардио", count: "48 тренеров" },
         { slug: "pilates", label: "Пилатес", count: "35 тренеров" },
         { slug: "hiit", label: "HIIT", count: "29 тренеров" },
         { slug: "strength", label: "Силовые", count: "52 тренера" },
@@ -248,7 +248,7 @@ export const MESSAGES = {
     categories: {
       title: "Популярные направления",
       items: [
-        { slug: "yoga", label: "Йога" },
+        { slug: "cardio", label: "Кардио" },
         { slug: "pilates", label: "Пилатес" },
         { slug: "strength", label: "Силовые" },
         { slug: "hiit", label: "HIIT" },
@@ -496,6 +496,11 @@ export const MESSAGES = {
     actions: {
       join: "Присоединиться",
       leaveReview: "Оставить отзыв",
+    },
+    reviewSubmitted: {
+      label: "Отзыв оставлен",
+      heading: "Ваш отзыв",
+      disclaimer: "Отзыв опубликован и виден на профиле тренера",
     },
     errors: {
       unauthorized: "Войдите, чтобы забронировать занятие",
@@ -752,6 +757,7 @@ export const MESSAGES = {
       certificateTitleLabel: "Название сертификата",
       addCertificate: "Добавить сертификат",
       certificateUpload: "Загрузить файл",
+      certificateUploadHint: "Форматы: {formats}. До {maxMb} МБ",
       addService: "Добавить услугу",
       serviceNameLabel: "Название услуги",
       serviceDurationLabel: "Длительность (мин)",
@@ -763,6 +769,10 @@ export const MESSAGES = {
       errors: {
         generic: "Не удалось сохранить. Попробуйте снова.",
         validation: "Проверьте правильность заполнения полей",
+        bioTooShort: "О себе — минимум 100 символов",
+        bioTooLong: "О себе — не более 1000 символов",
+        experienceInvalid: "Укажите целое число от 0 до 60",
+        specializationsInvalid: "Выберите корректные направления",
         timezoneRequired: "Выберите часовой пояс",
         termsRequired: "Примите условия для тренеров",
         incomplete: "Добавьте хотя бы один сертификат с загруженным файлом",
@@ -826,8 +836,13 @@ export const MESSAGES = {
       searchPlaceholder: "Найти тренера или направление",
       searchAriaLabel: "Перейти в каталог тренеров",
       nextSessionTitle: "Ближайшее занятие",
-      nextSessionEmpty: "Нет предстоящих занятий",
+      nextSessionEmptyTitle: "Начните свой фитнес-путь",
+      nextSessionEmptyDescription: "Найдите идеального тренера для себя",
       nextSessionCta: "Найти тренера",
+      topTrainersTitle: "Лучшие тренеры",
+      topTrainersAll: "Все",
+      topTrainersEmpty: "Пока нет одобренных тренеров — загляните в каталог позже.",
+      topTrainersError: "Не удалось загрузить тренеров. Попробуйте обновить страницу.",
       categoriesTitle: "Направления",
       tipTitle: "Совет",
       tipBody:

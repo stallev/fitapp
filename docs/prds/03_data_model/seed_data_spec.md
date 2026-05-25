@@ -117,7 +117,7 @@ Operational how-to: [`seed_and_fixtures_guide.md`](../../implementation/mvp/guid
 
 | slug | name |
 |------|------|
-| `yoga` | Yoga |
+| `cardio` | Cardio |
 | `pilates` | Pilates |
 | `strength` | Strength Training |
 | `hiit` | HIIT |
@@ -132,13 +132,13 @@ Operational how-to: [`seed_and_fixtures_guide.md`](../../implementation/mvp/guid
 | sofia@pulse.dev | — | — | — | avatar (seed URL) |
 | max@pulse.dev | — | — | — | null |
 | nina@pulse.dev | — | — | — | null |
-| anna@pulse.dev | `approved` | `Europe/Berlin` | yoga, pilates | seed URL |
+| anna@pulse.dev | `approved` | `Europe/Berlin` | cardio, pilates | seed URL |
 | dmitry@pulse.dev | `approved` | `America/Chicago` | strength, hiit | null |
 | maria@pulse.dev | `approved` | `America/New_York` | pilates, stretching | seed URL |
 | ivan@pulse.dev | `approved` | `Europe/London` | hiit, strength | null |
-| elena@pulse.dev | `approved` | `Europe/Berlin` | yoga, stretching | seed URL |
+| elena@pulse.dev | `approved` | `Europe/Berlin` | cardio, stretching | seed URL |
 | sergey@pulse.dev | `approved` | `America/Los_Angeles` | strength | null |
-| pending@pulse.dev | `pending` | `Europe/Paris` | yoga | null |
+| pending@pulse.dev | `pending` | `Europe/Paris` | cardio | null |
 
 **Approved trainers MUST have:**
 
@@ -157,11 +157,11 @@ Operational how-to: [`seed_and_fixtures_guide.md`](../../implementation/mvp/guid
 
 | Trainer | Example services | duration | price_cents |
 |---------|------------------|----------|-------------|
-| Anna | «Hatha Yoga 60», «Pilates Core 45» | 60 / 45 | 3500 / 4000 |
+| Anna | «Cardio Endurance 60», «Pilates Core 45» | 60 / 45 | 3500 / 4000 |
 | Dmitry | «Strength Basics 60», «HIIT 30» | 60 / 30 | 4500 / 3000 |
 | Maria | «Pilates 50», «Stretch & Recover 40» | 50 / 40 | 3800 / 3200 |
 | Ivan | «CrossFit WOD 45», «HIIT Blast 30» | 45 / 30 | 4200 / 3100 |
-| Elena | «Morning Yoga 60», «Mobility Flow 45» | 60 / 45 | 3600 / 3300 |
+| Elena | «Morning Cardio 60», «Mobility Flow 45» | 60 / 45 | 3600 / 3300 |
 | Sergey | «Powerlifting 90», «Strength Fundamentals 60» | 90 / 60 | 5500 / 4800 |
 
 All `is_active: true`, `currency: USD`.
@@ -178,8 +178,18 @@ All `is_active: true`, `currency: USD`.
 |--------|-------|-------|
 | `pending` | 1 | With Anna, starts_at +3 days |
 | `confirmed` | 1 | With Dmitry, starts_at +5 days |
-| `completed` | 2 | Maria (−7 days, **with review**); Anna (−10 days, **no review** — P09 smoke) |
+| `completed` | 5 | See review matrix below |
 | `cancelled` | 1 | With Anna, past |
+
+**Completed bookings (client@pulse.dev) — review smoke matrix:**
+
+| ID suffix | Trainer | Review | Purpose |
+|-----------|---------|--------|---------|
+| `…2203` | Maria | **Yes** (5★) | «Отзыв оставлен» UI |
+| `…2205` | Anna | **No** | Primary P09 submit smoke |
+| `…2206` | Dmitry | **No** | Repeat submit smoke |
+| `…2207` | Elena | **No** | Repeat submit smoke |
+| `…2208` | Ivan | **Yes** (4★) | Second «Отзыв оставлен» row |
 
 **MUST** — snapshot fields on booking (`service_name_snapshot`, `price_cents`, `duration_minutes`) match service at seed time.
 
@@ -187,13 +197,13 @@ All `is_active: true`, `currency: USD`.
 
 **SHOULD** — client wishlists Anna + Maria (not Dmitry) — smoke wishlist page.
 
-### 7. Review
+### 7. Reviews
 
-**MUST** — one visible review on **completed** booking (client → Maria, `SEED_IDS.bookingCompleted`, rating 5, body ≥ 20 chars).
+**MUST** — seed reviews on completed bookings `…2203` (Maria, 5★) and `…2208` (Ivan, 4★).
 
-**MUST** — one **completed booking without review** (client → Anna, `SEED_IDS.bookingCompletedNoReview`) for P09 review-form smoke before P12 `CompleteBooking`.
+**MUST** — three **completed bookings without review** (`…2205` Anna, `…2206` Dmitry, `…2207` Elena) for repeatable P09 manual smoke.
 
-Recalc trainer `rating_avg` / `rating_count` consistent with reviews.
+**MUST** — recalc each affected trainer `rating_avg` / `rating_count` from non-hidden reviews after seed.
 
 ### 8. Admin moderation samples (optional SHOULD)
 
@@ -289,8 +299,10 @@ After seed + migrate, manual smoke **SHOULD** succeed without extra setup:
 | `/trainers` | guest | ≥ 3 approved trainers |
 | `/trainers/[anna-id]` | guest | Services + schedule preview |
 | `/auth/login` | client@pulse.dev | Client dashboard |
-| `/client/bookings` | client | 5 bookings across tabs |
-| `/client/reviews/22222222-2222-4222-8222-222222222205` | client | Review form (Anna completed, no review) |
+| `/client/bookings` | client | 8 bookings across tabs; Past tab: 5 completed (3 review-eligible, 2 reviewed) |
+| `/client/reviews/22222222-2222-4222-8222-222222222205` | client | Review form (Anna, no review) — primary smoke |
+| `/client/reviews/22222222-2222-4222-8222-222222222206` | client | Review form (Dmitry, no review) — repeat smoke |
+| `/client/reviews/22222222-2222-4222-8222-222222222203` | client | Redirect — Maria already reviewed → `/client/bookings/…2203` |
 | `/book/[trainerId]` | client | Available slots from weekly schedule |
 | `/trainer/dashboard` | anna@pulse.dev | Today/upcoming sessions |
 | `/admin/trainers` | admin | pending@pulse.dev in queue |

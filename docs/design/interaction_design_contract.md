@@ -79,6 +79,7 @@
 | Flow | Pattern |
 |------|---------|
 | Booking created | redirect `/client/bookings/[id]?booked=1` |
+| Review published | redirect `/client/bookings/[id]?reviewed=1` |
 | Trainer profile saved | redirect `/trainer/profile?saved=1` или toast на той же странице без redirect |
 | Admin approve | toast на той же странице (no redirect) |
 

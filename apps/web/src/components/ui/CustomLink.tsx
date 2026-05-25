@@ -16,7 +16,7 @@ type LinkProps = React.ComponentPropsWithoutRef<typeof Link>;
 
 export type CustomLinkProps = Omit<LinkProps, "as"> & {
   as?: Mode;
-  variant?: Variant | "quiet";
+  variant?: Variant | "quiet" | "action";
   size?: Size;
 };
 
@@ -64,12 +64,15 @@ export const CustomLink = React.forwardRef<HTMLAnchorElement, CustomLinkProps>(
       );
     } else {
       const isQuiet = variant === "quiet";
+      const isAction = variant === "action";
       resolvedClassName = cn(
-        "cursor-pointer text-[13px] font-medium underline-offset-4 hover:underline transition-colors",
+        "cursor-pointer font-medium underline-offset-4 transition-colors",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm",
         isQuiet
-          ? "text-[12px] text-muted-foreground hover:text-foreground"
-          : "text-primary inline-flex items-center gap-0.5",
+          ? "text-[12px] text-muted-foreground hover:text-foreground hover:underline"
+          : isAction
+            ? "text-[13px] text-primary inline-flex items-center gap-0.5 hover:underline"
+            : "text-[13px] text-primary inline-flex items-center gap-0.5 hover:underline",
         className,
       );
     }

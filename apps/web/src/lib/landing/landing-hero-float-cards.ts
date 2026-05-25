@@ -18,7 +18,7 @@ export const LANDING_HERO_FLOAT_CARDS: LandingHeroFloatCardData[] = [
   {
     id: "float-1",
     name: "Maria P.",
-    spec: "Yoga & Pilates",
+    spec: "Cardio & Pilates",
     cert: "NASM-CPT",
     rating: "5.0",
     price: "от $32/ч",

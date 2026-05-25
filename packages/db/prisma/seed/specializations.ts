@@ -1,6 +1,8 @@
 import type { PrismaClient } from "../../src/generated/client";
 import { SPECIALIZATIONS } from "./fixtures";
 
+const DEPRECATED_SPECIALIZATION_SLUGS = ["yoga"] as const;
+
 export async function seedSpecializations(prisma: PrismaClient) {
   for (const spec of SPECIALIZATIONS) {
     await prisma.specialization.upsert({
@@ -8,6 +10,23 @@ export async function seedSpecializations(prisma: PrismaClient) {
       update: { name: spec.name },
       create: { slug: spec.slug, name: spec.name },
     });
+  }
+
+  await removeDeprecatedSpecializations(prisma);
+}
+
+export async function removeDeprecatedSpecializations(prisma: PrismaClient) {
+  for (const slug of DEPRECATED_SPECIALIZATION_SLUGS) {
+    const row = await prisma.specialization.findUnique({ where: { slug } });
+    if (!row) {
+      continue;
+    }
+
+    await prisma.trainerSpecialization.deleteMany({
+      where: { specializationId: row.id },
+    });
+
+    await prisma.specialization.delete({ where: { id: row.id } });
   }
 }
 

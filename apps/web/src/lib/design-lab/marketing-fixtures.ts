@@ -20,7 +20,7 @@ export const LANDING_TRAINER_FIXTURE: CatalogTrainerCard = {
 
 export const LANDING_SPECIALTY_FIXTURE = [
   { slug: "personal-training", label: "Personal Training", count: "64 trainers" },
-  { slug: "yoga", label: "Yoga", count: "48 trainers" },
+  { slug: "cardio", label: "Cardio", count: "48 trainers" },
   { slug: "pilates", label: "Pilates", count: "35 trainers" },
   { slug: "hiit", label: "HIIT", count: "29 trainers" },
 ] as const;

@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 import { ClientDashboardCategories } from "@/components/client/ClientDashboardCategories";
+import { ClientDashboardFeaturedTrainers } from "@/components/client/ClientDashboardFeaturedTrainers.server";
+import { ClientDashboardFeaturedTrainersSkeleton } from "@/components/client/ClientDashboardFeaturedTrainersSkeleton";
 import { ClientDashboardGreeting } from "@/components/client/ClientDashboardGreeting";
 import {
   ClientDashboardSearchEntry,
   ClientNextSessionCard,
 } from "@/components/client/ClientNextSessionCard";
-import { ClientDashboardTipCard } from "@/components/client/ClientDashboardTipCard";
 import { getClientNextSession } from "@/data/client/get-client-bookings.server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -27,12 +29,22 @@ export default async function ClientDashboardPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-6 pb-6 md:max-w-none md:space-y-6 lg:max-w-4xl">
+    <div className="space-y-6 pb-6">
       <ClientDashboardGreeting name={displayName} />
       <ClientDashboardSearchEntry />
-      <ClientNextSessionCard session={nextSession} />
-      <ClientDashboardTipCard />
-      <ClientDashboardCategories />
+
+      <div className="min-w-0 space-y-6 lg:grid lg:grid-cols-3 lg:gap-6 lg:space-y-0">
+        <div className="min-w-0 space-y-6 lg:col-span-2">
+          <ClientNextSessionCard session={nextSession} />
+          <Suspense fallback={<ClientDashboardFeaturedTrainersSkeleton />}>
+            <ClientDashboardFeaturedTrainers />
+          </Suspense>
+        </div>
+
+        <aside className="min-w-0 space-y-6">
+          <ClientDashboardCategories />
+        </aside>
+      </div>
     </div>
   );
 }

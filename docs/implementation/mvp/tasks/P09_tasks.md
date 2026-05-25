@@ -2,8 +2,8 @@
 
 **Тип:** Tasks  
 **Статус:** Canonical  
-**Версия:** 2.0  
-**Дата:** 2026-05-23  
+**Версия:** 2.1  
+**Дата:** 2026-05-25  
 **Волна:** W16  
 **Зависит от:** [`P09_phase_description.md`](../phases_tasks_descriptions/P09_phase_description.md)  
 **Связанные документы:** [`review_moderation_contract.md`](../contracts/review_moderation_contract.md)
@@ -23,6 +23,8 @@
 - [x] `submitReview` → publish review + rating recalc (contract)
 - [x] Guard: booking `completed`, no duplicate review
 - [x] Pending UI + toasts on submit
+- [x] List/detail «Отзыв оставлен» when review exists
+- [x] List/detail CTA `tonal` + Star icon (prototype parity)
 
 ## 2. Cross-phase smoke note
 
@@ -31,9 +33,13 @@
 **Smoke (seed, P12 not required):**
 
 1. Login `client@pulse.dev` / `client123`
-2. Open `/client/bookings` → Past → «Оставить отзыв» on Anna completed **or** `/client/reviews/22222222-2222-4222-8222-222222222205`
-3. Submit 5★ + body ≥ 20 chars → toast → redirect `/client/bookings/[id]`
-4. Negative: `/client/reviews/22222222-2222-4222-8222-222222222203` (Maria, already reviewed) → 404; non-completed booking → 404
+2. Run `npx prisma db seed` (from `packages/db`) so extended review fixtures exist
+3. Open `/client/bookings` → **Past** — expect **5** completed cards:
+   - **Review eligible (CTA «Оставить отзыв»):** Anna `…2205`, Dmitry `…2206`, Elena `…2207`
+   - **Review submitted (disabled «Отзыв оставлен»):** Maria `…2203`, Ivan `…2208`
+4. Positive submit: `/client/reviews/22222222-2222-4222-8222-222222222205` → 5★ + body ≥ 20 chars → redirect `/client/bookings/[id]?reviewed=1` → toast «Отзыв опубликован» → URL cleaned → card shows «Отзыв оставлен»
+5. Repeat on `…2206` or `…2207` for additional manual runs
+6. Negative: `/client/reviews/22222222-2222-4222-8222-222222222203` (Maria, already reviewed) → **redirect** `/client/bookings/…2203`; non-completed booking → 404
 
 ## 3. Verification
 
@@ -50,5 +56,6 @@
 |----------|--------------|
 | [`P09_phase_description.md`](../phases_tasks_descriptions/P09_phase_description.md) | DoD |
 | [`P10_tasks.md`](./P10_tasks.md) | Next — trainer onboarding |
+| [`seed_data_spec.md`](../../../prds/03_data_model/seed_data_spec.md) | Review fixture IDs |
 
 **Registry:** W16

@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { ContentText } from "@/components/atoms";
@@ -10,10 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { RatingStars } from "@/components/ui/RatingStars";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  REVIEW_MUTATION_ERROR_CODES,
-  type MutationResult,
-} from "@pulse/domain";
+import type { MutationResult } from "@pulse/domain";
 
 import { MESSAGES } from "@/lib/messages";
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
@@ -25,7 +21,6 @@ export type ReviewFormProps = {
 };
 
 export function ReviewForm({ bookingId }: ReviewFormProps) {
-  const router = useRouter();
   const [rating, setRating] = useState(0);
   const [bodyLength, setBodyLength] = useState(0);
   const [ratingError, setRatingError] = useState<string | null>(null);
@@ -36,28 +31,16 @@ export function ReviewForm({ bookingId }: ReviewFormProps) {
   const lastHandledState = useRef<typeof state>(null);
 
   useEffect(() => {
-    if (!state || state === lastHandledState.current) {
+    if (!state || state === lastHandledState.current || state.ok) {
       return;
     }
 
     lastHandledState.current = state;
 
-    if (state.ok) {
-      toast.success(MESSAGES.toast.reviewPublished, {
-        duration: PRODUCT_TOAST_DURATION_MS,
-      });
-      router.push(`/client/bookings/${bookingId}`);
-      return;
-    }
-
     toast.error(state.message, {
       duration: PRODUCT_TOAST_DURATION_MS,
     });
-
-    if (state.code === REVIEW_MUTATION_ERROR_CODES.REVIEW_ALREADY_EXISTS) {
-      router.push(`/client/bookings/${bookingId}`);
-    }
-  }, [bookingId, router, state]);
+  }, [state]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     if (rating < 1) {

@@ -37,7 +37,7 @@
 
 **Prototype priority for `/`:** standalone landing HTML **over** `Fitness_Platform_Prototype_v1.html`.
 
-**MUST NOT read** P17+ feature phase docs in the same session.
+**MUST NOT read** P18+ feature phase docs in the same session.
 
 ---
 
@@ -53,7 +53,8 @@
 | Static sections | Hero, trust bar, steps, specialties, testimonials, for-trainers, FAQ, final CTA, footer |
 | Dynamic | Featured trainers (approved-only; Suspense + skeleton/error/empty) |
 | Motion | `Reveal` + `StatsBar` count-up; `prefers-reduced-motion` guard |
-| Copy | `@/lib/messages` namespace `landing.*` (RU product locale) |
+| Copy | `@/lib/messages` namespace `landing.*` — use `getMessages()` when P17 landed; until then RU values in `ru.ts` |
+| Locales | Full i18n infrastructure → **P17** (ADR-009); P16 MUST NOT block on EN copy if P17 follows |
 | CTAs | Primary → `/trainers`; trainer apply → `/auth/register/trainer`; sign in → `/auth/login` |
 
 ### Out of scope
@@ -61,7 +62,7 @@
 - **Tweaks Panel** from prototype (dev-only demo widget)
 - Catalog filters, profile, booking (→ P05–P07)
 - Stripe checkout UI, video session UI, subscription billing (post-MVP / PRD guard)
-- i18n infrastructure beyond RU messages
+- i18n infrastructure beyond messages tree → **P17** ([`adr_009_ui_locale_strategy.md`](../../../prds/07_governance/adr_009_ui_locale_strategy.md))
 - Design Lab showcase imports in product routes
 
 ---
@@ -136,7 +137,7 @@
 | **P05** seed / approved trainers | No | Empty state OK for featured row |
 | **P03** fonts/tokens | Yes | Warm Forest tokens in `globals.css` |
 | **Design Lab catalog** | Yes (for P16) | Marketing L3 на `/design-system` до дублирования markup на `/` |
-| **P17** complaints | No | Independent |
+| **P19** complaints | No | Independent |
 
 ---
 

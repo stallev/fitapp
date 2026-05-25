@@ -33,7 +33,7 @@
 | `/client/bookings` | [`mvp/client_bookings_list.md`](./mvp/client_bookings_list.md) | `c.bookings` | P03 | client_flow |
 | `/client/bookings/[id]` | [`mvp/client_booking_detail.md`](./mvp/client_booking_detail.md) | — | P03 | booking_lifecycle_contract |
 | `/client/reviews/[bookingId]` | [`mvp/client_review_form.md`](./mvp/client_review_form.md) | — | P03 | review_moderation_contract |
-| `/client/profile` | [`mvp/client_profile.md`](./mvp/client_profile.md) | `c.profile` | P02 | client_flow |
+| `/client/profile` | [`mvp/client_profile.md`](./mvp/client_profile.md) | `c.profile` | P17 (language row) | client_flow |
 | `/trainer/dashboard` | [`mvp/trainer_dashboard.md`](./mvp/trainer_dashboard.md) | `t.home` | P04 | trainer_flow |
 | `/trainer/profile` | [`mvp/trainer_profile_edit.md`](./mvp/trainer_profile_edit.md) | — | P04 | trainer_onboarding_spec |
 | `/trainer/services` | [`mvp/trainer_services.md`](./mvp/trainer_services.md) | `t.services` | P04 | trainer_flow |

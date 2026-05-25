@@ -19,7 +19,7 @@
 1. **Context** — booking summary (trainer, session date).
 2. **Rating** — 1–5 stars (required).
 3. **Comment** — optional text, max length.
-4. **Submit** — toast + redirect booking detail (`/client/bookings/[bookingId]`).
+4. **Submit** — redirect booking detail (`/client/bookings/[bookingId]?reviewed=1`) + query toast «Отзыв опубликован».
 
 ## Guardrails
 
@@ -32,7 +32,8 @@
 |-------|-------------|
 | happy | Form |
 | loading | Submit pending |
-| error | Validation / already reviewed |
+| error | Validation |
+| already_reviewed | Redirect to `/client/bookings/[bookingId]` (read model on detail) |
 | forbidden | Wrong client or booking state |
 
 **Registry:** W10-14

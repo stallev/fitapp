@@ -83,7 +83,7 @@ sequenceDiagram
 | Client hide own review | `FORBIDDEN` | — |
 | Hide already deleted | `NOT_FOUND` | — |
 
-**FM-006 UX:** second submit → graceful message + redirect to existing review (no stack trace).
+**FM-006 UX:** second submit or GET on already-reviewed booking → redirect to `/client/bookings/[bookingId]` (read model on detail; no stack trace).
 
 ---
 

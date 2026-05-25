@@ -4,6 +4,7 @@ export const PRODUCT_TOAST_DURATION_MS = 2000;
 export const PRODUCT_TOAST_QUERY_KEYS = {
   saved: "saved",
   booked: "booked",
+  reviewed: "reviewed",
   approved: "approved",
 } as const;
 

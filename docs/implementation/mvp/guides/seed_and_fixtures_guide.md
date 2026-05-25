@@ -67,7 +67,7 @@ npm run db:seed -w @pulse/db
 |-------|----------|------|---------------|
 | `admin@pulse.dev` | `admin123` | admin | Moderation queue |
 | `client@pulse.dev` | `client123` | client | Bookings, wishlist |
-| `anna@pulse.dev` | `trainer123` | trainer | Approved — yoga/pilates |
+| `anna@pulse.dev` | `trainer123` | trainer | Approved — cardio/pilates |
 | `dmitry@pulse.dev` | `trainer123` | trainer | Approved — strength/hiit |
 | `maria@pulse.dev` | `trainer123` | trainer | Approved — NY timezone |
 | `pending@pulse.dev` | `trainer123` | trainer | **Pending** — admin queue |

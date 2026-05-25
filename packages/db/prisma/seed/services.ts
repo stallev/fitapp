@@ -10,7 +10,7 @@ type ServiceFixture = {
 };
 
 const SERVICE_FIXTURES: ServiceFixture[] = [
-  { trainerKey: "anna", name: "Hatha Yoga 60", durationMinutes: 60, priceCents: 3500, sortOrder: 0 },
+  { trainerKey: "anna", name: "Cardio Endurance 60", durationMinutes: 60, priceCents: 3500, sortOrder: 0 },
   { trainerKey: "anna", name: "Pilates Core 45", durationMinutes: 45, priceCents: 4000, sortOrder: 1 },
   { trainerKey: "dmitry", name: "Strength Basics 60", durationMinutes: 60, priceCents: 4500, sortOrder: 0 },
   { trainerKey: "dmitry", name: "HIIT 30", durationMinutes: 30, priceCents: 3000, sortOrder: 1 },
@@ -18,11 +18,20 @@ const SERVICE_FIXTURES: ServiceFixture[] = [
   { trainerKey: "maria", name: "Stretch & Recover 40", durationMinutes: 40, priceCents: 3200, sortOrder: 1 },
   { trainerKey: "ivan", name: "CrossFit WOD 45", durationMinutes: 45, priceCents: 4200, sortOrder: 0 },
   { trainerKey: "ivan", name: "HIIT Blast 30", durationMinutes: 30, priceCents: 3100, sortOrder: 1 },
-  { trainerKey: "elena", name: "Morning Yoga 60", durationMinutes: 60, priceCents: 3600, sortOrder: 0 },
+  { trainerKey: "elena", name: "Morning Cardio 60", durationMinutes: 60, priceCents: 3600, sortOrder: 0 },
   { trainerKey: "elena", name: "Mobility Flow 45", durationMinutes: 45, priceCents: 3300, sortOrder: 1 },
   { trainerKey: "sergey", name: "Powerlifting 90", durationMinutes: 90, priceCents: 5500, sortOrder: 0 },
   { trainerKey: "sergey", name: "Strength Fundamentals 60", durationMinutes: 60, priceCents: 4800, sortOrder: 1 },
 ];
+
+const DEPRECATED_SERVICE_NAMES = ["Hatha Yoga 60", "Morning Yoga 60"] as const;
+
+export async function deactivateDeprecatedServices(prisma: PrismaClient) {
+  await prisma.trainerService.updateMany({
+    where: { name: { in: [...DEPRECATED_SERVICE_NAMES] } },
+    data: { isActive: false },
+  });
+}
 
 export type SeededServices = Record<string, { id: string; name: string; durationMinutes: number; priceCents: number }>;
 
@@ -68,6 +77,8 @@ export async function seedServices(
       priceCents: service.priceCents,
     };
   }
+
+  await deactivateDeprecatedServices(prisma);
 
   return result;
 }

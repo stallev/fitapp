@@ -86,7 +86,7 @@ export function DesignLabMedia() {
               label="Photo · Anna"
               aspect="square"
               src="https://picsum.photos/seed/pulse-trainer-anna/400/400"
-              alt="Anna Yoga"
+              alt="Anna Cardio"
             />
             <PhotoSlot
               label="Portrait · Profile"

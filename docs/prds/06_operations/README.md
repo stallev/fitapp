@@ -85,10 +85,10 @@ flowchart LR
 | `DIRECT_URL` | ✅ non-pooled | ✅ | Vercel + local `.env` |
 | `AUTH_SECRET` | ✅ | ✅ | Vercel |
 | `AUTH_URL` | ✅ prod/preview URL | ✅ | Vercel |
-| `AWS_ACCESS_KEY_ID` | ✅ when upload ships | ✅ | Vercel |
-| `AWS_SECRET_ACCESS_KEY` | ✅ when upload ships | ✅ | Vercel |
-| `AWS_REGION` | ✅ when upload ships | ✅ | Vercel |
-| `AWS_S3_BUCKET_NAME` | ✅ when upload ships | ✅ | Vercel |
+| `AWS_IAM_USER_ACCESS_KEY` | ✅ when upload ships | ✅ | Vercel |
+| `AWS_IAM_USER_SECRET_ACCESS_KEY` | ✅ when upload ships | ✅ | Vercel |
+| `S3_BUCKET_REGION` | ✅ when upload ships | ✅ | Vercel |
+| `S3_BUCKET_NAME` | ✅ when upload ships | ✅ | Vercel |
 | `CRON_SECRET` | optional until P06 | ✅ | Vercel |
 | `RESEND_API_KEY` | ❌ | ✅ | Vercel (P06) |
 

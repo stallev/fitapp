@@ -1,7 +1,7 @@
 "use client";
 
 import { Loader2Icon, UploadIcon } from "lucide-react";
-import { useRef, useState, useTransition } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 import { confirmUploadAction } from "@/actions/file-upload/confirm-upload";
@@ -19,6 +19,8 @@ export type FileUploadZoneProps = {
   purpose: FileUploadPurpose;
   accept: string;
   label: string;
+  /** Hint under the button, e.g. allowed extensions and max size */
+  formatsHint?: string;
   disabled?: boolean;
   onUploaded: (payload: { fileAssetId: string; readUrl: string }) => void;
   className?: string;
@@ -28,12 +30,13 @@ export function FileUploadZone({
   purpose,
   accept,
   label,
+  formatsHint,
   disabled = false,
   onUploaded,
   className,
 }: FileUploadZoneProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isPending, startTransition] = useTransition();
+  const [isUploading, setIsUploading] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
 
   const handleSelect = () => {
@@ -47,70 +50,77 @@ export function FileUploadZone({
       return;
     }
 
-    startTransition(async () => {
-      const initiateResult = await initiateUploadAction({
-        purpose,
-        mimeType: file.type,
-        sizeBytes: file.size,
-      });
-
-      if (!initiateResult.ok) {
-        toast.error(initiateResult.message ?? MESSAGES.fileUpload.errors.generic, {
-          duration: PRODUCT_TOAST_DURATION_MS,
-        });
-        return;
-      }
-
-      const presignResult = await presignUploadAction({
-        fileAssetId: initiateResult.data.fileAssetId,
-        mimeType: file.type,
-        sizeBytes: file.size,
-      });
-
-      if (!presignResult.ok) {
-        toast.error(presignResult.message ?? MESSAGES.fileUpload.errors.generic, {
-          duration: PRODUCT_TOAST_DURATION_MS,
-        });
-        return;
-      }
+    void (async () => {
+      setIsUploading(true);
+      setFileName(null);
 
       try {
-        await putFileToPresignedUrl({
-          presignedUrl: presignResult.data.presignedUrl,
-          file,
+        const initiateResult = await initiateUploadAction({
+          purpose,
           mimeType: file.type,
+          sizeBytes: file.size,
         });
-      } catch {
-        toast.error(MESSAGES.fileUpload.errors.generic, {
+
+        if (!initiateResult.ok) {
+          toast.error(initiateResult.message ?? MESSAGES.fileUpload.errors.generic, {
+            duration: PRODUCT_TOAST_DURATION_MS,
+          });
+          return;
+        }
+
+        const presignResult = await presignUploadAction({
+          fileAssetId: initiateResult.data.fileAssetId,
+          mimeType: file.type,
+          sizeBytes: file.size,
+        });
+
+        if (!presignResult.ok) {
+          toast.error(presignResult.message ?? MESSAGES.fileUpload.errors.generic, {
+            duration: PRODUCT_TOAST_DURATION_MS,
+          });
+          return;
+        }
+
+        try {
+          await putFileToPresignedUrl({
+            presignedUrl: presignResult.data.presignedUrl,
+            file,
+            mimeType: file.type,
+          });
+        } catch {
+          toast.error(MESSAGES.fileUpload.errors.generic, {
+            duration: PRODUCT_TOAST_DURATION_MS,
+          });
+          return;
+        }
+
+        const confirmResult = await confirmUploadAction({
+          fileAssetId: initiateResult.data.fileAssetId,
+          expectedSize: file.size,
+        });
+
+        if (!confirmResult.ok) {
+          toast.error(confirmResult.message ?? MESSAGES.fileUpload.errors.generic, {
+            duration: PRODUCT_TOAST_DURATION_MS,
+          });
+          return;
+        }
+
+        setFileName(file.name);
+        onUploaded({
+          fileAssetId: initiateResult.data.fileAssetId,
+          readUrl: confirmResult.data.readUrl,
+        });
+        toast.success(MESSAGES.fileUpload.uploaded, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
-        return;
+      } finally {
+        setIsUploading(false);
       }
-
-      const confirmResult = await confirmUploadAction({
-        fileAssetId: initiateResult.data.fileAssetId,
-        expectedSize: file.size,
-      });
-
-      if (!confirmResult.ok) {
-        toast.error(confirmResult.message ?? MESSAGES.fileUpload.errors.generic, {
-          duration: PRODUCT_TOAST_DURATION_MS,
-        });
-        return;
-      }
-
-      setFileName(file.name);
-      onUploaded({
-        fileAssetId: initiateResult.data.fileAssetId,
-        readUrl: confirmResult.data.readUrl,
-      });
-      toast.success(MESSAGES.fileUpload.uploaded, {
-        duration: PRODUCT_TOAST_DURATION_MS,
-      });
-    });
+    })();
   };
 
-  const pending = isPending || disabled;
+  const pending = isUploading || disabled;
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -130,18 +140,23 @@ export function FileUploadZone({
         className="w-full justify-start gap-2"
         onClick={handleSelect}
         disabled={pending}
-        aria-busy={isPending}
+        aria-busy={isUploading}
       >
-        {isPending ? (
+        {isUploading ? (
           <Loader2Icon aria-hidden className="size-4 animate-spin" />
         ) : (
           <UploadIcon aria-hidden className="size-4" />
         )}
-        {isPending
+        {isUploading
           ? MESSAGES.fileUpload.uploading
           : fileName ?? label}
       </Button>
-      {fileName ? (
+      {formatsHint ? (
+        <ContentText variant="mutedMicro" as="p">
+          {formatsHint}
+        </ContentText>
+      ) : null}
+      {fileName && !isUploading ? (
         <ContentText variant="mutedMicro" as="p">
           {MESSAGES.fileUpload.uploaded}: {fileName}
         </ContentText>

@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { FileUploadZone } from "@/components/ui/FileUploadZone.client";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { getCertificateUploadFormatsHint } from "@/lib/files/certificate-upload-hint";
 import { MESSAGES } from "@/lib/messages";
 
 export type TrainerProfileCertificateRowsProps = {
@@ -57,6 +58,7 @@ export function TrainerProfileCertificateRows({
             purpose={FILE_UPLOAD_PURPOSE.CERTIFICATE}
             accept="image/jpeg,image/png,image/webp,application/pdf"
             label={MESSAGES.trainer.onboarding.certificateUpload}
+            formatsHint={getCertificateUploadFormatsHint()}
             disabled={disabled}
             onUploaded={({ fileAssetId }) => updateRow(index, { fileAssetId })}
           />

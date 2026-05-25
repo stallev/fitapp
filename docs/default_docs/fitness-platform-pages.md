@@ -607,7 +607,7 @@ Session details:
 
 ### `/client/dashboard`
 
-#### Mobile (1 column, `space-y-6 pb-6`)
+#### Mobile & tablet (`< lg`, `space-y-6 pb-6`)
 
 ```
 "Good morning,"    text-[13px] text-ink-2
@@ -627,25 +627,27 @@ Session details:
 [Categories section]
   grid-cols-3, aspect-square buttons
 
-[Stats card]
+[Stats card]  ← post-P1
   grid-cols-3, text-center
   1 240+ trainers  |  52K sessions  |  ★ 4.8
 ```
 
-#### Desktop (3-column grid)
+#### Desktop (`≥ lg`, 3-column grid)
 
 ```
-md:grid md:grid-cols-3 md:gap-6
+lg:grid lg:grid-cols-3 lg:gap-6
 
 Left (col-span-2):
   [Search bar — h-14]
   [Next session card — p-5, h3 text-[22px]]
-  [Top trainers — md:grid-cols-2]
+  [Top trainers — lg:grid-cols-2]
 
 Right (1 col):
-  [Categories — md:grid-cols-2]
-  [Stats card — md:grid-cols-1, text-left]
+  [Categories — lg:grid-cols-2]
+  [Stats card — lg:grid-cols-1, text-left]
 ```
+
+**Tablet note:** 768–1023px uses the single-column stack above (categories in flow, not sidebar). App sidebar nav appears at `md:`; dashboard grid only at `lg:`.
 
 ---
 

@@ -78,10 +78,10 @@ AUTH_URL="http://localhost:3000"
 Optional when file upload ships (S3 — server-only):
 
 ```bash
-AWS_ACCESS_KEY_ID="..."
-AWS_SECRET_ACCESS_KEY="..."
-AWS_REGION="eu-central-1"
-AWS_S3_BUCKET_NAME="your-bucket-name"
+AWS_IAM_USER_ACCESS_KEY="..."
+AWS_IAM_USER_SECRET_ACCESS_KEY="..."
+S3_BUCKET_REGION="eu-central-1"
+S3_BUCKET_NAME="your-bucket-name"
 ```
 
 ### 4. Database migrate + seed
