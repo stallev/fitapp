@@ -22,7 +22,7 @@ export async function LandingHowItWorks() {
           subtitle={howItWorks.subtitle}
           animate
         />
-        <div className="grid gap-7 md:grid-cols-3">
+        <div className="grid items-stretch gap-7 md:grid-cols-3">
           {howItWorks.steps.map((step, index) => (
             <Reveal key={step.step} delay={`${(index + 1) * 100}ms`} className="h-full">
               <StepCard

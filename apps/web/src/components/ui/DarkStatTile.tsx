@@ -11,7 +11,7 @@ export function DarkStatTile({ value, label, className }: DarkStatTileProps) {
   return (
     <div
       className={cn(
-        "rounded-[18px] border border-[hsl(var(--color-on-brand-band)/0.12)] bg-[hsl(var(--color-on-brand-band)/0.06)] p-7",
+        "flex h-full flex-col rounded-[18px] border border-[hsl(var(--color-on-brand-band)/0.12)] bg-[hsl(var(--color-on-brand-band)/0.06)] p-7",
         className,
       )}
     >

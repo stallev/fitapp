@@ -80,9 +80,9 @@ export async function TrainerApplicationsList({  items,
   }
 
   return (
-    <ul className="mt-6 grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3">
+    <ul className="mt-6 grid grid-cols-1 items-stretch gap-2.5 md:grid-cols-2 xl:grid-cols-3">
       {items.map((item) => (
-        <li key={item.id} className="min-w-0">
+        <li key={item.id} className="h-full min-w-0">
           <ModerationQueueRow
             item={item}
             href={`/admin/trainers/${item.id}`}

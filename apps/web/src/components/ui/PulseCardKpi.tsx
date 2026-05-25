@@ -32,7 +32,7 @@ export function PulseCardKpi({
   ...props
 }: PulseCardKpiProps) {
   return (
-    <PulseCard variant="kpi" className={className} {...props}>
+    <PulseCard variant="kpi" className={cn("h-full", className)} {...props}>
       <div className="flex min-w-0 items-center gap-2.5">
         <span
           className={cn(

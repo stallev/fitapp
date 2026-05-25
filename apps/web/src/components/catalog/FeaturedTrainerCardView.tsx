@@ -41,12 +41,12 @@ export function FeaturedTrainerCardView({
   return (
     <Link
       href={`/trainers/${trainer.id}`}
-      className={cn("group block", className)}
+      className={cn("group block h-full", className)}
     >
       <PulseCard
         variant="elevated"
         interactive
-        className="overflow-hidden rounded-[22px] border-foreground/5 shadow-sm transition-all duration-250 hover:-translate-y-2 hover:shadow-[var(--shadow-overlay)]"
+        className="flex h-full flex-col overflow-hidden rounded-[22px] border-foreground/5 shadow-sm transition-all duration-250 hover:-translate-y-2 hover:shadow-[var(--shadow-overlay)]"
       >
         <div className="relative h-[200px] overflow-hidden">
           <PhotoSlot
@@ -70,7 +70,7 @@ export function FeaturedTrainerCardView({
             </div>
           ) : null}
         </div>
-        <div className="p-5">
+        <div className="flex flex-1 flex-col p-5">
           <div className="mb-1 flex items-center justify-between gap-2">
             <Heading as="h3" visualLevel="h4" className="truncate font-sans font-bold">
               {trainer.fullName}
@@ -94,7 +94,7 @@ export function FeaturedTrainerCardView({
               {messages.landing.featured.reviewsLabel}
             </ContentText>
           </div>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="mt-auto flex flex-wrap gap-1.5">
             {visibleSpecs.map((spec) => (
               <SpecChip
                 key={spec.slug}

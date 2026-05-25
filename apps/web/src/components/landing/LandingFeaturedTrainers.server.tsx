@@ -35,9 +35,13 @@ export async function LandingFeaturedTrainers() {
           subtitle={featured.subtitle}
           animate
         />
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
           {trainers.slice(0, 3).map((trainer, index) => (
-            <Reveal key={trainer.id} delay={`${(index + 1) * 100}ms`}>
+            <Reveal
+              key={trainer.id}
+              delay={`${(index + 1) * 100}ms`}
+              className="h-full"
+            >
               <FeaturedTrainerCard trainer={trainer} imagePriority={index === 0} />
             </Reveal>
           ))}

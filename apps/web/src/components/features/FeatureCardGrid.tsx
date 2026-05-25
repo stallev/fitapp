@@ -23,7 +23,7 @@ export type FeatureCardGridProps = {
 
 export function FeatureCardGrid({ items, statusLabels }: FeatureCardGridProps) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid items-stretch gap-4 sm:grid-cols-2">
       {items.map((item) => (
         <PulseCard key={item.title} variant="base" className="flex h-full flex-col p-5">
           <div className="mb-2 flex items-start justify-between gap-3">

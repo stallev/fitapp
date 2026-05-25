@@ -50,7 +50,7 @@ export function DesignLabMarketingPatterns() {
       </DesignLabMarketingPatternBlock>
 
       <DesignLabMarketingPatternBlock patternId="/ #how" title="StepCard">
-        <div className="grid gap-7 md:grid-cols-3">
+        <div className="grid items-stretch gap-7 md:grid-cols-3">
           <StepCard step="01" icon={SearchIcon} title="Choose your goal" description="Filter by goal, format, and budget." />
           <StepCard step="02" icon={UsersIcon} title="Find your trainer" description="Browse profiles, reviews, and availability." />
           <StepCard step="03" icon={CalendarIcon} title="Book your session" description="Pay securely and get a reminder." />
@@ -79,7 +79,11 @@ export function DesignLabMarketingPatterns() {
       </DesignLabMarketingPatternBlock>
 
       <DesignLabMarketingPatternBlock patternId="/ #reviews" title="TestimonialCard">
-        <TestimonialCard quote="Flexible scheduling, 100% online — Pulse changed my relationship with working out." author="Kate L." meta="26 · Austin, TX" avatarColor="primaryLight" />
+        <div className="grid items-stretch gap-6 md:grid-cols-3">
+          <TestimonialCard quote="Flexible scheduling, 100% online — Pulse changed my relationship with working out." author="Kate L." meta="26 · Austin, TX" avatarColor="primaryLight" />
+          <TestimonialCard quote="Found a trainer who actually listens. Booked in minutes." author="Maria S." meta="29 · New York" avatarColor="primary" />
+          <TestimonialCard quote="Clear pricing, no surprises. Exactly what I needed." author="Alex R." meta="34 · Chicago" avatarColor="secondary" />
+        </div>
       </DesignLabMarketingPatternBlock>
 
       <DesignLabMarketingPatternBlock patternId="/ trust bar" title="StatsBar">
@@ -89,7 +93,7 @@ export function DesignLabMarketingPatterns() {
       <DesignLabMarketingPatternBlock patternId="/ for-trainers" title="BenefitRow + DarkStatTile">
         <BrandSection tone="darkForest" className="py-10">
           <BenefitRow tone="onDark" icon={UsersIcon} title="Grow your client base" description="Receive booking requests from potential clients." />
-          <div className="mt-6 grid grid-cols-2 gap-4">
+          <div className="mt-6 grid grid-cols-2 items-stretch gap-4">
             <DarkStatTile value="200+" label="active trainers" />
             <DarkStatTile value="98%" label="rebook within 30 days" />
           </div>
