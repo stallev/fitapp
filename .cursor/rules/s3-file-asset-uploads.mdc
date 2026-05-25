@@ -27,7 +27,7 @@ alwaysApply: false
 ## Storage (ADR-001)
 
 - **AWS S3** — presigned PUT/GET via `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner`.
-- Env (server-only): `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_S3_BUCKET_NAME`.
+- Env (server-only): `AWS_IAM_USER_ACCESS_KEY`, `AWS_IAM_USER_SECRET_ACCESS_KEY`, `S3_BUCKET_REGION`, `S3_BUCKET_NAME`.
 - **MUST NOT** use `@vercel/blob` or `BLOB_READ_WRITE_TOKEN` in new code.
 
 Reference: lampto S3 FileAsset pattern — adapted for Pulse schema column names (`blob_pathname`).

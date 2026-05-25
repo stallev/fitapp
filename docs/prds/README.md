@@ -44,6 +44,8 @@
 | W11 | Phase descriptions P01–P07 + tasks *(superseded by W16)* |
 | W16 | Phase restructure P01–P15 + UI matrix + migration doc |
 | W22 | P16 landing v2; renumber P15→P21, P20→P17; Admin People Ops → P18 |
+| W23 | Complaint Resolution v2 P17→P19 |
+| W24 | P17 UI i18n (EN/RU): ADR-009, i18n contract, phase/tasks |
 | W12 | Operations + guides |
 | W13 | Architecture learning pack (layer walkthroughs) |
 | W14 | Final index sync (этот каталог + master index) |

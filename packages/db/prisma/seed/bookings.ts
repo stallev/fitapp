@@ -7,7 +7,10 @@ import type { SeededUsers } from "./users";
 type BookingFixture = {
   id: string;
   status: BookingStatus;
-  trainerKey: keyof Pick<SeededTrainerProfiles, "anna" | "dmitry" | "maria">;
+  trainerKey: keyof Pick<
+    SeededTrainerProfiles,
+    "anna" | "dmitry" | "maria" | "ivan" | "elena"
+  >;
   serviceKey: string;
   daysOffset: number;
   cancelledAt?: Date;
@@ -19,7 +22,7 @@ const BOOKING_FIXTURES: BookingFixture[] = [
     id: SEED_IDS.bookingPending,
     status: "pending",
     trainerKey: "anna",
-    serviceKey: "anna:Hatha Yoga 60",
+    serviceKey: "anna:Cardio Endurance 60",
     daysOffset: 3,
   },
   {
@@ -41,17 +44,66 @@ const BOOKING_FIXTURES: BookingFixture[] = [
     id: SEED_IDS.bookingCompletedNoReview,
     status: "completed",
     trainerKey: "anna",
-    serviceKey: "anna:Hatha Yoga 60",
+    serviceKey: "anna:Cardio Endurance 60",
     daysOffset: -10,
     completedAt: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000),
+  },
+  {
+    id: SEED_IDS.bookingCompletedNoReviewDmitry,
+    status: "completed",
+    trainerKey: "dmitry",
+    serviceKey: "dmitry:HIIT 30",
+    daysOffset: -14,
+    completedAt: new Date(Date.now() - 13 * 24 * 60 * 60 * 1000),
+  },
+  {
+    id: SEED_IDS.bookingCompletedNoReviewElena,
+    status: "completed",
+    trainerKey: "elena",
+    serviceKey: "elena:Morning Cardio 60",
+    daysOffset: -12,
+    completedAt: new Date(Date.now() - 11 * 24 * 60 * 60 * 1000),
+  },
+  {
+    id: SEED_IDS.bookingCompletedReviewedIvan,
+    status: "completed",
+    trainerKey: "ivan",
+    serviceKey: "ivan:HIIT Blast 30",
+    daysOffset: -18,
+    completedAt: new Date(Date.now() - 17 * 24 * 60 * 60 * 1000),
   },
   {
     id: SEED_IDS.bookingCancelled,
     status: "cancelled",
     trainerKey: "anna",
-    serviceKey: "anna:Hatha Yoga 60",
+    serviceKey: "anna:Cardio Endurance 60",
     daysOffset: -3,
     cancelledAt: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
+  },
+];
+
+type ReviewFixture = {
+  id: string;
+  bookingId: string;
+  trainerKey: keyof Pick<SeededTrainerProfiles, "maria" | "ivan">;
+  rating: number;
+  body: string;
+};
+
+const REVIEW_FIXTURES: ReviewFixture[] = [
+  {
+    id: SEED_IDS.reviewMaria,
+    bookingId: SEED_IDS.bookingCompleted,
+    trainerKey: "maria",
+    rating: 5,
+    body: "Excellent session — very attentive and professional throughout.",
+  },
+  {
+    id: SEED_IDS.reviewIvan,
+    bookingId: SEED_IDS.bookingCompletedReviewedIvan,
+    trainerKey: "ivan",
+    rating: 4,
+    body: "Great HIIT workout — challenging but well structured for my level.",
   },
 ];
 
@@ -113,37 +165,58 @@ export async function seedBookings(
   return result;
 }
 
+async function recalcTrainerRatings(
+  prisma: PrismaClient,
+  trainerProfileIds: string[],
+) {
+  for (const trainerProfileId of trainerProfileIds) {
+    const aggregate = await prisma.review.aggregate({
+      where: { trainerProfileId, isHidden: false },
+      _avg: { rating: true },
+      _count: { rating: true },
+    });
+
+    await prisma.trainerProfile.update({
+      where: { id: trainerProfileId },
+      data: {
+        ratingAvg: aggregate._avg.rating ?? 0,
+        ratingCount: aggregate._count.rating,
+      },
+    });
+  }
+}
+
 export async function seedReview(
   prisma: PrismaClient,
   users: SeededUsers,
   trainers: SeededTrainerProfiles,
 ) {
-  const bookingId = SEED_IDS.bookingCompleted;
+  const clientId = users.client.id;
+  const trainerIds = new Set<string>();
 
-  await prisma.review.upsert({
-    where: { bookingId },
-    update: {
-      rating: 5,
-      body: "Excellent session — very attentive and professional throughout.",
-      isHidden: false,
-    },
-    create: {
-      id: SEED_IDS.reviewMaria,
-      bookingId,
-      clientId: users.client.id,
-      trainerProfileId: trainers.maria.id,
-      rating: 5,
-      body: "Excellent session — very attentive and professional throughout.",
-    },
-  });
+  for (const fixture of REVIEW_FIXTURES) {
+    const trainerProfileId = trainers[fixture.trainerKey].id;
+    trainerIds.add(trainerProfileId);
 
-  await prisma.trainerProfile.update({
-    where: { id: trainers.maria.id },
-    data: {
-      ratingAvg: 5,
-      ratingCount: 1,
-    },
-  });
+    await prisma.review.upsert({
+      where: { bookingId: fixture.bookingId },
+      update: {
+        rating: fixture.rating,
+        body: fixture.body,
+        isHidden: false,
+      },
+      create: {
+        id: fixture.id,
+        bookingId: fixture.bookingId,
+        clientId,
+        trainerProfileId,
+        rating: fixture.rating,
+        body: fixture.body,
+      },
+    });
+  }
+
+  await recalcTrainerRatings(prisma, [...trainerIds]);
 }
 
 export async function seedWishlist(

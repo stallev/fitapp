@@ -1,4 +1,4 @@
-# ADR-008: Complaint Resolution Model (P17)
+# ADR-008: Complaint Resolution Model (P19)
 
 **Тип:** ADR  
 **Статус:** ACCEPTED  
@@ -6,13 +6,13 @@
 **Дата:** 2026-05-25  
 **Волна:** W17  
 **Зависит от:** [`lifecycle_models.md`](../02_domain_model/lifecycle_models.md), [`complaint_refund_spec.md`](../../implementation/mvp/specs/complaint_refund_spec.md), [`adr_005_mvp_booking_without_payment.md`](./adr_005_mvp_booking_without_payment.md)  
-**Связанные документы:** [`adr_index.md`](./adr_index.md), [`database_schema_v1.md`](../03_data_model/database_schema_v1.md), [`P17_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P17_phase_description.md)
+**Связанные документы:** [`adr_index.md`](./adr_index.md), [`database_schema_v1.md`](../03_data_model/database_schema_v1.md), [`P19_phase_description.md`](../../implementation/mvp/phases_tasks_descriptions/P19_phase_description.md)
 
 ---
 
 ## Purpose
 
-Зафиксировать продуктово-техническое решение **Complaint Resolution v2**: при закрытии жалобы админ фиксирует **исход (`resolution`)** и **внутреннюю заметку**, не расширяя status machine `open | in_review | closed`. Реализация — implementation phase **P17** (после P14 quality gate).
+Зафиксировать продуктово-техническое решение **Complaint Resolution v2**: при закрытии жалобы админ фиксирует **исход (`resolution`)** и **внутреннюю заметку**, не расширяя status machine `open | in_review | closed`. Реализация — implementation phase **P19** (после P14 quality gate).
 
 ---
 
@@ -33,7 +33,7 @@
 | **Quick close** | `CloseComplaint` from `open` without `StartComplaintReview` — allowed for spam/duplicate |
 | **Assignee** | Admin who started review — derived from latest `audit_log.action = complaint.review_started` |
 
-### Resolution enum (P17)
+### Resolution enum (P19)
 
 | Value | Product meaning |
 |-------|-----------------|
@@ -69,7 +69,7 @@ stateDiagram-v2
 
 ### D2 — Resolution required on close
 
-On every successful `CloseComplaint`, persist non-null **`resolution`** (`complaint_resolution` enum). UI **MUST** collect resolution in resolve/close dialog (P17).
+On every successful `CloseComplaint`, persist non-null **`resolution`** (`complaint_resolution` enum). UI **MUST** collect resolution in resolve/close dialog (P19).
 
 ### D3 — Admin notes validation
 
@@ -87,15 +87,15 @@ Notes are **internal** (admin-only display on detail).
 
 ### D5 — Assignee without FK
 
-**MUST NOT** add `assigned_to_id` on `complaint` for P17. Assignee display reads **`audit_log`** where `action = complaint.review_started`. Concurrent admins: last audit entry wins for display; domain close still uses optimistic `updateMany` on status.
+**MUST NOT** add `assigned_to_id` on `complaint` for P19. Assignee display reads **`audit_log`** where `action = complaint.review_started`. Concurrent admins: last audit entry wins for display; domain close still uses optimistic `updateMany` on status.
 
 ### D6 — Email deferred
 
-Transactional email on close (E-08) remains **P21** post-MVP. P17 **MUST NOT** block on Resend.
+Transactional email on close (E-08) remains **P21** post-MVP. P19 **MUST NOT** block on Resend.
 
 ### D7 — Implementation phase
 
-Schema + UX ship in **P17** after P14 DoD. ADR-008 is prerequisite; P17 does **not** depend on P21.
+Schema + UX ship in **P19** after P14 DoD. ADR-008 is prerequisite; P19 does **not** depend on P21.
 
 ---
 
@@ -112,7 +112,7 @@ Schema + UX ship in **P17** after P14 DoD. ADR-008 is prerequisite; P17 does **n
 - No structured trainer warning entity — `warning_to_trainer` is outcome label + notes only.
 - Assignee race if two admins start review — acceptable MVP; document in ops.
 
-**Downstream:** [`complaint_refund_spec.md`](../../implementation/mvp/specs/complaint_refund_spec.md) v2.0, P17 tasks, `database_schema_v1.md` §8.2.
+**Downstream:** [`complaint_refund_spec.md`](../../implementation/mvp/specs/complaint_refund_spec.md) v2.0, P19 tasks, `database_schema_v1.md` §8.2.
 
 ---
 
@@ -123,7 +123,7 @@ Schema + UX ship in **P17** after P14 DoD. ADR-008 is prerequisite; P17 does **n
 | New statuses (`resolved`, `rejected`, `escalated`) | Breaks P13 lifecycle; duplicates resolution semantics |
 | Outcome only in free-text `adminNotes` | Not filterable/reportable; weak UX validation |
 | Auto-approve refund on `refund_recommended` | Violates separate refund lifecycle; no Stripe on MVP |
-| `assigned_to_id` FK on complaint | Extra migration + reassignment rules; audit log sufficient for P17 |
+| `assigned_to_id` FK on complaint | Extra migration + reassignment rules; audit log sufficient for P19 |
 | Reopen `closed → open` | Post-MVP; needs new use-case and client notification |
 
 ---
@@ -147,7 +147,7 @@ Schema + UX ship in **P17** after P14 DoD. ADR-008 is prerequisite; P17 does **n
 
 ## Acceptance criteria
 
-- [ ] D1–D7 documented and linked from spec v2 + P17
+- [ ] D1–D7 documented and linked from spec v2 + P19
 - [ ] `complaint_resolution` enum in DDL canon
 - [ ] CloseComplaint requires resolution in domain schema
 - [ ] Rejected alternatives recorded
@@ -163,7 +163,7 @@ Schema + UX ship in **P17** after P14 DoD. ADR-008 is prerequisite; P17 does **n
 | [`lifecycle_models.md`](../02_domain_model/lifecycle_models.md) | Complaint SM |
 | [`database_schema_v1.md`](../03_data_model/database_schema_v1.md) | DDL |
 | [`email_notifications_contract.md`](../../implementation/mvp/contracts/email_notifications_contract.md) | E-08 hook (P21) |
-| [`P17_tasks.md`](../../implementation/mvp/tasks/P17_tasks.md) | Implementation checklist |
+| [`P19_tasks.md`](../../implementation/mvp/tasks/P19_tasks.md) | Implementation checklist |
 
 **Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — wave W17
 
@@ -173,7 +173,7 @@ Schema + UX ship in **P17** after P14 DoD. ADR-008 is prerequisite; P17 does **n
 
 - Resolution labels from `@/lib/messages`; API values from `@pulse/domain` `COMPLAINT_RESOLUTION`.
 - Do not conflate badge «На рассмотрении» (`in_review`) with closed outcome badges.
-- Context panel on detail: read-only booking/refund snippets — no new admin booking route on P17.
+- Context panel on detail: read-only booking/refund snippets — no new admin booking route on P19.
 
 ---
 
@@ -181,4 +181,4 @@ Schema + UX ship in **P17** after P14 DoD. ADR-008 is prerequisite; P17 does **n
 
 | Date | Change |
 |------|--------|
-| 2026-05-25 | v1.0 — ACCEPTED; resolution attribute + P17 scope |
+| 2026-05-25 | v1.0 — ACCEPTED; resolution attribute + P19 scope |

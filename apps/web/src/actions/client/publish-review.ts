@@ -1,5 +1,7 @@
 "use server";
 
+import { redirect } from "next/navigation";
+
 import {
   publishReviewInputSchema,
   REVIEW_MUTATION_ERROR_CODES,
@@ -27,5 +29,15 @@ export async function submitReviewAction(
     };
   }
 
-  return publishReviewWithCacheInvalidation(parsed.data);
+  const result = await publishReviewWithCacheInvalidation(parsed.data);
+
+  if (!result.ok) {
+    if (result.code === REVIEW_MUTATION_ERROR_CODES.REVIEW_ALREADY_EXISTS) {
+      redirect(`/client/bookings/${parsed.data.bookingId}`);
+    }
+
+    return result;
+  }
+
+  redirect(`/client/bookings/${result.data.bookingId}?reviewed=1`);
 }

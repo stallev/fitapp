@@ -8,11 +8,13 @@ let s3Client: S3Client | undefined;
 
 export function getS3Client(): S3Client {
   if (!s3Client) {
-    const accessKeyId = process.env.AWS_ACCESS_KEY_ID;
-    const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+    const accessKeyId = process.env.AWS_IAM_USER_ACCESS_KEY;
+    const secretAccessKey = process.env.AWS_IAM_USER_SECRET_ACCESS_KEY;
 
     if (!accessKeyId || !secretAccessKey) {
-      throw new Error("AWS credentials are not configured");
+      throw new Error(
+        "AWS_IAM_USER_ACCESS_KEY and AWS_IAM_USER_SECRET_ACCESS_KEY are not configured",
+      );
     }
 
     s3Client = new S3Client({

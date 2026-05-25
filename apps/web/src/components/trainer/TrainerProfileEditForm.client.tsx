@@ -47,7 +47,7 @@ import { cn } from "@/lib/utils";
 import { TrainerProfileCertificateRows } from "./TrainerProfileCertificateRows.client";
 
 const SPEC_LABELS: Record<SpecializationSlug, string> = {
-  yoga: "Yoga",
+  cardio: "Cardio",
   pilates: "Pilates",
   strength: "Strength",
   hiit: "HIIT",

@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
 export type TrainerCardProps = {
   trainer: CatalogTrainerCard;
   className?: string;
+  /** Grid/dashboard layout — shrink inside CSS grid (no catalog horizontal-scroll min-width). */
+  gridLayout?: boolean;
   /** Preload photo for above-the-fold LCP candidates (catalog grid, landing). */
   imagePriority?: boolean;
 };
@@ -36,6 +38,7 @@ function getTrainerTagline(trainer: CatalogTrainerCard): string {
 export function TrainerCard({
   trainer,
   className,
+  gridLayout = false,
   imagePriority = false,
 }: TrainerCardProps) {
   const tagline = getTrainerTagline(trainer);
@@ -45,10 +48,15 @@ export function TrainerCard({
   const photoLabel = `PHOTO · ${firstName}`;
 
   return (
-    <div className={cn("min-w-[280px] shrink-0 md:min-w-0", className)}>
-      <Link href={`/trainers/${trainer.id}`} className="block h-full">
-        <PulseCard variant="catalog" interactive className="h-full">
-          <div className="flex h-full gap-3 p-3 md:min-h-[7.5rem]">
+    <div
+      className={cn(
+        gridLayout ? "min-w-0 w-full" : "min-w-[280px] shrink-0 md:min-w-0",
+        className,
+      )}
+    >
+      <Link href={`/trainers/${trainer.id}`} className="block h-full min-w-0">
+        <PulseCard variant="catalog" interactive className="h-full min-w-0">
+          <div className="flex h-full min-w-0 gap-3 p-3 md:min-h-[7.5rem]">
             <PhotoSlot
               label={photoLabel}
               src={trainer.photoUrl}

@@ -17,5 +17,17 @@ export async function GET(
     return NextResponse.json({ ok: false }, { status: 404 });
   }
 
-  return NextResponse.redirect(presignedUrl, { status: 307 });
+  const upstream = await fetch(presignedUrl);
+  if (!upstream.ok || !upstream.body) {
+    return NextResponse.json({ ok: false }, { status: 502 });
+  }
+
+  return new NextResponse(upstream.body, {
+    status: 200,
+    headers: {
+      "Content-Type":
+        upstream.headers.get("content-type") ?? "application/octet-stream",
+      "Cache-Control": "private, max-age=300",
+    },
+  });
 }

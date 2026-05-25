@@ -77,7 +77,7 @@ stateDiagram-v2
 | Policy | Value |
 |--------|-------|
 | SDK | `@aws-sdk/client-s3` + `@aws-sdk/s3-request-presigner` |
-| Env | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_S3_BUCKET_NAME` — **server-only** |
+| Env | `AWS_IAM_USER_ACCESS_KEY`, `AWS_IAM_USER_SECRET_ACCESS_KEY`, `S3_BUCKET_REGION`, `S3_BUCKET_NAME` — **server-only** |
 | Object key pattern | `{FILE_UPLOAD_OBJECT_KEY_PREFIX}{ownerUserId}/{purpose}/{uuid}` — e.g. `pulse/{userId}/certificate/{uuid}` |
 | Prefix constant | `@pulse/domain` → `FILE_UPLOAD_OBJECT_KEY_PREFIX` = `pulse/` |
 | Bucket access | **Private**; Block Public Access; reads via presigned GET |

@@ -16,6 +16,14 @@ const ratingStarsVariants = cva("inline-flex items-center gap-0.5", {
   defaultVariants: { size: "md" },
 });
 
+/** Warm Forest gold + surface-dim empty — design system §RatingStars */
+const STAR_FILLED_CLASS = "text-[color:var(--gold)]";
+const STAR_EMPTY_CLASS = "text-[hsl(var(--color-surface-dim))]";
+const STAR_EMPTY_INTERACTIVE_CLASS = cn(
+  STAR_EMPTY_CLASS,
+  "hover:text-[color:var(--gold-light)]",
+);
+
 export type RatingStarsProps = VariantProps<typeof ratingStarsVariants> & {
   value?: number;
   max?: number;
@@ -54,9 +62,9 @@ export function RatingStars({
               aria-pressed={filled}
               onClick={() => onChange?.(starValue)}
               className={cn(
-                "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full transition-transform",
-                "hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
-                filled ? "text-secondary" : "text-muted",
+                "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full transition-[transform,color] duration-200",
+                "hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
+                filled ? STAR_FILLED_CLASS : STAR_EMPTY_INTERACTIVE_CLASS,
               )}
             >
               <Star
@@ -75,15 +83,23 @@ export function RatingStars({
     <span
       aria-hidden={ariaLabel ? undefined : true}
       aria-label={ariaLabel}
-      className={cn(ratingStarsVariants({ size }), "text-secondary", className)}
+      className={cn(ratingStarsVariants({ size }), className)}
     >
       {Array.from({ length: max }, (_, index) =>
         index < rounded ? (
-          <Star key={index} aria-hidden className="fill-current" strokeWidth={0} />
+          <Star
+            key={index}
+            aria-hidden
+            className={cn(STAR_FILLED_CLASS, "fill-current")}
+            strokeWidth={0}
+          />
         ) : (
-          <span key={index} className="text-muted">
-            <Star aria-hidden strokeWidth={2} />
-          </span>
+          <Star
+            key={index}
+            aria-hidden
+            className={STAR_EMPTY_CLASS}
+            strokeWidth={2}
+          />
         ),
       )}
     </span>

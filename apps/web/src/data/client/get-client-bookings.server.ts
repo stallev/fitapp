@@ -18,6 +18,7 @@ export type ClientBookingListEntry = {
   trainerPhotoUrl: string | null;
   canCancel: boolean;
   hasReview: boolean;
+  reviewRating: number | null;
 };
 
 export async function getClientBookings(): Promise<ClientBookingListEntry[]> {
@@ -35,7 +36,7 @@ export async function getClientBookings(): Promise<ClientBookingListEntry[]> {
       status: true,
       serviceNameSnapshot: true,
       startsAt: true,
-      review: { select: { id: true } },
+      review: { select: { id: true, rating: true } },
       trainerProfile: {
         select: {
           photoUrl: true,
@@ -57,6 +58,7 @@ export async function getClientBookings(): Promise<ClientBookingListEntry[]> {
       startsAtUtc: booking.startsAt.toISOString(),
     }),
     hasReview: booking.review !== null,
+    reviewRating: booking.review?.rating ?? null,
   }));
 }
 
@@ -79,7 +81,7 @@ export async function getClientNextSession(): Promise<ClientBookingListEntry | n
       status: true,
       serviceNameSnapshot: true,
       startsAt: true,
-      review: { select: { id: true } },
+      review: { select: { id: true, rating: true } },
       trainerProfile: {
         select: {
           photoUrl: true,
@@ -105,5 +107,6 @@ export async function getClientNextSession(): Promise<ClientBookingListEntry | n
       startsAtUtc: booking.startsAt.toISOString(),
     }),
     hasReview: booking.review !== null,
+    reviewRating: booking.review?.rating ?? null,
   };
 }

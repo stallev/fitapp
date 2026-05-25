@@ -16,6 +16,12 @@ export const contentTextVariants = cva("font-sans", {
       small: "text-[13px] text-foreground leading-normal",
       smallEmphasis: "text-[15px] font-medium text-foreground leading-normal",
       muted: "text-[12px] text-muted-foreground leading-normal",
+      /** Booking card service line — prototype `text-[12.5px] text-ink-2` */
+      metaSecondary:
+        "text-[12.5px] text-muted-foreground leading-normal",
+      /** Booking card datetime — prototype `text-[12px] text-primary font-medium` */
+      metaPrimary:
+        "text-[12px] font-medium text-primary leading-normal",
       subtle: "text-[13px] text-subtle-foreground leading-normal",
       mutedMicro: "text-[11px] text-muted-foreground leading-normal",
       hint: "text-[11px] text-subtle-foreground leading-normal",

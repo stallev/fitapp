@@ -1,6 +1,5 @@
-import { ChevronRightIcon } from "lucide-react";
-
 import { ContentText } from "@/components/atoms";
+import { ClientBookingReviewListAction } from "@/components/client/ClientBookingReviewListAction";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { CustomLink } from "@/components/ui/CustomLink";
@@ -46,10 +45,15 @@ export function BookingListItem({
 }: BookingListItemProps) {
   const status = booking.status;
   const showUpcomingActions = tab === "upcoming" && booking.canCancel;
-  const showReviewAction = tab === "past" && !booking.hasReview;
+  const showPastReviewActions = tab === "past";
 
   return (
-    <PulseCard className={cn("flex h-full flex-col p-4", className)}>
+    <PulseCard
+      className={cn(
+        "flex h-full flex-col rounded-2xl p-4 shadow-[var(--shadow-card)]",
+        className,
+      )}
+    >
       <CustomLink
         href={`/client/bookings/${booking.id}`}
         className="flex items-start gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -65,7 +69,11 @@ export function BookingListItem({
         </Avatar>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2">
-            <ContentText as="p" className="min-w-0 flex-1 truncate text-[15px] font-medium">
+            <ContentText
+              variant="smallEmphasis"
+              as="p"
+              className="min-w-0 flex-1 truncate"
+            >
               {booking.trainerName}
             </ContentText>
             <StatusBadge
@@ -75,21 +83,13 @@ export function BookingListItem({
               {getBookingStatusLabel(status)}
             </StatusBadge>
           </div>
-          <ContentText variant="mutedMicro" as="p" className="mt-0.5 line-clamp-1">
+          <ContentText variant="metaSecondary" as="p" className="mt-0.5 line-clamp-1">
             {booking.serviceNameSnapshot}
           </ContentText>
-          <ContentText
-            variant="mutedMicro"
-            as="p"
-            className="mt-1.5 font-medium text-primary"
-          >
+          <ContentText variant="metaPrimary" as="p" className="mt-1.5">
             {formatBookingDateTimeLocal(booking.startsAtUtc)}
           </ContentText>
         </div>
-        <ChevronRightIcon
-          className="mt-1 size-4 shrink-0 text-muted-foreground"
-          aria-hidden
-        />
       </CustomLink>
 
       {showUpcomingActions ? (
@@ -115,14 +115,12 @@ export function BookingListItem({
         </div>
       ) : null}
 
-      {showReviewAction ? (
-        <div className="mt-auto pt-3">
-          <Button asChild size="sm" variant="secondary" className="min-h-11 w-full">
-            <CustomLink href={`/client/reviews/${booking.id}`}>
-              {MESSAGES.booking.actions.leaveReview}
-            </CustomLink>
-          </Button>
-        </div>
+      {showPastReviewActions ? (
+        <ClientBookingReviewListAction
+          bookingId={booking.id}
+          hasReview={booking.hasReview}
+          reviewRating={booking.reviewRating}
+        />
       ) : null}
     </PulseCard>
   );

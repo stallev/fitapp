@@ -14,6 +14,13 @@ import { assertCanReadBooking, PolicyError } from "@pulse/policy-server";
 
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
+export type ClientBookingReviewSummary = {
+  id: string;
+  rating: number;
+  body: string;
+  createdAtUtc: string;
+};
+
 export type ClientBookingDetail = {
   id: string;
   status: string;
@@ -30,6 +37,7 @@ export type ClientBookingDetail = {
   canLeaveReview: boolean;
   canFileComplaint: boolean;
   canRequestRefund: boolean;
+  review: ClientBookingReviewSummary | null;
 };
 
 export type ClientBookingAccessResult =
@@ -47,7 +55,12 @@ function mapBookingRow(
     priceCents: number;
     currency: string;
     clientMessage: string | null;
-    review: { id: string } | null;
+    review: {
+      id: string;
+      rating: number;
+      body: string;
+      createdAt: Date;
+    } | null;
     complaints: { id: string }[];
     refundRequests: { id: string }[];
     trainerProfile: {
@@ -90,6 +103,14 @@ function mapBookingRow(
       isEligibleForSupport && booking.complaints.length === 0,
     canRequestRefund:
       isEligibleForRefund && booking.refundRequests.length === 0,
+    review: booking.review
+      ? {
+          id: booking.review.id,
+          rating: booking.review.rating,
+          body: booking.review.body,
+          createdAtUtc: booking.review.createdAt.toISOString(),
+        }
+      : null,
   };
 }
 
@@ -126,7 +147,9 @@ export async function resolveClientBookingAccess(
       priceCents: true,
       currency: true,
       clientMessage: true,
-      review: { select: { id: true } },
+      review: {
+        select: { id: true, rating: true, body: true, createdAt: true },
+      },
       complaints: {
         where: {
           status: { in: [COMPLAINT_STATUS.OPEN, COMPLAINT_STATUS.IN_REVIEW] },

@@ -48,7 +48,7 @@ export const FIXTURE_USERS = {
   anna: {
     email: "anna@pulse.dev",
     password: "trainer123",
-    fullName: "Anna Yoga",
+    fullName: "Anna Cardio",
     role: "trainer" as const,
     avatarUrl: SEED_PHOTO_URLS.anna,
   },
@@ -97,7 +97,7 @@ export const FIXTURE_USERS = {
 } as const;
 
 export const SPECIALIZATIONS = [
-  { slug: "yoga", name: "Yoga" },
+  { slug: "cardio", name: "Cardio" },
   { slug: "pilates", name: "Pilates" },
   { slug: "strength", name: "Strength Training" },
   { slug: "hiit", name: "HIIT" },
@@ -111,9 +111,17 @@ export const SEED_IDS = {
   bookingPending: "22222222-2222-4222-8222-222222222201",
   bookingConfirmed: "22222222-2222-4222-8222-222222222202",
   bookingCompleted: "22222222-2222-4222-8222-222222222203",
-  bookingCompletedNoReview: "22222222-2222-4222-8222-222222222205",
   bookingCancelled: "22222222-2222-4222-8222-222222222204",
+  /** Anna — completed, no review (primary P09 smoke) */
+  bookingCompletedNoReview: "22222222-2222-4222-8222-222222222205",
+  /** Dmitry — completed, no review (repeat submit smoke) */
+  bookingCompletedNoReviewDmitry: "22222222-2222-4222-8222-222222222206",
+  /** Elena — completed, no review (repeat submit smoke) */
+  bookingCompletedNoReviewElena: "22222222-2222-4222-8222-222222222207",
+  /** Ivan — completed, with review (review-submitted UI smoke) */
+  bookingCompletedReviewedIvan: "22222222-2222-4222-8222-222222222208",
   reviewMaria: "33333333-3333-4333-8333-333333333301",
+  reviewIvan: "33333333-3333-4333-8333-333333333302",
   complaintOpen: "44444444-4444-4444-8444-444444444401",
   refundPending: "55555555-5555-4555-8555-555555555501",
 } as const;

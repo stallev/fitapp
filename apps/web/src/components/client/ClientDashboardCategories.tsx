@@ -1,8 +1,8 @@
 import type { LucideIcon } from "lucide-react";
 import {
+  ActivityIcon,
   DumbbellIcon,
   FlameIcon,
-  Flower2Icon,
   StretchHorizontalIcon,
   TargetIcon,
 } from "lucide-react";
@@ -14,7 +14,7 @@ import { MESSAGES } from "@/lib/messages";
 import { cn } from "@/lib/utils";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  yoga: Flower2Icon,
+  cardio: ActivityIcon,
   pilates: TargetIcon,
   strength: DumbbellIcon,
   hiit: FlameIcon,
@@ -23,20 +23,20 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
 
 export function ClientDashboardCategories() {
   return (
-    <section className="space-y-3">
+    <section className="min-w-0 space-y-3">
       <SectionTitle as="h2" className="mx-0 max-w-none text-left text-base">
         {MESSAGES.dashboard.client.categoriesTitle}
       </SectionTitle>
-      <div className="flex flex-wrap gap-2.5">
+      <div className="grid min-w-0 grid-cols-3 gap-2.5 lg:grid-cols-2">
         {MESSAGES.landing.categories.items.map((item) => {
-          const Icon = CATEGORY_ICONS[item.slug] ?? Flower2Icon;
+          const Icon = CATEGORY_ICONS[item.slug] ?? ActivityIcon;
 
           return (
             <CustomLink
               key={item.slug}
               href={`/trainers?specializations=${item.slug}`}
               className={cn(
-                "group flex aspect-square w-[100px] max-w-[100px] shrink-0 flex-col items-center justify-center gap-1.5 rounded-2xl border border-border bg-card p-2 text-center shadow-sm",
+                "group flex aspect-square w-full flex-col items-center justify-center gap-1.5 rounded-2xl border border-border bg-card p-2 text-center shadow-sm",
                 "transition-[transform,background-color,border-color,box-shadow] duration-200",
                 "hover:border-primary/25 hover:bg-primary-container/35 hover:shadow-md",
                 "active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",

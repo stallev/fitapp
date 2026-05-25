@@ -4,7 +4,7 @@
 
 **Registry:** [`documentation_creation_registry.md`](../../meta/documentation_creation_registry.md) — волны W8–W22 **complete**
 
-**Статус:** contracts (W8) + specs (W9) + wireframes (W10) + phases **P01–P14** MVP (W16) + **P16–P18, P21** post-P14 (W22) + operations & guides (W12) + architecture learning pack (W13) + index sync (W14) — **Canonical**. **P13 implementation complete** (admin moderation). **P14** quality gate. **P17** (complaint resolution v2) — in progress. **P16** (landing v2) — documented, not implemented.
+**Статус:** contracts (W8) + specs (W9) + wireframes (W10) + phases **P01–P14** MVP (W16) + **P16–P18, P17, P19, P21** post-P14 (W22–W24) + operations & guides (W12) + architecture learning pack (W13) + index sync (W14) — **Canonical**. **P13 implementation complete** (admin moderation). **P14** quality gate. **P19** (complaint resolution v2) — in progress. **P16** (landing v2) — documented, not implemented. **P17** (UI i18n EN/RU) — documented, not implemented.
 
 **Миграция W11→W16:** [`phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md`](phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md)  
 **Renumbering W22:** [`phases_tasks_descriptions/_migration_P15-P20_renumbering.md`](phases_tasks_descriptions/_migration_P15-P20_renumbering.md)
@@ -24,7 +24,7 @@ npm run lint        # apps/web + все packages/* (не только web)
 
 | Каталог | Содержимое | Статус |
 |---------|------------|--------|
-| `phases_tasks_descriptions/` | `P{N}_phase_description.md` (P01–P14, P16–P18, P21) + templates + migrations | **Canonical** |
+| `phases_tasks_descriptions/` | `P{N}_phase_description.md` (P01–P14, P16–P18, P17, P21) + templates + migrations | **Canonical** |
 | `tasks/` | `P{N}_tasks.md` — чеклисты | **Canonical** |
 | `ui_component_phase_matrix.md` | Phase × Component × Route × CREATE/USE | **Canonical** (W22) |
 | `contracts/` | Контракты между модулями | **Canonical** (W8) |
@@ -67,9 +67,9 @@ npm run lint        # apps/web + все packages/* (не только web)
 | Phase | Description | Tasks |
 |-------|-------------|-------|
 | P16 | Public landing v2 | [`P16_phase_description.md`](phases_tasks_descriptions/P16_phase_description.md) | [`P16_tasks.md`](tasks/P16_tasks.md) |
-| P17 | Complaint resolution v2 *(was P20)* | [`P17_phase_description.md`](phases_tasks_descriptions/P17_phase_description.md) | [`P17_tasks.md`](tasks/P17_tasks.md) |
+| P17 | UI internationalization (EN/RU) | [`P17_phase_description.md`](phases_tasks_descriptions/P17_phase_description.md) | [`P17_tasks.md`](tasks/P17_tasks.md) |
+| P19 | Complaint resolution v2 *(was P20 → P17 → P19)* | [`P19_phase_description.md`](phases_tasks_descriptions/P19_phase_description.md) | [`P19_tasks.md`](tasks/P19_tasks.md) |
 | P18 | Admin people ops *(spec; phase docs TBD)* | — | — |
-| P19 | Reserved | — | — |
 | P21 | Email & jobs *(post-MVP; was P15)* | [`P21_phase_description.md`](phases_tasks_descriptions/P21_phase_description.md) | [`P21_tasks.md`](tasks/P21_tasks.md) |
 
 ---
@@ -87,6 +87,7 @@ npm run lint        # apps/web + все packages/* (не только web)
 | [`contracts/file_upload_contract.md`](contracts/file_upload_contract.md) | S3 file lifecycle |
 | [`contracts/review_moderation_contract.md`](contracts/review_moderation_contract.md) | Reviews |
 | [`contracts/email_notifications_contract.md`](contracts/email_notifications_contract.md) | Post-MVP email jobs (P21) |
+| [`contracts/i18n_runtime_spec.md`](contracts/i18n_runtime_spec.md) | UI locale EN/RU (P17) |
 
 ---
 
@@ -103,7 +104,7 @@ npm run lint        # apps/web + все packages/* (не только web)
 | [`specs/trainer_schedule_spec.md`](specs/trainer_schedule_spec.md) | Weekly schedule & exceptions |
 | [`specs/admin_verification_spec.md`](specs/admin_verification_spec.md) | Admin trainer moderation |
 | [`specs/admin_people_ops_spec.md`](specs/admin_people_ops_spec.md) | Admin people registry (P18 planned) |
-| [`specs/complaint_refund_spec.md`](specs/complaint_refund_spec.md) | Complaints & manual refunds (P17) |
+| [`specs/complaint_refund_spec.md`](specs/complaint_refund_spec.md) | Complaints & manual refunds (P19) |
 | [`specs/design_system_lab_spec.md`](specs/design_system_lab_spec.md) | Shared UI primitives + Design Lab page (P03+) |
 
 ---

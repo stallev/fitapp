@@ -195,7 +195,7 @@ docs/implementation/mvp/
     └── P{N}_tasks.md
 ```
 
-Шаблон Phase Description: [`_phase_template.md`](../implementation/mvp/phases_tasks_descriptions/_phase_template.md). **Канон фаз:** MVP **P01–P14** (W16); post-P14 **P16–P18, P21** (W22). Миграции: [`_migration_P01-P07_to_P01-P15.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md), [`_migration_P15-P20_renumbering.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P15-P20_renumbering.md).
+Шаблон Phase Description: [`_phase_template.md`](../implementation/mvp/phases_tasks_descriptions/_phase_template.md). **Канон фаз:** MVP **P01–P14** (W16); post-P14 **P16–P18, P19, P21** (W22–W23); **P17** reserved. Миграции: [`_migration_P01-P07_to_P01-P15.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md), [`_migration_P15-P20_renumbering.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P15-P20_renumbering.md), [`_migration_P17_to_P19.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P17_to_P19.md).
 
 **Фазы Pulse (canonical):**
 
@@ -216,7 +216,7 @@ docs/implementation/mvp/
 | P13 | Admin moderation | [`P13_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P13_phase_description.md) | [`P13_tasks.md`](../implementation/mvp/tasks/P13_tasks.md) |
 | P14 | Quality gate (a11y, UI states) | [`P14_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P14_phase_description.md) | [`P14_tasks.md`](../implementation/mvp/tasks/P14_tasks.md) |
 | P16 | Public landing v2 | [`P16_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P16_phase_description.md) | [`P16_tasks.md`](../implementation/mvp/tasks/P16_tasks.md) |
-| P17 | Complaint resolution v2 | [`P17_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P17_phase_description.md) | [`P17_tasks.md`](../implementation/mvp/tasks/P17_tasks.md) |
+| P19 | Complaint resolution v2 | [`P19_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P19_phase_description.md) | [`P19_tasks.md`](../implementation/mvp/tasks/P19_tasks.md) |
 | P18 | Admin people ops *(spec)* | — | — |
 | P21 | Email jobs (Resend) — **post-MVP** | [`P21_phase_description.md`](../implementation/mvp/phases_tasks_descriptions/P21_phase_description.md) | [`P21_tasks.md`](../implementation/mvp/tasks/P21_tasks.md) |
 

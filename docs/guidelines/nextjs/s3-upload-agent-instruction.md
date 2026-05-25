@@ -80,10 +80,10 @@ Server-only in **`apps/web`** (`.env.local`, Vercel project settings). **No** `N
 See [`apps/web/.env.local.example`](../../../apps/web/.env.local.example).
 
 ```env
-AWS_ACCESS_KEY_ID=your_access_key_id
-AWS_SECRET_ACCESS_KEY=your_secret_access_key
-AWS_REGION=your_region
-AWS_S3_BUCKET_NAME=your_bucket_name
+AWS_IAM_USER_ACCESS_KEY=your_access_key_id
+AWS_IAM_USER_SECRET_ACCESS_KEY=your_secret_access_key
+S3_BUCKET_REGION=your_region
+S3_BUCKET_NAME=your_bucket_name
 ```
 
 Optional: `AWS_S3_ENDPOINT` for LocalStack/MinIO in local dev only.
@@ -129,10 +129,10 @@ Align boundaries with [ai_nextjs_db_data_handle.md](./ai_nextjs_db_data_handle.m
 import { S3Client } from "@aws-sdk/client-s3";
 
 export const s3Client = new S3Client({
-  region: process.env.AWS_REGION!,
+  region: process.env.S3_BUCKET_REGION!,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: process.env.AWS_IAM_USER_ACCESS_KEY!,
+    secretAccessKey: process.env.AWS_IAM_USER_SECRET_ACCESS_KEY!,
   },
 });
 ```
@@ -192,7 +192,7 @@ export async function createPresignedPutUrl(input: {
   if (!isFileUploadObjectKey(asset.blobPathname)) throw new Error("Invalid object key");
 
   const command = new PutObjectCommand({
-    Bucket: process.env.AWS_S3_BUCKET_NAME!,
+    Bucket: process.env.S3_BUCKET_NAME!,
     Key: asset.blobPathname,
     ContentType: input.mimeType,
     ContentLength: input.sizeBytes,
@@ -229,7 +229,7 @@ const READ_URL_TTL = 7200; // 2 hours
 
 // policy check: owner, admin moderation, public cert vs private verification_doc
 const command = new GetObjectCommand({
-  Bucket: process.env.AWS_S3_BUCKET_NAME!,
+  Bucket: process.env.S3_BUCKET_NAME!,
   Key: asset.blobPathname,
 });
 return getSignedUrl(s3Client, command, { expiresIn: READ_URL_TTL });

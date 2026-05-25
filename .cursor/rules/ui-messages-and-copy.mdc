@@ -12,7 +12,8 @@ alwaysApply: false
 
 ## Source of truth
 
-- User-visible strings from **`@/lib/messages`** (`src/lib/messages/ru.ts`). Nested namespaces: `auth`, `booking`, `trainer`, `admin`, `site`, …
+- User-visible strings from **`@/lib/messages`** (`en.ts`, `ru.ts`). Nested namespaces: `auth`, `booking`, `trainer`, `admin`, `site`, `locale`, …
+- **Default locale:** `en` · **Supported:** `en`, `ru` — see [`adr_009_ui_locale_strategy.md`](docs/prds/07_governance/adr_009_ui_locale_strategy.md)
 - **Do not** duplicate the same sentence in Server Action and component.
 
 ## What belongs in messages
@@ -30,8 +31,12 @@ alwaysApply: false
 - `admin` — moderation, verification
 - `catalog` — filters, empty states
 
-## Locales (later)
+## Locales (P17)
 
-- Parallel modules or JSON + resolver; optional `[lang]` segment — see ADR-002 and Next.js i18n when implementing.
+- Server: `getMessages()` from `@/lib/messages`
+- Client: `useMessages()` via `LocaleProvider` (P17)
+- **MUST** add keys to both `en.ts` and `ru.ts`
+- Cookie-first locale — **no** `/[lang]/` URL prefix (ADR-009)
+- Formatters: `@/lib/i18n/format.ts` — not hardcoded `ru-RU`
 
-Reference: lampto `ui-messages-and-copy.mdc`.
+Reference: [`copy_and_messages.md`](docs/guidelines/react/copy_and_messages.md), [`i18n_runtime_spec.md`](docs/implementation/mvp/contracts/i18n_runtime_spec.md).

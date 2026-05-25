@@ -1,8 +1,8 @@
 # Canonical Routes — Pulse MVP
 
-**Status:** Canonical — единственный полный перечень маршрутов  
-**Version:** 1.0  
-**Date:** 2026-05-23
+**Status:** Canonical — единственный full route inventory  
+**Version:** 1.1  
+**Date:** 2026-05-25
 
 > Не дублировать этот список в других документах. Ссылайтесь на этот файл.  
 > Детальная page spec: [`docs/prds/01_product_scope/pages_functional_spec.md`](../prds/01_product_scope/pages_functional_spec.md) (canonical)  
@@ -65,7 +65,7 @@
 | `/client/bookings` | `(client)/client/bookings/page.tsx` | client | ✅ | Upcoming / Past / Cancelled |
 | `/client/bookings/[id]` | `(client)/client/bookings/[id]/page.tsx` | client | ✅ | Booking detail |
 | `/client/reviews/[bookingId]` | `(client)/client/reviews/[bookingId]/page.tsx` | client | ✅ | Post-session review |
-| `/client/profile` | `(client)/client/profile/page.tsx` | client | ✅ | Profile stub — full settings P09+ |
+| `/client/profile` | `(client)/client/profile/page.tsx` | client | ✅ | Profile + language row (P17); theme stub |
 
 > **Note:** Client bottom nav lists Profile — route `/client/profile` stub added in P03; full settings in later phases.
 
@@ -76,7 +76,7 @@
 | Path | Route file | Role | MVP | Notes |
 |------|-----------|------|-----|-------|
 | `/trainer/dashboard` | `(trainer)/trainer/dashboard/page.tsx` | trainer | ✅ | KPI, today, reviews |
-| `/trainer/profile` | `(trainer)/trainer/profile/page.tsx` | trainer | ✅ | Edit public profile |
+| `/trainer/profile` | `(trainer)/trainer/profile/page.tsx` | trainer | ✅ | Edit public profile + language row (P17) |
 | `/trainer/services` | `(trainer)/trainer/services/page.tsx` | trainer | ✅ | CRUD services |
 | `/trainer/schedule` | `(trainer)/trainer/schedule/page.tsx` | trainer | ✅ | Weekly + exceptions |
 | `/trainer/clients` | `(trainer)/trainer/clients/page.tsx` | trainer | ✅ | Client list |
@@ -108,6 +108,31 @@
 | `/api/auth/[...nextauth]` | Auth.js handlers | ✅ |
 | `/api/jobs/*` | Cron-triggered job endpoints (planned) | ✅ |
 | `/api/files/[fileAssetId]` | S3 presigned read proxy (ready assets) | ✅ |
+
+---
+
+## Locale query (P17 — cross-cutting)
+
+**Contract:** [`i18n_runtime_spec.md`](../implementation/mvp/contracts/i18n_runtime_spec.md) · **ADR:** [`adr_009_ui_locale_strategy.md`](../prds/07_governance/adr_009_ui_locale_strategy.md)
+
+| Query | Allowed values | Behavior |
+|-------|----------------|----------|
+| `lang` | `en`, `ru` | Set cookie `pulse_locale`; navigate to **same path** without `lang` param |
+
+**Examples:**
+
+| Request | Result |
+|---------|--------|
+| `/trainers?lang=en` | Cookie `en`; user sees `/trainers` in English |
+| `/auth/login?lang=ru&callbackUrl=…` | Cookie `ru`; strip only `lang`; preserve other query params per auth rules |
+| `/client/bookings?lang=fr` | Ignore invalid value; fall through locale resolver |
+
+**MUST NOT** in P17:
+
+- Add path prefixes `/en/…` or `/ru/…`
+- Use `lang` for open redirects — same-origin path only after strip
+
+Locale applies to **all routes** in this document; no separate localized route inventory.
 
 ---
 
@@ -162,6 +187,7 @@ Template: [`wireframes/_page_template.md`](wireframes/_page_template.md)
 
 | Date | Change |
 |------|--------|
+| 2026-05-25 | P17 — locale query `?lang=en\|ru` cross-cutting contract; profile language row |
 | 2026-05-25 | P18 planned — `/admin/clients`, `/admin/clients/[id]`; trainer `[id]` operational modes; P16 = public landing v2 |
 | 2026-05-23 | W10 — wireframe index links |
 | 2026-05-23 | W15 — dev-only `/design-system` Design Lab route |

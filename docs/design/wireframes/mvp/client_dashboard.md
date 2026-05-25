@@ -1,6 +1,6 @@
 # Wireframe: Client Dashboard
 
-**Тип:** Wireframe | **Статус:** Canonical | **Версия:** 1.0 | **Дата:** 2026-05-23 | **Волна:** W10  
+**Тип:** Wireframe | **Статус:** Canonical | **Версия:** 1.1 | **Дата:** 2026-05-25 | **Волна:** W10  
 **Route:** `/client/dashboard` · **Prototype:** `c.home`
 
 ## Metadata
@@ -17,26 +17,35 @@
 ## Regions
 
 1. **Greeting** — «Привет, {name}».
-2. **Next session** — card or empty + CTA book.
-3. **Search** — input → `/trainers?q=`.
-4. **Categories** — horizontal chips (Yoga, HIIT…).
-5. **Tip card** — optional sidebar md+.
+2. **Search** — pill affordance → `/trainers`.
+3. **Main column (`lg:` 2/3)** — next session card; **Top trainers** grid (6 cards, `SectionHeader` + «Все →»).
+4. **Sidebar (`lg:` 1/3)** — category tiles (`grid-cols-3` below `lg`, `grid-cols-2` in sidebar).
+5. **Platform stats** — P1 (sidebar); tip card removed from default happy path.
 
 ## States
 
 | State | Description |
 |-------|-------------|
-| happy | Content sections |
-| empty | Welcome empty — no bookings yet |
-| loading | KPI + card skeletons |
+| happy | Greeting, search, next session (or empty CTA), top trainers, categories |
+| empty session | Calendar icon + journey copy + «Найти тренера» |
+| empty trainers | Section header + catalog CTA |
+| loading | Region skeletons matching layout breakpoints |
 | error | Section-level Retry |
 | forbidden | Non-client redirect |
 
-## Desktop
+## Tablet (768–1023px)
 
-`md:grid-cols-3` — main 2 col + sidebar 1 col.
+Single column `space-y-6 pb-6` — **same flow as mobile** (categories after top trainers, not sidebar).  
+App shell sidebar nav is visible (`md:`), but dashboard content stays one column until `lg:`.
 
-## Mobile
+**Note:** HTML prototype uses `md:grid-cols-3` in a full-width canvas without app sidebar — **do not** copy `md:` grid in authenticated shell.
+
+## Desktop (`≥ lg`, 1024px)
+
+`lg:grid lg:grid-cols-3 lg:gap-6` — main 2 col + sidebar 1 col.  
+Top trainers: `lg:grid-cols-2` inside main column.
+
+## Mobile (`< md`)
 
 Single column `space-y-6 pb-6` above BottomNav.
 

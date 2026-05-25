@@ -111,7 +111,10 @@ role-based redirect: /client/dashboard
 
 **Route**: `/client/dashboard`  
 **Mobile layout**: `space-y-6`, одна колонка, `pb-6` (отступ над Bottom Nav)  
-**Desktop layout**: `md:grid md:grid-cols-3 md:gap-6` — основной контент (2 col) + правая панель (1 col)
+**Tablet layout (768–1023px)**: та же одна колонка и порядок секций, что на mobile; sidebar nav виден (`md:`), но dashboard **не** переключается в 3-col grid  
+**Desktop layout (`≥ lg`)**: `lg:grid lg:grid-cols-3 lg:gap-6` — основной контент (2 col) + правая панель (1 col)
+
+> **Prototype delta:** HTML-прототип `c.home` использует `md:grid-cols-3` без app sidebar. В Pulse 3-col grid только с **`lg:`** — см. design system §2 Responsive Strategy.
 
 ### Секции и адаптация
 
@@ -143,25 +146,24 @@ Desktop:
 
 **UX rule**: кнопка «Join» всегда видна в карточке, но на MVP показывает toast «Video sessions coming soon».
 
-#### 4. Top Trainers (2/3 ширины desktop)
+#### 4. Top Trainers (2/3 ширины desktop, `≥ lg`)
 ```
-Mobile:  grid-cols-1 (список)
-Desktop: md:grid-cols-2 (сетка 2 колонки)
-         xl:grid-cols-2 (остаётся 2 col, sidebar сужает пространство)
+Mobile / tablet (< lg):  grid-cols-1 (список)
+Desktop (≥ lg):        lg:grid-cols-2 (сетка 2 колонки в main column)
 ```
 Заголовок «Top trainers» + link «All →» → `/trainers`.
 
-#### 5. Categories (правая панель desktop, под основным контентом mobile)
+#### 5. Categories (правая панель `≥ lg`, в общем потоке `< lg`)
 ```
-Mobile:  grid-cols-3 (3 иконки в ряд, aspect-square кнопки)
-Desktop: grid-cols-2 (в правой колонке, крупнее)
+< lg:   grid-cols-3 (3 иконки в ряд, aspect-square; секция после Top trainers)
+≥ lg:   grid-cols-2 (в правой колонке sidebar)
 ```
 Клик → `/trainers?specialization={id}`.
 
 #### 6. Platform Stats
 ```
-Mobile:  grid-cols-3, text-center
-Desktop: grid-cols-1, text-left (в правой колонке)
+< lg:   grid-cols-3, text-center (в общем потоке, post-P1)
+≥ lg:   grid-cols-1, text-left (в правой колонке)
 ```
 
 ### Empty State (новый клиент)
@@ -467,7 +469,8 @@ Desktop: md:grid-cols-2
             [Date — text-primary font-medium]
 
 Upcoming:   [🎥 Join ────] [Cancel]  ← sm buttons
-Past:       [★ Leave a review ────]  ← sm tonal
+Past (no review): [★ Leave a review ────]  ← sm tonal → `/client/reviews/[bookingId]`
+Past (reviewed):  [✓ Review submitted] + readonly stars  ← sm tonal disabled
 Cancelled:  — (нет кнопок)
 ```
 

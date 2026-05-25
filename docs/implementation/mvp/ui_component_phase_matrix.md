@@ -283,7 +283,23 @@
 
 ---
 
-## P17 — Complaint Resolution v2
+## P17 — UI Internationalization (EN/RU)
+
+| Component | Action | Route / placement | Notes |
+|-----------|--------|-------------------|-------|
+| `LocaleSwitcher` | CREATE | Design Lab `#settings`; `LandingNav`, `LandingFooter`; `TopBar` `md+` | Segmented EN \| RU; `aria-pressed` |
+| `LocaleProvider` | CREATE | Root / app shell layout | Seeds `useMessages()` |
+| `LocaleSettingsRow` | CREATE | `/client/profile`, `/trainer/profile` | Language row; wireframe v2 |
+| `ProductQueryToast` | USE (extend) | Any route | Strip `?lang=` after cookie set (pattern) |
+| Typography atoms, `Button`, `PulseCard` | USE | Profile settings | Settings list pattern |
+| `@/lib/i18n/format.ts` | CREATE | — | Not a React component; formatter canon |
+| `@/lib/messages/en.ts`, `ru.ts` | CREATE / USE | — | `satisfies Messages` parity |
+
+**ADR:** [`adr_009_ui_locale_strategy.md`](../../../prds/07_governance/adr_009_ui_locale_strategy.md) · **Contract:** [`i18n_runtime_spec.md`](contracts/i18n_runtime_spec.md) · **Phase:** [`P17_phase_description.md`](phases_tasks_descriptions/P17_phase_description.md)
+
+---
+
+## P19 — Complaint Resolution v2
 
 | Component | Action | Route | Notes |
 |-----------|--------|-------|-------|
@@ -309,12 +325,6 @@
 | Client registry + detail surfaces | CREATE | `/admin/clients`, `/admin/clients/[id]` | Spec: `admin_people_ops_spec.md` |
 | Trainer post-approval ops | USE (extend) | `/admin/trainers/[id]` | Revoke + cross-links |
 | Phase docs | — | — | Pending P18 phase/tasks files |
-
----
-
-## P19 — Reserved
-
-Post-MVP phase number reserved — no component matrix rows until phase doc exists.
 
 ---
 

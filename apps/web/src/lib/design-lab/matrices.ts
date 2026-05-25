@@ -42,6 +42,8 @@ export const CONTENT_TEXT_VARIANTS = [
   "small",
   "smallEmphasis",
   "muted",
+  "metaSecondary",
+  "metaPrimary",
   "subtle",
   "mutedMicro",
   "hint",
@@ -85,6 +87,7 @@ export const PULSECARD_STATES = [
 
 export const LINK_DEMOS = [
   { as: "text" as const, variant: undefined, label: "text / default" },
+  { as: "text" as const, variant: "action" as const, label: "text / action" },
   { as: "text" as const, variant: "quiet" as const, label: "text / quiet" },
   { as: "button" as const, variant: "default" as const, label: "button / default" },
   { as: "button" as const, variant: "outline" as const, label: "button / outline" },

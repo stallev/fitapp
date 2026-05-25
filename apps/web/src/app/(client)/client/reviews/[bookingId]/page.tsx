@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { notFound, redirect } from "next/navigation";
 
 import { Heading } from "@/components/atoms";
 import { ReviewBookingContext } from "@/components/client/ReviewBookingContext";
 import { ReviewForm } from "@/components/client/ReviewForm.client";
-import { requireClientReviewFormContext } from "@/data/client/get-client-review-form.server";
+import { resolveClientReviewPageAccess } from "@/data/client/get-client-review-form.server";
 import { MESSAGES } from "@/lib/messages";
 
 type ClientReviewPageProps = {
@@ -18,7 +19,17 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function ClientReviewPage({ params }: ClientReviewPageProps) {
   const { bookingId } = await params;
-  const context = await requireClientReviewFormContext(bookingId);
+  const access = await resolveClientReviewPageAccess(bookingId);
+
+  if (access.status === "redirect") {
+    redirect(`/client/bookings/${access.bookingId}`);
+  }
+
+  if (access.status === "not_found") {
+    notFound();
+  }
+
+  const context = access.context;
 
   return (
     <div className="mx-auto w-full max-w-2xl space-y-6 py-4 pb-6">

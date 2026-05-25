@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 
 import { ContentText, Heading } from "@/components/atoms";
+import { ClientBookingReviewSubmitted } from "@/components/client/ClientBookingReviewSubmitted";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PulseCard } from "@/components/ui/card";
 import { KeyValueRow } from "@/components/ui/KeyValueRow";
-import { Button } from "@/components/ui/button";
 import { CustomLink } from "@/components/ui/CustomLink";
 
 import {
@@ -52,7 +52,7 @@ export function ClientBookingDetailPanel({
         <StatusBadge status={statusVariant}>{statusLabel}</StatusBadge>
       </div>
 
-      <PulseCard className="space-y-3 p-5">
+      <PulseCard className="space-y-3 rounded-2xl p-5">
         <KeyValueRow
           label={MESSAGES.booking.detail.trainerLabel}
           value={booking.trainerName}
@@ -83,13 +83,15 @@ export function ClientBookingDetailPanel({
         ) : null}
       </PulseCard>
 
+      {booking.review ? (
+        <ClientBookingReviewSubmitted review={booking.review} />
+      ) : null}
+
       {actions}
 
-      <Button asChild variant="outline">
-        <CustomLink href="/client/bookings">
-          {MESSAGES.booking.detail.backToBookings}
-        </CustomLink>
-      </Button>
+      <CustomLink href="/client/bookings" variant="quiet">
+        {MESSAGES.booking.detail.backToBookings}
+      </CustomLink>
     </div>
   );
 }

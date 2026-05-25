@@ -17,50 +17,23 @@ export type ClientReviewFormContext = {
   sessionDateLabel: string;
 };
 
-export async function getClientReviewFormContext(
-  bookingId: string,
-): Promise<ClientReviewFormContext | null> {
-  const ctx = await getPolicySessionContext();
-  if (!ctx) {
-    return null;
-  }
+export type ClientReviewPageAccess =
+  | { status: "form"; context: ClientReviewFormContext }
+  | { status: "redirect"; bookingId: string }
+  | { status: "not_found" };
 
-  try {
-    await assertCanReadBooking(ctx, bookingId);
-  } catch (error) {
-    if (error instanceof PolicyError) {
-      return null;
-    }
-
-    throw error;
-  }
-
-  const prisma = getPrisma();
-  const booking = await prisma.booking.findFirst({
-    where: {
-      id: bookingId,
-      clientId: ctx.userId,
-      status: BOOKING_STATUS.COMPLETED,
-      review: null,
-    },
-    select: {
-      id: true,
-      serviceNameSnapshot: true,
-      startsAt: true,
-      trainerProfile: {
-        select: {
-          photoUrl: true,
-          timezone: true,
-          user: { select: { fullName: true } },
-        },
-      },
-    },
-  });
-
-  if (!booking) {
-    return null;
-  }
-
+function mapBookingToReviewFormContext(
+  booking: {
+    id: string;
+    serviceNameSnapshot: string;
+    startsAt: Date;
+    trainerProfile: {
+      photoUrl: string | null;
+      timezone: string;
+      user: { fullName: string };
+    };
+  },
+): ClientReviewFormContext {
   const startsAtUtc = booking.startsAt.toISOString();
   const timezone = booking.trainerProfile.timezone;
 
@@ -73,14 +46,75 @@ export async function getClientReviewFormContext(
   };
 }
 
+export async function resolveClientReviewPageAccess(
+  bookingId: string,
+): Promise<ClientReviewPageAccess> {
+  const ctx = await getPolicySessionContext();
+  if (!ctx) {
+    return { status: "not_found" };
+  }
+
+  try {
+    await assertCanReadBooking(ctx, bookingId);
+  } catch (error) {
+    if (error instanceof PolicyError) {
+      return { status: "not_found" };
+    }
+
+    throw error;
+  }
+
+  const prisma = getPrisma();
+  const booking = await prisma.booking.findFirst({
+    where: {
+      id: bookingId,
+      clientId: ctx.userId,
+      status: BOOKING_STATUS.COMPLETED,
+    },
+    select: {
+      id: true,
+      serviceNameSnapshot: true,
+      startsAt: true,
+      review: { select: { id: true } },
+      trainerProfile: {
+        select: {
+          photoUrl: true,
+          timezone: true,
+          user: { select: { fullName: true } },
+        },
+      },
+    },
+  });
+
+  if (!booking) {
+    return { status: "not_found" };
+  }
+
+  if (booking.review !== null) {
+    return { status: "redirect", bookingId: booking.id };
+  }
+
+  return {
+    status: "form",
+    context: mapBookingToReviewFormContext(booking),
+  };
+}
+
+export async function getClientReviewFormContext(
+  bookingId: string,
+): Promise<ClientReviewFormContext | null> {
+  const access = await resolveClientReviewPageAccess(bookingId);
+  return access.status === "form" ? access.context : null;
+}
+
 export async function requireClientReviewFormContext(
   bookingId: string,
 ): Promise<ClientReviewFormContext> {
-  const context = await getClientReviewFormContext(bookingId);
+  const access = await resolveClientReviewPageAccess(bookingId);
 
-  if (!context) {
+  if (access.status !== "form") {
     notFound();
   }
 
-  return context;
+  return access.context;
 }
