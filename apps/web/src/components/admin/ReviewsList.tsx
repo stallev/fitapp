@@ -26,9 +26,9 @@ export async function ReviewsList({ reviews, emptyMessage }: ReviewsListProps) {
   }
 
   return (
-    <ul className="mt-6 grid grid-cols-1 gap-2.5 md:grid-cols-2">
+    <ul className="mt-6 grid grid-cols-1 items-stretch gap-2.5 md:grid-cols-2">
       {reviews.map((review) => (
-        <li key={review.id} className="min-w-0">
+        <li key={review.id} className="h-full min-w-0">
           <ReviewModerationCard review={review} />
         </li>
       ))}

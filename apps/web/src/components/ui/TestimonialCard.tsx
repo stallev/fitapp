@@ -30,7 +30,7 @@ export function TestimonialCard({
   return (
     <article
       className={cn(
-        "flex flex-col rounded-[22px] border border-foreground/5 bg-card p-9 shadow-sm",
+        "flex h-full flex-col rounded-[22px] border border-foreground/5 bg-card p-9 shadow-sm",
         className,
       )}
     >

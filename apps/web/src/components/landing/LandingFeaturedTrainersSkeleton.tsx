@@ -7,7 +7,7 @@ import { getMessages } from "@/lib/messages/server";
 
 function FeaturedTrainerCardSkeleton() {
   return (
-    <PulseCard variant="elevated" className="overflow-hidden rounded-[22px] p-0">
+    <PulseCard variant="elevated" className="flex h-full flex-col overflow-hidden rounded-[22px] p-0">
       <Skeleton className="h-[200px] w-full rounded-none" />
       <div className="space-y-3 p-5">
         <Skeleton className="h-5 w-3/4" />
@@ -39,7 +39,7 @@ export async function LandingFeaturedTrainersSkeleton() {
           title={featured.title}
           subtitle={featured.subtitle}
         />
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 3 }, (_, index) => (
             <FeaturedTrainerCardSkeleton key={index} />
           ))}

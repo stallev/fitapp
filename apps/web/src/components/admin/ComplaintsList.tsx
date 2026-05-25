@@ -27,9 +27,9 @@ export async function ComplaintsList({ items, emptyMessage }: ComplaintsListProp
   }
 
   return (
-    <ul className="mt-6 grid grid-cols-1 gap-2.5 md:grid-cols-2">
+    <ul className="mt-6 grid grid-cols-1 items-stretch gap-2.5 md:grid-cols-2">
       {items.map((item) => (
-        <li key={item.id} className="min-w-0">
+        <li key={item.id} className="h-full min-w-0">
           <ComplaintQueueCard
             item={item}
             actions={<ComplaintRowActions item={item} />}

@@ -36,6 +36,22 @@ alwaysApply: false
 - Tailwind + **`cn()`** from `@/lib/utils`; variants via **cva**.
 - Semantic tokens per **ui-warm-forest-shadcn** and [`fitness-platform-design-system.md`](docs/default_docs/fitness-platform-design-system.md).
 
+## Equal-height card rows (обязательно)
+
+Когда **2+ карточки** стоят в одном ряду (`grid` / `flex` на `md+`), **высота каждой карточки в ряду должна совпадать** — нижние края выровнены.
+
+**Паттерн (3 уровня):**
+
+1. **Grid-контейнер:** `grid … items-stretch` (явно, не полагаться только на default).
+2. **Обёртка** (`Reveal`, `<li>`, link-wrapper): `h-full` / `min-h-full`, если между grid и card есть промежуточный элемент.
+3. **Card:** `flex h-full flex-col`; переменный контент — `flex-1`; footer/CTA/chips — `mt-auto` при необходимости.
+
+**Канон:** `StepCard`, `TestimonialCard`, `FeaturedTrainerCardView`, `FeatureCardGrid`, `PulseCardKpi`.
+
+**Антипаттерн:** карточки «по контенту» в multi-column grid без `h-full` — ломает визуальный ритм landing и admin queue grids.
+
+**Приёмка:** сверить ряд на **390px** (stack) и **`md+`** (equal height) перед merge UI-задачи с card grid.
+
 ## Structure
 
 - **One feature component per file:** **react-one-component-per-file** (≤ **140 lines** target)

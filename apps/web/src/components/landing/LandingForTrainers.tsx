@@ -54,7 +54,7 @@ export async function LandingForTrainers() {
             <ArrowRightIcon aria-hidden className="size-[18px]" />
           </CustomLink>
         </div>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 items-stretch gap-4">
           {forTrainers.stats.map((stat) => (
             <DarkStatTile key={stat.label} value={stat.value} label={stat.label} />
           ))}

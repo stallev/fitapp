@@ -12,7 +12,7 @@ export async function FeaturesDemoPaths() {
 
   return (
     <HowItWasBuiltSection id={section.id} title={section.title} intro={section.intro}>
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid items-stretch gap-4 md:grid-cols-3">
         {section.paths.map((path) => (
           <PulseCard key={path.title} variant="base" className="flex h-full flex-col p-5">
             <ContentText as="p" variant="blockLabel" className="mb-3 font-semibold">

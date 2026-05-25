@@ -25,9 +25,9 @@ export async function RefundsList({ refunds }: RefundsListProps) {
   }
 
   return (
-    <ul className="mt-6 grid grid-cols-1 gap-2.5 md:grid-cols-2">
+    <ul className="mt-6 grid grid-cols-1 items-stretch gap-2.5 md:grid-cols-2">
       {refunds.map((refund) => (
-        <li key={refund.id} className="min-w-0">
+        <li key={refund.id} className="h-full min-w-0">
           <RefundQueueCard refund={refund} />
         </li>
       ))}

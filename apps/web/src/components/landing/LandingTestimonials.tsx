@@ -18,9 +18,13 @@ export async function LandingTestimonials() {
           subtitle={testimonials.subtitle}
           animate
         />
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid items-stretch gap-6 md:grid-cols-3">
           {testimonials.items.map((item, index) => (
-            <Reveal key={item.author} delay={`${(index + 1) * 100}ms`}>
+            <Reveal
+              key={item.author}
+              delay={`${(index + 1) * 100}ms`}
+              className="h-full"
+            >
               <TestimonialCard
                 quote={item.quote}
                 author={item.author}

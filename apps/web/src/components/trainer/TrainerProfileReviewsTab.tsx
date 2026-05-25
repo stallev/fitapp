@@ -37,9 +37,9 @@ export async function TrainerProfileReviewsTab({ reviews }: TrainerProfileReview
         </div>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className="grid items-stretch gap-3 md:grid-cols-2">
         {reviews.items.map((review) => (
-          <PulseCard key={review.id} className="p-4 md:p-5">
+          <PulseCard key={review.id} className="flex h-full flex-col p-4 md:p-5">
             <div className="flex items-center justify-between gap-2">
               <ContentText variant="smallEmphasis" as="p">
                 {review.clientDisplayName}
@@ -54,7 +54,7 @@ export async function TrainerProfileReviewsTab({ reviews }: TrainerProfileReview
                 year: "numeric",
               })}
             </ContentText>
-            <ContentText as="p" className="mt-3">
+            <ContentText as="p" className="mt-3 flex-1">
               {review.body}
             </ContentText>
           </PulseCard>
