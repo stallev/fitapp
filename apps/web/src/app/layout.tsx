@@ -4,6 +4,7 @@ import { DM_Sans, DM_Serif_Display, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider.client";
 import { Toaster } from "@/components/ui/sonner";
 import { MESSAGES } from "@/lib/messages";
+import { getSiteUrl } from "@/lib/site/site-url";
 import { cn } from "@/lib/utils";
 
 import "./globals.css";
@@ -28,6 +29,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: getSiteUrl(),
   title: MESSAGES.site.title,
   description: MESSAGES.site.description,
 };

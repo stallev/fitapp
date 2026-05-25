@@ -32,6 +32,16 @@
 | **Prototype** | [`Pulse Landing Page -Standalone-.html`](../../../prototypes/Pulse Landing Page -Standalone-.html) |
 | **Locale (MVP)** | RU user-visible copy via `@/lib/messages` |
 
+### SEO & social sharing
+
+| Concern | Implementation |
+|---------|----------------|
+| **Title / description** | `MESSAGES.landing.meta.*` via `buildLandingMetadata()` in `(marketing)/page.tsx` |
+| **Open Graph / Twitter** | `openGraph` + `twitter` (`summary_large_image`); canonical `/` |
+| **OG image** | `app/opengraph-image.tsx` (1200×630, Warm Forest tokens) |
+| **metadataBase** | Root `layout.tsx` → `getSiteUrl()` (`NEXT_PUBLIC_SITE_URL` or `VERCEL_URL`) |
+| **JSON-LD** | `LandingJsonLd` — `@graph`: `WebSite`, `Organization`, `WebPage`, `FAQPage` (FAQ from `landing.faq.items`) |
+
 ---
 
 ## Section order (MUST)
@@ -218,6 +228,7 @@ Typography: `font-heading` (DM Serif Display) for display titles; `font-sans` (D
 
 | Date | Change |
 |------|--------|
+| 2026-05-25 | v2.2 — SEO: Open Graph, Twitter, JSON-LD, OG image contract |
 | 2026-05-25 | v2.1 — PL-MUST acceptance criteria verified (P16 completion) |
 | 2026-05-25 | v2.0 — P16 landing v2 spec; standalone prototype as visual source |
 | 2026-05-23 | v1.0 — implicit in catalog_discovery_spec + P04 (superseded structurally) |
