@@ -10,51 +10,55 @@ import {
   getBookingStatusLabel,
 } from "@/lib/booking/booking-status-ui";
 import { formatMoney } from "@/lib/format-money";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 import type { BookingStatus } from "@pulse/domain";
+
+import type { Messages } from "@/lib/messages/types";
 
 export type ComplaintContextPanelProps = {
   complaint: ComplaintDetail;
 };
 
-function getRefundStatusLabel(status: string): string {
+function getRefundStatusLabel(status: string, messages: Messages): string {
   if (status === "pending") {
-    return MESSAGES.admin.refunds.pendingStatus;
+    return messages.admin.refunds.pendingStatus;
   }
 
   if (status === "approved") {
-    return MESSAGES.admin.refunds.approveSuccess;
+    return messages.admin.refunds.approveSuccess;
   }
 
   if (status === "rejected") {
-    return MESSAGES.admin.refunds.rejectSuccess;
+    return messages.admin.refunds.rejectSuccess;
   }
 
   return status;
 }
 
-export function ComplaintContextPanel({ complaint }: ComplaintContextPanelProps) {
+export async function ComplaintContextPanel({ complaint }: ComplaintContextPanelProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
   return (
     <PulseCard variant="base" className="rounded-2xl">
       <PulseCardContent density="sm" className="space-y-4">
-        <SectionTitle>{MESSAGES.admin.complaints.contextTitle}</SectionTitle>
+        <SectionTitle>{messages.admin.complaints.contextTitle}</SectionTitle>
 
         {complaint.booking ? (
           <dl className="grid gap-2 text-sm">
             <div>
               <dt className="text-muted-foreground">
-                {MESSAGES.admin.complaints.booking}
+                {messages.admin.complaints.booking}
               </dt>
               <dd className="space-y-1">
                 <ContentText as="p" className="font-mono text-[13px]">
-                  {MESSAGES.admin.complaints.bookingReference.replace(
+                  {messages.admin.complaints.bookingReference.replace(
                     "{ref}",
                     formatBookingReference(complaint.booking.id),
                   )}
                 </ContentText>
                 <ContentText as="p">
                   {complaint.booking.serviceName} ·{" "}
-                  {formatBookingDateTimeLocal(complaint.booking.startsAt)}
+                  {formatBookingDateTimeLocal(complaint.booking.startsAt, locale)}
                 </ContentText>
                 <div className="flex flex-wrap items-center gap-2">
                   <StatusBadge
@@ -64,12 +68,14 @@ export function ComplaintContextPanel({ complaint }: ComplaintContextPanelProps)
                   >
                     {getBookingStatusLabel(
                       complaint.booking.status as BookingStatus,
+                      messages,
                     )}
                   </StatusBadge>
                   <ContentText as="span" className="text-muted-foreground">
                     {formatMoney(
                       complaint.booking.priceCents,
                       complaint.booking.currency,
+                      locale,
                     )}
                   </ContentText>
                 </div>
@@ -78,35 +84,36 @@ export function ComplaintContextPanel({ complaint }: ComplaintContextPanelProps)
           </dl>
         ) : (
           <ContentText as="p" className="text-sm text-muted-foreground">
-            {MESSAGES.admin.complaints.noBooking}
+            {messages.admin.complaints.noBooking}
           </ContentText>
         )}
 
         <div className="space-y-1 text-sm">
           <ContentText as="p" className="text-muted-foreground">
-            {MESSAGES.admin.complaints.relatedRefund}
+            {messages.admin.complaints.relatedRefund}
           </ContentText>
           {complaint.relatedRefund ? (
             <div className="flex flex-wrap items-center gap-2">
               <StatusBadge status="pending">
-                {getRefundStatusLabel(complaint.relatedRefund.status)}
+                {getRefundStatusLabel(complaint.relatedRefund.status, messages)}
               </StatusBadge>
               <ContentText as="span">
                 {formatMoney(
                   complaint.relatedRefund.amountCents,
                   complaint.relatedRefund.currency,
+                  locale,
                 )}
               </ContentText>
               <CustomLink
                 href="/admin/refunds"
                 className="text-sm font-medium text-primary"
               >
-                {MESSAGES.admin.complaints.viewRefunds}
+                {messages.admin.complaints.viewRefunds}
               </CustomLink>
             </div>
           ) : (
             <ContentText as="p" className="text-muted-foreground">
-              {MESSAGES.admin.complaints.noRefund}
+              {messages.admin.complaints.noRefund}
             </ContentText>
           )}
         </div>

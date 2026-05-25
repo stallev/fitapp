@@ -3,14 +3,16 @@ import { getFeaturedTrainers } from "@/data/catalog/get-featured-trainers.server
 import { Container } from "@/components/ui/container";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
 import { Reveal } from "@/components/ui/Reveal.client";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 import { LandingFeaturedTrainersBrowseCta } from "./LandingFeaturedTrainersBrowseCta.client";
 import { LandingFeaturedTrainersEmpty } from "./LandingFeaturedTrainersEmpty";
 import { LandingFeaturedTrainersError } from "./LandingFeaturedTrainersError";
 
 export async function LandingFeaturedTrainers() {
-  const { featured } = MESSAGES.landing;
+  const messages = await getMessages();
+  const { featured } = messages.landing;
 
   let trainers;
 

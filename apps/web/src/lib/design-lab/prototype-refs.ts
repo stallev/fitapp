@@ -7,7 +7,7 @@ export const PROTOTYPE_REFS: Record<string, PrototypeRef> = {
   tokens: { screenId: "global", note: "Warm Forest token canon" },
   typography: { screenId: "landing", note: "Hero + section titles" },
   buttons: { screenId: "c.book", note: "Primary CTA in booking wizard" },
-  links: { screenId: "c.home", note: "Section «Все →» links" },
+  links: { screenId: "c.home", note: "Section view-all links" },
   cards: { screenId: "c.bookings", note: "Compact interactive list items" },
   forms: { screenId: "c.book", note: "Booking wizard + payment fields" },
   toasts: { screenId: "mixed", note: "Post-mutation feedback — Sonner" },

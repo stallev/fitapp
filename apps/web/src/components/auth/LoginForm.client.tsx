@@ -18,7 +18,8 @@ import {
   loginAction,
   type LoginFormState,
 } from "@/actions/auth/login";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 type LoginFormProps = {
@@ -26,6 +27,7 @@ type LoginFormProps = {
 };
 
 export const LoginForm = ({ callbackUrl: callbackUrlProp }: LoginFormProps) => {
+  const messages = useMessages();
   const searchParams = useSearchParams();
   const callbackUrl = callbackUrlProp ?? searchParams.get("callbackUrl") ?? undefined;
   const [state, formAction, pending] = useActionState<
@@ -51,7 +53,7 @@ export const LoginForm = ({ callbackUrl: callbackUrlProp }: LoginFormProps) => {
 
       <FieldGroup>
         <Field>
-          <FieldLabel htmlFor="email">{MESSAGES.auth.login.emailLabel}</FieldLabel>
+          <FieldLabel htmlFor="email">{messages.auth.login.emailLabel}</FieldLabel>
           <Input
             id="email"
             name="email"
@@ -64,7 +66,7 @@ export const LoginForm = ({ callbackUrl: callbackUrlProp }: LoginFormProps) => {
 
         <Field>
           <FieldLabel htmlFor="password">
-            {MESSAGES.auth.login.passwordLabel}
+            {messages.auth.login.passwordLabel}
           </FieldLabel>
           <Input
             id="password"
@@ -86,17 +88,17 @@ export const LoginForm = ({ callbackUrl: callbackUrlProp }: LoginFormProps) => {
         {pending ? (
           <>
             <Loader2Icon className="size-4 animate-spin" aria-hidden />
-            {MESSAGES.auth.login.submitting}
+            {messages.auth.login.submitting}
           </>
         ) : (
-          MESSAGES.auth.login.submit
+          messages.auth.login.submit
         )}
       </Button>
 
       <ContentText variant="small" className="text-center">
-        {MESSAGES.auth.login.noAccount}{" "}
+        {messages.auth.login.noAccount}{" "}
         <CustomLink href="/auth/register">
-          {MESSAGES.auth.login.registerLink}
+          {messages.auth.login.registerLink}
         </CustomLink>
       </ContentText>
     </form>

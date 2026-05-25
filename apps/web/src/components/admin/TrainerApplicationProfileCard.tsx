@@ -9,7 +9,8 @@ import type { TrainerApplicationDetail } from "@/data/admin/get-trainer-applicat
 import { computeWaitingDays } from "@/lib/admin/compute-waiting-days";
 import { getTrainerStatusBadge } from "@/lib/admin/trainer-application-status";
 import { formatAdminRelativeDate } from "@/lib/date/format-admin-relative";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 import { cn } from "@/lib/utils";
 
 export type TrainerApplicationProfileCardProps = {
@@ -25,12 +26,13 @@ function getInitials(name: string): string {
     .toUpperCase();
 }
 
-export function TrainerApplicationProfileCard({
-  application,
+export async function TrainerApplicationProfileCard({  application,
 }: TrainerApplicationProfileCardProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
+
   const waitingDays = computeWaitingDays(application.submittedAt);
   const isLongWait = waitingDays >= 3;
-  const statusBadge = getTrainerStatusBadge(application.status);
+  const statusBadge = getTrainerStatusBadge(application.status, messages);
 
   return (
     <PulseCard variant="base" className="rounded-2xl">
@@ -65,18 +67,18 @@ export function TrainerApplicationProfileCard({
         <dl className="grid gap-3 text-sm md:max-w-xl">
           <div>
             <dt className="text-muted-foreground">
-              {MESSAGES.admin.moderation.submittedAt}
+              {messages.admin.moderation.submittedAt}
             </dt>
             <dd>
               {application.submittedAt
-                ? formatAdminRelativeDate(application.submittedAt)
+                ? formatAdminRelativeDate(application.submittedAt, locale)
                 : "—"}
             </dd>
           </div>
           {application.experienceYears != null ? (
             <div>
               <dt className="text-muted-foreground">
-                {MESSAGES.admin.moderation.experienceYears}
+                {messages.admin.moderation.experienceYears}
               </dt>
               <dd>{application.experienceYears}</dd>
             </div>
@@ -84,7 +86,7 @@ export function TrainerApplicationProfileCard({
           {application.timezone ? (
             <div>
               <dt className="text-muted-foreground">
-                {MESSAGES.admin.moderation.timezone}
+                {messages.admin.moderation.timezone}
               </dt>
               <dd>{application.timezone}</dd>
             </div>
@@ -102,7 +104,7 @@ export function TrainerApplicationProfileCard({
               <ClockIcon className="size-3.5 shrink-0" aria-hidden />
             ) : null}
             <span>
-              {MESSAGES.admin.moderation.waitingDays.replace(
+              {messages.admin.moderation.waitingDays.replace(
                 "{days}",
                 String(waitingDays),
               )}

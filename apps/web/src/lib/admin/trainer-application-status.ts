@@ -1,30 +1,33 @@
 import { TRAINER_STATUS } from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
+import type { Messages } from "@/lib/messages/types";
 import type { StatusBadgeVariant } from "@/lib/ui/status-badge";
 
-export function getTrainerStatusBadge(status: string): {
+export function getTrainerStatusBadge(
+  status: string,
+  messages: Messages,
+): {
   variant: StatusBadgeVariant;
   label: string;
 } {
   if (status === TRAINER_STATUS.PENDING) {
     return {
       variant: "pending",
-      label: MESSAGES.admin.moderation.statusPendingReview,
+      label: messages.admin.moderation.statusPendingReview,
     };
   }
 
   if (status === TRAINER_STATUS.APPROVED) {
     return {
       variant: "confirmed",
-      label: MESSAGES.admin.moderation.statusApproved,
+      label: messages.admin.moderation.statusApproved,
     };
   }
 
   if (status === TRAINER_STATUS.REJECTED) {
     return {
       variant: "cancelled",
-      label: MESSAGES.admin.moderation.statusRejected,
+      label: messages.admin.moderation.statusRejected,
     };
   }
 

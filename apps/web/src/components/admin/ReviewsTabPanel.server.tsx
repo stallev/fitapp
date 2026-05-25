@@ -1,17 +1,20 @@
 import { ReviewsList } from "@/components/admin/ReviewsList";
 import { listReviewsForModeration } from "@/data/admin/list-reviews-for-moderation.server";
 import {
-  REVIEW_MODERATION_TABS,
+  getReviewModerationTabs,
   type ReviewModerationTab,
 } from "@/lib/admin/review-moderation-tabs";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
 export type ReviewsTabPanelProps = {
   tab: ReviewModerationTab;
 };
 
 export async function ReviewsTabPanel({ tab }: ReviewsTabPanelProps) {
-  const tabConfig = REVIEW_MODERATION_TABS.find((entry) => entry.value === tab);
+  const messages = await getMessages();
+  const tabConfig = getReviewModerationTabs(messages).find(
+    (entry) => entry.value === tab,
+  );
   const reviews = await listReviewsForModeration({
     isHidden: tabConfig?.isHidden ?? false,
   });
@@ -19,7 +22,7 @@ export async function ReviewsTabPanel({ tab }: ReviewsTabPanelProps) {
   return (
     <ReviewsList
       reviews={reviews}
-      emptyMessage={tabConfig?.emptyMessage ?? MESSAGES.admin.reviews.empty}
+      emptyMessage={tabConfig?.emptyMessage ?? messages.admin.reviews.empty}
     />
   );
 }

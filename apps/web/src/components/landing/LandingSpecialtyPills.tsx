@@ -2,10 +2,12 @@ import { Container } from "@/components/ui/container";
 import { DiscoveryPill } from "@/components/ui/DiscoveryPill";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
 import { Reveal } from "@/components/ui/Reveal.client";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export function LandingSpecialtyPills() {
-  const { specialties } = MESSAGES.landing;
+
+export async function LandingSpecialtyPills() {
+  const messages = await getMessages();
+  const { specialties } = messages.landing;
 
   return (
     <section className="py-24">

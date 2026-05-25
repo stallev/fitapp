@@ -10,8 +10,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-import { FeaturedTrainerCard } from "@/components/catalog/FeaturedTrainerCard";
-import { TrainerCard } from "@/components/catalog/TrainerCard";
+import {
+  DesignLabFeaturedTrainerCardPreview,
+  DesignLabTrainerCardPreview,
+} from "@/components/design-lab/DesignLabCatalogCardPreviews.client";
 import { DesignLabMarketingPatternBlock } from "@/components/design-lab/DesignLabMarketingPatternBlock";
 import { VariantLabel } from "@/components/design-lab/DesignLabSection";
 import { BenefitRow } from "@/components/ui/BenefitRow";
@@ -67,11 +69,11 @@ export function DesignLabMarketingPatterns() {
         <div className="grid gap-6 lg:grid-cols-2">
           <div>
             <VariantLabel>FeaturedTrainerCard (marketing)</VariantLabel>
-            <FeaturedTrainerCard trainer={LANDING_TRAINER_FIXTURE} />
+            <DesignLabFeaturedTrainerCardPreview trainer={LANDING_TRAINER_FIXTURE} />
           </div>
           <div>
             <VariantLabel>TrainerCard (catalog)</VariantLabel>
-            <TrainerCard trainer={LANDING_TRAINER_FIXTURE} />
+            <DesignLabTrainerCardPreview trainer={LANDING_TRAINER_FIXTURE} />
           </div>
         </div>
       </DesignLabMarketingPatternBlock>

@@ -1,11 +1,13 @@
 import { RoutePlaceholder } from "@/components/shell/RoutePlaceholder";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export default function SessionPage() {
+
+export default async function SessionPage() {
+  const messages = await getMessages();
   return (
     <RoutePlaceholder
-      title={MESSAGES.shell.sessionTitle}
-      description={MESSAGES.placeholders.sessionVideo}
+      title={messages.shell.sessionTitle}
+      description={messages.placeholders.sessionVideo}
     />
   );
 }

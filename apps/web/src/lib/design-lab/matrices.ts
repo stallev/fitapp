@@ -163,6 +163,7 @@ export const SERVICE_CHOICES_FIXTURE = [
 
 export const LAB_SECTIONS = [
   { id: "tokens", label: "Tokens" },
+  { id: "settings", label: "Settings" },
   { id: "typography", label: "Typography" },
   { id: "buttons", label: "Buttons" },
   { id: "links", label: "Links" },

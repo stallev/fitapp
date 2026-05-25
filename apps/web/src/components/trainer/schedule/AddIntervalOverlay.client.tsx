@@ -18,8 +18,9 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MESSAGES } from "@/lib/messages";
-import { SCHEDULE_WEEKDAYS } from "@/lib/trainer/schedule-weekdays";
+import { useLocale, useMessages } from "@/components/i18n/LocaleProvider.client";
+
+import { getScheduleWeekdays } from "@/lib/trainer/schedule-weekdays";
 
 import { AddIntervalForm } from "./AddIntervalForm.client";
 
@@ -32,27 +33,30 @@ export type AddIntervalOverlayProps = {
   disabled?: boolean;
 };
 
-function getDayLabel(dayOfWeek: number | null): string | null {
+function getDayLabel(dayOfWeek: number | null, locale: ReturnType<typeof useLocale>): string | null {
   if (dayOfWeek === null) {
     return null;
   }
 
   return (
-    SCHEDULE_WEEKDAYS.find((day) => day.dayOfWeek === dayOfWeek)?.label ?? null
+    getScheduleWeekdays(locale).find((day) => day.dayOfWeek === dayOfWeek)?.label ??
+    null
   );
 }
 
-export function AddIntervalOverlay({
-  open,
+export function AddIntervalOverlay({  open,
   dayOfWeek,
   resetKey = 0,
   onOpenChange,
   onAdd,
   disabled = false,
 }: AddIntervalOverlayProps) {
+  const messages = useMessages();
+  const locale = useLocale();
+
   const isMobile = useIsMobile();
   const formId = useId();
-  const dayLabel = getDayLabel(dayOfWeek);
+  const dayLabel = getDayLabel(dayOfWeek, locale);
   const formInstanceKey = `${dayOfWeek ?? "none"}-${resetKey}`;
 
   function handleAdd(startTime: string, endTime: string) {
@@ -61,19 +65,19 @@ export function AddIntervalOverlay({
   }
 
   const desktopDescription = dayLabel
-    ? MESSAGES.trainer.schedule.addIntervalDescriptionForDay.replace(
+    ? messages.trainer.schedule.addIntervalDescriptionForDay.replace(
         "{day}",
         dayLabel,
       )
-    : MESSAGES.trainer.schedule.addIntervalDescription;
+    : messages.trainer.schedule.addIntervalDescription;
 
   if (isMobile) {
     const mobileTitle = dayLabel
-      ? MESSAGES.trainer.schedule.addIntervalTitleWithDay.replace(
+      ? messages.trainer.schedule.addIntervalTitleWithDay.replace(
           "{day}",
           dayLabel,
         )
-      : MESSAGES.trainer.schedule.addIntervalTitle;
+      : messages.trainer.schedule.addIntervalTitle;
 
     return (
       <Sheet open={open} onOpenChange={onOpenChange}>
@@ -97,7 +101,7 @@ export function AddIntervalOverlay({
               onClick={() => onOpenChange(false)}
               disabled={disabled}
             >
-              {MESSAGES.trainer.schedule.cancel}
+              {messages.trainer.schedule.cancel}
             </Button>
             <Button
               type="submit"
@@ -106,7 +110,7 @@ export function AddIntervalOverlay({
               disabled={disabled}
               aria-busy={disabled}
             >
-              {MESSAGES.trainer.schedule.addSlot}
+              {messages.trainer.schedule.addSlot}
             </Button>
           </SheetFooter>
         </SheetContent>
@@ -118,7 +122,7 @@ export function AddIntervalOverlay({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="gap-4">
         <DialogHeader>
-          <DialogTitle>{MESSAGES.trainer.schedule.addIntervalTitle}</DialogTitle>
+          <DialogTitle>{messages.trainer.schedule.addIntervalTitle}</DialogTitle>
           <DialogDescription>{desktopDescription}</DialogDescription>
         </DialogHeader>
         <AddIntervalForm

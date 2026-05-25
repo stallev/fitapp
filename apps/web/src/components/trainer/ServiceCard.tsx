@@ -1,3 +1,5 @@
+"use client";
+
 import { ClockIcon } from "lucide-react";
 
 import { ContentText, Heading } from "@/components/atoms";
@@ -5,8 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PulseCard } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
+import {
+  useLocale,
+  useMessages,
+} from "@/components/i18n/LocaleProvider.client";
 import type { TrainerServiceForEdit } from "@/data/trainer/get-trainer-services-for-edit.server";
-import { MESSAGES } from "@/lib/messages";
 import { formatServicePrice } from "@/lib/trainer/format-service-price";
 
 export type ServiceCardProps = {
@@ -24,6 +29,9 @@ export function ServiceCard({
   onEdit,
   onDelete,
 }: ServiceCardProps) {
+  const messages = useMessages();
+  const locale = useLocale();
+
   return (
     <PulseCard className="space-y-3 p-4 md:p-5">
       <div className="flex items-start justify-between gap-3">
@@ -33,7 +41,7 @@ export function ServiceCard({
               {service.name}
             </Heading>
             {!service.isActive ? (
-              <Badge variant="secondary">{MESSAGES.trainer.services.hiddenBadge}</Badge>
+              <Badge variant="secondary">{messages.trainer.services.hiddenBadge}</Badge>
             ) : null}
           </div>
           {service.description ? (
@@ -48,7 +56,7 @@ export function ServiceCard({
             onCheckedChange={() => onToggle(service.id)}
             disabled={disabled}
             aria-busy={disabled}
-            aria-label={MESSAGES.trainer.services.activeLabel}
+            aria-label={messages.trainer.services.activeLabel}
           />
         </div>
       </div>
@@ -56,10 +64,13 @@ export function ServiceCard({
       <div className="flex items-center gap-4">
         <ContentText variant="mutedMicro" as="span" className="inline-flex items-center gap-1">
           <ClockIcon aria-hidden className="size-3.5" />
-          {service.durationMinutes} мин
+          {messages.common.durationMinutes.replace(
+            "{minutes}",
+            String(service.durationMinutes),
+          )}
         </ContentText>
         <ContentText variant="smallEmphasis" as="span" className="font-heading">
-          {formatServicePrice(service.priceCents, service.currency)}
+          {formatServicePrice(service.priceCents, service.currency, locale)}
         </ContentText>
       </div>
 
@@ -67,21 +78,20 @@ export function ServiceCard({
         <Button
           type="button"
           variant="outline"
-          className="flex-1"
-          onClick={() => onEdit(service)}
+          size="sm"
           disabled={disabled}
-          aria-busy={disabled}
+          onClick={() => onEdit(service)}
         >
-          {MESSAGES.trainer.services.edit}
+          {messages.trainer.services.edit}
         </Button>
         <Button
           type="button"
           variant="outline"
-          onClick={() => onDelete(service)}
+          size="sm"
           disabled={disabled}
-          aria-busy={disabled}
+          onClick={() => onDelete(service)}
         >
-          {MESSAGES.trainer.services.delete}
+          {messages.trainer.services.delete}
         </Button>
       </div>
     </PulseCard>

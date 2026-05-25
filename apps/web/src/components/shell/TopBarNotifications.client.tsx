@@ -9,9 +9,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 export function TopBarNotifications() {
+  const messages = useMessages();
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -19,14 +21,14 @@ export function TopBarNotifications() {
           type="button"
           variant="ghost"
           size="icon"
-          aria-label={MESSAGES.shell.notifications}
+          aria-label={messages.shell.notifications}
         >
           <BellIcon aria-hidden className="size-4" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-72">
         <ContentText variant="muted" as="p">
-          {MESSAGES.shell.notificationsEmpty}
+          {messages.shell.notificationsEmpty}
         </ContentText>
       </PopoverContent>
     </Popover>

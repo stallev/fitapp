@@ -5,21 +5,23 @@ import { ClientBookingDetailActions } from "@/components/client/ClientBookingDet
 import { ClientBookingDetailPanel } from "@/components/client/ClientBookingDetailPanel";
 import { ForbiddenShell } from "@/components/shell/ForbiddenShell";
 import { resolveClientBookingAccess } from "@/data/client/get-client-booking-detail.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 type ClientBookingDetailPageProps = {
   params: Promise<{ id: string }>;
 };
 
 export async function generateMetadata(): Promise<Metadata> {
+  const messages = await getMessages();
   return {
-    title: MESSAGES.booking.detail.metaTitle,
+    title: messages.booking.detail.metaTitle,
   };
 }
 
-export default async function ClientBookingDetailPage({
-  params,
+export default async function ClientBookingDetailPage({  params,
 }: ClientBookingDetailPageProps) {
+  const messages = await getMessages();
   const { id } = await params;
   const access = await resolveClientBookingAccess(id);
 
@@ -30,9 +32,9 @@ export default async function ClientBookingDetailPage({
   if (access.status === "forbidden") {
     return (
       <ForbiddenShell
-        title={MESSAGES.booking.detail.forbiddenTitle}
-        description={MESSAGES.booking.detail.forbiddenDescription}
-        ctaLabel={MESSAGES.booking.detail.forbiddenCta}
+        title={messages.booking.detail.forbiddenTitle}
+        description={messages.booking.detail.forbiddenDescription}
+        ctaLabel={messages.booking.detail.forbiddenCta}
         ctaHref="/client/bookings"
       />
     );

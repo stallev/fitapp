@@ -1,10 +1,12 @@
+"use client";
+
 import { Trash2Icon } from "lucide-react";
 
 import { ContentText, Heading } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
 import { PulseCard } from "@/components/ui/card";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 import type { TrainerScheduleExceptionForEdit } from "@/data/trainer/get-trainer-schedule-for-edit.server";
-import { MESSAGES } from "@/lib/messages";
 
 export type ExceptionCardProps = {
   exception: TrainerScheduleExceptionForEdit;
@@ -17,6 +19,8 @@ export function ExceptionCard({
   disabled = false,
   onDelete,
 }: ExceptionCardProps) {
+  const messages = useMessages();
+
   return (
     <PulseCard className="flex items-center justify-between gap-3 p-4">
       <div className="min-w-0">
@@ -25,7 +29,7 @@ export function ExceptionCard({
         </Heading>
         <ContentText variant="muted" as="p" className="text-xs">
           {exception.isBlocked
-            ? MESSAGES.trainer.schedule.blocked
+            ? messages.trainer.schedule.blocked
             : exception.reason ?? "—"}
         </ContentText>
       </div>
@@ -36,7 +40,7 @@ export function ExceptionCard({
         onClick={() => onDelete(exception.id)}
         disabled={disabled}
         aria-busy={disabled}
-        aria-label={MESSAGES.trainer.schedule.deleteException}
+        aria-label={messages.trainer.schedule.deleteException}
       >
         <Trash2Icon className="size-4" aria-hidden />
       </Button>

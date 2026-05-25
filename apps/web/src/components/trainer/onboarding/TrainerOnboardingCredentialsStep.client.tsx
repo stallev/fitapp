@@ -20,16 +20,18 @@ import {
   registerTrainerAction,
   type RegisterTrainerFormState,
 } from "@/actions/auth/register-trainer";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type TrainerOnboardingCredentialsStepProps = {
   onSuccess: () => void;
 };
 
-export function TrainerOnboardingCredentialsStep({
-  onSuccess,
+export function TrainerOnboardingCredentialsStep({  onSuccess,
 }: TrainerOnboardingCredentialsStepProps) {
+  const messages = useMessages();
+
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [state, formAction, pending] = useActionState<
     RegisterTrainerFormState,
@@ -61,7 +63,7 @@ export function TrainerOnboardingCredentialsStep({
         value={termsAccepted ? "on" : ""}
       />
       <ContentText variant="muted" as="p">
-        {MESSAGES.trainer.onboarding.credentialsTitle}
+        {messages.trainer.onboarding.credentialsTitle}
       </ContentText>
 
       {state && !state.ok && state.message && !emailError ? (
@@ -71,12 +73,12 @@ export function TrainerOnboardingCredentialsStep({
       <FieldGroup>
         <Field>
           <FieldLabel htmlFor="fullName">
-            {MESSAGES.auth.register.fullNameLabel}
+            {messages.auth.register.fullNameLabel}
           </FieldLabel>
           <Input id="fullName" name="fullName" autoComplete="name" required disabled={pending} />
         </Field>
         <Field data-invalid={emailError ? true : undefined}>
-          <FieldLabel htmlFor="email">{MESSAGES.auth.register.emailLabel}</FieldLabel>
+          <FieldLabel htmlFor="email">{messages.auth.register.emailLabel}</FieldLabel>
           <Input
             id="email"
             name="email"
@@ -90,7 +92,7 @@ export function TrainerOnboardingCredentialsStep({
         </Field>
         <Field>
           <FieldLabel htmlFor="password">
-            {MESSAGES.auth.register.passwordLabel}
+            {messages.auth.register.passwordLabel}
           </FieldLabel>
           <Input
             id="password"
@@ -103,7 +105,7 @@ export function TrainerOnboardingCredentialsStep({
         </Field>
         <Field>
           <FieldLabel htmlFor="confirmPassword">
-            {MESSAGES.auth.register.confirmPasswordLabel}
+            {messages.auth.register.confirmPasswordLabel}
           </FieldLabel>
           <Input
             id="confirmPassword"
@@ -121,7 +123,7 @@ export function TrainerOnboardingCredentialsStep({
             onCheckedChange={(checked) => setTermsAccepted(checked === true)}
             disabled={pending}
           />
-          <FieldLabel htmlFor="terms">{MESSAGES.auth.register.termsLabel}</FieldLabel>
+          <FieldLabel htmlFor="terms">{messages.auth.register.termsLabel}</FieldLabel>
         </Field>
       </FieldGroup>
 
@@ -129,10 +131,10 @@ export function TrainerOnboardingCredentialsStep({
         {pending ? (
           <>
             <Loader2Icon aria-hidden className="size-4 animate-spin" />
-            {MESSAGES.auth.register.submitting}
+            {messages.auth.register.submitting}
           </>
         ) : (
-          MESSAGES.trainer.onboarding.next
+          messages.trainer.onboarding.next
         )}
       </Button>
     </form>

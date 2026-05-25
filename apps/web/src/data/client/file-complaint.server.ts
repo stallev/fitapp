@@ -13,38 +13,41 @@ import {
 import { getPrisma } from "@pulse/db";
 import { PolicyError } from "@pulse/policy-server";
 
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 export type FileComplaintResult = MutationResult<{ complaintId: string }>;
 
 function mapValidationError(
   code: (typeof COMPLAINT_MUTATION_ERROR_CODES)[keyof typeof COMPLAINT_MUTATION_ERROR_CODES],
+  messages: Messages,
 ): FileComplaintResult {
   switch (code) {
     case COMPLAINT_MUTATION_ERROR_CODES.DUPLICATE_OPEN:
       return {
         ok: false,
         code,
-        message: MESSAGES.clientComplaint.errors.duplicate,
+        message: messages.clientComplaint.errors.duplicate,
       };
     case COMPLAINT_MUTATION_ERROR_CODES.BOOKING_NOT_ELIGIBLE:
       return {
         ok: false,
         code,
-        message: MESSAGES.clientComplaint.errors.notEligible,
+        message: messages.clientComplaint.errors.notEligible,
       };
     case COMPLAINT_MUTATION_ERROR_CODES.FORBIDDEN:
       return {
         ok: false,
         code,
-        message: MESSAGES.admin.errors.forbidden,
+        message: messages.admin.errors.forbidden,
       };
     default:
       return {
         ok: false,
         code: COMPLAINT_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.clientComplaint.errors.validation,
+        message: messages.clientComplaint.errors.validation,
       };
   }
 }
@@ -52,12 +55,13 @@ function mapValidationError(
 export async function fileComplaintMutation(
   input: FileComplaintInput,
 ): Promise<FileComplaintResult> {
+  const messages = await getMessages();
   const parsed = fileComplaintInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: COMPLAINT_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.clientComplaint.errors.validation,
+      message: messages.clientComplaint.errors.validation,
     };
   }
 
@@ -66,7 +70,7 @@ export async function fileComplaintMutation(
     return {
       ok: false,
       code: COMPLAINT_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
@@ -85,7 +89,7 @@ export async function fileComplaintMutation(
     return {
       ok: false,
       code: COMPLAINT_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.clientComplaint.errors.notEligible,
+      message: messages.clientComplaint.errors.notEligible,
     };
   }
 
@@ -105,7 +109,7 @@ export async function fileComplaintMutation(
   });
 
   if (validation) {
-    return mapValidationError(validation.code);
+    return mapValidationError(validation.code, messages);
   }
 
   try {
@@ -140,7 +144,7 @@ export async function fileComplaintMutation(
       return {
         ok: false,
         code: COMPLAINT_MUTATION_ERROR_CODES.FORBIDDEN,
-        message: MESSAGES.admin.errors.forbidden,
+        message: messages.admin.errors.forbidden,
       };
     }
 

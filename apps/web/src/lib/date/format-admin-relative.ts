@@ -1,9 +1,9 @@
-import { formatDistanceToNow } from "date-fns";
-import { ru } from "date-fns/locale";
+import { formatRelative } from "@/lib/i18n/format";
+import { type AppLocale, DEFAULT_LOCALE } from "@/lib/i18n/constants";
 
-export function formatAdminRelativeDate(iso: string): string {
-  return formatDistanceToNow(new Date(iso), {
-    addSuffix: true,
-    locale: ru,
-  });
+export function formatAdminRelativeDate(
+  iso: string,
+  locale: AppLocale = DEFAULT_LOCALE,
+): string {
+  return formatRelative(iso, locale);
 }

@@ -1,38 +1,50 @@
 import type { Metadata } from "next";
-import { DM_Sans, DM_Serif_Display, JetBrains_Mono } from "next/font/google";
+import { Cormorant_Garamond, JetBrains_Mono, Onest } from "next/font/google";
+import { Suspense } from "react";
 
-import { ThemeProvider } from "@/components/providers/ThemeProvider.client";
-import { Toaster } from "@/components/ui/sonner";
-import { MESSAGES } from "@/lib/messages";
+import { RootLayoutContent } from "@/components/i18n/RootLayoutContent.server";
+import { RootLayoutFallback } from "@/components/i18n/RootLayoutFallback.server";
+import { readLocaleCookie } from "@/lib/i18n/cookie";
+import { DEFAULT_LOCALE } from "@/lib/i18n/constants";
+import { getMessages } from "@/lib/messages/server";
 import { getSiteUrl } from "@/lib/site/site-url";
-import { cn } from "@/lib/utils";
 
 import "./globals.css";
 
-const dmSans = DM_Sans({
+const onest = Onest({
   variable: "--font-sans",
-  subsets: ["latin", "cyrillic"] as unknown as ["latin", "latin-ext"],
+  subsets: ["latin", "cyrillic"],
   weight: ["300", "400", "500", "600", "700"],
 });
 
-const dmSerifDisplay = DM_Serif_Display({
+const cormorantGaramond = Cormorant_Garamond({
   variable: "--font-display",
-  subsets: ["latin", "cyrillic"] as unknown as ["latin", "latin-ext"],
+  subsets: ["latin", "cyrillic"],
   weight: ["400"],
   style: ["normal", "italic"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
-  subsets: ["latin", "cyrillic"] as unknown as ["latin", "latin-ext"],
+  subsets: ["latin", "cyrillic"],
   weight: ["400", "500"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: getSiteUrl(),
-  title: MESSAGES.site.title,
-  description: MESSAGES.site.description,
-};
+const fontClassName = [
+  onest.variable,
+  cormorantGaramond.variable,
+  jetbrainsMono.variable,
+].join(" ");
+
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieLocale = await readLocaleCookie();
+  const messages = await getMessages(cookieLocale ?? DEFAULT_LOCALE);
+  return {
+    metadataBase: getSiteUrl(),
+    title: messages.site.title,
+    description: messages.site.description,
+  };
+}
 
 export default function RootLayout({
   children,
@@ -40,22 +52,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="ru"
-      suppressHydrationWarning
-      className={cn(
-        dmSans.variable,
-        dmSerifDisplay.variable,
-        jetbrainsMono.variable,
-        "h-full antialiased",
-      )}
-    >
-      <body className="min-h-full flex flex-col">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <Suspense
+      fallback={
+        <RootLayoutFallback fontClassName={fontClassName}>
           {children}
-          <Toaster />
-        </ThemeProvider>
-      </body>
-    </html>
+        </RootLayoutFallback>
+      }
+    >
+      <RootLayoutContent fontClassName={fontClassName}>
+        {children}
+      </RootLayoutContent>
+    </Suspense>
   );
 }

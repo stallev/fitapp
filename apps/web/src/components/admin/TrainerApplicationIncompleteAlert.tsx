@@ -1,10 +1,12 @@
 import { Alert, AlertTitle } from "@/components/ui/alert";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export function TrainerApplicationIncompleteAlert() {
+
+export async function TrainerApplicationIncompleteAlert() {
+  const messages = await getMessages();
   return (
     <Alert variant="destructive">
-      <AlertTitle>{MESSAGES.admin.moderation.incomplete}</AlertTitle>
+      <AlertTitle>{messages.admin.moderation.incomplete}</AlertTitle>
     </Alert>
   );
 }

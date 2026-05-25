@@ -1,6 +1,8 @@
 import type { CatalogTrainersQuery } from "@pulse/domain";
 
 import { hasActiveCatalogFilters } from "@/lib/catalog/parse-catalog-search-params";
+import type { AppLocale } from "@/lib/i18n/constants";
+import type { Messages } from "@/lib/messages/types";
 
 export function countActiveCatalogFilters(query: CatalogTrainersQuery): number {
   let count = 0;
@@ -22,13 +24,35 @@ export function countActiveCatalogFilters(query: CatalogTrainersQuery): number {
   return count;
 }
 
-export function formatCatalogResultsCount(count: number): string {
+function getRussianTrainerCountTemplate(
+  count: number,
+  messages: Messages,
+): string {
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+
+  if (mod10 === 1 && mod100 !== 11) {
+    return messages.catalog.resultsCountOne;
+  }
+
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) {
+    return messages.catalog.resultsCountFew;
+  }
+
+  return messages.catalog.resultsCount;
+}
+
+export function formatCatalogResultsCount(
+  count: number,
+  messages: Messages,
+  locale: AppLocale,
+): string {
   const template =
-    count === 1
-      ? "{count} тренер"
-      : count >= 2 && count <= 4
-        ? "{count} тренера"
-        : "{count} тренеров";
+    locale === "ru"
+      ? getRussianTrainerCountTemplate(count, messages)
+      : count === 1
+        ? messages.catalog.resultsCountOne
+        : messages.catalog.resultsCount;
 
   return template.replace("{count}", String(count));
 }

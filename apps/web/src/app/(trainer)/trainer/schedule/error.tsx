@@ -1,19 +1,21 @@
 "use client";
 
 import { RouteSegmentError } from "@/components/shell/RouteSegmentError";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 
-export default function TrainerScheduleError({
-  reset,
+
+export default function TrainerScheduleError({  reset,
 }: {
   reset: () => void;
 }) {
+  const messages = useMessages();
+
   return (
     <RouteSegmentError
-      pageTitle={MESSAGES.trainer.schedule.title}
-      title={MESSAGES.common.segmentError.title}
-      description={MESSAGES.common.segmentError.description}
-      retryLabel={MESSAGES.common.segmentError.retry}
+      pageTitle={messages.trainer.schedule.title}
+      title={messages.common.segmentError.title}
+      description={messages.common.segmentError.description}
+      retryLabel={messages.common.segmentError.retry}
       reset={reset}
     />
   );

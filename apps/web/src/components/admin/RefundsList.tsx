@@ -3,20 +3,22 @@ import { CheckCircleIcon } from "lucide-react";
 import { AdminQueueEmptyState } from "@/components/admin/AdminQueueEmptyState";
 import { RefundQueueCard } from "@/components/admin/RefundQueueCard";
 import type { RefundListItem } from "@/data/admin/list-refunds.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export type RefundsListProps = {
   refunds: RefundListItem[];
 };
 
-export function RefundsList({ refunds }: RefundsListProps) {
+export async function RefundsList({ refunds }: RefundsListProps) {
+  const messages = await getMessages();
   if (refunds.length === 0) {
     return (
       <AdminQueueEmptyState
         icon={CheckCircleIcon}
         variant="success"
-        title={MESSAGES.admin.refunds.empty}
-        description={MESSAGES.dashboard.adminNeedsAttention.allClear}
+        title={messages.admin.refunds.empty}
+        description={messages.dashboard.adminNeedsAttention.allClear}
         className="md:col-span-2"
       />
     );

@@ -3,6 +3,7 @@
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 import { Button } from "@/components/ui/button";
 
 type ThemeToggleProps = {
@@ -15,6 +16,7 @@ export function ThemeToggle({
   size = "icon",
 }: ThemeToggleProps) {
   const { setTheme, resolvedTheme } = useTheme();
+  const messages = useMessages();
   const isDark = resolvedTheme === "dark";
 
   return (
@@ -23,7 +25,9 @@ export function ThemeToggle({
       variant="ghost"
       size={size}
       suppressHydrationWarning
-      aria-label={isDark ? "Включить светлую тему" : "Включить тёмную тему"}
+      aria-label={
+        isDark ? messages.shell.themeToggleLight : messages.shell.themeToggleDark
+      }
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >
       {isDark ? (

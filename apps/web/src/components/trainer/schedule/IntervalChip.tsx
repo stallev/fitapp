@@ -1,5 +1,8 @@
+"use client";
+
 import { XIcon } from "lucide-react";
 
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +19,11 @@ export function IntervalChip({
   onRemove,
   disabled = false,
 }: IntervalChipProps) {
+  const messages = useMessages();
+  const removeAriaLabel = messages.trainer.schedule.removeIntervalAriaLabel
+    .replace("{start}", startTime)
+    .replace("{end}", endTime);
+
   return (
     <span
       className={cn(
@@ -31,7 +39,7 @@ export function IntervalChip({
         className="h-6 w-6 shrink-0"
         onClick={onRemove}
         disabled={disabled}
-        aria-label={`Удалить интервал ${startTime}–${endTime}`}
+        aria-label={removeAriaLabel}
       >
         <XIcon className="size-3.5" aria-hidden />
       </Button>

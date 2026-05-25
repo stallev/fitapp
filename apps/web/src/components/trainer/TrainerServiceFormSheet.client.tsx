@@ -20,7 +20,8 @@ import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { TrainerServiceForEdit } from "@/data/trainer/get-trainer-services-for-edit.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type TrainerServiceFormSheetProps = {
@@ -57,6 +58,7 @@ function TrainerServiceFormFields({
   onClose,
   onSaved,
 }: TrainerServiceFormFieldsProps) {
+  const messages = useMessages();
   const [form, setForm] = useState<FormState>(() => buildInitialForm(service));
   const [isPending, startTransition] = useTransition();
   const isEditing = service !== null;
@@ -75,13 +77,13 @@ function TrainerServiceFormFields({
         : await createTrainerServiceAction(payload);
 
       if (!result.ok) {
-        toast.error(result.message ?? MESSAGES.trainer.services.errors.generic, {
+        toast.error(result.message ?? messages.trainer.services.errors.generic, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
         return;
       }
 
-      toast.success(MESSAGES.trainer.services.saved, {
+      toast.success(messages.trainer.services.saved, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
 
@@ -104,15 +106,15 @@ function TrainerServiceFormFields({
       <DialogHeader>
         <DialogTitle>
           {isEditing
-            ? MESSAGES.trainer.services.editService
-            : MESSAGES.trainer.services.newService}
+            ? messages.trainer.services.editService
+            : messages.trainer.services.newService}
         </DialogTitle>
       </DialogHeader>
 
       <FieldGroup>
         <Field>
           <FieldLabel htmlFor="service-name">
-            {MESSAGES.trainer.onboarding.serviceNameLabel}
+            {messages.trainer.onboarding.serviceNameLabel}
           </FieldLabel>
           <Input
             id="service-name"
@@ -124,7 +126,7 @@ function TrainerServiceFormFields({
         <div className="grid gap-3 sm:grid-cols-2">
           <Field>
             <FieldLabel htmlFor="service-duration">
-              {MESSAGES.trainer.onboarding.serviceDurationLabel}
+              {messages.trainer.onboarding.serviceDurationLabel}
             </FieldLabel>
             <Input
               id="service-duration"
@@ -140,7 +142,7 @@ function TrainerServiceFormFields({
           </Field>
           <Field>
             <FieldLabel htmlFor="service-price">
-              {MESSAGES.trainer.onboarding.servicePriceLabel}
+              {messages.trainer.onboarding.servicePriceLabel}
             </FieldLabel>
             <Input
               id="service-price"
@@ -156,7 +158,7 @@ function TrainerServiceFormFields({
         </div>
         <Field>
           <FieldLabel htmlFor="service-description">
-            {MESSAGES.trainer.onboarding.serviceDescriptionLabel}
+            {messages.trainer.onboarding.serviceDescriptionLabel}
           </FieldLabel>
           <Textarea
             id="service-description"
@@ -172,16 +174,16 @@ function TrainerServiceFormFields({
 
       <DialogFooter className="gap-2 sm:gap-0">
         <Button type="button" variant="outline" onClick={onClose} disabled={isPending}>
-          {MESSAGES.trainer.services.cancel}
+          {messages.trainer.services.cancel}
         </Button>
         <Button type="button" onClick={handleSave} disabled={isPending} aria-busy={isPending}>
           {isPending ? (
             <>
               <Loader2Icon aria-hidden className="size-4 animate-spin" />
-              {MESSAGES.trainer.services.saving}
+              {messages.trainer.services.saving}
             </>
           ) : (
-            MESSAGES.trainer.services.save
+            messages.trainer.services.save
           )}
         </Button>
       </DialogFooter>
@@ -189,8 +191,7 @@ function TrainerServiceFormFields({
   );
 }
 
-export function TrainerServiceFormSheet({
-  open,
+export function TrainerServiceFormSheet({  open,
   service,
   onOpenChange,
   onSaved,

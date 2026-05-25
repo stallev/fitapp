@@ -1,22 +1,24 @@
-import Link from "next/link";
 import { ArrowRightIcon, CheckIcon, LockIcon, ShieldIcon, StarIcon } from "lucide-react";
 
 import { ContentText, Heading, SectionEyebrow } from "@/components/atoms";
 import { LandingHeroFloatCard } from "@/components/landing/LandingHeroFloatCard";
-import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { CustomLink } from "@/components/ui/CustomLink";
 import { Reveal } from "@/components/ui/Reveal.client";
 import { TrustFeaturePill } from "@/components/ui/TrustFeaturePill";
-import { LANDING_HERO_FLOAT_CARDS } from "@/lib/landing/landing-hero-float-cards";
-import { MESSAGES } from "@/lib/messages";
+import { getLandingHeroFloatCards } from "@/lib/landing/landing-hero-float-cards";
+import { getMessages } from "@/lib/messages/server";
+
 
 const TRUST_PILL_ICONS = {
   check: CheckIcon,
   lock: LockIcon,
 } as const;
 
-export function LandingHero() {
-  const { hero } = MESSAGES.landing;
+export async function LandingHero() {
+  const messages = await getMessages();
+  const { hero } = messages.landing;
+  const floatCards = getLandingHeroFloatCards(messages);
 
   return (
     <section
@@ -56,19 +58,24 @@ export function LandingHero() {
             </ContentText>
           </Reveal>
           <Reveal delay="300ms" className="mb-5 flex flex-wrap items-center gap-3.5">
-            <Button asChild size="lg" className="rounded-full px-9">
-              <Link href="/trainers">
-                {hero.primaryCta}
-                <ArrowRightIcon aria-hidden className="size-[18px]" />
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-full px-8">
-              <Link href="/auth/register/trainer">{hero.secondaryCta}</Link>
-            </Button>
+            <CustomLink as="button" href="/trainers" size="lg" className="rounded-full px-9">
+              {hero.primaryCta}
+              <ArrowRightIcon aria-hidden className="size-[18px]" />
+            </CustomLink>
+            <CustomLink
+              as="button"
+              href="/auth/register/trainer"
+              variant="outline"
+              size="lg"
+              className="rounded-full px-8"
+            >
+              {hero.secondaryCta}
+            </CustomLink>
           </Reveal>
           <Reveal delay="400ms" className="mb-6 flex flex-wrap gap-2.5">
             {hero.trustPills.map((pill) => {
-              const Icon = TRUST_PILL_ICONS[pill.kind];
+              const Icon =
+                TRUST_PILL_ICONS[pill.kind as keyof typeof TRUST_PILL_ICONS];
               return (
                 <TrustFeaturePill key={pill.label} icon={Icon}>
                   {pill.label}
@@ -97,7 +104,7 @@ export function LandingHero() {
             aria-hidden
             className="pointer-events-none absolute inset-[-60px] rounded-[60%_40%_50%_50%/50%_50%_60%_40%] bg-[radial-gradient(ellipse_75%_75%_at_55%_50%,rgba(228,240,232,0.85)_0%,transparent_65%)]"
           />
-          {LANDING_HERO_FLOAT_CARDS.map((card) => (
+          {floatCards.map((card) => (
             <LandingHeroFloatCard key={card.id} card={card} />
           ))}
         </Reveal>

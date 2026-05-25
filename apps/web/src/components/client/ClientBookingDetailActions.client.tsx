@@ -10,7 +10,8 @@ import { ClientRequestRefundDialog } from "@/components/client/ClientRequestRefu
 import { Button } from "@/components/ui/button";
 import { CustomLink } from "@/components/ui/CustomLink";
 
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type ClientBookingDetailActionsProps = {
@@ -22,18 +23,19 @@ export type ClientBookingDetailActionsProps = {
   canRequestRefund: boolean;
 };
 
-export function ClientBookingDetailActions({
-  bookingId,
+export function ClientBookingDetailActions({  bookingId,
   priceCents,
   canCancel,
   canLeaveReview,
   canFileComplaint,
   canRequestRefund,
 }: ClientBookingDetailActionsProps) {
+  const messages = useMessages();
+
   const [cancelOpen, setCancelOpen] = useState(false);
 
   const handleJoinClick = () => {
-    toast.info(MESSAGES.placeholders.sessionVideo, {
+    toast.info(messages.placeholders.sessionVideo, {
       duration: PRODUCT_TOAST_DURATION_MS,
     });
   };
@@ -52,7 +54,7 @@ export function ClientBookingDetailActions({
           <Button asChild variant="tonal" className="min-h-11 w-full">
             <CustomLink href={`/client/reviews/${bookingId}`}>
               <StarIcon className="size-3.5" aria-hidden />
-              {MESSAGES.booking.actions.leaveReview}
+              {messages.booking.actions.leaveReview}
             </CustomLink>
           </Button>
         ) : null}
@@ -65,7 +67,7 @@ export function ClientBookingDetailActions({
               className="min-h-11 flex-1"
               onClick={handleJoinClick}
             >
-              {MESSAGES.booking.actions.join}
+              {messages.booking.actions.join}
             </Button>
             <Button
               type="button"
@@ -73,7 +75,7 @@ export function ClientBookingDetailActions({
               className="min-h-11 flex-1"
               onClick={() => setCancelOpen(true)}
             >
-              {MESSAGES.booking.cancel.button}
+              {messages.booking.cancel.button}
             </Button>
           </div>
         ) : null}

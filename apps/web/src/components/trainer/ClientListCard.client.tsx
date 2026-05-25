@@ -1,19 +1,26 @@
+"use client";
+
 import Link from "next/link";
 
 import { ContentText, Heading } from "@/components/atoms";
 import { PulseCard } from "@/components/ui/card";
 import { UserAvatar } from "@/components/ui/UserAvatar";
+import {
+  useLocale,
+  useMessages,
+} from "@/components/i18n/LocaleProvider.client";
 import type { TrainerClientListItem } from "@/data/trainer/list-trainer-clients.server";
 import { formatBookingDateTimeLocal } from "@/lib/booking/format-booking-datetime-local";
-import { MESSAGES } from "@/lib/messages";
 
 export type ClientListCardProps = {
   client: TrainerClientListItem;
 };
 
 export function ClientListCard({ client }: ClientListCardProps) {
+  const messages = useMessages();
+  const locale = useLocale();
   const lastSessionLabel = client.lastSessionAt
-    ? formatBookingDateTimeLocal(client.lastSessionAt)
+    ? formatBookingDateTimeLocal(client.lastSessionAt, locale)
     : "—";
 
   return (
@@ -30,7 +37,7 @@ export function ClientListCard({ client }: ClientListCardProps) {
               {client.displayName}
             </Heading>
             <ContentText variant="muted" as="span" className="shrink-0 text-xs">
-              {MESSAGES.trainer.clients.sessionsCount.replace(
+              {messages.trainer.clients.sessionsCount.replace(
                 "{count}",
                 String(client.sessionCount),
               )}
@@ -42,7 +49,7 @@ export function ClientListCard({ client }: ClientListCardProps) {
             </ContentText>
           ) : null}
           <ContentText variant="muted" as="p" className="mt-1 text-xs">
-            {MESSAGES.trainer.clients.lastSession.replace(
+            {messages.trainer.clients.lastSession.replace(
               "{date}",
               lastSessionLabel,
             )}

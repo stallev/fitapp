@@ -11,7 +11,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { buildCatalogHref } from "@/lib/catalog/build-catalog-search-params";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 export type CatalogPaginationProps = {
   query: CatalogTrainersQuery;
@@ -19,11 +20,12 @@ export type CatalogPaginationProps = {
   totalPages: number;
 };
 
-export function CatalogPagination({
-  query,
+export function CatalogPagination({  query,
   page,
   totalPages,
 }: CatalogPaginationProps) {
+  const messages = useMessages();
+
   if (totalPages <= 1) {
     return null;
   }
@@ -34,20 +36,20 @@ export function CatalogPagination({
     page < totalPages ? buildCatalogHref(query, { page: page + 1 }) : undefined;
 
   return (
-    <Pagination aria-label={MESSAGES.catalog.pagination.pageLabel
+    <Pagination aria-label={messages.catalog.pagination.pageLabel
       .replace("{page}", String(page))
       .replace("{total}", String(totalPages))}
     >
       <PaginationContent>
         <PaginationItem>
           {previousHref ? (
-            <PaginationPrevious href={previousHref} text={MESSAGES.catalog.pagination.previous} />
+            <PaginationPrevious href={previousHref} text={messages.catalog.pagination.previous} />
           ) : (
             <PaginationPrevious
               href="#"
               aria-disabled
               className="pointer-events-none opacity-50"
-              text={MESSAGES.catalog.pagination.previous}
+              text={messages.catalog.pagination.previous}
             />
           )}
         </PaginationItem>
@@ -58,13 +60,13 @@ export function CatalogPagination({
         </PaginationItem>
         <PaginationItem>
           {nextHref ? (
-            <PaginationNext href={nextHref} text={MESSAGES.catalog.pagination.next} />
+            <PaginationNext href={nextHref} text={messages.catalog.pagination.next} />
           ) : (
             <PaginationNext
               href="#"
               aria-disabled
               className="pointer-events-none opacity-50"
-              text={MESSAGES.catalog.pagination.next}
+              text={messages.catalog.pagination.next}
             />
           )}
         </PaginationItem>

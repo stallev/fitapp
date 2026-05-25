@@ -8,17 +8,20 @@ import {
 } from "@pulse/domain";
 
 import { deleteScheduleExceptionWithCacheInvalidation } from "@/data/trainer/delete-schedule-exception.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function deleteScheduleExceptionAction(
   input: DeleteScheduleExceptionInput,
 ): Promise<MutationResult<{ profileId: string }>> {
+  const messages = await getMessages();
+
   const parsed = deleteScheduleExceptionInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.trainer.schedule.errors.validation,
+      message: messages.trainer.schedule.errors.validation,
     };
   }
 
@@ -28,8 +31,8 @@ export async function deleteScheduleExceptionAction(
       ...result,
       message:
         result.code === SCHEDULE_MUTATION_ERROR_CODES.NOT_FOUND
-          ? MESSAGES.trainer.schedule.errors.notFound
-          : MESSAGES.trainer.schedule.errors.generic,
+          ? messages.trainer.schedule.errors.notFound
+          : messages.trainer.schedule.errors.generic,
     };
   }
 

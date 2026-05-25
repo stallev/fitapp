@@ -12,8 +12,12 @@ import { PulseCard } from "@/components/ui/card";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
 import type { ClientBookingListEntry } from "@/data/client/get-client-bookings.server";
+import {
+  useLocale,
+  useMessages,
+} from "@/components/i18n/LocaleProvider.client";
 import { formatBookingDateTimeLocal } from "@/lib/booking/format-booking-datetime-local";
-import { MESSAGES } from "@/lib/messages";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 function getInitials(name: string): string {
@@ -32,13 +36,15 @@ export type ClientNextSessionCardSessionProps = {
   session: ClientBookingListEntry;
 };
 
-export function ClientNextSessionCardSession({
-  session,
+export function ClientNextSessionCardSession({  session,
 }: ClientNextSessionCardSessionProps) {
+  const messages = useMessages();
+  const locale = useLocale();
+
   const [cancelOpen, setCancelOpen] = useState(false);
 
   const handleJoinClick = () => {
-    toast.info(MESSAGES.placeholders.sessionVideo, {
+    toast.info(messages.placeholders.sessionVideo, {
       duration: PRODUCT_TOAST_DURATION_MS,
     });
   };
@@ -46,7 +52,7 @@ export function ClientNextSessionCardSession({
   return (
     <>
       <section>
-        <SectionHeader title={MESSAGES.dashboard.client.nextSessionTitle} />
+        <SectionHeader title={messages.dashboard.client.nextSessionTitle} />
         <PulseCard className="overflow-hidden">
           <div className="flex items-center gap-3 p-4 md:gap-4 md:p-5">
             <Avatar size="lg" className="shrink-0">
@@ -65,7 +71,7 @@ export function ClientNextSessionCardSession({
                 className="font-medium uppercase tracking-wide text-primary"
                 suppressHydrationWarning
               >
-                {formatBookingDateTimeLocal(session.startsAtUtc)}
+                {formatBookingDateTimeLocal(session.startsAtUtc, locale)}
               </ContentText>
               <Heading as="h3" visualLevel="h3" className="mt-0.5 md:text-[22px]">
                 {session.trainerName}
@@ -83,7 +89,7 @@ export function ClientNextSessionCardSession({
               onClick={handleJoinClick}
             >
               <VideoIcon aria-hidden />
-              {MESSAGES.booking.actions.join}
+              {messages.booking.actions.join}
             </Button>
             {session.canCancel ? (
               <Button
@@ -91,7 +97,7 @@ export function ClientNextSessionCardSession({
                 variant="outline"
                 size="icon"
                 className="min-h-11 min-w-11 shrink-0"
-                aria-label={MESSAGES.booking.cancel.button}
+                aria-label={messages.booking.cancel.button}
                 onClick={() => setCancelOpen(true)}
               >
                 <XIcon aria-hidden />

@@ -7,6 +7,8 @@ import { getPrisma } from "@pulse/db";
 import { assertCanReadBooking, PolicyError } from "@pulse/policy-server";
 
 import { formatBookingDateTime } from "@/lib/booking/booking-wizard-utils";
+import { type AppLocale } from "@/lib/i18n/constants";
+import { getLocale } from "@/lib/messages/server";
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 export type ClientReviewFormContext = {
@@ -33,6 +35,7 @@ function mapBookingToReviewFormContext(
       user: { fullName: string };
     };
   },
+  locale: AppLocale,
 ): ClientReviewFormContext {
   const startsAtUtc = booking.startsAt.toISOString();
   const timezone = booking.trainerProfile.timezone;
@@ -42,7 +45,7 @@ function mapBookingToReviewFormContext(
     trainerName: booking.trainerProfile.user.fullName,
     trainerPhotoUrl: booking.trainerProfile.photoUrl,
     serviceNameSnapshot: booking.serviceNameSnapshot,
-    sessionDateLabel: formatBookingDateTime(startsAtUtc, timezone),
+    sessionDateLabel: formatBookingDateTime(startsAtUtc, timezone, locale),
   };
 }
 
@@ -94,9 +97,11 @@ export async function resolveClientReviewPageAccess(
     return { status: "redirect", bookingId: booking.id };
   }
 
+  const locale = await getLocale();
+
   return {
     status: "form",
-    context: mapBookingToReviewFormContext(booking),
+    context: mapBookingToReviewFormContext(booking, locale),
   };
 }
 

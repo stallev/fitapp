@@ -8,17 +8,20 @@ import {
 } from "@pulse/domain";
 
 import { upsertScheduleExceptionWithCacheInvalidation } from "@/data/trainer/upsert-schedule-exception.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function saveScheduleExceptionAction(
   input: ScheduleExceptionInput,
 ): Promise<MutationResult<{ profileId: string; exceptionId: string }>> {
+  const messages = await getMessages();
+
   const parsed = scheduleExceptionInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.trainer.schedule.errors.validation,
+      message: messages.trainer.schedule.errors.validation,
     };
   }
 
@@ -26,7 +29,7 @@ export async function saveScheduleExceptionAction(
   if (!result.ok) {
     return {
       ...result,
-      message: MESSAGES.trainer.schedule.errors.generic,
+      message: messages.trainer.schedule.errors.generic,
     };
   }
 

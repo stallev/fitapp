@@ -1,65 +1,74 @@
 import { COMPLAINT_PRIORITY, COMPLAINT_RESOLUTION, COMPLAINT_STATUS } from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
+import type { Messages } from "@/lib/messages/types";
 import type { StatusBadgeVariant } from "@/lib/ui/status-badge";
 
-export function getComplaintPriorityBadge(priority: string): {
+export function getComplaintPriorityBadge(
+  priority: string,
+  messages: Messages,
+): {
   variant: StatusBadgeVariant;
   label: string;
 } {
   if (priority === COMPLAINT_PRIORITY.HIGH) {
     return {
       variant: "cancelled",
-      label: MESSAGES.admin.complaints.priority.high,
+      label: messages.admin.complaints.priority.high,
     };
   }
 
   if (priority === COMPLAINT_PRIORITY.MEDIUM) {
     return {
       variant: "pending",
-      label: MESSAGES.admin.complaints.priority.medium,
+      label: messages.admin.complaints.priority.medium,
     };
   }
 
   return {
     variant: "neutral",
-    label: MESSAGES.admin.complaints.priority.low,
+    label: messages.admin.complaints.priority.low,
   };
 }
 
-export function getComplaintStatusBadge(status: string): {
+export function getComplaintStatusBadge(
+  status: string,
+  messages: Messages,
+): {
   variant: StatusBadgeVariant;
   label: string;
 } {
   if (status === COMPLAINT_STATUS.OPEN) {
     return {
       variant: "pending",
-      label: MESSAGES.admin.complaints.statusOpen,
+      label: messages.admin.complaints.statusOpen,
     };
   }
 
   if (status === COMPLAINT_STATUS.IN_REVIEW) {
     return {
       variant: "info",
-      label: MESSAGES.admin.complaints.statusInReview,
+      label: messages.admin.complaints.statusInReview,
     };
   }
 
   if (status === COMPLAINT_STATUS.CLOSED) {
     return {
       variant: "completed",
-      label: MESSAGES.admin.complaints.statusClosed,
+      label: messages.admin.complaints.statusClosed,
     };
   }
 
   return { variant: "neutral", label: status };
 }
 
-export function getComplaintResolutionBadge(resolution: string): {
+export function getComplaintResolutionBadge(
+  resolution: string,
+  messages: Messages,
+): {
   variant: StatusBadgeVariant;
   label: string;
 } {
-  const labels = MESSAGES.admin.complaints.resolution;
+  const labels = messages.admin.complaints.resolution;
 
   switch (resolution) {
     case COMPLAINT_RESOLUTION.NO_ACTION:

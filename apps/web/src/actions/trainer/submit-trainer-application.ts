@@ -7,22 +7,23 @@ import {
 } from "@pulse/domain";
 
 import { submitTrainerApplicationWithRedirect } from "@/data/trainer/submit-trainer-application.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export type SubmitTrainerApplicationFormState =
   | MutationResult<{ profileId: string }>
   | null;
 
-function mapSubmitError(code: string): string {
+function mapSubmitError(code: string, messages: Awaited<ReturnType<typeof getMessages>>): string {
   switch (code) {
     case TRAINER_MUTATION_ERROR_CODES.APPLICATION_INCOMPLETE:
-      return MESSAGES.trainer.onboarding.errors.incomplete;
+      return messages.trainer.onboarding.errors.incomplete;
     case TRAINER_MUTATION_ERROR_CODES.ALREADY_APPROVED:
-      return MESSAGES.trainer.onboarding.errors.alreadyApproved;
+      return messages.trainer.onboarding.errors.alreadyApproved;
     case TRAINER_MUTATION_ERROR_CODES.VALIDATION:
-      return MESSAGES.trainer.onboarding.errors.termsRequired;
+      return messages.trainer.onboarding.errors.termsRequired;
     default:
-      return MESSAGES.trainer.onboarding.errors.generic;
+      return messages.trainer.onboarding.errors.generic;
   }
 }
 
@@ -30,6 +31,7 @@ export async function submitTrainerApplicationAction(
   _prevState: SubmitTrainerApplicationFormState,
   formData: FormData,
 ): Promise<SubmitTrainerApplicationFormState> {
+  const messages = await getMessages();
   const acceptedTerms = formData.get("acceptedTerms") === "on";
 
   const parsed = submitTrainerApplicationSchema.safeParse({
@@ -40,7 +42,7 @@ export async function submitTrainerApplicationAction(
     return {
       ok: false,
       code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.trainer.onboarding.errors.termsRequired,
+      message: messages.trainer.onboarding.errors.termsRequired,
     };
   }
 
@@ -48,7 +50,7 @@ export async function submitTrainerApplicationAction(
   if (!result.ok) {
     return {
       ...result,
-      message: mapSubmitError(result.code),
+      message: mapSubmitError(result.code, messages),
     };
   }
 

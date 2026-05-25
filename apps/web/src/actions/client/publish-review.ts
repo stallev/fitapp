@@ -9,12 +9,15 @@ import {
 } from "@pulse/domain";
 
 import { publishReviewWithCacheInvalidation } from "@/data/client/publish-review.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function submitReviewAction(
   _prev: MutationResult<{ reviewId: string; bookingId: string }> | null,
   formData: FormData,
 ): Promise<MutationResult<{ reviewId: string; bookingId: string }>> {
+  const messages = await getMessages();
+
   const parsed = publishReviewInputSchema.safeParse({
     bookingId: String(formData.get("bookingId") ?? "").trim(),
     rating: String(formData.get("rating") ?? "").trim(),
@@ -25,7 +28,7 @@ export async function submitReviewAction(
     return {
       ok: false,
       code: REVIEW_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.review.errors.validation,
+      message: messages.review.errors.validation,
     };
   }
 

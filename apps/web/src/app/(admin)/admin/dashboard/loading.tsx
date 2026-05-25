@@ -1,9 +1,11 @@
 import { AdminDashboardHeader } from "@/components/admin/AdminDashboardHeader";
 import { Heading } from "@/components/atoms";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export default function AdminDashboardLoading() {
+
+export default async function AdminDashboardLoading() {
+  const messages = await getMessages();
   return (
     <div className="space-y-8">
       <AdminDashboardHeader />
@@ -14,7 +16,7 @@ export default function AdminDashboardLoading() {
       </div>
       <section className="space-y-3">
         <Heading as="h2" visualLevel="h4">
-          {MESSAGES.dashboard.adminNeedsAttention.title}
+          {messages.dashboard.adminNeedsAttention.title}
         </Heading>
         <Skeleton className="h-40 rounded-2xl" />
       </section>

@@ -8,39 +8,42 @@ import {
 } from "@pulse/domain";
 
 import { completeBookingWithCacheInvalidation } from "@/data/trainer/complete-booking.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-function mapCompleteError(code: string): string {
+
+function mapCompleteError(code: string, messages: Awaited<ReturnType<typeof getMessages>>): string {
   switch (code) {
     case BOOKING_MUTATION_ERROR_CODES.UNAUTHORIZED:
-      return MESSAGES.booking.errors.unauthorized;
+      return messages.booking.errors.unauthorized;
     case BOOKING_MUTATION_ERROR_CODES.FORBIDDEN:
-      return MESSAGES.booking.errors.forbidden;
+      return messages.booking.errors.forbidden;
     case BOOKING_MUTATION_ERROR_CODES.BOOKING_STATE_CONFLICT:
-      return MESSAGES.booking.errors.stateConflict;
+      return messages.booking.errors.stateConflict;
     case BOOKING_MUTATION_ERROR_CODES.BOOKING_TERMINAL:
     case BOOKING_MUTATION_ERROR_CODES.INVALID_STATUS_TRANSITION:
-      return MESSAGES.booking.errors.terminal;
+      return messages.booking.errors.terminal;
     default:
-      return MESSAGES.trainer.clients.errors.generic;
+      return messages.trainer.clients.errors.generic;
   }
 }
 
 export async function completeBookingAction(
   input: CompleteBookingInput,
 ): Promise<MutationResult<{ id: string; status: string }>> {
+  const messages = await getMessages();
+
   const parsed = completeBookingInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: BOOKING_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.booking.errors.validation,
+      message: messages.booking.errors.validation,
     };
   }
 
   const result = await completeBookingWithCacheInvalidation(parsed.data);
   if (!result.ok) {
-    return { ...result, message: mapCompleteError(result.code) };
+    return { ...result, message: mapCompleteError(result.code, messages) };
   }
 
   return result;

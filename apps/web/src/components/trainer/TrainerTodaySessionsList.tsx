@@ -5,26 +5,28 @@ import { Button } from "@/components/ui/button";
 import { PulseCard } from "@/components/ui/card";
 import { KeyValueRow } from "@/components/ui/KeyValueRow";
 import type { TrainerDashboardSession } from "@/data/trainer/get-trainer-dashboard.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export type TrainerTodaySessionsListProps = {
   sessions: TrainerDashboardSession[];
 };
 
-export function TrainerTodaySessionsList({
-  sessions,
+export async function TrainerTodaySessionsList({  sessions,
 }: TrainerTodaySessionsListProps) {
+  const messages = await getMessages();
+
   return (
     <section className="space-y-3">
-      <SectionTitle>{MESSAGES.trainer.dashboardOps.todayTitle}</SectionTitle>
+      <SectionTitle>{messages.trainer.dashboardOps.todayTitle}</SectionTitle>
       {sessions.length === 0 ? (
         <PulseCard className="space-y-3 p-4">
           <ContentText variant="muted" as="p">
-            {MESSAGES.trainer.dashboardOps.todayEmpty}
+            {messages.trainer.dashboardOps.todayEmpty}
           </ContentText>
           <Button asChild variant="secondary" size="sm">
             <Link href="/trainer/schedule">
-              {MESSAGES.trainer.dashboardOps.scheduleCta}
+              {messages.trainer.dashboardOps.scheduleCta}
             </Link>
           </Button>
         </PulseCard>

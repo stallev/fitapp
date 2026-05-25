@@ -6,9 +6,11 @@ import {
 } from "@pulse/domain";
 
 import { submitTrainerApplication } from "@/data/trainer/submit-trainer-application.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function POST(request: Request) {
+  const messages = await getMessages();
   const body = await request.json().catch(() => null);
   const parsed = submitTrainerApplicationSchema.safeParse(body);
 
@@ -17,7 +19,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.trainer.onboarding.errors.termsRequired,
+        message: messages.trainer.onboarding.errors.termsRequired,
       },
       { status: 400 },
     );
@@ -27,12 +29,12 @@ export async function POST(request: Request) {
   if (!result.ok) {
     const message =
       result.code === TRAINER_MUTATION_ERROR_CODES.APPLICATION_INCOMPLETE
-        ? MESSAGES.trainer.onboarding.errors.incomplete
+        ? messages.trainer.onboarding.errors.incomplete
         : result.code === TRAINER_MUTATION_ERROR_CODES.ALREADY_APPROVED
-          ? MESSAGES.trainer.onboarding.errors.alreadyApproved
+          ? messages.trainer.onboarding.errors.alreadyApproved
           : result.code === TRAINER_MUTATION_ERROR_CODES.VALIDATION
-            ? MESSAGES.trainer.onboarding.errors.termsRequired
-            : MESSAGES.trainer.onboarding.errors.generic;
+            ? messages.trainer.onboarding.errors.termsRequired
+            : messages.trainer.onboarding.errors.generic;
 
     return NextResponse.json({ ...result, message }, { status: 400 });
   }

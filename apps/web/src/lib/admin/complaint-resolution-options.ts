@@ -4,26 +4,26 @@ import {
   type ComplaintResolution,
 } from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
+import type { Messages } from "@/lib/messages/types";
 
-const RESOLUTION_LABELS: Record<ComplaintResolution, string> = {
-  [COMPLAINT_RESOLUTION.NO_ACTION]:
-    MESSAGES.admin.complaints.resolution.noAction,
-  [COMPLAINT_RESOLUTION.WARNING_TO_TRAINER]:
-    MESSAGES.admin.complaints.resolution.warningToTrainer,
-  [COMPLAINT_RESOLUTION.REFUND_RECOMMENDED]:
-    MESSAGES.admin.complaints.resolution.refundRecommended,
-  [COMPLAINT_RESOLUTION.DUPLICATE]:
-    MESSAGES.admin.complaints.resolution.duplicate,
-  [COMPLAINT_RESOLUTION.SPAM]: MESSAGES.admin.complaints.resolution.spam,
-};
-
-export function getComplaintResolutionOptions(): Array<{
+export function getComplaintResolutionOptions(messages: Messages): Array<{
   value: ComplaintResolution;
   label: string;
 }> {
+  const labels: Record<ComplaintResolution, string> = {
+    [COMPLAINT_RESOLUTION.NO_ACTION]:
+      messages.admin.complaints.resolution.noAction,
+    [COMPLAINT_RESOLUTION.WARNING_TO_TRAINER]:
+      messages.admin.complaints.resolution.warningToTrainer,
+    [COMPLAINT_RESOLUTION.REFUND_RECOMMENDED]:
+      messages.admin.complaints.resolution.refundRecommended,
+    [COMPLAINT_RESOLUTION.DUPLICATE]:
+      messages.admin.complaints.resolution.duplicate,
+    [COMPLAINT_RESOLUTION.SPAM]: messages.admin.complaints.resolution.spam,
+  };
+
   return COMPLAINT_RESOLUTIONS.map((value) => ({
     value,
-    label: RESOLUTION_LABELS[value],
+    label: labels[value],
   }));
 }

@@ -11,7 +11,8 @@ import { ContentText } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
 import { type FileUploadPurpose } from "@pulse/domain";
 import { putFileToPresignedUrl } from "@/lib/files/put-file-to-presigned-url";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 import { cn } from "@/lib/utils";
 
@@ -26,8 +27,7 @@ export type FileUploadZoneProps = {
   className?: string;
 };
 
-export function FileUploadZone({
-  purpose,
+export function FileUploadZone({  purpose,
   accept,
   label,
   formatsHint,
@@ -35,6 +35,8 @@ export function FileUploadZone({
   onUploaded,
   className,
 }: FileUploadZoneProps) {
+  const messages = useMessages();
+
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
@@ -62,7 +64,7 @@ export function FileUploadZone({
         });
 
         if (!initiateResult.ok) {
-          toast.error(initiateResult.message ?? MESSAGES.fileUpload.errors.generic, {
+          toast.error(initiateResult.message ?? messages.fileUpload.errors.generic, {
             duration: PRODUCT_TOAST_DURATION_MS,
           });
           return;
@@ -75,7 +77,7 @@ export function FileUploadZone({
         });
 
         if (!presignResult.ok) {
-          toast.error(presignResult.message ?? MESSAGES.fileUpload.errors.generic, {
+          toast.error(presignResult.message ?? messages.fileUpload.errors.generic, {
             duration: PRODUCT_TOAST_DURATION_MS,
           });
           return;
@@ -88,7 +90,7 @@ export function FileUploadZone({
             mimeType: file.type,
           });
         } catch {
-          toast.error(MESSAGES.fileUpload.errors.generic, {
+          toast.error(messages.fileUpload.errors.generic, {
             duration: PRODUCT_TOAST_DURATION_MS,
           });
           return;
@@ -100,7 +102,7 @@ export function FileUploadZone({
         });
 
         if (!confirmResult.ok) {
-          toast.error(confirmResult.message ?? MESSAGES.fileUpload.errors.generic, {
+          toast.error(confirmResult.message ?? messages.fileUpload.errors.generic, {
             duration: PRODUCT_TOAST_DURATION_MS,
           });
           return;
@@ -111,7 +113,7 @@ export function FileUploadZone({
           fileAssetId: initiateResult.data.fileAssetId,
           readUrl: confirmResult.data.readUrl,
         });
-        toast.success(MESSAGES.fileUpload.uploaded, {
+        toast.success(messages.fileUpload.uploaded, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
       } finally {
@@ -148,7 +150,7 @@ export function FileUploadZone({
           <UploadIcon aria-hidden className="size-4" />
         )}
         {isUploading
-          ? MESSAGES.fileUpload.uploading
+          ? messages.fileUpload.uploading
           : fileName ?? label}
       </Button>
       {formatsHint ? (
@@ -158,7 +160,7 @@ export function FileUploadZone({
       ) : null}
       {fileName && !isUploading ? (
         <ContentText variant="mutedMicro" as="p">
-          {MESSAGES.fileUpload.uploaded}: {fileName}
+          {messages.fileUpload.uploaded}: {fileName}
         </ContentText>
       ) : null}
     </div>

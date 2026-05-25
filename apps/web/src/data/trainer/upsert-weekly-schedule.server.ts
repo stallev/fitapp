@@ -17,7 +17,9 @@ import {
 } from "@pulse/policy-server";
 
 import { CACHE_TAGS } from "@/lib/cache/tags";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { localTimeToPrismaTime } from "@/lib/trainer/schedule-time";
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
@@ -25,49 +27,50 @@ import { getTrainerProfileOwnershipFacts } from "./get-trainer-schedule-for-edit
 
 export type SaveWeeklyScheduleResult = MutationResult<{ profileId: string }>;
 
-function mapPolicyError(error: PolicyError): SaveWeeklyScheduleResult {
+function mapPolicyError(error: PolicyError, messages: Messages): SaveWeeklyScheduleResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.trainer.schedule.errors.unauthorized,
+      message: messages.trainer.schedule.errors.unauthorized,
     };
   }
 
   return {
     ok: false,
     code: SCHEDULE_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.trainer.schedule.errors.forbidden,
+    message: messages.trainer.schedule.errors.forbidden,
   };
 }
 
 function mapValidationError(
   code: (typeof SCHEDULE_MUTATION_ERROR_CODES)[keyof typeof SCHEDULE_MUTATION_ERROR_CODES],
+  messages: Messages,
 ): SaveWeeklyScheduleResult {
   switch (code) {
     case SCHEDULE_MUTATION_ERROR_CODES.INVALID_INTERVAL:
       return {
         ok: false,
         code,
-        message: MESSAGES.trainer.schedule.errors.invalidInterval,
+        message: messages.trainer.schedule.errors.invalidInterval,
       };
     case SCHEDULE_MUTATION_ERROR_CODES.INTERVAL_OVERLAP:
       return {
         ok: false,
         code,
-        message: MESSAGES.trainer.schedule.errors.intervalOverlap,
+        message: messages.trainer.schedule.errors.intervalOverlap,
       };
     case SCHEDULE_MUTATION_ERROR_CODES.INVALID_TIMEZONE:
       return {
         ok: false,
         code,
-        message: MESSAGES.trainer.schedule.errors.invalidTimezone,
+        message: messages.trainer.schedule.errors.invalidTimezone,
       };
     default:
       return {
         ok: false,
         code: SCHEDULE_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.trainer.schedule.errors.validation,
+        message: messages.trainer.schedule.errors.validation,
       };
   }
 }
@@ -75,12 +78,13 @@ function mapValidationError(
 export async function upsertWeeklyScheduleMutation(
   input: SaveWeeklyScheduleInput,
 ): Promise<SaveWeeklyScheduleResult> {
+  const messages = await getMessages();
   const parsed = saveWeeklyScheduleInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.trainer.schedule.errors.validation,
+      message: messages.trainer.schedule.errors.validation,
     };
   }
 
@@ -91,7 +95,7 @@ export async function upsertWeeklyScheduleMutation(
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.trainer.schedule.errors.unauthorized,
+      message: messages.trainer.schedule.errors.unauthorized,
     };
   }
 
@@ -99,7 +103,7 @@ export async function upsertWeeklyScheduleMutation(
     assertCanMutateSchedule(ctx, { ownerUserId: ownership.ownerUserId });
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
@@ -115,18 +119,18 @@ export async function upsertWeeklyScheduleMutation(
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.trainer.schedule.errors.validation,
+      message: messages.trainer.schedule.errors.validation,
     };
   }
 
   const timezoneValidation = validateTrainerTimezone(profile.timezone);
   if (timezoneValidation) {
-    return mapValidationError(SCHEDULE_MUTATION_ERROR_CODES.INVALID_TIMEZONE);
+    return mapValidationError(SCHEDULE_MUTATION_ERROR_CODES.INVALID_TIMEZONE, messages);
   }
 
   const intervalValidation = validateWeeklyIntervals(parsed.data.intervals);
   if (intervalValidation) {
-    return mapValidationError(intervalValidation.code);
+    return mapValidationError(intervalValidation.code, messages);
   }
 
   await prisma.$transaction(async (tx) => {
@@ -152,7 +156,7 @@ export async function upsertWeeklyScheduleMutation(
 export async function upsertWeeklyScheduleWithCacheInvalidation(
   input: SaveWeeklyScheduleInput,
 ): Promise<SaveWeeklyScheduleResult> {
-  const result = await upsertWeeklyScheduleMutation(input);
+    const result = await upsertWeeklyScheduleMutation(input);
 
   if (result.ok) {
     updateTag(CACHE_TAGS.trainer(result.data.profileId));

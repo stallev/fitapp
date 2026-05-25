@@ -1,22 +1,24 @@
 import { ContentText, Heading } from "@/components/atoms";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
 type RoutePlaceholderProps = {
   title: string;
   description?: string;
 };
 
-export function RoutePlaceholder({
+export async function RoutePlaceholder({
   title,
-  description = MESSAGES.placeholders.pageStub,
+  description,
 }: RoutePlaceholderProps) {
+  const messages = await getMessages();
+
   return (
     <>
       <Heading as="h1" visualLevel="h3">
         {title}
       </Heading>
       <ContentText variant="bodyMuted" className="mt-4">
-        {description}
+        {description ?? messages.placeholders.pageStub}
       </ContentText>
     </>
   );

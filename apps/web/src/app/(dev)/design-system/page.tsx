@@ -1,5 +1,6 @@
 import { Heading } from "@/components/atoms";
 import { DesignLabShell } from "@/components/design-lab/DesignLabControls.client";
+import { DesignLabSettings } from "@/components/design-lab/DesignLabSettings.client";
 import { DesignLabButtons } from "@/components/design-lab/DesignLabButtons";
 import { DesignLabCards } from "@/components/design-lab/DesignLabCards";
 import { DesignLabCatalogPatterns } from "@/components/design-lab/DesignLabCatalogPatterns.client";
@@ -22,6 +23,7 @@ export default function DesignSystemPage() {
           <Heading as="h1">Design System Lab</Heading>
         </header>
         <DesignLabTokenSwatches />
+        <DesignLabSettings />
         <DesignLabTypography />
         <DesignLabButtons />
         <DesignLabLinks />

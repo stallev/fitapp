@@ -15,7 +15,9 @@ import {
 } from "@pulse/policy-server";
 
 import { CACHE_TAGS } from "@/lib/cache/tags";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 import { getTrainerProfileOwnershipFacts } from "./get-trainer-schedule-for-edit.server";
@@ -25,31 +27,32 @@ export type UpsertScheduleExceptionResult = MutationResult<{
   exceptionId: string;
 }>;
 
-function mapPolicyError(error: PolicyError): UpsertScheduleExceptionResult {
+function mapPolicyError(error: PolicyError, messages: Messages): UpsertScheduleExceptionResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.trainer.schedule.errors.unauthorized,
+      message: messages.trainer.schedule.errors.unauthorized,
     };
   }
 
   return {
     ok: false,
     code: SCHEDULE_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.trainer.schedule.errors.forbidden,
+    message: messages.trainer.schedule.errors.forbidden,
   };
 }
 
 export async function upsertScheduleExceptionMutation(
   input: ScheduleExceptionInput,
 ): Promise<UpsertScheduleExceptionResult> {
+  const messages = await getMessages();
   const parsed = scheduleExceptionInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.trainer.schedule.errors.validation,
+      message: messages.trainer.schedule.errors.validation,
     };
   }
 
@@ -60,7 +63,7 @@ export async function upsertScheduleExceptionMutation(
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.trainer.schedule.errors.unauthorized,
+      message: messages.trainer.schedule.errors.unauthorized,
     };
   }
 
@@ -68,7 +71,7 @@ export async function upsertScheduleExceptionMutation(
     assertCanMutateSchedule(ctx, { ownerUserId: ownership.ownerUserId });
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
@@ -106,7 +109,7 @@ export async function upsertScheduleExceptionMutation(
 export async function upsertScheduleExceptionWithCacheInvalidation(
   input: ScheduleExceptionInput,
 ): Promise<UpsertScheduleExceptionResult> {
-  const result = await upsertScheduleExceptionMutation(input);
+    const result = await upsertScheduleExceptionMutation(input);
 
   if (result.ok) {
     updateTag(CACHE_TAGS.trainer(result.data.profileId));

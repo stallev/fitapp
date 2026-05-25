@@ -5,27 +5,29 @@ import { AlertCircleIcon } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 
-export default function TrainerProfileError({
-  reset,
+
+export default function TrainerProfileError({  reset,
 }: {
   reset: () => void;
 }) {
+  const messages = useMessages();
+
   return (
     <div className="space-y-4">
       <Alert variant="destructive">
         <AlertCircleIcon aria-hidden />
-        <AlertTitle>{MESSAGES.trainer.profile.error.title}</AlertTitle>
+        <AlertTitle>{messages.trainer.profile.error.title}</AlertTitle>
         <AlertDescription className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <span>{MESSAGES.trainer.profile.error.description}</span>
+          <span>{messages.trainer.profile.error.description}</span>
           <div className="flex flex-wrap gap-2">
             <Button type="button" variant="outline" size="sm" onClick={reset}>
-              {MESSAGES.trainer.profile.error.retry}
+              {messages.trainer.profile.error.retry}
             </Button>
             <Button asChild variant="secondary" size="sm">
               <Link href="/trainers">
-                {MESSAGES.trainer.profile.error.backToCatalog}
+                {messages.trainer.profile.error.backToCatalog}
               </Link>
             </Button>
           </div>

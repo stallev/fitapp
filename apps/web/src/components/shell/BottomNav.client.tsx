@@ -1,6 +1,7 @@
 "use client";
 
 import { NavItem } from "@/components/shell/NavItem";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 import {
   resolveBadgeCount,
   type AdminNavBadges,
@@ -13,9 +14,11 @@ type BottomNavProps = {
 };
 
 export function BottomNav({ items, badges }: BottomNavProps) {
+  const messages = useMessages();
+
   return (
     <nav
-      aria-label="Основная навигация"
+      aria-label={messages.shell.mainNavAriaLabel}
       className="sticky bottom-0 z-40 border-t border-border/70 bg-background/95 backdrop-blur-md md:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >

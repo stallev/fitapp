@@ -14,30 +14,33 @@ import { getPrisma } from "@pulse/db";
 import { assertCanApproveTrainer, PolicyError } from "@pulse/policy-server";
 
 import { CACHE_TAGS } from "@/lib/cache/tags";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 export type RejectTrainerResult = MutationResult<{ trainerProfileId: string }>;
 
-function mapPolicyError(error: PolicyError): RejectTrainerResult {
+function mapPolicyError(error: PolicyError, messages: Messages): RejectTrainerResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: TRAINER_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
   return {
     ok: false,
     code: TRAINER_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.admin.errors.forbidden,
+    message: messages.admin.errors.forbidden,
   };
 }
 
 async function runRejectTrainerTransaction(
   actorUserId: string,
   input: RejectTrainerInput,
+  messages: Messages,
 ): Promise<RejectTrainerResult> {
   const prisma = getPrisma();
 
@@ -51,7 +54,7 @@ async function runRejectTrainerTransaction(
       return {
         ok: false,
         code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.admin.errors.notFound,
+        message: messages.admin.errors.notFound,
       };
     }
 
@@ -60,7 +63,7 @@ async function runRejectTrainerTransaction(
       return {
         ok: false,
         code: TRAINER_MUTATION_ERROR_CODES.ALREADY_PROCESSED,
-        message: MESSAGES.admin.moderation.alreadyProcessed,
+        message: messages.admin.moderation.alreadyProcessed,
       };
     }
 
@@ -81,7 +84,7 @@ async function runRejectTrainerTransaction(
       return {
         ok: false,
         code: TRAINER_MUTATION_ERROR_CODES.ALREADY_PROCESSED,
-        message: MESSAGES.admin.moderation.alreadyProcessed,
+        message: messages.admin.moderation.alreadyProcessed,
       };
     }
 
@@ -101,12 +104,13 @@ async function runRejectTrainerTransaction(
 export async function rejectTrainerMutation(
   input: RejectTrainerInput,
 ): Promise<RejectTrainerResult> {
+  const messages = await getMessages();
   const parsed = rejectTrainerInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.admin.moderation.rejectionReasonRequired,
+      message: messages.admin.moderation.rejectionReasonRequired,
     };
   }
 
@@ -115,7 +119,7 @@ export async function rejectTrainerMutation(
     return {
       ok: false,
       code: TRAINER_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
@@ -123,19 +127,19 @@ export async function rejectTrainerMutation(
     assertCanApproveTrainer(ctx);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
   }
 
-  return runRejectTrainerTransaction(ctx.userId, parsed.data);
+  return runRejectTrainerTransaction(ctx.userId, parsed.data, messages);
 }
 
 export async function rejectTrainerWithCacheInvalidation(
   input: RejectTrainerInput,
 ): Promise<RejectTrainerResult> {
-  const result = await rejectTrainerMutation(input);
+    const result = await rejectTrainerMutation(input);
 
   if (result.ok) {
     updateTag(CACHE_TAGS.trainer(result.data.trainerProfileId));

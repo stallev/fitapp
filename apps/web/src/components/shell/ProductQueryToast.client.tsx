@@ -4,13 +4,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import {
   PRODUCT_TOAST_DURATION_MS,
   PRODUCT_TOAST_QUERY_KEYS,
 } from "@/lib/ui/product-toast";
 
 export function ProductQueryToast() {
+  const messages = useMessages();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -20,7 +22,7 @@ export function ProductQueryToast() {
     const reviewed = searchParams.get(PRODUCT_TOAST_QUERY_KEYS.reviewed);
 
     if (saved) {
-      toast.success(MESSAGES.toast.saved, {
+      toast.success(messages.toast.saved, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
 
@@ -32,7 +34,7 @@ export function ProductQueryToast() {
     }
 
     if (booked) {
-      toast.success(MESSAGES.toast.booked, {
+      toast.success(messages.toast.booked, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
 
@@ -47,7 +49,7 @@ export function ProductQueryToast() {
       return;
     }
 
-    toast.success(MESSAGES.toast.reviewPublished, {
+    toast.success(messages.toast.reviewPublished, {
       duration: PRODUCT_TOAST_DURATION_MS,
     });
 

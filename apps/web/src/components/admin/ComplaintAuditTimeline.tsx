@@ -4,25 +4,29 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import type { ComplaintAuditEntry } from "@/data/admin/get-complaint-detail.server";
 import { getComplaintResolutionBadge } from "@/lib/admin/complaint-badges";
 import { formatAdminRelativeDate } from "@/lib/date/format-admin-relative";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
+
+import type { Messages } from "@/lib/messages/types";
 
 export type ComplaintAuditTimelineProps = {
   entries: ComplaintAuditEntry[];
 };
 
-function getAuditActionLabel(action: string): string {
+function getAuditActionLabel(action: string, messages: Messages): string {
   if (action === "complaint.review_started") {
-    return MESSAGES.admin.complaints.auditReviewStarted;
+    return messages.admin.complaints.auditReviewStarted;
   }
 
   if (action === "complaint.closed") {
-    return MESSAGES.admin.complaints.auditClosed;
+    return messages.admin.complaints.auditClosed;
   }
 
   return action;
 }
 
-export function ComplaintAuditTimeline({ entries }: ComplaintAuditTimelineProps) {
+export async function ComplaintAuditTimeline({ entries }: ComplaintAuditTimelineProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
   if (entries.length === 0) {
     return null;
   }
@@ -30,11 +34,11 @@ export function ComplaintAuditTimeline({ entries }: ComplaintAuditTimelineProps)
   return (
     <PulseCard variant="base" className="rounded-2xl">
       <PulseCardContent density="sm" className="space-y-3">
-        <SectionTitle>{MESSAGES.admin.complaints.auditTitle}</SectionTitle>
+        <SectionTitle>{messages.admin.complaints.auditTitle}</SectionTitle>
         <ul className="space-y-3">
           {entries.map((entry) => {
             const resolutionBadge = entry.resolution
-              ? getComplaintResolutionBadge(entry.resolution)
+              ? getComplaintResolutionBadge(entry.resolution, messages)
               : null;
 
             return (
@@ -44,7 +48,7 @@ export function ComplaintAuditTimeline({ entries }: ComplaintAuditTimelineProps)
               >
                 <div className="space-y-1">
                   <ContentText as="p" className="text-sm font-medium">
-                    {getAuditActionLabel(entry.action)}
+                    {getAuditActionLabel(entry.action, messages)}
                   </ContentText>
                   {entry.actorName ? (
                     <ContentText as="p" className="text-sm text-muted-foreground">
@@ -61,7 +65,7 @@ export function ComplaintAuditTimeline({ entries }: ComplaintAuditTimelineProps)
                   as="span"
                   className="text-[11.5px] text-muted-foreground"
                 >
-                  {formatAdminRelativeDate(entry.createdAt)}
+                  {formatAdminRelativeDate(entry.createdAt, locale)}
                 </ContentText>
               </li>
             );

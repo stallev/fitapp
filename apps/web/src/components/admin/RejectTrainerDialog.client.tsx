@@ -20,7 +20,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
+import {
+  setSubmitTransportTag,
+  SUBMIT_TRANSPORT_TAGS,
+} from "@/lib/sentry/pulse-tags";
 import { isIosSafari } from "@/lib/ui/is-ios-safari";
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 import { resilientPostFetch } from "@/lib/ui/resilient-post-fetch";
@@ -30,6 +35,7 @@ export type RejectTrainerDialogProps = {
 };
 
 export function RejectTrainerDialog({ trainerProfileId }: RejectTrainerDialogProps) {
+  const messages = useMessages();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState("");
@@ -38,7 +44,7 @@ export function RejectTrainerDialog({ trainerProfileId }: RejectTrainerDialogPro
 
   function handleReject() {
     if (reason.trim().length < 10) {
-      setFieldError(MESSAGES.admin.moderation.rejectionReasonRequired);
+      setFieldError(messages.admin.moderation.rejectionReasonRequired);
       return;
     }
 
@@ -48,13 +54,19 @@ export function RejectTrainerDialog({ trainerProfileId }: RejectTrainerDialogPro
       const payload = { trainerProfileId, rejectionReason: reason.trim() };
 
       try {
-        const result: MutationResult<{ trainerProfileId: string }> = isIosSafari()
-          ? await resilientPostFetch("/api/admin/trainers/reject", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload),
-            }).then((response) => response.json())
-          : await rejectTrainerAction(payload);
+        let result: MutationResult<{ trainerProfileId: string }>;
+
+        if (isIosSafari()) {
+          setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.ROUTE_HANDLER_FALLBACK);
+          result = await resilientPostFetch("/api/admin/trainers/reject", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }).then((response) => response.json());
+        } else {
+          setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.SERVER_ACTION);
+          result = await rejectTrainerAction(payload);
+        }
 
         if (!result.ok) {
           toast.error(result.message, { duration: PRODUCT_TOAST_DURATION_MS });
@@ -62,14 +74,14 @@ export function RejectTrainerDialog({ trainerProfileId }: RejectTrainerDialogPro
           return;
         }
 
-        toast.success(MESSAGES.admin.moderation.rejectSuccess, {
+        toast.success(messages.admin.moderation.rejectSuccess, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
         setOpen(false);
         setReason("");
         router.refresh();
       } catch {
-        toast.error(MESSAGES.admin.errors.generic, {
+        toast.error(messages.admin.errors.generic, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
         router.refresh();
@@ -81,20 +93,20 @@ export function RejectTrainerDialog({ trainerProfileId }: RejectTrainerDialogPro
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
         <Button type="button" variant="outline" disabled={isPending} aria-busy={isPending}>
-          {MESSAGES.admin.moderation.reject}
+          {messages.admin.moderation.reject}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{MESSAGES.admin.moderation.reject}</AlertDialogTitle>
+          <AlertDialogTitle>{messages.admin.moderation.reject}</AlertDialogTitle>
           <AlertDialogDescription>
-            {MESSAGES.admin.moderation.rejectionReasonPlaceholder}
+            {messages.admin.moderation.rejectionReasonPlaceholder}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <div className="space-y-2">
           <Label htmlFor="rejection-reason">
-            {MESSAGES.admin.moderation.rejectionReasonLabel}
+            {messages.admin.moderation.rejectionReasonLabel}
           </Label>
           <Textarea
             id="rejection-reason"
@@ -111,7 +123,7 @@ export function RejectTrainerDialog({ trainerProfileId }: RejectTrainerDialogPro
 
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>
-            {MESSAGES.shell.back}
+            {messages.shell.back}
           </AlertDialogCancel>
           <Button
             type="button"
@@ -121,8 +133,8 @@ export function RejectTrainerDialog({ trainerProfileId }: RejectTrainerDialogPro
             aria-busy={isPending}
           >
             {isPending
-              ? MESSAGES.admin.moderation.rejecting
-              : MESSAGES.admin.moderation.reject}
+              ? messages.admin.moderation.rejecting
+              : messages.admin.moderation.reject}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

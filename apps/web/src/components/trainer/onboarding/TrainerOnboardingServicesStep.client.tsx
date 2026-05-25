@@ -11,7 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type TrainerOnboardingServicesStepProps = {
@@ -28,11 +29,12 @@ function emptyService(): OnboardingServiceRow {
   };
 }
 
-export function TrainerOnboardingServicesStep({
-  initialServices,
+export function TrainerOnboardingServicesStep({  initialServices,
   onBack,
   onNext,
 }: TrainerOnboardingServicesStepProps) {
+  const messages = useMessages();
+
   const [rows, setRows] = useState<OnboardingServiceRow[]>(
     initialServices.length > 0 ? initialServices : [emptyService()],
   );
@@ -50,7 +52,7 @@ export function TrainerOnboardingServicesStep({
     startTransition(async () => {
       const result = await saveOnboardingStep4Action({ services });
       if (!result?.ok) {
-        toast.error(result?.message ?? MESSAGES.trainer.onboarding.errors.generic, {
+        toast.error(result?.message ?? messages.trainer.onboarding.errors.generic, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
         return;
@@ -75,7 +77,7 @@ export function TrainerOnboardingServicesStep({
           <div key={index} className="space-y-3 rounded-2xl border border-border p-4">
             <FieldGroup>
               <Field>
-                <FieldLabel>{MESSAGES.trainer.onboarding.serviceNameLabel}</FieldLabel>
+                <FieldLabel>{messages.trainer.onboarding.serviceNameLabel}</FieldLabel>
                 <Input
                   value={row.name}
                   onChange={(event) => updateRow(index, { name: event.target.value })}
@@ -84,7 +86,7 @@ export function TrainerOnboardingServicesStep({
               </Field>
               <div className="grid gap-3 sm:grid-cols-2">
                 <Field>
-                  <FieldLabel>{MESSAGES.trainer.onboarding.serviceDurationLabel}</FieldLabel>
+                  <FieldLabel>{messages.trainer.onboarding.serviceDurationLabel}</FieldLabel>
                   <Input
                     type="number"
                     min={15}
@@ -96,7 +98,7 @@ export function TrainerOnboardingServicesStep({
                   />
                 </Field>
                 <Field>
-                  <FieldLabel>{MESSAGES.trainer.onboarding.servicePriceLabel}</FieldLabel>
+                  <FieldLabel>{messages.trainer.onboarding.servicePriceLabel}</FieldLabel>
                   <Input
                     type="number"
                     min={0}
@@ -111,7 +113,7 @@ export function TrainerOnboardingServicesStep({
                 </Field>
               </div>
               <Field>
-                <FieldLabel>{MESSAGES.trainer.onboarding.serviceDescriptionLabel}</FieldLabel>
+                <FieldLabel>{messages.trainer.onboarding.serviceDescriptionLabel}</FieldLabel>
                 <Textarea
                   value={row.description ?? ""}
                   onChange={(event) => updateRow(index, { description: event.target.value })}
@@ -132,7 +134,7 @@ export function TrainerOnboardingServicesStep({
           disabled={isPending}
         >
           <PlusIcon aria-hidden className="size-4" />
-          {MESSAGES.trainer.onboarding.addService}
+          {messages.trainer.onboarding.addService}
         </Button>
         <Button
           type="button"
@@ -141,22 +143,22 @@ export function TrainerOnboardingServicesStep({
           disabled={isPending}
           aria-busy={isPending}
         >
-          {MESSAGES.trainer.onboarding.skipServices}
+          {messages.trainer.onboarding.skipServices}
         </Button>
       </div>
 
       <div className="flex gap-3">
         <Button type="button" variant="outline" onClick={onBack} disabled={isPending}>
-          {MESSAGES.trainer.onboarding.back}
+          {messages.trainer.onboarding.back}
         </Button>
         <Button type="button" className="flex-1" onClick={handleNext} disabled={isPending} aria-busy={isPending}>
           {isPending ? (
             <>
               <Loader2Icon aria-hidden className="size-4 animate-spin" />
-              {MESSAGES.trainer.onboarding.nextSaving}
+              {messages.trainer.onboarding.nextSaving}
             </>
           ) : (
-            MESSAGES.trainer.onboarding.next
+            messages.trainer.onboarding.next
           )}
         </Button>
       </div>

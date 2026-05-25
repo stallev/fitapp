@@ -1,5 +1,8 @@
 import type { SlotDto } from "@pulse/domain";
 
+import { type AppLocale, DEFAULT_LOCALE } from "@/lib/i18n/constants";
+import { formatDateTime } from "@/lib/i18n/format";
+
 export type ScheduleDayGroup = {
   localDate: string;
   dayLabel: string;
@@ -15,17 +18,23 @@ function getLocalDateKey(isoUtc: string, timezone: string): string {
   }).format(new Date(isoUtc));
 }
 
-function formatDayLabel(isoUtc: string, timezone: string): string {
-  return new Intl.DateTimeFormat("ru-RU", {
+function formatDayLabel(
+  isoUtc: string,
+  timezone: string,
+  locale: AppLocale,
+): string {
+  return formatDateTime(isoUtc, {
+    locale,
     timeZone: timezone,
     weekday: "short",
     day: "numeric",
-  }).format(new Date(isoUtc));
+  });
 }
 
 export function groupScheduleSlotsByDay(
   timezone: string,
   slots: SlotDto[],
+  locale: AppLocale = DEFAULT_LOCALE,
 ): ScheduleDayGroup[] {
   const groups = new Map<string, SlotDto[]>();
 
@@ -38,7 +47,11 @@ export function groupScheduleSlotsByDay(
 
   return Array.from(groups.entries()).map(([localDate, daySlots]) => ({
     localDate,
-    dayLabel: formatDayLabel(daySlots[0]?.startsAtUtc ?? `${localDate}T12:00:00Z`, timezone),
+    dayLabel: formatDayLabel(
+      daySlots[0]?.startsAtUtc ?? `${localDate}T12:00:00Z`,
+      timezone,
+      locale,
+    ),
     slots: daySlots,
   }));
 }

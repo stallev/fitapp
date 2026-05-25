@@ -17,17 +17,19 @@ import {
 } from "@pulse/policy-server";
 
 import { CACHE_TAGS } from "@/lib/cache/tags";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 export type CompleteBookingResult = MutationResult<{ id: string; status: string }>;
 
-function mapPolicyError(error: PolicyError): CompleteBookingResult {
+function mapPolicyError(error: PolicyError, messages: Messages): CompleteBookingResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: BOOKING_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.booking.errors.unauthorized,
+      message: messages.booking.errors.unauthorized,
     };
   }
 
@@ -35,19 +37,20 @@ function mapPolicyError(error: PolicyError): CompleteBookingResult {
     return {
       ok: false,
       code: BOOKING_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.booking.errors.validation,
+      message: messages.booking.errors.validation,
     };
   }
 
   return {
     ok: false,
     code: BOOKING_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.booking.errors.forbidden,
+    message: messages.booking.errors.forbidden,
   };
 }
 
 function mapValidationError(
   code: (typeof BOOKING_MUTATION_ERROR_CODES)[keyof typeof BOOKING_MUTATION_ERROR_CODES],
+  messages: Messages,
 ): CompleteBookingResult {
   switch (code) {
     case BOOKING_MUTATION_ERROR_CODES.INVALID_STATUS_TRANSITION:
@@ -55,19 +58,19 @@ function mapValidationError(
       return {
         ok: false,
         code,
-        message: MESSAGES.booking.errors.terminal,
+        message: messages.booking.errors.terminal,
       };
     case BOOKING_MUTATION_ERROR_CODES.BOOKING_STATE_CONFLICT:
       return {
         ok: false,
         code,
-        message: MESSAGES.booking.errors.stateConflict,
+        message: messages.booking.errors.stateConflict,
       };
     default:
       return {
         ok: false,
         code: BOOKING_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.booking.errors.validation,
+        message: messages.booking.errors.validation,
       };
   }
 }
@@ -75,6 +78,7 @@ function mapValidationError(
 async function runCompleteBookingTransaction(
   actorUserId: string,
   bookingId: string,
+  messages: Messages,
 ): Promise<CompleteBookingResult> {
   const prisma = getPrisma();
 
@@ -96,13 +100,13 @@ async function runCompleteBookingTransaction(
       return {
         ok: false,
         code: BOOKING_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.booking.errors.validation,
+        message: messages.booking.errors.validation,
       };
     }
 
     const validation = validateCompleteBooking({ status: booking.status });
     if (validation) {
-      return mapValidationError(validation.code);
+      return mapValidationError(validation.code, messages);
     }
 
     const update = await tx.booking.updateMany({
@@ -132,6 +136,7 @@ async function runCompleteBookingTransaction(
 
       return mapValidationError(
         BOOKING_MUTATION_ERROR_CODES.BOOKING_STATE_CONFLICT,
+        messages,
       );
     }
 
@@ -154,12 +159,13 @@ async function runCompleteBookingTransaction(
 export async function completeBookingMutation(
   input: CompleteBookingInput,
 ): Promise<CompleteBookingResult> {
+  const messages = await getMessages();
   const parsed = completeBookingInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: BOOKING_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.booking.errors.validation,
+      message: messages.booking.errors.validation,
     };
   }
 
@@ -168,7 +174,7 @@ export async function completeBookingMutation(
     return {
       ok: false,
       code: BOOKING_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.booking.errors.unauthorized,
+      message: messages.booking.errors.unauthorized,
     };
   }
 
@@ -184,7 +190,7 @@ export async function completeBookingMutation(
     return {
       ok: false,
       code: BOOKING_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.booking.errors.validation,
+      message: messages.booking.errors.validation,
     };
   }
 
@@ -194,13 +200,13 @@ export async function completeBookingMutation(
     });
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
   }
 
-  return runCompleteBookingTransaction(ctx.userId, parsed.data.bookingId);
+  return runCompleteBookingTransaction(ctx.userId, parsed.data.bookingId, messages);
 }
 
 async function invalidateCompleteBookingCache(bookingId: string): Promise<void> {
@@ -223,7 +229,7 @@ async function invalidateCompleteBookingCache(bookingId: string): Promise<void> 
 export async function completeBookingWithCacheInvalidation(
   input: CompleteBookingInput,
 ): Promise<CompleteBookingResult> {
-  const result = await completeBookingMutation(input);
+    const result = await completeBookingMutation(input);
 
   if (result.ok) {
     await invalidateCompleteBookingCache(result.data.id);

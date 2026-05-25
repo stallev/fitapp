@@ -12,7 +12,7 @@ alwaysApply: true
 ## Principles
 
 - **Trust + energy:** forest greens, gold accents — not cold SaaS gray.
-- **Typography:** **DM Serif Display** (`font-heading`) for titles; **DM Sans** for UI; **JetBrains Mono** for codes/times (`next/font` in root layout).
+- **Typography:** **Cormorant Garamond** (`font-heading`) for titles; **Onest** for UI; **JetBrains Mono** for codes/times (`next/font` in root layout; `latin` + `cyrillic` subsets).
 - **Material You (M3):** rounded corners, elevation, expressive hierarchy per design system.
 - **Mobile-first:** bottom nav `< md`, sidebar `≥ md` per user flows — full contract: **ui-mobile-first**.
 - **Prototype fidelity:** fonts, sizes, weights, colors from prototype + design system — **ui-prototype-fidelity**.

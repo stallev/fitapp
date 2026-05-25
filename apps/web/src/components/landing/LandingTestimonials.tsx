@@ -2,10 +2,12 @@ import { Container } from "@/components/ui/container";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
 import { Reveal } from "@/components/ui/Reveal.client";
 import { TestimonialCard } from "@/components/ui/TestimonialCard";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export function LandingTestimonials() {
-  const { testimonials } = MESSAGES.landing;
+
+export async function LandingTestimonials() {
+  const messages = await getMessages();
+  const { testimonials } = messages.landing;
 
   return (
     <section id="reviews" className="py-24">
@@ -23,7 +25,9 @@ export function LandingTestimonials() {
                 quote={item.quote}
                 author={item.author}
                 meta={item.meta}
-                avatarColor={item.avatarColor}
+                avatarColor={
+                  item.avatarColor as "primary" | "secondary" | "primaryLight"
+                }
               />
             </Reveal>
           ))}

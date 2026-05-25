@@ -15,30 +15,33 @@ import {
 import { getPrisma } from "@pulse/db";
 import { assertCanManageComplaint, PolicyError } from "@pulse/policy-server";
 
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 type ComplaintMutationResult = MutationResult<{ complaintId: string }>;
 
-function mapPolicyError(error: PolicyError): ComplaintMutationResult {
+function mapPolicyError(error: PolicyError, messages: Messages): ComplaintMutationResult {
   if (error.code === "UNAUTHORIZED") {
     return {
       ok: false,
       code: COMPLAINT_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
   return {
     ok: false,
     code: COMPLAINT_MUTATION_ERROR_CODES.FORBIDDEN,
-    message: MESSAGES.admin.errors.forbidden,
+    message: messages.admin.errors.forbidden,
   };
 }
 
 async function runStartComplaintReviewTransaction(
   actorUserId: string,
   complaintId: string,
+  messages: Messages,
 ): Promise<ComplaintMutationResult> {
   const prisma = getPrisma();
 
@@ -52,7 +55,7 @@ async function runStartComplaintReviewTransaction(
       return {
         ok: false,
         code: COMPLAINT_MUTATION_ERROR_CODES.NOT_FOUND,
-        message: MESSAGES.admin.errors.notFound,
+        message: messages.admin.errors.notFound,
       };
     }
 
@@ -61,7 +64,7 @@ async function runStartComplaintReviewTransaction(
       return {
         ok: false,
         code: COMPLAINT_MUTATION_ERROR_CODES.ALREADY_PROCESSED,
-        message: MESSAGES.admin.complaints.alreadyProcessed,
+        message: messages.admin.complaints.alreadyProcessed,
       };
     }
 
@@ -74,7 +77,7 @@ async function runStartComplaintReviewTransaction(
       return {
         ok: false,
         code: COMPLAINT_MUTATION_ERROR_CODES.ALREADY_PROCESSED,
-        message: MESSAGES.admin.complaints.alreadyProcessed,
+        message: messages.admin.complaints.alreadyProcessed,
       };
     }
 
@@ -94,6 +97,7 @@ async function runStartComplaintReviewTransaction(
 async function runCloseComplaintTransaction(
   actorUserId: string,
   input: CloseComplaintInput,
+  messages: Messages,
 ): Promise<ComplaintMutationResult> {
   const prisma = getPrisma();
 
@@ -107,7 +111,7 @@ async function runCloseComplaintTransaction(
       return {
         ok: false,
         code: COMPLAINT_MUTATION_ERROR_CODES.NOT_FOUND,
-        message: MESSAGES.admin.errors.notFound,
+        message: messages.admin.errors.notFound,
       };
     }
 
@@ -116,7 +120,7 @@ async function runCloseComplaintTransaction(
       return {
         ok: false,
         code: COMPLAINT_MUTATION_ERROR_CODES.ALREADY_PROCESSED,
-        message: MESSAGES.admin.complaints.alreadyProcessed,
+        message: messages.admin.complaints.alreadyProcessed,
       };
     }
 
@@ -128,7 +132,7 @@ async function runCloseComplaintTransaction(
       return {
         ok: false,
         code: COMPLAINT_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.admin.complaints.notesRequired,
+        message: messages.admin.complaints.notesRequired,
       };
     }
 
@@ -150,7 +154,7 @@ async function runCloseComplaintTransaction(
       return {
         ok: false,
         code: COMPLAINT_MUTATION_ERROR_CODES.ALREADY_PROCESSED,
-        message: MESSAGES.admin.complaints.alreadyProcessed,
+        message: messages.admin.complaints.alreadyProcessed,
       };
     }
 
@@ -171,12 +175,13 @@ async function runCloseComplaintTransaction(
 export async function startComplaintReviewMutation(
   input: StartComplaintReviewInput,
 ): Promise<ComplaintMutationResult> {
+  const messages = await getMessages();
   const parsed = startComplaintReviewInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: COMPLAINT_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.admin.errors.validation,
+      message: messages.admin.errors.validation,
     };
   }
 
@@ -185,7 +190,7 @@ export async function startComplaintReviewMutation(
     return {
       ok: false,
       code: COMPLAINT_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
@@ -193,24 +198,25 @@ export async function startComplaintReviewMutation(
     assertCanManageComplaint(ctx);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
   }
 
-  return runStartComplaintReviewTransaction(ctx.userId, parsed.data.complaintId);
+  return runStartComplaintReviewTransaction(ctx.userId, parsed.data.complaintId, messages);
 }
 
 export async function closeComplaintMutation(
   input: CloseComplaintInput,
 ): Promise<ComplaintMutationResult> {
+  const messages = await getMessages();
   const parsed = closeComplaintInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: COMPLAINT_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.admin.errors.validation,
+      message: messages.admin.errors.validation,
     };
   }
 
@@ -219,7 +225,7 @@ export async function closeComplaintMutation(
     return {
       ok: false,
       code: COMPLAINT_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
@@ -227,11 +233,11 @@ export async function closeComplaintMutation(
     assertCanManageComplaint(ctx);
   } catch (error) {
     if (error instanceof PolicyError) {
-      return mapPolicyError(error);
+      return mapPolicyError(error, messages);
     }
 
     throw error;
   }
 
-  return runCloseComplaintTransaction(ctx.userId, parsed.data);
+  return runCloseComplaintTransaction(ctx.userId, parsed.data, messages);
 }

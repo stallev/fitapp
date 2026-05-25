@@ -8,17 +8,20 @@ import {
 } from "@pulse/domain";
 
 import { fileComplaintMutation } from "@/data/client/file-complaint.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function fileComplaintAction(
   input: FileComplaintInput,
 ): Promise<MutationResult<{ complaintId: string }>> {
+  const messages = await getMessages();
+
   const parsed = fileComplaintInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: COMPLAINT_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.clientComplaint.errors.validation,
+      message: messages.clientComplaint.errors.validation,
     };
   }
 

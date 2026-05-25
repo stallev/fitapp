@@ -10,7 +10,8 @@ import {
 import { ContentText, SectionTitle } from "@/components/atoms";
 import { CustomLink } from "@/components/ui/CustomLink";
 
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 import { cn } from "@/lib/utils";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
@@ -21,14 +22,15 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   stretching: StretchHorizontalIcon,
 };
 
-export function ClientDashboardCategories() {
+export async function ClientDashboardCategories() {
+  const messages = await getMessages();
   return (
     <section className="min-w-0 space-y-3">
       <SectionTitle as="h2" className="mx-0 max-w-none text-left text-base">
-        {MESSAGES.dashboard.client.categoriesTitle}
+        {messages.dashboard.client.categoriesTitle}
       </SectionTitle>
       <div className="grid min-w-0 grid-cols-3 gap-2.5 lg:grid-cols-2">
-        {MESSAGES.landing.categories.items.map((item) => {
+        {messages.landing.categories.items.map((item) => {
           const Icon = CATEGORY_ICONS[item.slug] ?? ActivityIcon;
 
           return (

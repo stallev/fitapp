@@ -1,17 +1,18 @@
-import Link from "next/link";
 import { ArrowRightIcon, CalendarIcon, DollarSignIcon, UsersIcon } from "lucide-react";
 
 import { BenefitRow } from "@/components/ui/BenefitRow";
 import { BrandSection } from "@/components/ui/BrandSection";
-import { Button } from "@/components/ui/button";
+import { CustomLink } from "@/components/ui/CustomLink";
 import { DarkStatTile } from "@/components/ui/DarkStatTile";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 const BENEFIT_ICONS = [UsersIcon, CalendarIcon, DollarSignIcon] as const;
 
-export function LandingForTrainers() {
-  const { forTrainers } = MESSAGES.landing;
+export async function LandingForTrainers() {
+  const messages = await getMessages();
+  const { forTrainers } = messages.landing;
 
   return (
     <BrandSection tone="darkForest">
@@ -43,12 +44,15 @@ export function LandingForTrainers() {
               />
             ))}
           </div>
-          <Button asChild size="lg" className="mt-9 rounded-full px-9">
-            <Link href="/auth/register/trainer">
-              {forTrainers.cta}
-              <ArrowRightIcon aria-hidden className="size-[18px]" />
-            </Link>
-          </Button>
+          <CustomLink
+            as="button"
+            href="/auth/register/trainer"
+            size="lg"
+            className="mt-9 rounded-full px-9"
+          >
+            {forTrainers.cta}
+            <ArrowRightIcon aria-hidden className="size-[18px]" />
+          </CustomLink>
         </div>
         <div className="grid grid-cols-2 gap-4">
           {forTrainers.stats.map((stat) => (

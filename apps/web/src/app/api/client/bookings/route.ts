@@ -6,9 +6,11 @@ import {
 } from "@pulse/domain";
 
 import { createBookingWithCacheInvalidation } from "@/data/client/create-booking.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function POST(request: Request) {
+  const messages = await getMessages();
   const body = await request.json().catch(() => null);
   const parsed = createBookingInputSchema.safeParse(body);
 
@@ -17,7 +19,7 @@ export async function POST(request: Request) {
       {
         ok: false,
         code: BOOKING_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.booking.errors.validation,
+        message: messages.booking.errors.validation,
       },
       { status: 400 },
     );

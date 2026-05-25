@@ -81,15 +81,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       console.warn("[Button] icon-only button requires an aria-label");
     }
 
+    const isDisabled = Boolean(disabled || loading);
+
     return (
       <Comp
         ref={ref}
         data-slot="button"
-        type={asChild ? undefined : (props.type ?? "button")}
         className={cn(buttonVariants({ variant, size }), className)}
-        disabled={disabled || loading}
-        data-loading={loading || undefined}
         {...props}
+        {...(asChild
+          ? {}
+          : {
+              type: props.type ?? "button",
+              disabled: isDisabled,
+              "data-loading": loading || undefined,
+            })}
       >
         {asChild ? (
           children

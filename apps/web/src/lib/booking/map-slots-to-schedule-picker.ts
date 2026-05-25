@@ -1,6 +1,8 @@
 import { listLocalDatesFromToday, type SlotDto } from "@pulse/domain";
 
 import { BOOKING_WIZARD_SLOT_DAY_COUNT } from "@/lib/booking/booking-wizard-utils";
+import { type AppLocale, DEFAULT_LOCALE } from "@/lib/i18n/constants";
+import { formatDateTime } from "@/lib/i18n/format";
 import { groupScheduleSlotsByDay } from "@/lib/trainer/group-schedule-slots";
 
 export type SchedulePickerDay = {
@@ -15,32 +17,41 @@ export type SchedulePickerSlot = {
   available: boolean;
 };
 
-function formatWeekdayLabel(localDate: string, timezone: string): string {
-  return new Intl.DateTimeFormat("ru-RU", {
+function formatWeekdayLabel(
+  localDate: string,
+  timezone: string,
+  locale: AppLocale,
+): string {
+  return formatDateTime(new Date(`${localDate}T12:00:00Z`), {
+    locale,
     timeZone: timezone,
     weekday: "short",
-  })
-    .format(new Date(`${localDate}T12:00:00Z`))
-    .replace(".", "");
+  }).replace(".", "");
 }
 
-function formatDayNumber(localDate: string, timezone: string): string {
-  return new Intl.DateTimeFormat("ru-RU", {
+function formatDayNumber(
+  localDate: string,
+  timezone: string,
+  locale: AppLocale,
+): string {
+  return formatDateTime(new Date(`${localDate}T12:00:00Z`), {
+    locale,
     timeZone: timezone,
     day: "numeric",
-  }).format(new Date(`${localDate}T12:00:00Z`));
+  });
 }
 
 export function mapSlotsToSchedulePicker(
   timezone: string,
   slots: SlotDto[],
+  locale: AppLocale = DEFAULT_LOCALE,
   dayCount = BOOKING_WIZARD_SLOT_DAY_COUNT,
   now = new Date(),
 ): {
   days: SchedulePickerDay[];
   slotsByDay: Map<string, SchedulePickerSlot[]>;
 } {
-  const dayGroups = groupScheduleSlotsByDay(timezone, slots);
+  const dayGroups = groupScheduleSlotsByDay(timezone, slots, locale);
   const slotsByLocalDate = new Map(
     dayGroups.map((group) => [group.localDate, group.slots]),
   );
@@ -48,8 +59,8 @@ export function mapSlotsToSchedulePicker(
   const localDates = listLocalDatesFromToday(timezone, dayCount, now);
   const days: SchedulePickerDay[] = localDates.map((localDate) => ({
     id: localDate,
-    weekday: formatWeekdayLabel(localDate, timezone),
-    day: formatDayNumber(localDate, timezone),
+    weekday: formatWeekdayLabel(localDate, timezone, locale),
+    day: formatDayNumber(localDate, timezone, locale),
   }));
 
   const slotsByDay = new Map<string, SchedulePickerSlot[]>();

@@ -2,6 +2,7 @@
 
 import { ContentText } from "@/components/atoms";
 import { NavItem } from "@/components/shell/NavItem";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 import {
   resolveBadgeCount,
   type AdminNavBadges,
@@ -15,9 +16,11 @@ type SidebarNavProps = {
 };
 
 export function SidebarNav({ items, sectionTitle, badges }: SidebarNavProps) {
+  const messages = useMessages();
+
   return (
     <nav
-      aria-label="Боковая навигация"
+      aria-label={messages.shell.sidebarNavAriaLabel}
       className="hidden w-52 shrink-0 flex-col border-r border-border/60 bg-background px-3 py-6 md:sticky md:top-16 md:flex md:max-h-[calc(100dvh-4rem)] md:self-start md:overflow-y-auto lg:w-60"
     >
       <ContentText

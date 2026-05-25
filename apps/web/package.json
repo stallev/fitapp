@@ -11,13 +11,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.830.0",
+    "@aws-sdk/s3-request-presigner": "^3.830.0",
     "@base-ui/react": "^1.5.0",
     "@pulse/db": "*",
     "@pulse/domain": "*",
     "@pulse/policy-edge": "*",
     "@pulse/policy-server": "*",
-    "@aws-sdk/client-s3": "^3.830.0",
-    "@aws-sdk/s3-request-presigner": "^3.830.0",
+    "@sentry/nextjs": "^10.53.1",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

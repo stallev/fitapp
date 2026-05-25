@@ -10,19 +10,21 @@ import {
 import { AdminQueueEmptyState } from "@/components/admin/AdminQueueEmptyState";
 import { getAdminDashboardData } from "@/data/admin/get-admin-dashboard.server";
 import { formatMoney } from "@/lib/format-money";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 
 export default async function AdminDashboardPage() {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
   const data = await getAdminDashboardData();
 
   const needsAttention = [
     data.pendingTrainers > 0
       ? {
           href: "/admin/trainers",
-          title: MESSAGES.dashboard.adminNeedsAttention.trainers,
+          title: messages.dashboard.adminNeedsAttention.trainers,
           detail:
             data.oldestPendingTrainerDays !== null
-              ? MESSAGES.dashboard.adminNeedsAttention.oldestWaiting.replace(
+              ? messages.dashboard.adminNeedsAttention.oldestWaiting.replace(
                   "{days}",
                   String(data.oldestPendingTrainerDays),
                 )
@@ -34,9 +36,9 @@ export default async function AdminDashboardPage() {
     data.openComplaints > 0
       ? {
           href: "/admin/complaints",
-          title: MESSAGES.dashboard.adminNeedsAttention.complaints,
+          title: messages.dashboard.adminNeedsAttention.complaints,
           detail: data.hasHighPriorityComplaint
-            ? MESSAGES.dashboard.adminNeedsAttention.highPriority
+            ? messages.dashboard.adminNeedsAttention.highPriority
             : undefined,
           count: data.openComplaints,
           icon: resolveNeedsAttentionIcon("/admin/complaints"),
@@ -45,10 +47,10 @@ export default async function AdminDashboardPage() {
     data.pendingRefunds > 0
       ? {
           href: "/admin/refunds",
-          title: MESSAGES.dashboard.adminNeedsAttention.refunds,
-          detail: MESSAGES.dashboard.adminNeedsAttention.pendingTotal.replace(
+          title: messages.dashboard.adminNeedsAttention.refunds,
+          detail: messages.dashboard.adminNeedsAttention.pendingTotal.replace(
             "{amount}",
-            formatMoney(data.pendingRefundsTotalCents),
+            formatMoney(data.pendingRefundsTotalCents, "USD", locale),
           ),
           count: data.pendingRefunds,
           icon: resolveNeedsAttentionIcon("/admin/refunds"),
@@ -63,15 +65,15 @@ export default async function AdminDashboardPage() {
 
       <section className="space-y-3">
         <Heading as="h2" visualLevel="h4">
-          {MESSAGES.dashboard.adminNeedsAttention.title}
+          {messages.dashboard.adminNeedsAttention.title}
         </Heading>
 
         {needsAttention.length === 0 ? (
           <AdminQueueEmptyState
             icon={CheckCircleIcon}
             variant="success"
-            title={MESSAGES.dashboard.adminNeedsAttention.allClear}
-            description={MESSAGES.empty.adminDashboard.description}
+            title={messages.dashboard.adminNeedsAttention.allClear}
+            description={messages.empty.adminDashboard.description}
           />
         ) : (
           <AdminNeedsAttentionCard items={needsAttention} />

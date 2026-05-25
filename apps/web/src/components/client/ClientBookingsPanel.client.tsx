@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
 
-import { BookingListItem } from "@/components/booking/BookingListItem";
+import { BookingListItem } from "@/components/booking/BookingListItem.client";
 import { ClientBookingCancelDialog } from "@/components/client/ClientBookingCancelDialog.client";
 import { Button } from "@/components/ui/button";
 import { CustomLink } from "@/components/ui/CustomLink";
@@ -24,29 +24,31 @@ import {
   groupBookingsByTab,
   type ClientBookingTab,
 } from "@/lib/booking/booking-tab-utils";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
-
-const TAB_LABELS: Record<ClientBookingTab, string> = {
-  upcoming: MESSAGES.booking.list.tabs.upcoming,
-  past: MESSAGES.booking.list.tabs.past,
-  cancelled: MESSAGES.booking.list.tabs.cancelled,
-};
-
-const EMPTY_COPY: Record<
-  ClientBookingTab,
-  { title: string; description: string }
-> = {
-  upcoming: MESSAGES.booking.list.empty.upcoming,
-  past: MESSAGES.booking.list.empty.past,
-  cancelled: MESSAGES.booking.list.empty.cancelled,
-};
 
 export type ClientBookingsPanelProps = {
   bookings: ClientBookingListEntry[];
 };
 
 export function ClientBookingsPanel({ bookings }: ClientBookingsPanelProps) {
+  const messages = useMessages();
+
+  const tabLabels: Record<ClientBookingTab, string> = {
+    upcoming: messages.booking.list.tabs.upcoming,
+    past: messages.booking.list.tabs.past,
+    cancelled: messages.booking.list.tabs.cancelled,
+  };
+
+  const emptyCopy: Record<
+    ClientBookingTab,
+    { title: string; description: string }
+  > = {
+    upcoming: messages.booking.list.empty.upcoming,
+    past: messages.booking.list.empty.past,
+    cancelled: messages.booking.list.empty.cancelled,
+  };
   const grouped = groupBookingsByTab(bookings);
   const [cancelBookingId, setCancelBookingId] = useState<string | null>(null);
   const [cancelOpen, setCancelOpen] = useState(false);
@@ -57,7 +59,7 @@ export function ClientBookingsPanel({ bookings }: ClientBookingsPanelProps) {
   };
 
   const handleJoinClick = () => {
-    toast.info(MESSAGES.placeholders.sessionVideo, {
+    toast.info(messages.placeholders.sessionVideo, {
       duration: PRODUCT_TOAST_DURATION_MS,
     });
   };
@@ -65,17 +67,17 @@ export function ClientBookingsPanel({ bookings }: ClientBookingsPanelProps) {
   return (
     <>
       <Tabs defaultValue="upcoming" className="space-y-4">
-        <TabsList variant="pill" aria-label={MESSAGES.booking.list.title}>
+        <TabsList variant="pill" aria-label={messages.booking.list.title}>
           {CLIENT_BOOKING_TABS.map((tab) => (
             <TabsTrigger key={tab} value={tab}>
-              {TAB_LABELS[tab]}
+              {tabLabels[tab]}
             </TabsTrigger>
           ))}
         </TabsList>
 
         {CLIENT_BOOKING_TABS.map((tab) => {
           const items = grouped[tab];
-          const emptyCopy = EMPTY_COPY[tab];
+          const emptyStateCopy = emptyCopy[tab];
 
           return (
             <TabsContent key={tab} value={tab} className="space-y-2.5">
@@ -85,13 +87,13 @@ export function ClientBookingsPanel({ bookings }: ClientBookingsPanelProps) {
                     <EmptyMedia variant="icon">
                       <CalendarIcon aria-hidden />
                     </EmptyMedia>
-                    <EmptyTitle>{emptyCopy.title}</EmptyTitle>
-                    <EmptyDescription>{emptyCopy.description}</EmptyDescription>
+                    <EmptyTitle>{emptyStateCopy.title}</EmptyTitle>
+                    <EmptyDescription>{emptyStateCopy.description}</EmptyDescription>
                   </EmptyHeader>
                   <EmptyContent>
                     <Button asChild>
                       <CustomLink href="/trainers">
-                        {MESSAGES.booking.list.empty.cta}
+                        {messages.booking.list.empty.cta}
                       </CustomLink>
                     </Button>
                   </EmptyContent>

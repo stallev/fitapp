@@ -17,7 +17,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type RefundActionsProps = {
@@ -25,6 +26,7 @@ export type RefundActionsProps = {
 };
 
 export function RefundActions({ refundRequestId }: RefundActionsProps) {
+  const messages = useMessages();
   const router = useRouter();
   const [rejectOpen, setRejectOpen] = useState(false);
   const [comment, setComment] = useState("");
@@ -40,7 +42,7 @@ export function RefundActions({ refundRequestId }: RefundActionsProps) {
         return;
       }
 
-      toast.success(MESSAGES.admin.refunds.approveSuccess, {
+      toast.success(messages.admin.refunds.approveSuccess, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
       router.refresh();
@@ -49,7 +51,7 @@ export function RefundActions({ refundRequestId }: RefundActionsProps) {
 
   function handleReject() {
     if (comment.trim().length < 10) {
-      setFieldError(MESSAGES.admin.refunds.adminCommentRequired);
+      setFieldError(messages.admin.refunds.adminCommentRequired);
       return;
     }
 
@@ -67,7 +69,7 @@ export function RefundActions({ refundRequestId }: RefundActionsProps) {
         return;
       }
 
-      toast.success(MESSAGES.admin.refunds.rejectSuccess, {
+      toast.success(messages.admin.refunds.rejectSuccess, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
       setRejectOpen(false);
@@ -84,21 +86,21 @@ export function RefundActions({ refundRequestId }: RefundActionsProps) {
         disabled={isPending}
         aria-busy={isPending}
       >
-        {isPending ? MESSAGES.admin.refunds.approving : MESSAGES.admin.refunds.approve}
+        {isPending ? messages.admin.refunds.approving : messages.admin.refunds.approve}
       </Button>
 
       <AlertDialog open={rejectOpen} onOpenChange={setRejectOpen}>
         <AlertDialogTrigger asChild>
           <Button type="button" variant="outline" disabled={isPending} aria-busy={isPending}>
-            {MESSAGES.admin.refunds.reject}
+            {messages.admin.refunds.reject}
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{MESSAGES.admin.refunds.reject}</AlertDialogTitle>
+            <AlertDialogTitle>{messages.admin.refunds.reject}</AlertDialogTitle>
           </AlertDialogHeader>
           <div className="space-y-2">
-            <Label htmlFor="refund-comment">{MESSAGES.admin.refunds.adminCommentLabel}</Label>
+            <Label htmlFor="refund-comment">{messages.admin.refunds.adminCommentLabel}</Label>
             <Textarea
               id="refund-comment"
               value={comment}
@@ -112,7 +114,7 @@ export function RefundActions({ refundRequestId }: RefundActionsProps) {
             ) : null}
           </div>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>{MESSAGES.shell.back}</AlertDialogCancel>
+            <AlertDialogCancel disabled={isPending}>{messages.shell.back}</AlertDialogCancel>
             <Button
               type="button"
               variant="destructive"
@@ -121,8 +123,8 @@ export function RefundActions({ refundRequestId }: RefundActionsProps) {
               aria-busy={isPending}
             >
               {isPending
-                ? MESSAGES.admin.refunds.rejecting
-                : MESSAGES.admin.refunds.reject}
+                ? messages.admin.refunds.rejecting
+                : messages.admin.refunds.reject}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>

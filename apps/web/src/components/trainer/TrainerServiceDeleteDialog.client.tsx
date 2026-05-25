@@ -11,7 +11,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import type { TrainerServiceForEdit } from "@/data/trainer/get-trainer-services-for-edit.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 export type TrainerServiceDeleteDialogProps = {
   service: TrainerServiceForEdit | null;
@@ -20,24 +21,25 @@ export type TrainerServiceDeleteDialogProps = {
   onConfirm: () => void;
 };
 
-export function TrainerServiceDeleteDialog({
-  service,
+export function TrainerServiceDeleteDialog({  service,
   isPending,
   onOpenChange,
   onConfirm,
 }: TrainerServiceDeleteDialogProps) {
+  const messages = useMessages();
+
   return (
     <AlertDialog open={service !== null} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{MESSAGES.trainer.services.deleteConfirmTitle}</AlertDialogTitle>
+          <AlertDialogTitle>{messages.trainer.services.deleteConfirmTitle}</AlertDialogTitle>
           <AlertDialogDescription>
-            {MESSAGES.trainer.services.deleteConfirmDescription}
+            {messages.trainer.services.deleteConfirmDescription}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>
-            {MESSAGES.trainer.services.cancel}
+            {messages.trainer.services.cancel}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={(event) => {
@@ -48,7 +50,7 @@ export function TrainerServiceDeleteDialog({
             aria-busy={isPending}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {MESSAGES.trainer.services.deleteConfirmAction}
+            {messages.trainer.services.deleteConfirmAction}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -3,7 +3,7 @@ import {
   type SaveOnboardingStep2Input,
 } from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
+import type { Messages } from "@/lib/messages/types";
 
 export type OnboardingStep2FieldErrors = {
   bio?: string;
@@ -11,22 +11,26 @@ export type OnboardingStep2FieldErrors = {
   experienceYears?: string;
 };
 
-function messageForPath(path: string, code: string): string | undefined {
+function messageForPath(
+  path: string,
+  code: string,
+  messages: Messages,
+): string | undefined {
   if (path === "bio") {
     if (code === "too_small") {
-      return MESSAGES.trainer.onboarding.errors.bioTooShort;
+      return messages.trainer.onboarding.errors.bioTooShort;
     }
     if (code === "too_big") {
-      return MESSAGES.trainer.onboarding.errors.bioTooLong;
+      return messages.trainer.onboarding.errors.bioTooLong;
     }
   }
 
   if (path === "experienceYears") {
-    return MESSAGES.trainer.onboarding.errors.experienceInvalid;
+    return messages.trainer.onboarding.errors.experienceInvalid;
   }
 
   if (path === "specializationSlugs") {
-    return MESSAGES.trainer.onboarding.errors.specializationsInvalid;
+    return messages.trainer.onboarding.errors.specializationsInvalid;
   }
 
   return undefined;
@@ -34,6 +38,7 @@ function messageForPath(path: string, code: string): string | undefined {
 
 export function validateOnboardingStep2Input(
   input: SaveOnboardingStep2Input,
+  messages: Messages,
 ): OnboardingStep2FieldErrors {
   const parsed = saveOnboardingStep2Schema.safeParse(input);
   if (parsed.success) {
@@ -49,8 +54,8 @@ export function validateOnboardingStep2Input(
     }
 
     const message =
-      messageForPath(path, issue.code) ??
-      MESSAGES.trainer.onboarding.errors.validation;
+      messageForPath(path, issue.code, messages) ??
+      messages.trainer.onboarding.errors.validation;
 
     if (path === "bio" || path === "experienceYears" || path === "specializationSlugs") {
       errors[path] = message;

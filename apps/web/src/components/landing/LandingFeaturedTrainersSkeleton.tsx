@@ -2,7 +2,8 @@ import { PulseCard } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 function FeaturedTrainerCardSkeleton() {
   return (
@@ -21,8 +22,9 @@ function FeaturedTrainerCardSkeleton() {
   );
 }
 
-export function LandingFeaturedTrainersSkeleton() {
-  const { featured } = MESSAGES.landing;
+export async function LandingFeaturedTrainersSkeleton() {
+  const messages = await getMessages();
+  const { featured } = messages.landing;
 
   return (
     <section

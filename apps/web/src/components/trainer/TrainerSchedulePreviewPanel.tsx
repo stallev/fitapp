@@ -1,22 +1,28 @@
 import { ContentText, SectionTitle } from "@/components/atoms";
 import type { TrainerSchedulePreview } from "@/data/trainer/get-trainer-schedule-preview.server";
 import { groupScheduleSlotsByDay } from "@/lib/trainer/group-schedule-slots";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 import { cn } from "@/lib/utils";
 
 export type TrainerSchedulePreviewProps = {
   preview: TrainerSchedulePreview;
 };
 
-export function TrainerSchedulePreviewPanel({ preview }: TrainerSchedulePreviewProps) {
-  const dayGroups = groupScheduleSlotsByDay(preview.timezone, preview.slots);
+export async function TrainerSchedulePreviewPanel({ preview }: TrainerSchedulePreviewProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
+  const dayGroups = groupScheduleSlotsByDay(
+    preview.timezone,
+    preview.slots,
+    locale,
+  );
 
   if (dayGroups.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-border p-6 text-center">
-        <SectionTitle as="h3">{MESSAGES.trainer.profile.scheduleEmpty.title}</SectionTitle>
+        <SectionTitle as="h3">{messages.trainer.profile.scheduleEmpty.title}</SectionTitle>
         <ContentText variant="muted" as="p" className="mt-2">
-          {MESSAGES.trainer.profile.scheduleEmpty.description}
+          {messages.trainer.profile.scheduleEmpty.description}
         </ContentText>
       </div>
     );
@@ -25,7 +31,7 @@ export function TrainerSchedulePreviewPanel({ preview }: TrainerSchedulePreviewP
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <SectionTitle as="h3">{MESSAGES.trainer.profile.scheduleThisWeek}</SectionTitle>
+        <SectionTitle as="h3">{messages.trainer.profile.scheduleThisWeek}</SectionTitle>
         <ContentText variant="mutedMicro" as="p" className="font-mono">
           {preview.timezoneLabel}
         </ContentText>

@@ -3,22 +3,24 @@ import { NextResponse } from "next/server";
 import { BOOKING_MUTATION_ERROR_CODES } from "@pulse/domain";
 
 import { completeBookingWithCacheInvalidation } from "@/data/trainer/complete-booking.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export async function POST(
   _request: Request,
   context: { params: Promise<{ bookingId: string }> },
 ) {
+  const messages = await getMessages();
   const { bookingId } = await context.params;
   const result = await completeBookingWithCacheInvalidation({ bookingId });
 
   if (!result.ok) {
     const message =
       result.code === BOOKING_MUTATION_ERROR_CODES.UNAUTHORIZED
-        ? MESSAGES.booking.errors.unauthorized
+        ? messages.booking.errors.unauthorized
         : result.code === BOOKING_MUTATION_ERROR_CODES.FORBIDDEN
-          ? MESSAGES.booking.errors.forbidden
-          : MESSAGES.trainer.clients.errors.generic;
+          ? messages.booking.errors.forbidden
+          : messages.trainer.clients.errors.generic;
 
     return NextResponse.json(
       { ...result, message },

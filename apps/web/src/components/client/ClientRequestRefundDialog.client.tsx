@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type ClientRequestRefundDialogProps = {
@@ -25,10 +26,11 @@ export type ClientRequestRefundDialogProps = {
   maxAmountCents: number;
 };
 
-export function ClientRequestRefundDialog({
-  bookingId,
+export function ClientRequestRefundDialog({  bookingId,
   maxAmountCents,
 }: ClientRequestRefundDialogProps) {
+  const messages = useMessages();
+
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [amountCents, setAmountCents] = useState(String(maxAmountCents));
@@ -48,7 +50,7 @@ export function ClientRequestRefundDialog({
         return;
       }
 
-      toast.success(MESSAGES.clientComplaint.refundSuccess, {
+      toast.success(messages.clientComplaint.refundSuccess, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
       setOpen(false);
@@ -66,16 +68,16 @@ export function ClientRequestRefundDialog({
           disabled={isPending}
           aria-busy={isPending}
         >
-          {MESSAGES.clientComplaint.requestRefund}
+          {messages.clientComplaint.requestRefund}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{MESSAGES.clientComplaint.requestRefund}</DialogTitle>
+          <DialogTitle>{messages.clientComplaint.requestRefund}</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="refund-amount">{MESSAGES.clientComplaint.amountLabel}</Label>
+            <Label htmlFor="refund-amount">{messages.clientComplaint.amountLabel}</Label>
             <Input
               id="refund-amount"
               type="number"
@@ -87,7 +89,7 @@ export function ClientRequestRefundDialog({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="refund-reason">{MESSAGES.clientComplaint.reasonLabel}</Label>
+            <Label htmlFor="refund-reason">{messages.clientComplaint.reasonLabel}</Label>
             <Textarea
               id="refund-reason"
               value={reason}
@@ -105,8 +107,8 @@ export function ClientRequestRefundDialog({
             aria-busy={isPending}
           >
             {isPending
-              ? MESSAGES.clientComplaint.refundSubmitting
-              : MESSAGES.clientComplaint.refundSubmit}
+              ? messages.clientComplaint.refundSubmitting
+              : messages.clientComplaint.refundSubmit}
           </Button>
         </DialogFooter>
       </DialogContent>

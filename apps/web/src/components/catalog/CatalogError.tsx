@@ -2,15 +2,17 @@ import { AlertCircleIcon } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CatalogRetryButton } from "@/components/catalog/CatalogRetryButton.client";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export function CatalogError() {
+
+export async function CatalogError() {
+  const messages = await getMessages();
   return (
     <Alert variant="destructive">
       <AlertCircleIcon aria-hidden />
-      <AlertTitle>{MESSAGES.catalog.error.title}</AlertTitle>
+      <AlertTitle>{messages.catalog.error.title}</AlertTitle>
       <AlertDescription className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <span>{MESSAGES.catalog.error.description}</span>
+        <span>{messages.catalog.error.description}</span>
         <CatalogRetryButton />
       </AlertDescription>
     </Alert>

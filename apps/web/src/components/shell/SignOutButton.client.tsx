@@ -6,13 +6,15 @@ import { Loader2Icon, LogOutIcon } from "lucide-react";
 import { signOutAction } from "@/actions/auth/sign-out";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 type SignOutButtonProps = {
   className?: string;
 };
 
 export function SignOutButton({ className }: SignOutButtonProps) {
+  const messages = useMessages();
   const [pending, startTransition] = useTransition();
 
   const handleSignOut = () => {
@@ -37,7 +39,7 @@ export function SignOutButton({ className }: SignOutButtonProps) {
         <LogOutIcon aria-hidden className="size-4" />
       )}
       <span className="sr-only sm:not-sr-only sm:inline">
-        {pending ? MESSAGES.shell.signOutPending : MESSAGES.shell.signOut}
+        {pending ? messages.shell.signOutPending : messages.shell.signOut}
       </span>
     </Button>
   );

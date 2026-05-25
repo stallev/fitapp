@@ -4,9 +4,11 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 export function CatalogRetryButton() {
+  const messages = useMessages();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -23,7 +25,7 @@ export function CatalogRetryButton() {
         });
       }}
     >
-      {isPending ? MESSAGES.catalog.error.retrying : MESSAGES.catalog.error.retry}
+      {isPending ? messages.catalog.error.retrying : messages.catalog.error.retry}
     </Button>
   );
 }

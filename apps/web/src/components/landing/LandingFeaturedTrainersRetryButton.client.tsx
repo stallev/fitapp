@@ -4,9 +4,11 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 export function LandingFeaturedTrainersRetryButton() {
+  const messages = useMessages();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -24,8 +26,8 @@ export function LandingFeaturedTrainersRetryButton() {
       }}
     >
       {isPending
-        ? MESSAGES.landing.featured.error.retrying
-        : MESSAGES.landing.featured.error.retry}
+        ? messages.landing.featured.error.retrying
+        : messages.landing.featured.error.retry}
     </Button>
   );
 }

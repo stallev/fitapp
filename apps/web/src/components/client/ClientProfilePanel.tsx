@@ -10,7 +10,9 @@ import { Button } from "@/components/ui/button";
 import { PulseCard } from "@/components/ui/card";
 
 import type { ClientProfile } from "@/data/client/get-client-profile.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+import { LocaleSettingsRow } from "@/components/i18n/LocaleSettingsRow";
+
 
 function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -29,6 +31,7 @@ export type ClientProfilePanelProps = {
 };
 
 export function ClientProfilePanel({ profile }: ClientProfilePanelProps) {
+  const messages = useMessages();
   const [pending, startTransition] = useTransition();
 
   const handleSignOut = () => {
@@ -40,7 +43,7 @@ export function ClientProfilePanel({ profile }: ClientProfilePanelProps) {
   return (
     <div className="space-y-6 py-4 md:max-w-2xl">
       <Heading as="h1" visualLevel="h2">
-        {MESSAGES.profile.client.title}
+        {messages.profile.client.title}
       </Heading>
 
       <PulseCard className="flex items-center gap-3 p-4">
@@ -60,6 +63,12 @@ export function ClientProfilePanel({ profile }: ClientProfilePanelProps) {
         </div>
       </PulseCard>
 
+      <PulseCard className="p-4">
+        <ul className="list-none">
+          <LocaleSettingsRow />
+        </ul>
+      </PulseCard>
+
       <Button
         type="button"
         variant="outline"
@@ -74,8 +83,8 @@ export function ClientProfilePanel({ profile }: ClientProfilePanelProps) {
           <LogOutIcon className="size-4" aria-hidden />
         )}
         {pending
-          ? MESSAGES.profile.client.signOutPending
-          : MESSAGES.profile.client.signOut}
+          ? messages.profile.client.signOutPending
+          : messages.profile.client.signOut}
       </Button>
     </div>
   );

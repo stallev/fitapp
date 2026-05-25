@@ -21,10 +21,20 @@ import {
   formatBookingPrice,
 } from "@/lib/booking/booking-wizard-utils";
 import type { TrainerServiceItem } from "@/lib/trainer/trainer-profile";
-import { MESSAGES } from "@/lib/messages";
+import {
+  useLocale,
+  useMessages,
+} from "@/components/i18n/LocaleProvider.client";
+
+import {
+  setSubmitTransportTag,
+  SUBMIT_TRANSPORT_TAGS,
+} from "@/lib/sentry/pulse-tags";
 import { isIosSafari } from "@/lib/ui/is-ios-safari";
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 import { resilientPostFetch } from "@/lib/ui/resilient-post-fetch";
+
+import type { Messages } from "@/lib/messages/types";
 
 const MESSAGE_MAX = 500;
 
@@ -37,27 +47,29 @@ export type BookingWizardConfirmStepProps = {
   onSlotUnavailable: () => void;
 };
 
-function mapBookingErrorMessage(code: string): string {
+function mapBookingErrorMessage(code: string, messages: Messages): string {
   switch (code) {
     case BOOKING_MUTATION_ERROR_CODES.SLOT_UNAVAILABLE:
-      return MESSAGES.booking.errors.slotUnavailable;
+      return messages.booking.errors.slotUnavailable;
     case BOOKING_MUTATION_ERROR_CODES.SERVICE_INACTIVE:
-      return MESSAGES.booking.errors.serviceInactive;
+      return messages.booking.errors.serviceInactive;
     case BOOKING_MUTATION_ERROR_CODES.SLOT_IN_PAST:
-      return MESSAGES.booking.errors.slotInPast;
+      return messages.booking.errors.slotInPast;
     default:
-      return MESSAGES.booking.errors.generic;
+      return messages.booking.errors.generic;
   }
 }
 
-export function BookingWizardConfirmStep({
-  trainerProfileId,
+export function BookingWizardConfirmStep({  trainerProfileId,
   service,
   startsAtUtc,
   timezone,
   trainerName,
   onSlotUnavailable,
 }: BookingWizardConfirmStepProps) {
+  const messages = useMessages();
+  const locale = useLocale();
+
   const router = useRouter();
   const [state, formAction, isActionPending] = useActionState(
     createBookingAction,
@@ -72,7 +84,7 @@ export function BookingWizardConfirmStep({
       return;
     }
 
-    toast.error(state.message ?? mapBookingErrorMessage(state.code), {
+    toast.error(state.message ?? mapBookingErrorMessage(state.code, messages), {
       duration: PRODUCT_TOAST_DURATION_MS,
     });
 
@@ -83,6 +95,8 @@ export function BookingWizardConfirmStep({
 
   function submitViaApi(formData: FormData) {
     startFallbackTransition(async () => {
+      setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.ROUTE_HANDLER_FALLBACK);
+
       try {
         const clientMessage = formData.get("clientMessage");
         const response = await resilientPostFetch("/api/client/bookings", {
@@ -102,14 +116,14 @@ export function BookingWizardConfirmStep({
         const result = (await response.json()) as MutationResult<{ id: string }>;
 
         if (!response.ok && !("ok" in result)) {
-          toast.error(MESSAGES.booking.errors.generic, {
+          toast.error(messages.booking.errors.generic, {
             duration: PRODUCT_TOAST_DURATION_MS,
           });
           return;
         }
 
         if (!result.ok) {
-          toast.error(result.message ?? mapBookingErrorMessage(result.code), {
+          toast.error(result.message ?? mapBookingErrorMessage(result.code, messages), {
             duration: PRODUCT_TOAST_DURATION_MS,
           });
 
@@ -122,7 +136,7 @@ export function BookingWizardConfirmStep({
 
         router.push(`/client/bookings/${result.data.id}?booked=1`);
       } catch {
-        toast.error(MESSAGES.booking.errors.generic, {
+        toast.error(messages.booking.errors.generic, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
       }
@@ -131,6 +145,7 @@ export function BookingWizardConfirmStep({
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     if (!isIosSafari()) {
+      setSubmitTransportTag(SUBMIT_TRANSPORT_TAGS.SERVER_ACTION);
       return;
     }
 
@@ -150,25 +165,25 @@ export function BookingWizardConfirmStep({
       <input type="hidden" name="startsAtUtc" value={startsAtUtc} />
 
       <SummaryCard
-        title={MESSAGES.booking.wizard.summaryTitle}
+        title={messages.booking.wizard.summaryTitle}
         rows={[
           {
-            label: MESSAGES.booking.detail.trainerLabel,
+            label: messages.booking.detail.trainerLabel,
             value: trainerName,
           },
           {
-            label: MESSAGES.booking.detail.serviceLabel,
+            label: messages.booking.detail.serviceLabel,
             value: service.name,
           },
           {
-            label: MESSAGES.booking.detail.timeLabel,
-            value: formatBookingDateTime(startsAtUtc, timezone),
+            label: messages.booking.detail.timeLabel,
+            value: formatBookingDateTime(startsAtUtc, timezone, locale),
           },
         ]}
         totals={[
           {
-            label: MESSAGES.booking.detail.priceLabel,
-            value: formatBookingPrice(service.priceCents, service.currency),
+            label: messages.booking.detail.priceLabel,
+            value: formatBookingPrice(service.priceCents, service.currency, locale),
           },
         ]}
         className="w-full"
@@ -176,19 +191,19 @@ export function BookingWizardConfirmStep({
 
       <Field>
         <FieldLabel htmlFor="clientMessage">
-          {MESSAGES.booking.wizard.messageLabel}
+          {messages.booking.wizard.messageLabel}
         </FieldLabel>
         <Textarea
           id="clientMessage"
           name="clientMessage"
           maxLength={MESSAGE_MAX}
           disabled={pending}
-          placeholder={MESSAGES.booking.wizard.messagePlaceholder}
+          placeholder={messages.booking.wizard.messagePlaceholder}
           rows={4}
           onChange={(event) => setMessageLength(event.target.value.length)}
         />
         <ContentText variant="mutedMicro" as="p" className="font-mono">
-          {MESSAGES.booking.wizard.messageCounter
+          {messages.booking.wizard.messageCounter
             .replace("{count}", String(messageLength))
             .replace("{max}", String(MESSAGE_MAX))}
         </ContentText>
@@ -205,10 +220,10 @@ export function BookingWizardConfirmStep({
           {pending ? (
             <>
               <Loader2Icon aria-hidden className="size-4 animate-spin" />
-              {MESSAGES.booking.wizard.submitting}
+              {messages.booking.wizard.submitting}
             </>
           ) : (
-            MESSAGES.booking.wizard.confirm
+            messages.booking.wizard.confirm
           )}
         </Button>
       </div>

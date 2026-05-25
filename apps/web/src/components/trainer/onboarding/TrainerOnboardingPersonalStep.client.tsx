@@ -29,7 +29,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type TrainerOnboardingPersonalStepProps = {
@@ -39,12 +40,13 @@ export type TrainerOnboardingPersonalStepProps = {
   onNext: () => void;
 };
 
-export function TrainerOnboardingPersonalStep({
-  initialTimezone,
+export function TrainerOnboardingPersonalStep({  initialTimezone,
   initialPhotoUrl,
   onBack,
   onNext,
 }: TrainerOnboardingPersonalStepProps) {
+  const messages = useMessages();
+
   const [timezone, setTimezone] = useState<TrainerTimezone | "">(initialTimezone);
   const [photoUrl, setPhotoUrl] = useState<string | null>(initialPhotoUrl);
   const [photoFileAssetId, setPhotoFileAssetId] = useState<string | undefined>();
@@ -53,7 +55,7 @@ export function TrainerOnboardingPersonalStep({
 
   const handleNext = () => {
     if (!timezone) {
-      setTimezoneError(MESSAGES.trainer.onboarding.errors.timezoneRequired);
+      setTimezoneError(messages.trainer.onboarding.errors.timezoneRequired);
       return;
     }
 
@@ -65,11 +67,11 @@ export function TrainerOnboardingPersonalStep({
       });
 
       if (!result?.ok) {
-        toast.error(result?.message ?? MESSAGES.trainer.onboarding.errors.generic, {
+        toast.error(result?.message ?? messages.trainer.onboarding.errors.generic, {
           duration: PRODUCT_TOAST_DURATION_MS,
         });
         if (result?.code === "VALIDATION") {
-          setTimezoneError(MESSAGES.trainer.onboarding.errors.timezoneRequired);
+          setTimezoneError(messages.trainer.onboarding.errors.timezoneRequired);
         }
         return;
       }
@@ -82,7 +84,7 @@ export function TrainerOnboardingPersonalStep({
     <div className="space-y-6">
       <div className="mx-auto size-24">
         <PhotoSlot
-          label={MESSAGES.trainer.onboarding.photoLabel}
+          label={messages.trainer.onboarding.photoLabel}
           src={photoUrl}
           aspect="square"
           className="size-24 rounded-full"
@@ -93,7 +95,7 @@ export function TrainerOnboardingPersonalStep({
       <FileUploadZone
         purpose={FILE_UPLOAD_PURPOSE.PROFILE_PHOTO}
         accept="image/jpeg,image/png,image/webp"
-        label={MESSAGES.trainer.onboarding.photoUpload}
+        label={messages.trainer.onboarding.photoUpload}
         disabled={isPending}
         onUploaded={({ fileAssetId, readUrl }) => {
           setPhotoFileAssetId(fileAssetId);
@@ -103,9 +105,9 @@ export function TrainerOnboardingPersonalStep({
 
       <FieldGroup>
         <Field data-invalid={timezoneError ? true : undefined}>
-          <FieldLabel>{MESSAGES.trainer.onboarding.timezoneLabel}</FieldLabel>
+          <FieldLabel>{messages.trainer.onboarding.timezoneLabel}</FieldLabel>
           <ContentText variant="mutedMicro" as="p" className="mb-2">
-            {MESSAGES.trainer.onboarding.timezoneHint}
+            {messages.trainer.onboarding.timezoneHint}
           </ContentText>
           <Select
             value={timezone || undefined}
@@ -113,7 +115,7 @@ export function TrainerOnboardingPersonalStep({
             disabled={isPending}
           >
             <SelectTrigger aria-invalid={timezoneError ? true : undefined}>
-              <SelectValue placeholder={MESSAGES.trainer.onboarding.timezonePlaceholder} />
+              <SelectValue placeholder={messages.trainer.onboarding.timezonePlaceholder} />
             </SelectTrigger>
             <SelectContent>
               {TRAINER_TIMEZONES.map((entry) => (
@@ -129,16 +131,16 @@ export function TrainerOnboardingPersonalStep({
 
       <div className="flex gap-3">
         <Button type="button" variant="outline" onClick={onBack} disabled={isPending}>
-          {MESSAGES.trainer.onboarding.back}
+          {messages.trainer.onboarding.back}
         </Button>
         <Button type="button" className="flex-1" onClick={handleNext} disabled={isPending} aria-busy={isPending}>
           {isPending ? (
             <>
               <Loader2Icon aria-hidden className="size-4 animate-spin" />
-              {MESSAGES.trainer.onboarding.nextSaving}
+              {messages.trainer.onboarding.nextSaving}
             </>
           ) : (
-            MESSAGES.trainer.onboarding.next
+            messages.trainer.onboarding.next
           )}
         </Button>
       </div>

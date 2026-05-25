@@ -11,38 +11,41 @@ import {
 } from "@pulse/domain";
 import { getPrisma } from "@pulse/db";
 
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+import type { Messages } from "@/lib/messages/types";
+
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 
 export type RequestRefundResult = MutationResult<{ refundRequestId: string }>;
 
 function mapValidationError(
   code: (typeof REFUND_MUTATION_ERROR_CODES)[keyof typeof REFUND_MUTATION_ERROR_CODES],
+  messages: Messages,
 ): RequestRefundResult {
   switch (code) {
     case REFUND_MUTATION_ERROR_CODES.AMOUNT_EXCEEDS_BOOKING:
       return {
         ok: false,
         code,
-        message: MESSAGES.clientComplaint.errors.amountExceeds,
+        message: messages.clientComplaint.errors.amountExceeds,
       };
     case REFUND_MUTATION_ERROR_CODES.DUPLICATE_PENDING:
       return {
         ok: false,
         code,
-        message: MESSAGES.clientComplaint.errors.duplicateRefund,
+        message: messages.clientComplaint.errors.duplicateRefund,
       };
     case REFUND_MUTATION_ERROR_CODES.BOOKING_NOT_ELIGIBLE:
       return {
         ok: false,
         code,
-        message: MESSAGES.clientComplaint.errors.notEligible,
+        message: messages.clientComplaint.errors.notEligible,
       };
     default:
       return {
         ok: false,
         code: REFUND_MUTATION_ERROR_CODES.VALIDATION,
-        message: MESSAGES.clientComplaint.errors.validation,
+        message: messages.clientComplaint.errors.validation,
       };
   }
 }
@@ -50,12 +53,13 @@ function mapValidationError(
 export async function requestRefundMutation(
   input: RequestRefundInput,
 ): Promise<RequestRefundResult> {
+  const messages = await getMessages();
   const parsed = requestRefundInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.clientComplaint.errors.validation,
+      message: messages.clientComplaint.errors.validation,
     };
   }
 
@@ -64,7 +68,7 @@ export async function requestRefundMutation(
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.UNAUTHORIZED,
-      message: MESSAGES.admin.errors.unauthorized,
+      message: messages.admin.errors.unauthorized,
     };
   }
 
@@ -84,7 +88,7 @@ export async function requestRefundMutation(
     return {
       ok: false,
       code: REFUND_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.clientComplaint.errors.notEligible,
+      message: messages.clientComplaint.errors.notEligible,
     };
   }
 
@@ -106,7 +110,7 @@ export async function requestRefundMutation(
   });
 
   if (validation) {
-    return mapValidationError(validation.code);
+    return mapValidationError(validation.code, messages);
   }
 
   const refund = await prisma.$transaction(async (tx) => {

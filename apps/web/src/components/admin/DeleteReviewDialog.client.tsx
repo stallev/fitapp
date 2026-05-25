@@ -16,7 +16,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export type DeleteReviewDialogProps = {
@@ -24,6 +25,7 @@ export type DeleteReviewDialogProps = {
 };
 
 export function DeleteReviewDialog({ reviewId }: DeleteReviewDialogProps) {
+  const messages = useMessages();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -36,7 +38,7 @@ export function DeleteReviewDialog({ reviewId }: DeleteReviewDialogProps) {
         return;
       }
 
-      toast.success(MESSAGES.admin.reviews.deleteSuccess, {
+      toast.success(messages.admin.reviews.deleteSuccess, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
       router.refresh();
@@ -54,19 +56,19 @@ export function DeleteReviewDialog({ reviewId }: DeleteReviewDialogProps) {
           disabled={isPending}
           aria-busy={isPending}
         >
-          {MESSAGES.admin.reviews.delete}
+          {messages.admin.reviews.delete}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{MESSAGES.admin.reviews.delete}</AlertDialogTitle>
+          <AlertDialogTitle>{messages.admin.reviews.delete}</AlertDialogTitle>
           <AlertDialogDescription>
-            {MESSAGES.admin.reviews.confirmDelete}
+            {messages.admin.reviews.confirmDelete}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending}>
-            {MESSAGES.shell.back}
+            {messages.shell.back}
           </AlertDialogCancel>
           <Button
             type="button"
@@ -76,8 +78,8 @@ export function DeleteReviewDialog({ reviewId }: DeleteReviewDialogProps) {
             aria-busy={isPending}
           >
             {isPending
-              ? MESSAGES.admin.reviews.deleting
-              : MESSAGES.admin.reviews.delete}
+              ? messages.admin.reviews.deleting
+              : messages.admin.reviews.delete}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

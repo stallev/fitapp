@@ -5,19 +5,22 @@ import { Heading } from "@/components/atoms";
 import { ReviewBookingContext } from "@/components/client/ReviewBookingContext";
 import { ReviewForm } from "@/components/client/ReviewForm.client";
 import { resolveClientReviewPageAccess } from "@/data/client/get-client-review-form.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 type ClientReviewPageProps = {
   params: Promise<{ bookingId: string }>;
 };
 
 export async function generateMetadata(): Promise<Metadata> {
+  const messages = await getMessages();
   return {
-    title: MESSAGES.review.metaTitle,
+    title: messages.review.metaTitle,
   };
 }
 
 export default async function ClientReviewPage({ params }: ClientReviewPageProps) {
+  const messages = await getMessages();
   const { bookingId } = await params;
   const access = await resolveClientReviewPageAccess(bookingId);
 
@@ -34,7 +37,7 @@ export default async function ClientReviewPage({ params }: ClientReviewPageProps
   return (
     <div className="mx-auto w-full max-w-2xl space-y-6 py-4 pb-6">
       <Heading as="h1" visualLevel="h2">
-        {MESSAGES.review.heading}
+        {messages.review.heading}
       </Heading>
       <ReviewBookingContext context={context} />
       <ReviewForm bookingId={context.bookingId} />

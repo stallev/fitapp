@@ -9,7 +9,7 @@ import {
 
 import { signIn } from "@/auth";
 import { registerTrainerUser } from "@/data/trainer/register-trainer.server";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
 
 export type RegisterTrainerFormState = MutationResult<{ step: 1 }> | null;
 
@@ -17,12 +17,13 @@ export async function registerTrainerAction(
   _prevState: RegisterTrainerFormState,
   formData: FormData,
 ): Promise<RegisterTrainerFormState> {
+  const messages = await getMessages();
   const acceptedTerms = formData.get("acceptedTerms") === "on";
   if (!acceptedTerms) {
     return {
       ok: false,
       code: AUTH_MUTATION_ERROR_CODES.TERMS_REQUIRED,
-      message: MESSAGES.auth.register.termsRequired,
+      message: messages.auth.register.termsRequired,
     };
   }
 
@@ -35,7 +36,7 @@ export async function registerTrainerAction(
     return {
       ok: false,
       code: AUTH_MUTATION_ERROR_CODES.PASSWORD_MISMATCH,
-      message: MESSAGES.auth.register.passwordMismatch,
+      message: messages.auth.register.passwordMismatch,
     };
   }
 
@@ -44,24 +45,25 @@ export async function registerTrainerAction(
     return {
       ok: false,
       code: TRAINER_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.auth.register.validationError,
+      message: messages.auth.register.validationError,
     };
   }
 
-  const result = await registerTrainerUser(parsed.data);
+  const locale = await getLocale();
+  const result = await registerTrainerUser(parsed.data, locale);
   if (!result.ok) {
     if (result.code === TRAINER_MUTATION_ERROR_CODES.DUPLICATE_EMAIL) {
       return {
         ok: false,
         code: TRAINER_MUTATION_ERROR_CODES.DUPLICATE_EMAIL,
-        message: MESSAGES.auth.register.duplicateEmail,
+        message: messages.auth.register.duplicateEmail,
       };
     }
 
     return {
       ok: false,
       code: result.code,
-      message: MESSAGES.trainer.onboarding.errors.generic,
+      message: messages.trainer.onboarding.errors.generic,
     };
   }
 

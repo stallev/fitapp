@@ -7,15 +7,17 @@ import type { ComplaintListItem } from "@/data/admin/list-complaints.server";
 import { getComplaintPriorityBadge } from "@/lib/admin/complaint-badges";
 import { computeWaitingDays } from "@/lib/admin/compute-waiting-days";
 import { formatAdminRelativeDate } from "@/lib/date/format-admin-relative";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 
 export type ComplaintQueueCardProps = {
   item: ComplaintListItem;
   actions: React.ReactNode;
 };
 
-export function ComplaintQueueCard({ item, actions }: ComplaintQueueCardProps) {
-  const priorityBadge = getComplaintPriorityBadge(item.priority);
+export async function ComplaintQueueCard({ item, actions }: ComplaintQueueCardProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
+  const priorityBadge = getComplaintPriorityBadge(item.priority, messages);
 
   return (
     <PulseCard variant="base" className="h-full rounded-2xl">
@@ -25,21 +27,21 @@ export function ComplaintQueueCard({ item, actions }: ComplaintQueueCardProps) {
             {priorityBadge.label}
           </StatusBadge>
           <ContentText as="span" className="text-[11.5px] text-muted-foreground">
-            · {formatAdminRelativeDate(item.createdAt)}
+            · {formatAdminRelativeDate(item.createdAt, locale)}
           </ContentText>
         </div>
 
         <div className="space-y-1 text-sm">
           <ContentText as="p">
             <span className="text-muted-foreground">
-              {MESSAGES.admin.complaints.fromLabel}
+              {messages.admin.complaints.fromLabel}
             </span>{" "}
             {item.reporterName}
           </ContentText>
           {item.trainerName ? (
             <ContentText as="p">
               <span className="text-muted-foreground">
-                {MESSAGES.admin.complaints.onLabel}
+                {messages.admin.complaints.onLabel}
               </span>{" "}
               {item.trainerName}
             </ContentText>
@@ -52,12 +54,12 @@ export function ComplaintQueueCard({ item, actions }: ComplaintQueueCardProps) {
 
         {item.status === COMPLAINT_STATUS.IN_REVIEW && item.assigneeName ? (
           <ContentText as="p" className="text-xs text-muted-foreground">
-            {MESSAGES.admin.complaints.assigneeLine.replace(
+            {messages.admin.complaints.assigneeLine.replace(
               "{name}",
               item.assigneeName,
             )}
             {item.reviewStartedAt
-              ? ` · ${MESSAGES.admin.complaints.daysInReview.replace(
+              ? ` · ${messages.admin.complaints.daysInReview.replace(
                   "{days}",
                   String(computeWaitingDays(item.reviewStartedAt)),
                 )}`

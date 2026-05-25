@@ -6,8 +6,9 @@ import { PulseCard } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import type { WeeklyIntervalInput } from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
-import { SCHEDULE_WEEKDAYS } from "@/lib/trainer/schedule-weekdays";
+import { useLocale, useMessages } from "@/components/i18n/LocaleProvider.client";
+
+import { getScheduleWeekdays } from "@/lib/trainer/schedule-weekdays";
 
 import { IntervalChip } from "./IntervalChip";
 
@@ -21,8 +22,7 @@ export type ScheduleDayRowProps = {
   onRemoveInterval: (index: number) => void;
 };
 
-export function ScheduleDayRow({
-  dayOfWeek,
+export function ScheduleDayRow({  dayOfWeek,
   intervals,
   enabled,
   disabled = false,
@@ -30,7 +30,12 @@ export function ScheduleDayRow({
   onRequestAddInterval,
   onRemoveInterval,
 }: ScheduleDayRowProps) {
-  const day = SCHEDULE_WEEKDAYS.find((item) => item.dayOfWeek === dayOfWeek);
+  const messages = useMessages();
+  const locale = useLocale();
+
+  const day = getScheduleWeekdays(locale).find(
+    (item) => item.dayOfWeek === dayOfWeek,
+  );
   if (!day) {
     return null;
   }
@@ -48,11 +53,11 @@ export function ScheduleDayRow({
             </Heading>
             <ContentText variant="muted" as="p" className="text-xs">
               {enabled
-                ? MESSAGES.trainer.schedule.intervalCount.replace(
+                ? messages.trainer.schedule.intervalCount.replace(
                     "{count}",
                     String(intervals.length),
                   )
-                : MESSAGES.trainer.schedule.dayOff}
+                : messages.trainer.schedule.dayOff}
             </ContentText>
           </div>
         </div>
@@ -61,7 +66,11 @@ export function ScheduleDayRow({
           onCheckedChange={onToggleDay}
           disabled={disabled}
           aria-busy={disabled}
-          aria-label={`${day.label} ${enabled ? "включён" : "выключен"}`}
+          aria-label={
+            enabled
+              ? messages.trainer.schedule.dayToggleOn.replace("{day}", day.label)
+              : messages.trainer.schedule.dayToggleOff.replace("{day}", day.label)
+          }
           className="h-7 w-12"
         />
       </div>
@@ -85,7 +94,7 @@ export function ScheduleDayRow({
             disabled={disabled}
             aria-busy={disabled}
           >
-            {MESSAGES.trainer.schedule.addSlot}
+            {messages.trainer.schedule.addSlot}
           </Button>
         </div>
       ) : null}

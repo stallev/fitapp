@@ -6,7 +6,8 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import type { RefundListItem } from "@/data/admin/list-refunds.server";
 import { formatAdminRelativeDate } from "@/lib/date/format-admin-relative";
 import { formatMoney } from "@/lib/format-money";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 
 function getInitials(name: string): string {
   return name
@@ -21,7 +22,8 @@ export type RefundQueueCardProps = {
   refund: RefundListItem;
 };
 
-export function RefundQueueCard({ refund }: RefundQueueCardProps) {
+export async function RefundQueueCard({ refund }: RefundQueueCardProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
   return (
     <PulseCard variant="base" className="h-full rounded-2xl">
       <PulseCardContent density="sm" className="space-y-3">
@@ -36,7 +38,7 @@ export function RefundQueueCard({ refund }: RefundQueueCardProps) {
               </ContentText>
               {refund.trainerName ? (
                 <ContentText as="p" className="truncate text-[11px] text-muted-foreground">
-                  {MESSAGES.admin.refunds.trainerLine.replace(
+                  {messages.admin.refunds.trainerLine.replace(
                     "{name}",
                     refund.trainerName,
                   )}
@@ -49,10 +51,10 @@ export function RefundQueueCard({ refund }: RefundQueueCardProps) {
           </div>
           <div className="shrink-0 text-right">
             <ContentText variant="statValue" as="p" className="leading-none">
-              {formatMoney(refund.amountCents, refund.currency)}
+              {formatMoney(refund.amountCents, refund.currency, locale)}
             </ContentText>
             <StatusBadge status="pending" className="mt-1.5">
-              {MESSAGES.admin.refunds.pendingStatus}
+              {messages.admin.refunds.pendingStatus}
             </StatusBadge>
           </div>
         </div>
@@ -60,14 +62,14 @@ export function RefundQueueCard({ refund }: RefundQueueCardProps) {
         {refund.reason ? (
           <ContentText as="p" className="text-sm">
             <span className="text-muted-foreground">
-              {MESSAGES.admin.refunds.reason}:
+              {messages.admin.refunds.reason}:
             </span>{" "}
             {refund.reason}
           </ContentText>
         ) : null}
 
         <ContentText as="p" className="text-[11.5px] text-muted-foreground">
-          {formatAdminRelativeDate(refund.createdAt)}
+          {formatAdminRelativeDate(refund.createdAt, locale)}
         </ContentText>
 
         <RefundActions refundRequestId={refund.id} />

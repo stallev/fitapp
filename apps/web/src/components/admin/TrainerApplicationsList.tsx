@@ -13,7 +13,10 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import type { TrainerApplicationListItem } from "@/data/admin/list-trainer-applications.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
+
+import type { Messages } from "@/lib/messages/types";
 
 export type TrainerApplicationsListProps = {
   items: TrainerApplicationListItem[];
@@ -24,7 +27,10 @@ export type TrainerApplicationsListProps = {
 function TrainerApplicationsEmptyState({
   emptyMessage,
   status,
-}: Pick<TrainerApplicationsListProps, "emptyMessage" | "status">) {
+  messages,
+}: Pick<TrainerApplicationsListProps, "emptyMessage" | "status"> & {
+  messages: Messages;
+}) {
   const isPending = status === TRAINER_STATUS.PENDING;
 
   return (
@@ -40,7 +46,7 @@ function TrainerApplicationsEmptyState({
         <EmptyTitle>{emptyMessage}</EmptyTitle>
         {isPending ? (
           <EmptyDescription>
-            {MESSAGES.dashboard.adminNeedsAttention.allClear}
+            {messages.dashboard.adminNeedsAttention.allClear}
           </EmptyDescription>
         ) : null}
       </EmptyHeader>
@@ -48,7 +54,7 @@ function TrainerApplicationsEmptyState({
         <EmptyContent>
           <Button asChild variant="outline">
             <CustomLink href="/admin/trainers">
-              {MESSAGES.admin.moderation.viewPendingQueue}
+              {messages.admin.moderation.viewPendingQueue}
             </CustomLink>
           </Button>
         </EmptyContent>
@@ -57,16 +63,18 @@ function TrainerApplicationsEmptyState({
   );
 }
 
-export function TrainerApplicationsList({
-  items,
+export async function TrainerApplicationsList({  items,
   emptyMessage,
   status,
 }: TrainerApplicationsListProps) {
+  const messages = await getMessages();
+
   if (items.length === 0) {
     return (
       <TrainerApplicationsEmptyState
         emptyMessage={emptyMessage}
         status={status}
+        messages={messages}
       />
     );
   }

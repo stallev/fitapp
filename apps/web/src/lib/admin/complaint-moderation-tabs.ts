@@ -1,6 +1,9 @@
-import { COMPLAINT_STATUS, type ComplaintStatus } from "@pulse/domain";
+import {
+  COMPLAINT_STATUS,
+  type ComplaintStatus,
+} from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
+import type { Messages } from "@/lib/messages/types";
 
 export type ComplaintModerationTabConfig = {
   value: ComplaintStatus;
@@ -8,24 +11,29 @@ export type ComplaintModerationTabConfig = {
   emptyMessage: string;
 };
 
-export const COMPLAINT_MODERATION_TABS: ComplaintModerationTabConfig[] = [
-  {
-    value: COMPLAINT_STATUS.OPEN,
-    label: MESSAGES.admin.complaints.tabs.open,
-    emptyMessage: MESSAGES.admin.complaints.emptyOpen,
-  },
-  {
-    value: COMPLAINT_STATUS.IN_REVIEW,
-    label: MESSAGES.admin.complaints.tabs.inReview,
-    emptyMessage: MESSAGES.admin.complaints.emptyInReview,
-  },
-];
+export function getComplaintModerationTabs(
+  messages: Messages,
+): ComplaintModerationTabConfig[] {
+  return [
+    {
+      value: COMPLAINT_STATUS.OPEN,
+      label: messages.admin.complaints.tabs.open,
+      emptyMessage: messages.admin.complaints.emptyOpen,
+    },
+    {
+      value: COMPLAINT_STATUS.IN_REVIEW,
+      label: messages.admin.complaints.tabs.inReview,
+      emptyMessage: messages.admin.complaints.emptyInReview,
+    },
+  ];
+}
 
 export function resolveComplaintTab(
   tabParam: string | undefined,
+  messages: Messages,
 ): ComplaintStatus {
   return (
-    COMPLAINT_MODERATION_TABS.find((tab) => tab.value === tabParam)?.value ??
-    COMPLAINT_STATUS.OPEN
+    getComplaintModerationTabs(messages).find((tab) => tab.value === tabParam)
+      ?.value ?? COMPLAINT_STATUS.OPEN
   );
 }

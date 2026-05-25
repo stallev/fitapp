@@ -8,6 +8,7 @@ import { CatalogPagination } from "@/components/catalog/filters/CatalogPaginatio
 import { CatalogSortSelect } from "@/components/catalog/filters/CatalogSortSelect.client";
 import { getCatalogTrainers } from "@/data/catalog/get-catalog-trainers.server";
 import { formatCatalogResultsCount } from "@/lib/catalog/catalog-filter-utils";
+import { getLocale, getMessages } from "@/lib/messages/server";
 
 export type CatalogTrainerGridProps = {
   query: CatalogTrainersQuery;
@@ -16,6 +17,8 @@ export type CatalogTrainerGridProps = {
 const ABOVE_FOLD_IMAGE_COUNT = 2;
 
 export async function CatalogTrainerGrid({ query }: CatalogTrainerGridProps) {
+  const locale = await getLocale();
+  const messages = await getMessages();
   let result;
 
   try {
@@ -32,7 +35,11 @@ export async function CatalogTrainerGrid({ query }: CatalogTrainerGridProps) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <ContentText variant="muted" as="p">
-          {formatCatalogResultsCount(result.pagination.totalCount)}
+          {formatCatalogResultsCount(
+            result.pagination.totalCount,
+            messages,
+            locale,
+          )}
         </ContentText>
         <CatalogSortSelect query={result.appliedQuery} />
       </div>

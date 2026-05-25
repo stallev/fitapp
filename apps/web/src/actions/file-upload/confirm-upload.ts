@@ -7,25 +7,26 @@ import {
 } from "@pulse/domain";
 
 import { confirmUpload } from "@/data/file-asset/confirm-upload.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export type ConfirmUploadActionResult = MutationResult<{
   uploadStatus: "ready";
   readUrl: string;
 }>;
 
-function mapUploadError(code: string): string {
+function mapUploadError(code: string, messages: Awaited<ReturnType<typeof getMessages>>): string {
   switch (code) {
     case FILE_UPLOAD_MUTATION_ERROR_CODES.UNAUTHORIZED:
-      return MESSAGES.fileUpload.errors.unauthorized;
+      return messages.fileUpload.errors.unauthorized;
     case FILE_UPLOAD_MUTATION_ERROR_CODES.FORBIDDEN:
-      return MESSAGES.fileUpload.errors.forbidden;
+      return messages.fileUpload.errors.forbidden;
     case FILE_UPLOAD_MUTATION_ERROR_CODES.UPLOAD_NOT_FOUND:
-      return MESSAGES.fileUpload.errors.generic;
+      return messages.fileUpload.errors.generic;
     case FILE_UPLOAD_MUTATION_ERROR_CODES.INVALID_UPLOAD_STATE:
-      return MESSAGES.fileUpload.errors.generic;
+      return messages.fileUpload.errors.generic;
     default:
-      return MESSAGES.fileUpload.errors.generic;
+      return messages.fileUpload.errors.generic;
   }
 }
 
@@ -33,12 +34,13 @@ export async function confirmUploadAction(input: {
   fileAssetId: string;
   expectedSize: number;
 }): Promise<ConfirmUploadActionResult> {
+  const messages = await getMessages();
   const parsed = confirmUploadInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: FILE_UPLOAD_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.fileUpload.errors.validation,
+      message: messages.fileUpload.errors.validation,
     };
   }
 
@@ -46,7 +48,7 @@ export async function confirmUploadAction(input: {
   if (!result.ok) {
     return {
       ...result,
-      message: mapUploadError(result.code),
+      message: mapUploadError(result.code, messages),
     };
   }
 

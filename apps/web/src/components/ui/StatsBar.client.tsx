@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/container";
 import { StatMetricCell } from "@/components/ui/StatMetricCell";
 import { useCountUp } from "@/lib/ui/use-count-up";
+import { DEFAULT_LOCALE } from "@/lib/i18n/constants";
+import { formatNumber } from "@/lib/i18n/format";
 import { cn } from "@/lib/utils";
 
 export type StatsBarMetric = {
@@ -21,7 +23,7 @@ export type StatsBarProps = {
 };
 
 function defaultFormat(value: number): React.ReactNode {
-  return `${value.toLocaleString("ru-RU")}+`;
+  return `${formatNumber(value, DEFAULT_LOCALE)}+`;
 }
 
 export function StatsBar({

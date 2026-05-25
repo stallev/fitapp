@@ -3,9 +3,11 @@ import { LightbulbIcon } from "lucide-react";
 import { ContentText, SectionTitle } from "@/components/atoms";
 import { PulseCard } from "@/components/ui/card";
 
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export function ClientDashboardTipCard() {
+
+export async function ClientDashboardTipCard() {
+  const messages = await getMessages();
   return (
     <aside
       aria-labelledby="client-dashboard-tip-title"
@@ -28,10 +30,10 @@ export function ClientDashboardTipCard() {
             id="client-dashboard-tip-title"
             className="mx-0 max-w-none text-left text-base leading-snug"
           >
-            {MESSAGES.dashboard.client.tipTitle}
+            {messages.dashboard.client.tipTitle}
           </SectionTitle>
           <ContentText variant="muted" as="p" className="leading-relaxed">
-            {MESSAGES.dashboard.client.tipBody}
+            {messages.dashboard.client.tipBody}
           </ContentText>
         </div>
       </PulseCard>

@@ -1,1 +1,5 @@
-export { MESSAGES, type Messages } from "./ru";
+export {
+  getMessagesForLocale,
+  MESSAGES,
+  type Messages,
+} from "./locale-catalog";

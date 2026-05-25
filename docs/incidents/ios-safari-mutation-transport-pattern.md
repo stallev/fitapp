@@ -255,7 +255,7 @@ Sentry.setTag('submit_transport', 'route-handler-fallback')
 // server-action | route-handler-fallback | route-handler-primary
 ```
 
-Post-MVP when Sentry wired — see [`instrumentation-client.ts`](../../apps/web/src/instrumentation-client.ts) placeholder.
+Post-MVP when Sentry wired — see [`instrumentation-client.ts`](../../apps/web/src/instrumentation-client.ts) and [`pulse-tags.ts`](../../apps/web/src/lib/sentry/pulse-tags.ts).
 
 ---
 

@@ -18,19 +18,21 @@ import {
 import type { ClientBookingDetail } from "@/data/client/get-client-booking-detail.server";
 import { isPendingBookingStatus } from "@/data/client/get-client-booking-detail.server";
 import { isBookingStatus } from "@pulse/domain";
-import { MESSAGES } from "@/lib/messages";
+import { getLocale, getMessages } from "@/lib/messages/server";
+
 
 export type ClientBookingDetailPanelProps = {
   booking: ClientBookingDetail;
   actions?: ReactNode;
 };
 
-export function ClientBookingDetailPanel({
-  booking,
+export async function ClientBookingDetailPanel({  booking,
   actions,
 }: ClientBookingDetailPanelProps) {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
+
   const statusLabel = isBookingStatus(booking.status)
-    ? getBookingStatusLabel(booking.status)
+    ? getBookingStatusLabel(booking.status, messages)
     : booking.status;
   const statusVariant = isBookingStatus(booking.status)
     ? getBookingStatusBadgeVariant(booking.status)
@@ -41,11 +43,11 @@ export function ClientBookingDetailPanel({
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <Heading as="h1" visualLevel="h2">
-            {MESSAGES.booking.detail.title}
+            {messages.booking.detail.title}
           </Heading>
           {isPendingBookingStatus(booking.status) ? (
             <ContentText variant="mutedMicro" as="p" className="mt-1">
-              {MESSAGES.booking.detail.statusPending}
+              {messages.booking.detail.statusPending}
             </ContentText>
           ) : null}
         </div>
@@ -54,30 +56,31 @@ export function ClientBookingDetailPanel({
 
       <PulseCard className="space-y-3 rounded-2xl p-5">
         <KeyValueRow
-          label={MESSAGES.booking.detail.trainerLabel}
+          label={messages.booking.detail.trainerLabel}
           value={booking.trainerName}
         />
         <KeyValueRow
-          label={MESSAGES.booking.detail.serviceLabel}
+          label={messages.booking.detail.serviceLabel}
           value={booking.serviceNameSnapshot}
         />
         <KeyValueRow
-          label={MESSAGES.booking.detail.timeLabel}
+          label={messages.booking.detail.timeLabel}
           value={formatBookingDateTime(
             booking.startsAtUtc,
             booking.trainerTimezone,
+            locale,
           )}
         />
         <ContentText variant="mutedMicro" as="p">
-          {MESSAGES.booking.detail.timezoneHint}
+          {messages.booking.detail.timezoneHint}
         </ContentText>
         <KeyValueRow
-          label={MESSAGES.booking.detail.priceLabel}
-          value={formatBookingPrice(booking.priceCents, booking.currency)}
+          label={messages.booking.detail.priceLabel}
+          value={formatBookingPrice(booking.priceCents, booking.currency, locale)}
         />
         {booking.clientMessage ? (
           <KeyValueRow
-            label={MESSAGES.booking.detail.messageLabel}
+            label={messages.booking.detail.messageLabel}
             value={booking.clientMessage}
           />
         ) : null}
@@ -90,7 +93,7 @@ export function ClientBookingDetailPanel({
       {actions}
 
       <CustomLink href="/client/bookings" variant="quiet">
-        {MESSAGES.booking.detail.backToBookings}
+        {messages.booking.detail.backToBookings}
       </CustomLink>
     </div>
   );

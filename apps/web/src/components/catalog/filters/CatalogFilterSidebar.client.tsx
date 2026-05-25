@@ -8,7 +8,8 @@ import { Heading } from "@/components/atoms";
 import { PulseCard } from "@/components/ui/card";
 import type { CatalogFilterOptions } from "@/data/catalog/get-catalog-filter-options.server";
 import { buildCatalogHref } from "@/lib/catalog/build-catalog-search-params";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import { cn } from "@/lib/utils";
 
 import { CatalogFilterFields } from "./CatalogFilterFields.client";
@@ -19,11 +20,12 @@ export type CatalogFilterSidebarProps = {
   className?: string;
 };
 
-export function CatalogFilterSidebar({
-  query,
+export function CatalogFilterSidebar({  query,
   options,
   className,
 }: CatalogFilterSidebarProps) {
+  const messages = useMessages();
+
   const router = useRouter();
 
   const applyPatch = (patch: Partial<CatalogTrainersQuery>) => {
@@ -47,14 +49,14 @@ export function CatalogFilterSidebar({
       <PulseCard variant="catalog" className="sticky top-24 space-y-4 p-4">
         <div className="flex items-center justify-between gap-2">
           <Heading as="h2" visualLevel="h3" className="text-left">
-            {MESSAGES.catalog.filtersTitle}
+            {messages.catalog.filtersTitle}
           </Heading>
           <button
             type="button"
             onClick={handleClear}
             className="text-[12px] font-medium text-primary transition-colors hover:text-primary/80"
           >
-            {MESSAGES.catalog.clearFilters}
+            {messages.catalog.clearFilters}
           </button>
         </div>
         <CatalogFilterFields

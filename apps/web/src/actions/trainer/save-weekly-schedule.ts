@@ -8,42 +8,45 @@ import {
 } from "@pulse/domain";
 
 import { upsertWeeklyScheduleWithCacheInvalidation } from "@/data/trainer/upsert-weekly-schedule.server";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-function mapScheduleError(code: string): string {
+
+function mapScheduleError(code: string, messages: Awaited<ReturnType<typeof getMessages>>): string {
   switch (code) {
     case SCHEDULE_MUTATION_ERROR_CODES.INVALID_INTERVAL:
-      return MESSAGES.trainer.schedule.errors.invalidInterval;
+      return messages.trainer.schedule.errors.invalidInterval;
     case SCHEDULE_MUTATION_ERROR_CODES.INTERVAL_OVERLAP:
-      return MESSAGES.trainer.schedule.errors.intervalOverlap;
+      return messages.trainer.schedule.errors.intervalOverlap;
     case SCHEDULE_MUTATION_ERROR_CODES.INVALID_TIMEZONE:
-      return MESSAGES.trainer.schedule.errors.invalidTimezone;
+      return messages.trainer.schedule.errors.invalidTimezone;
     case SCHEDULE_MUTATION_ERROR_CODES.UNAUTHORIZED:
-      return MESSAGES.trainer.schedule.errors.unauthorized;
+      return messages.trainer.schedule.errors.unauthorized;
     case SCHEDULE_MUTATION_ERROR_CODES.FORBIDDEN:
-      return MESSAGES.trainer.schedule.errors.forbidden;
+      return messages.trainer.schedule.errors.forbidden;
     case SCHEDULE_MUTATION_ERROR_CODES.VALIDATION:
-      return MESSAGES.trainer.schedule.errors.validation;
+      return messages.trainer.schedule.errors.validation;
     default:
-      return MESSAGES.trainer.schedule.errors.generic;
+      return messages.trainer.schedule.errors.generic;
   }
 }
 
 export async function saveWeeklyScheduleAction(
   input: SaveWeeklyScheduleInput,
 ): Promise<MutationResult<{ profileId: string }>> {
+  const messages = await getMessages();
+
   const parsed = saveWeeklyScheduleInputSchema.safeParse(input);
   if (!parsed.success) {
     return {
       ok: false,
       code: SCHEDULE_MUTATION_ERROR_CODES.VALIDATION,
-      message: MESSAGES.trainer.schedule.errors.validation,
+      message: messages.trainer.schedule.errors.validation,
     };
   }
 
   const result = await upsertWeeklyScheduleWithCacheInvalidation(parsed.data);
   if (!result.ok) {
-    return { ...result, message: mapScheduleError(result.code) };
+    return { ...result, message: mapScheduleError(result.code, messages) };
   }
 
   return result;

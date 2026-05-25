@@ -14,7 +14,8 @@ import { TrainerOnboardingProfessionalStep } from "@/components/trainer/onboardi
 import { TrainerOnboardingServicesStep } from "@/components/trainer/onboarding/TrainerOnboardingServicesStep.client";
 import { WizardHeader } from "@/components/ui/WizardHeader";
 import type { TrainerOnboardingDraft } from "@/data/trainer/get-trainer-onboarding-draft.server";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 const TOTAL_STEPS = 5;
 
@@ -45,12 +46,13 @@ function resolveInitialStep(
   return Math.min(Math.max(initialStep, 1), TOTAL_STEPS);
 }
 
-export function TrainerOnboardingWizard({
-  isAuthenticated,
+export function TrainerOnboardingWizard({  isAuthenticated,
   userRole,
   draft,
   initialStep = 1,
 }: TrainerOnboardingWizardProps) {
+  const messages = useMessages();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const [step, setStep] = useState(() =>
@@ -66,17 +68,17 @@ export function TrainerOnboardingWizard({
   const stepLabel = useMemo(() => {
     switch (step) {
       case 1:
-        return MESSAGES.trainer.onboarding.stepPersonal;
+        return messages.trainer.onboarding.stepPersonal;
       case 2:
-        return MESSAGES.trainer.onboarding.stepProfessional;
+        return messages.trainer.onboarding.stepProfessional;
       case 3:
-        return MESSAGES.trainer.onboarding.stepCertificates;
+        return messages.trainer.onboarding.stepCertificates;
       case 4:
-        return MESSAGES.trainer.onboarding.stepServices;
+        return messages.trainer.onboarding.stepServices;
       case 5:
-        return MESSAGES.trainer.onboarding.stepPreview;
+        return messages.trainer.onboarding.stepPreview;
       default:
-        return MESSAGES.trainer.onboarding.credentialsTitle;
+        return messages.trainer.onboarding.credentialsTitle;
     }
   }, [step]);
 
@@ -105,7 +107,7 @@ export function TrainerOnboardingWizard({
   if (userRole && userRole !== USER_ROLE.TRAINER) {
     return (
       <p className="text-center text-muted-foreground">
-        {MESSAGES.trainer.onboarding.errors.forbidden}
+        {messages.trainer.onboarding.errors.forbidden}
       </p>
     );
   }
@@ -117,17 +119,17 @@ export function TrainerOnboardingWizard({
           step={step}
           totalSteps={TOTAL_STEPS}
           stepLabel={stepLabel}
-          stepCaption={MESSAGES.trainer.onboarding.stepOf
+          stepCaption={messages.trainer.onboarding.stepOf
             .replace("{current}", String(step))
             .replace("{total}", String(TOTAL_STEPS))}
-          backAriaLabel={MESSAGES.trainer.onboarding.back}
+          backAriaLabel={messages.trainer.onboarding.back}
           onBack={() => goToStep(Math.max(step - 1, isAuthenticated ? 1 : 0))}
         />
       ) : null}
 
       <div className="px-4 py-6 md:px-0">
         <Heading as="h1" className="mb-6 text-center">
-          {MESSAGES.trainer.onboarding.title}
+          {messages.trainer.onboarding.title}
         </Heading>
 
         {step === 0 ? (

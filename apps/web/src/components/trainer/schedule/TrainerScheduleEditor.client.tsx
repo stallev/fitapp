@@ -17,25 +17,28 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { TrainerScheduleForEdit } from "@/data/trainer/get-trainer-schedule-for-edit.server";
 import type { WeeklyIntervalInput } from "@pulse/domain";
 
-import { MESSAGES } from "@/lib/messages";
+import { useLocale, useMessages } from "@/components/i18n/LocaleProvider.client";
+
 import {
+  getScheduleWeekdays,
   groupIntervalsByDay,
-  SCHEDULE_WEEKDAYS,
 } from "@/lib/trainer/schedule-weekdays";
 import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 import { ScheduleDayRow } from "./ScheduleDayRow";
 import { AddIntervalOverlay } from "./AddIntervalOverlay.client";
-import { TimezoneLabel } from "./TimezoneLabel";
+import { TimezoneLabel } from "./TimezoneLabel.client";
 import { TrainerScheduleExceptionsTab } from "./TrainerScheduleExceptionsTab.client";
 
 export type TrainerScheduleEditorProps = {
   initialSchedule: TrainerScheduleForEdit;
 };
 
-export function TrainerScheduleEditor({
-  initialSchedule,
+export function TrainerScheduleEditor({  initialSchedule,
 }: TrainerScheduleEditorProps) {
+  const messages = useMessages();
+  const locale = useLocale();
+
   const [intervals, setIntervals] = useState<WeeklyIntervalInput[]>(
     initialSchedule.intervals,
   );
@@ -51,7 +54,11 @@ export function TrainerScheduleEditor({
   const [addIntervalDay, setAddIntervalDay] = useState<number | null>(null);
   const [addIntervalSession, setAddIntervalSession] = useState(0);
 
-  const grouped = useMemo(() => groupIntervalsByDay(intervals), [intervals]);
+  const weekdays = useMemo(() => getScheduleWeekdays(locale), [locale]);
+  const grouped = useMemo(
+    () => groupIntervalsByDay(intervals, locale),
+    [intervals, locale],
+  );
 
   function handleSave() {
     startTransition(async () => {
@@ -61,7 +68,7 @@ export function TrainerScheduleEditor({
         return;
       }
 
-      toast.success(MESSAGES.trainer.schedule.saved, {
+      toast.success(messages.trainer.schedule.saved, {
         duration: PRODUCT_TOAST_DURATION_MS,
       });
     });
@@ -85,10 +92,10 @@ export function TrainerScheduleEditor({
       <Tabs defaultValue="regular">
         <TabsList className="w-full">
           <TabsTrigger value="regular" className="flex-1">
-            {MESSAGES.trainer.schedule.tabs.regular}
+            {messages.trainer.schedule.tabs.regular}
           </TabsTrigger>
           <TabsTrigger value="exceptions" className="flex-1">
-            {MESSAGES.trainer.schedule.tabs.exceptions}
+            {messages.trainer.schedule.tabs.exceptions}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="regular" className="mt-4 space-y-3">
@@ -98,14 +105,14 @@ export function TrainerScheduleEditor({
                 <EmptyMedia variant="icon">
                   <CalendarClockIcon aria-hidden />
                 </EmptyMedia>
-                <EmptyTitle>{MESSAGES.trainer.schedule.empty.title}</EmptyTitle>
+                <EmptyTitle>{messages.trainer.schedule.empty.title}</EmptyTitle>
                 <EmptyDescription>
-                  {MESSAGES.trainer.schedule.empty.description}
+                  {messages.trainer.schedule.empty.description}
                 </EmptyDescription>
               </EmptyHeader>
             </Empty>
           ) : null}
-          {SCHEDULE_WEEKDAYS.map((day) => {
+          {weekdays.map((day) => {
             const dayIntervals = grouped.get(day.dayOfWeek) ?? [];
             const enabled = enabledDays.has(day.dayOfWeek);
 
@@ -151,8 +158,8 @@ export function TrainerScheduleEditor({
             aria-busy={isPending}
           >
             {isPending
-              ? MESSAGES.trainer.schedule.saving
-              : MESSAGES.trainer.schedule.save}
+              ? messages.trainer.schedule.saving
+              : messages.trainer.schedule.save}
           </Button>
         </TabsContent>
         <TabsContent value="exceptions" className="mt-4">

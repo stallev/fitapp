@@ -1,10 +1,10 @@
+import { type AppLocale, DEFAULT_LOCALE } from "@/lib/i18n/constants";
+import { formatMoney as formatMoneyI18n } from "@/lib/i18n/format";
+
 export function formatMoney(
   amountCents: number,
   currency = "USD",
-  locale = "ru-RU",
+  locale: AppLocale = DEFAULT_LOCALE,
 ): string {
-  return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency,
-  }).format(amountCents / 100);
+  return formatMoneyI18n(amountCents, currency, locale);
 }

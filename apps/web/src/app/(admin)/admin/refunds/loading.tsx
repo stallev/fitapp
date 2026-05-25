@@ -1,12 +1,14 @@
 import { AdminQueueGridSkeleton } from "@/components/admin/AdminQueueGridSkeleton";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export default function AdminRefundsLoading() {
+
+export default async function AdminRefundsLoading() {
+  const messages = await getMessages();
   return (
     <>
-      <PageHeader title={MESSAGES.admin.refunds.title} />
+      <PageHeader title={messages.admin.refunds.title} />
       <div className="mt-6 space-y-6">
         <Skeleton className="h-4 w-full max-w-lg" />
         <div className="grid grid-cols-2 gap-3">

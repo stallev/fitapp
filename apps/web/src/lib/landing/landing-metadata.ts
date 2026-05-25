@@ -1,24 +1,26 @@
 import type { Metadata } from "next";
 
-import { MESSAGES } from "@/lib/messages";
+import { getOgLocale } from "@/lib/i18n/format";
+import { getLocale, getMessages } from "@/lib/messages/server";
 import { getSiteUrl } from "@/lib/site/site-url";
 
-export function buildLandingMetadata(): Metadata {
+export async function buildLandingMetadata(): Promise<Metadata> {
+  const [messages, locale] = await Promise.all([getMessages(), getLocale()]);
   const siteUrl = getSiteUrl();
-  const { title, description, ogImageAlt } = MESSAGES.landing.meta;
+  const { title, description, ogImageAlt } = messages.landing.meta;
 
   return {
     title,
     description,
-    keywords: [...MESSAGES.landing.meta.keywords],
+    keywords: [...messages.landing.meta.keywords],
     alternates: {
       canonical: "/",
     },
     openGraph: {
       type: "website",
-      locale: "ru_RU",
+      locale: getOgLocale(locale),
       url: siteUrl.origin,
-      siteName: MESSAGES.site.logoLabel,
+      siteName: messages.site.logoLabel,
       title,
       description,
       images: [

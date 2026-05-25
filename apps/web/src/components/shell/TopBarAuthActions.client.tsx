@@ -5,25 +5,27 @@ import Link from "next/link";
 import { SignOutButton } from "@/components/shell/SignOutButton.client";
 import { Button } from "@/components/ui/button";
 import { CustomLink } from "@/components/ui/CustomLink";
-import { MESSAGES } from "@/lib/messages";
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
+
 
 type TopBarAuthActionsProps = {
   isAuthenticated: boolean;
   userName?: string | null;
 };
 
-export function TopBarAuthActions({
-  isAuthenticated,
+export function TopBarAuthActions({  isAuthenticated,
   userName,
 }: TopBarAuthActionsProps) {
+  const messages = useMessages();
+
   if (!isAuthenticated) {
     return (
       <div className="flex items-center gap-2">
         <CustomLink as="text" href="/auth/login" variant="quiet">
-          {MESSAGES.shell.login}
+          {messages.shell.login}
         </CustomLink>
         <Button asChild size="sm">
-          <Link href="/auth/register">{MESSAGES.shell.register}</Link>
+          <Link href="/auth/register">{messages.shell.register}</Link>
         </Button>
       </div>
     );

@@ -2,14 +2,24 @@ import "server-only";
 
 import bcrypt from "bcryptjs";
 
-import { loginCredentialsSchema, type UserRole } from "@pulse/domain";
+import {
+  loginCredentialsSchema,
+  type UserRole,
+} from "@pulse/domain";
 import { getPrisma } from "@pulse/db";
+
+import {
+  DEFAULT_LOCALE,
+  isAppLocale,
+  type AppLocale,
+} from "@/lib/i18n/constants";
 
 export type VerifiedUser = {
   id: string;
   email: string;
   fullName: string;
   role: UserRole;
+  locale: AppLocale;
 };
 
 export async function verifyUserCredentials(
@@ -39,5 +49,6 @@ export async function verifyUserCredentials(
     email: user.email,
     fullName: user.fullName,
     role: user.role,
+    locale: isAppLocale(user.locale) ? user.locale : DEFAULT_LOCALE,
   };
 }

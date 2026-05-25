@@ -18,21 +18,22 @@ import { TrainerProfileStickyBar } from "@/components/trainer/TrainerProfileStic
 import { TrainerSchedulePreviewSkeleton } from "@/components/trainer/TrainerSchedulePreviewSkeleton";
 import { getPublicTrainerProfile } from "@/data/trainer/get-public-trainer-profile.server";
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 type TrainerProfilePageProps = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({
-  params,
+export async function generateMetadata({  params,
 }: TrainerProfilePageProps): Promise<Metadata> {
+  const messages = await getMessages();
   const { id } = await params;
   const profile = await getPublicTrainerProfile(id);
 
   return {
-    title: MESSAGES.trainer.profile.metaTitle.replace("{name}", profile.fullName),
-    description: MESSAGES.trainer.profile.metaDescription.replace(
+    title: messages.trainer.profile.metaTitle.replace("{name}", profile.fullName),
+    description: messages.trainer.profile.metaDescription.replace(
       "{name}",
       profile.fullName,
     ),
@@ -40,6 +41,8 @@ export async function generateMetadata({
 }
 
 export default async function TrainerProfilePage({ params }: TrainerProfilePageProps) {
+  const messages = await getMessages();
+
   const { id } = await params;
   const profile = await getPublicTrainerProfile(id);
   const session = await getPolicySessionContext();
@@ -57,16 +60,16 @@ export default async function TrainerProfilePage({ params }: TrainerProfilePageP
             <div className="-mx-4 overflow-x-auto overscroll-x-contain px-4 no-scrollbar md:mx-0 md:overflow-visible md:px-0">
               <TabsList variant="pill" className="w-max md:w-full md:justify-start">
                 <TabsTrigger value="about" className="shrink-0 flex-none">
-                  {MESSAGES.trainer.profile.tabs.about}
+                  {messages.trainer.profile.tabs.about}
                 </TabsTrigger>
                 <TabsTrigger value="services" className="shrink-0 flex-none">
-                  {MESSAGES.trainer.profile.tabs.services}
+                  {messages.trainer.profile.tabs.services}
                 </TabsTrigger>
                 <TabsTrigger value="schedule" className="shrink-0 flex-none">
-                  {MESSAGES.trainer.profile.tabs.schedule}
+                  {messages.trainer.profile.tabs.schedule}
                 </TabsTrigger>
                 <TabsTrigger value="reviews" className="shrink-0 flex-none">
-                  {MESSAGES.trainer.profile.tabs.reviews}
+                  {messages.trainer.profile.tabs.reviews}
                 </TabsTrigger>
               </TabsList>
             </div>

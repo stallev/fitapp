@@ -2,21 +2,23 @@ import { ContentText } from "@/components/atoms";
 import { CustomLink } from "@/components/ui/CustomLink";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
 
-export function ClientDashboardFeaturedTrainersEmpty() {
+
+export async function ClientDashboardFeaturedTrainersEmpty() {
+  const messages = await getMessages();
   return (
     <section>
       <SectionHeader
-        title={MESSAGES.dashboard.client.topTrainersTitle}
+        title={messages.dashboard.client.topTrainersTitle}
         actionHref="/trainers"
-        actionLabel={MESSAGES.dashboard.client.topTrainersAll}
+        actionLabel={messages.dashboard.client.topTrainersAll}
       />
       <ContentText variant="muted" as="p">
-        {MESSAGES.dashboard.client.topTrainersEmpty}
+        {messages.dashboard.client.topTrainersEmpty}
       </ContentText>
       <CustomLink href="/trainers" className="mt-3 inline-flex">
-        {MESSAGES.dashboard.client.nextSessionCta}
+        {messages.dashboard.client.nextSessionCta}
       </CustomLink>
     </section>
   );

@@ -2,7 +2,8 @@ import { CheckCircleIcon, CircleDashedIcon, DownloadIcon } from "lucide-react";
 
 import { CustomLink } from "@/components/ui/CustomLink";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { MESSAGES } from "@/lib/messages";
+import { getMessages } from "@/lib/messages/server";
+
 
 export type TrainerApplicationDocumentRowProps = {
   id: string;
@@ -11,13 +12,14 @@ export type TrainerApplicationDocumentRowProps = {
   uploadStatus: string | null;
 };
 
-export function TrainerApplicationDocumentRow({
-  title,
+export async function TrainerApplicationDocumentRow({  title,
   fileAssetId,
   uploadStatus,
 }: TrainerApplicationDocumentRowProps) {
+  const messages = await getMessages();
+
   const isReady = Boolean(fileAssetId && uploadStatus === "ready");
-  const downloadAria = MESSAGES.admin.moderation.downloadAria.replace(
+  const downloadAria = messages.admin.moderation.downloadAria.replace(
     "{title}",
     title,
   );
@@ -49,11 +51,11 @@ export function TrainerApplicationDocumentRow({
           aria-label={downloadAria}
         >
           <DownloadIcon aria-hidden className="size-4" />
-          {MESSAGES.admin.moderation.download}
+          {messages.admin.moderation.download}
         </CustomLink>
       ) : (
         <StatusBadge status="pending">
-          {MESSAGES.admin.moderation.statusPendingReview}
+          {messages.admin.moderation.statusPendingReview}
         </StatusBadge>
       )}
     </li>
