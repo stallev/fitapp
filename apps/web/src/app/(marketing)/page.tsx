@@ -11,22 +11,21 @@ import { LandingFooterSkeleton } from "@/components/landing/LandingFooterSkeleto
 import { LandingForTrainers } from "@/components/landing/LandingForTrainers";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { LandingHowItWorks } from "@/components/landing/LandingHowItWorks";
+import { LandingJsonLd } from "@/components/landing/LandingJsonLd";
 import { LandingNav } from "@/components/landing/LandingNav.client";
 import { LandingSpecialtyPills } from "@/components/landing/LandingSpecialtyPills";
 import { LandingTestimonials } from "@/components/landing/LandingTestimonials";
 import { LandingTrustBar } from "@/components/landing/LandingTrustBar.client";
-import { MESSAGES } from "@/lib/messages";
+import { buildLandingMetadata } from "@/lib/landing/landing-metadata";
 
 export function generateMetadata(): Metadata {
-  return {
-    title: MESSAGES.landing.meta.title,
-    description: MESSAGES.landing.meta.description,
-  };
+  return buildLandingMetadata();
 }
 
 export default function HomePage() {
   return (
     <>
+      <LandingJsonLd />
       <Suspense fallback={null}>
         <LandingAuthenticatedRedirect />
       </Suspense>

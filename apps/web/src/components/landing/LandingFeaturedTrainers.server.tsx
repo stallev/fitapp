@@ -1,14 +1,11 @@
-import Link from "next/link";
-import { ArrowRightIcon } from "lucide-react";
-
 import { FeaturedTrainerCard } from "@/components/catalog/FeaturedTrainerCard";
 import { getFeaturedTrainers } from "@/data/catalog/get-featured-trainers.server";
-import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
 import { Reveal } from "@/components/ui/Reveal.client";
 import { MESSAGES } from "@/lib/messages";
 
+import { LandingFeaturedTrainersBrowseCta } from "./LandingFeaturedTrainersBrowseCta.client";
 import { LandingFeaturedTrainersEmpty } from "./LandingFeaturedTrainersEmpty";
 import { LandingFeaturedTrainersError } from "./LandingFeaturedTrainersError";
 
@@ -43,14 +40,7 @@ export async function LandingFeaturedTrainers() {
             </Reveal>
           ))}
         </div>
-        <Reveal className="mt-10 text-center">
-          <Button asChild variant="outline" size="lg" className="rounded-full px-8">
-            <Link href="/trainers">
-              {featured.browseAll}
-              <ArrowRightIcon aria-hidden className="size-[18px]" />
-            </Link>
-          </Button>
-        </Reveal>
+        <LandingFeaturedTrainersBrowseCta label={featured.browseAll} />
       </Container>
     </section>
   );
