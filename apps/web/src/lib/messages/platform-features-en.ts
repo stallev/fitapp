@@ -80,9 +80,9 @@ export const platformFeaturesEn = {
       {
         title: "Design system",
         description:
-          "Warm Forest tokens, typography atoms, and a dev-only component catalog at /design-system.",
-        href: "/design-system",
-        linkLabel: "Open Design Lab",
+          "Warm Forest tokens and typography atoms across product UI. Dev-only component catalog (/design-system) for local development.",
+        href: null,
+        linkLabel: null,
         status: "live",
       },
     ],
@@ -214,17 +214,19 @@ export const platformFeaturesEn = {
       },
       {
         title: "Complete session",
-        description: "Mark a booking as completed — triggers the client review prompt in-app.",
-        href: "/trainer/dashboard",
-        linkLabel: "From dashboard",
+        description:
+          "For confirmed bookings, mark the session completed — the client then gets an in-app review prompt.",
+        href: "/trainer/clients",
+        linkLabel: "From client list",
         status: "live",
       },
       {
         title: "Income",
-        description: "Session history and earnings summary without Stripe payouts on MVP.",
+        description:
+          "Session history and earnings summary from completed bookings. Stripe payouts are not connected on MVP.",
         href: "/trainer/income",
         linkLabel: "View income",
-        status: "stub",
+        status: "live",
       },
     ],
   },
@@ -256,7 +258,8 @@ export const platformFeaturesEn = {
       },
       {
         title: "Complaint resolution",
-        description: "Triage open complaints, view context, resolve or escalate with audit trail.",
+        description:
+          "Triage open complaints, view booking context, and close with a resolution and admin notes.",
         href: "/admin/complaints",
         linkLabel: "Complaints queue",
         status: "live",
@@ -308,14 +311,22 @@ export const platformFeaturesEn = {
   boundaries: {
     id: "boundaries",
     title: "MVP boundaries",
-    intro: "Intentionally deferred features — schema-ready but not exposed in UI yet.",
+    intro: "Features outside the current MVP release.",
+    plannedNote:
+      "Stripe (online checkout and trainer payouts) and Daily.co (live video sessions) are on the product roadmap and will be integrated in upcoming releases. Related database fields are already prepared.",
     tableHeaders: {
       feature: "Feature",
       status: "Status",
     },
     items: [
-      { feature: "Online payment (Stripe Connect)", status: "Schema ready — no checkout UI" },
-      { feature: "Video sessions (Daily.co)", status: "Route placeholder only" },
+      {
+        feature: "Online payment (Stripe Connect)",
+        status: "Planned — checkout and payouts via Stripe Connect",
+      },
+      {
+        feature: "Video sessions (Daily.co)",
+        status: "Planned — in-session video via Daily.co rooms",
+      },
       { feature: "Transactional email", status: "Tables ready — no sends on MVP" },
       { feature: "OAuth (Google)", status: "Post-MVP" },
       { feature: "Password reset via email", status: "Post-MVP" },
