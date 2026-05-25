@@ -48,7 +48,7 @@
 
 Fixed top-to-bottom order matching prototype:
 
-1. **LandingNav** — fixed, 72px height, scroll backdrop
+1. **LandingNav** — fixed; **56px** height on mobile (`< md`), **72px** on `≥ md`; scroll backdrop. Mobile: logo + primary CTA + theme toggle + menu (bottom Sheet: anchors, Sign in, locale); desktop: inline anchor links + locale + theme + Sign in + Get started
 2. **LandingHero** — split grid `≥1024px`; float cards hidden `<1024px`
 3. **LandingTrustBar** — dark forest stats row (optional toggle via product — default **on**)
 4. **LandingHowItWorks** — `id="how"`, white background
@@ -121,7 +121,7 @@ Product/legal review **SHOULD** pass FAQ text before ship.
 
 | Component | Server / Client | Notes |
 |-----------|-----------------|-------|
-| `LandingNav` | client | `useScrolled` |
+| `LandingNav` (`MarketingNav`) | client | `useScrolled`; mobile menu via `MarketingNavMobileMenu` (bottom Sheet) |
 | `LandingHero` | server | composes float cards |
 | `LandingHeroFloatCard` | server | presentational |
 | `LandingTrustBar` | client | IO + count-up |
@@ -184,7 +184,8 @@ Map prototype CSS variables to Warm Forest semantic tokens in `globals.css` — 
 | Prototype token | Semantic direction |
 |-----------------|-------------------|
 | `--forest` | `primary` / `bg-primary` |
-| `--forest-dk` | dark sections, `final-cta`, trust bar |
+| `--forest-dk` | `--color-brand-band` (stats bar, for-trainers); **not** `--color-primary-hover` |
+| `--forest-cta` | `--color-brand-cta-band` (final CTA band) |
 | `--cream` | `background` / section alt |
 | `--gold` | `accent` / stars |
 | `--ink` | `foreground` |

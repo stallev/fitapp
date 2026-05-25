@@ -39,7 +39,7 @@ export async function LandingFinalCta() {
             href="/auth/register/trainer"
             variant="outline"
             size="lg"
-            className="rounded-full border-primary-foreground/35 bg-transparent px-8 text-primary-foreground hover:bg-primary-foreground/10"
+            className="rounded-full border-[hsl(var(--color-on-brand-cta-band)/0.35)] bg-transparent px-8 text-on-brand-cta-band hover:bg-[hsl(var(--color-on-brand-cta-band)/0.1)]"
           >
             {final.secondaryCta}
           </CustomLink>
@@ -51,7 +51,7 @@ export async function LandingFinalCta() {
             <TrustFeaturePill
               key={note}
               icon={CheckIcon}
-              className="border-primary-foreground/20 bg-transparent text-primary-foreground/60 shadow-none"
+              className="border-[hsl(var(--color-on-brand-cta-band)/0.2)] bg-transparent text-[hsl(var(--color-on-brand-cta-band)/0.65)] shadow-none"
             >
               {note}
             </TrustFeaturePill>

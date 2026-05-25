@@ -182,6 +182,10 @@ export const ruMessages = {
     nav: {
       signIn: "Войти",
       getStarted: "Начать",
+      menuOpenLabel: "Открыть меню",
+      menuTitle: "Меню",
+      preferencesLabel: "Настройки",
+      themeLabel: "Тема",
       links: {
         how: "Как это работает",
         trainers: "Тренеры",

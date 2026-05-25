@@ -20,7 +20,7 @@ export async function FeaturesHero() {
   return (
     <section
       aria-labelledby="features-hero-heading"
-      className="border-b border-border/60 bg-[linear-gradient(180deg,hsl(var(--background))_0%,hsl(var(--muted)/0.35)_100%)] pt-[72px]"
+      className="border-b border-border/60 bg-[linear-gradient(180deg,hsl(var(--background))_0%,hsl(var(--muted)/0.35)_100%)] pt-14 md:pt-[72px]"
     >
       <Container variant="marketing" className="py-14 md:py-20">
         <SectionEyebrow tone="outline" className="mb-5 inline-flex text-[13px]">

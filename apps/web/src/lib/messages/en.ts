@@ -181,6 +181,10 @@ export const enMessages = {
     nav: {
       signIn: "Sign in",
       getStarted: "Get started",
+      menuOpenLabel: "Open menu",
+      menuTitle: "Menu",
+      preferencesLabel: "Preferences",
+      themeLabel: "Theme",
       links: {
         how: "How it works",
         trainers: "Trainers",

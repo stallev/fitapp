@@ -34,6 +34,12 @@ export const TOKENS = {
       colorWarningContainer: "40 69% 87%", // #F5E6C8
       colorInfo: "198 42% 30%", // #2D5A6E
       colorInfoContainer: "203 35% 91%", // #E0EAF0
+      colorBrandBand: "158 30% 15%", // #1A3028
+      colorOnBrandBand: "0 0% 100%", // white
+      colorBrandBandMuted: "140 22% 78%",
+      colorBrandCtaBand: "145 33% 26%", // --color-primary
+      colorOnBrandCtaBand: "0 0% 100%", // white
+      colorHeroGlow: "140 29% 92%", // --color-primary-container
     },
     shadcn: {
       background: "37 39% 94%", // --color-bg
@@ -77,7 +83,7 @@ export const TOKENS = {
       colorSurfaceDim: "147 19% 30%", // #3D5A4A
       colorInk: "45 44% 89%", // #F0EAD8
       colorInk2: "138 10% 74%", // #B5C2B9
-      colorInk3: "142 4% 50%", // #7A857E
+      colorInk3: "138 8% 62%", // bumped for small-text AA on dark surfaces
       colorSuccess: "145 72% 67%", // #6EE7A0
       colorSuccessContainer: "131 30% 17%", // #1F3A24
       colorError: "0 100% 76%", // #FF8585
@@ -86,6 +92,12 @@ export const TOKENS = {
       colorWarningContainer: "39 38% 16%", // #3A2F1A
       colorInfo: "202 80% 71%", // #7AC4F0
       colorInfoContainer: "203 38% 16%", // #1A2E3A
+      colorBrandBand: "146 21% 13%", // --color-surface
+      colorOnBrandBand: "45 44% 89%", // --color-ink
+      colorBrandBandMuted: "138 10% 74%", // --color-ink-2
+      colorBrandCtaBand: "142 17% 21%", // --color-surface-container
+      colorOnBrandCtaBand: "45 44% 89%", // --color-ink
+      colorHeroGlow: "145 25% 55%", // --color-primary
     },
     shadcn: {
       background: "156 26% 7%", // --color-bg

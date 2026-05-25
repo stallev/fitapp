@@ -10,9 +10,9 @@ export const sectionEyebrowVariants = cva(
       tone: {
         default: "bg-primary-container text-primary",
         onDark:
-          "bg-white/10 text-white/50",
+          "bg-[hsl(var(--color-on-brand-band)/0.1)] text-brand-band-muted",
         onPrimary:
-          "bg-white/14 text-white/80",
+          "bg-[hsl(var(--color-on-brand-cta-band)/0.14)] text-[hsl(var(--color-on-brand-cta-band)/0.8)]",
         outline:
           "border border-primary/10 bg-primary-container text-primary",
       },

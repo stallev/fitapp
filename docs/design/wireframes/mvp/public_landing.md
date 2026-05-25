@@ -21,7 +21,7 @@
 
 ## Regions (top → bottom)
 
-1. **Nav (fixed)** — logo, anchor links (desktop), Sign In + pill CTA; blurred cream backdrop on scroll.
+1. **Nav (fixed)** — logo; **mobile:** primary CTA + theme toggle + menu (bottom Sheet: anchors, Sign in, locale); **desktop:** anchor links, Sign in + pill CTA; blurred backdrop on scroll. Heights: 56px mobile, 72px `≥ md`.
 2. **Hero** — badge, `h1` with italic accent, subcopy, dual CTAs, trust chips, social proof row; right: stacked float trainer cards (desktop).
 3. **Trust bar** — 4 stats on forest-dk (trainers, sessions, satisfaction, rating).
 4. **How it works** — section label, `h2`, 3 step cards with large serif numbers.
@@ -89,8 +89,8 @@
 
 ```
 ┌────────────────────┐
-│ Nav · logo · CTAs  │
-│ (links hidden)     │
+│ Nav · logo ·CTA ☀ ≡│
+│ (menu sheet)       │
 ├────────────────────┤
 │ Hero stack         │
 │ (no float cards)   │
