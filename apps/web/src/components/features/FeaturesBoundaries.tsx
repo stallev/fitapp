@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from "lucide-react";
 
+import { ContentText } from "@/components/atoms";
 import { HowItWasBuiltSection } from "@/components/how-it-was-built/HowItWasBuiltSection";
 import { CustomLink } from "@/components/ui/CustomLink";
 import { getMessages } from "@/lib/messages/server";
@@ -10,6 +11,9 @@ export async function FeaturesBoundaries() {
 
   return (
     <HowItWasBuiltSection id={section.id} title={section.title} intro={section.intro}>
+      <ContentText variant="muted" as="p" className="mb-6 text-sm leading-relaxed">
+        {section.plannedNote}
+      </ContentText>
       <div className="overflow-x-auto rounded-xl border border-border">
         <table className="w-full min-w-[480px] text-left text-sm">
           <thead className="border-b border-border bg-muted/50">

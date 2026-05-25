@@ -80,9 +80,9 @@ export const platformFeaturesRu = {
       {
         title: "Design system",
         description:
-          "Токены Warm Forest, typography atoms и dev-каталог компонентов на /design-system.",
-        href: "/design-system",
-        linkLabel: "Design Lab",
+          "Токены Warm Forest и typography atoms в продуктовом UI. Dev-каталог компонентов (/design-system) — только для локальной разработки.",
+        href: null,
+        linkLabel: null,
         status: "live",
       },
     ],
@@ -214,17 +214,19 @@ export const platformFeaturesRu = {
       },
       {
         title: "Завершение сессии",
-        description: "Отметить бронь completed — клиент получает in-app prompt на отзыв.",
-        href: "/trainer/dashboard",
-        linkLabel: "С дашборда",
+        description:
+          "Для confirmed-броней — отметить сессию completed; клиент получает in-app prompt на отзыв.",
+        href: "/trainer/clients",
+        linkLabel: "Из списка клиентов",
         status: "live",
       },
       {
         title: "Доход",
-        description: "История сессий и сводка заработка без Stripe payouts на MVP.",
+        description:
+          "История сессий и сводка заработка по completed-броням. Stripe payouts на MVP не подключены.",
         href: "/trainer/income",
         linkLabel: "Доход",
-        status: "stub",
+        status: "live",
       },
     ],
   },
@@ -256,7 +258,8 @@ export const platformFeaturesRu = {
       },
       {
         title: "Разбор жалоб",
-        description: "Тriage открытых жалоб, контекст, resolve или escalate с audit trail.",
+        description:
+          "Triage открытых жалоб, контекст брони и закрытие с resolution и admin notes.",
         href: "/admin/complaints",
         linkLabel: "Жалобы",
         status: "live",
@@ -308,14 +311,22 @@ export const platformFeaturesRu = {
   boundaries: {
     id: "boundaries",
     title: "Границы MVP",
-    intro: "Осознанно отложенные функции — schema-ready, но без UI.",
+    intro: "Функции, которые не входят в текущий MVP-релиз.",
+    plannedNote:
+      "Stripe (онлайн-оплата и выплаты тренерам) и Daily.co (видеосессии) запланированы в roadmap и будут интегрированы в следующих релизах. Связанные поля в базе данных уже подготовлены.",
     tableHeaders: {
       feature: "Функция",
       status: "Статус",
     },
     items: [
-      { feature: "Онлайн-оплата (Stripe Connect)", status: "Schema ready — без checkout UI" },
-      { feature: "Видеосессии (Daily.co)", status: "Только placeholder маршрута" },
+      {
+        feature: "Онлайн-оплата (Stripe Connect)",
+        status: "Запланировано — checkout и payouts через Stripe Connect",
+      },
+      {
+        feature: "Видеосессии (Daily.co)",
+        status: "Запланировано — видео в сессии через Daily.co rooms",
+      },
       { feature: "Транзакционный email", status: "Таблицы готовы — без отправки на MVP" },
       { feature: "OAuth (Google)", status: "Post-MVP" },
       { feature: "Сброс пароля по email", status: "Post-MVP" },
