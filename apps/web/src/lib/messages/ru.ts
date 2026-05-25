@@ -40,6 +40,8 @@ export const ruMessages = {
     description:
       "Найдите проверенного тренера, забронируйте занятие и следите за прогрессом.",
     logoLabel: "Pulse",
+    logoAriaLabel: "Pulse",
+    logoHomeAriaLabel: "Pulse — главная",
     locale: "ru_RU",
   },
   nav: {

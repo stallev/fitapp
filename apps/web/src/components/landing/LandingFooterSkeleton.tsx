@@ -1,6 +1,7 @@
 import { ContentText } from "@/components/atoms";
 import { Container } from "@/components/ui/container";
 import { CustomLink } from "@/components/ui/CustomLink";
+import { PulseLogo } from "@/components/ui/PulseLogo";
 import { getMessages } from "@/lib/messages/server";
 
 
@@ -15,9 +16,7 @@ export async function LandingFooterSkeleton() {
         className="flex flex-col items-center justify-between gap-6 md:flex-row"
       >
         <div className="text-center md:text-left">
-          <p className="font-heading text-xl tracking-tight text-foreground">
-            {footer.tagline}
-          </p>
+          <PulseLogo className="text-xl" />
           <ContentText variant="muted" as="p" className="mt-1">
             {footer.subtitle}
           </ContentText>

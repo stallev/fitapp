@@ -8,6 +8,7 @@ import { useMessages } from "@/components/i18n/LocaleProvider.client";
 import { MarketingNavMobileMenu } from "@/components/landing/MarketingNavMobileMenu.client";
 import { ThemeToggle } from "@/components/shell/ThemeToggle.client";
 import { Button } from "@/components/ui/button";
+import { PulseLogo } from "@/components/ui/PulseLogo";
 import { cn } from "@/lib/utils";
 import { useLandingScrolled } from "@/lib/ui/use-landing-scrolled";
 
@@ -42,12 +43,11 @@ export function MarketingNav() {
           "border-b border-border/60 bg-background/95 shadow-[var(--shadow-card)] backdrop-blur-xl",
       )}
     >
-      <Link
+      <PulseLogo
         href="/"
-        className="shrink-0 font-heading text-[20px] tracking-tight text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:text-[22px]"
-      >
-        {messages.site.logoLabel}
-      </Link>
+        className="text-[20px] md:text-[22px]"
+        homeAriaLabel={messages.site.logoHomeAriaLabel}
+      />
 
       <ul className="hidden list-none gap-8 md:flex">
         {anchorLinks.map((link) => (

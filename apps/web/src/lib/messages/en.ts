@@ -39,6 +39,8 @@ export const enMessages = {
     description:
       "Find a verified trainer, book a session, and track your progress.",
     logoLabel: "Pulse",
+    logoAriaLabel: "Pulse",
+    logoHomeAriaLabel: "Pulse — homepage",
     locale: "en_US",
   },
   nav: {
