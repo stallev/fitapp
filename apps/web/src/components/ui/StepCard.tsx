@@ -27,7 +27,7 @@ export function StepCard({
     >
       <p
         aria-hidden
-        className="mb-6 font-heading text-[88px] leading-[0.88] tracking-tight text-[color:var(--forest)]"
+        className="mb-6 font-heading text-[88px] leading-[0.88] tracking-tight text-muted-foreground/30"
       >
         {step}
       </p>

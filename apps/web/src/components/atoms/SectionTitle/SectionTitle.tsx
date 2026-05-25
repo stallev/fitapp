@@ -9,7 +9,7 @@ const sectionTitleVariants = cva("text-center mx-auto max-w-3xl", {
   variants: {
     variant: {
       default: "text-foreground",
-      dark: "text-[color:var(--cream)] dark:text-foreground",
+      dark: "text-on-brand-band",
     },
   },
   defaultVariants: { variant: "default" },

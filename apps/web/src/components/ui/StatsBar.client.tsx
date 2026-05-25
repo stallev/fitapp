@@ -56,7 +56,7 @@ export function StatsBar({
   return (
     <div
       ref={ref}
-      className={cn("bg-[hsl(var(--color-primary-hover))]", className)}
+      className={cn("bg-brand-band text-on-brand-band", className)}
     >
       <Container
         variant="marketing"

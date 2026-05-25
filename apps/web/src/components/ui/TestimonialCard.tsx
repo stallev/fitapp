@@ -36,7 +36,7 @@ export function TestimonialCard({
     >
       <p
         aria-hidden
-        className="mb-4 font-heading text-[72px] leading-[0.65] text-primary-container"
+        className="mb-4 font-heading text-[72px] leading-[0.65] text-muted-foreground/35"
       >
         &ldquo;
       </p>

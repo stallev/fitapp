@@ -13,6 +13,12 @@
   --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, monospace;
   --color-subtle-foreground: hsl(var(--color-ink-3));
+  --color-brand-band: hsl(var(--color-brand-band));
+  --color-on-brand-band: hsl(var(--color-on-brand-band));
+  --color-brand-band-muted: hsl(var(--color-brand-band-muted));
+  --color-brand-cta-band: hsl(var(--color-brand-cta-band));
+  --color-on-brand-cta-band: hsl(var(--color-on-brand-cta-band));
+  --color-hero-glow: hsl(var(--color-hero-glow));
   --color-primary-container: hsl(var(--color-primary-container));
   --color-on-primary-container: hsl(var(--color-on-primary-container));
   --color-sidebar-ring: hsl(var(--sidebar-ring));
@@ -82,6 +88,14 @@
   --color-warning-container: 40 69% 87%; /* #F5E6C8 */
   --color-info: 198 42% 30%; /* #2D5A6E */
   --color-info-container: 203 35% 91%; /* #E0EAF0 */
+
+  /* Landing brand bands — not interchangeable with --color-primary-hover */
+  --color-brand-band: 158 30% 15%; /* #1A3028 forest dark */
+  --color-on-brand-band: 0 0% 100%; /* white */
+  --color-brand-band-muted: 140 22% 78%; /* muted on dark band */
+  --color-brand-cta-band: 145 33% 26%; /* --color-primary */
+  --color-on-brand-cta-band: 0 0% 100%; /* white */
+  --color-hero-glow: 140 29% 92%; /* --color-primary-container */
 
   /* shadcn semantic tokens */
   --background: 37 39% 94%; /* --color-bg */
@@ -170,7 +184,7 @@
   --color-surface-dim: 147 19% 30%; /* #3D5A4A */
   --color-ink: 45 44% 89%; /* #F0EAD8 */
   --color-ink-2: 138 10% 74%; /* #B5C2B9 */
-  --color-ink-3: 142 4% 50%; /* #7A857E */
+  --color-ink-3: 138 8% 62%; /* bumped for small-text AA on dark surfaces */
   --color-success: 145 72% 67%; /* #6EE7A0 */
   --color-success-container: 131 30% 17%; /* #1F3A24 */
   --color-error: 0 100% 76%; /* #FF8585 */
@@ -179,6 +193,14 @@
   --color-warning-container: 39 38% 16%; /* #3A2F1A */
   --color-info: 202 80% 71%; /* #7AC4F0 */
   --color-info-container: 203 38% 16%; /* #1A2E3A */
+
+  /* Landing brand bands — stay dark/elevated; do not follow --color-primary-hover */
+  --color-brand-band: 146 21% 13%; /* --color-surface */
+  --color-on-brand-band: 45 44% 89%; /* --color-ink */
+  --color-brand-band-muted: 138 10% 74%; /* --color-ink-2 */
+  --color-brand-cta-band: 142 17% 21%; /* --color-surface-container */
+  --color-on-brand-cta-band: 45 44% 89%; /* --color-ink */
+  --color-hero-glow: 145 25% 55%; /* --color-primary at low opacity in hero */
 
   /* shadcn semantic tokens */
   --background: 156 26% 7%; /* --color-bg */

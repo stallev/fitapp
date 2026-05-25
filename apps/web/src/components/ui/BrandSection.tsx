@@ -13,7 +13,7 @@ export type BrandSectionProps = {
 };
 
 const TONE_CLASSES = {
-  darkForest: "bg-[hsl(var(--color-primary-hover))] text-primary-foreground",
+  darkForest: "bg-brand-band text-on-brand-band",
   primary: "bg-primary text-primary-foreground",
 } as const;
 

@@ -23,11 +23,11 @@ export async function LandingHero() {
   return (
     <section
       aria-labelledby="landing-hero-heading"
-      className="relative flex min-h-screen items-center overflow-hidden pt-[72px]"
+      className="relative flex min-h-screen items-center overflow-hidden pt-14 md:pt-[72px]"
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-48 -right-48 size-[800px] rounded-full bg-[radial-gradient(ellipse_at_center,rgba(228,240,232,0.7)_0%,transparent_65%)]"
+        className="pointer-events-none absolute -top-48 -right-48 size-[800px] rounded-full bg-[radial-gradient(ellipse_at_center,hsl(var(--color-hero-glow)/0.45)_0%,transparent_65%)]"
       />
       <Container
         variant="marketing"
@@ -102,7 +102,7 @@ export async function LandingHero() {
         <Reveal delay="200ms" className="relative hidden h-[540px] lg:block">
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-[-60px] rounded-[60%_40%_50%_50%/50%_50%_60%_40%] bg-[radial-gradient(ellipse_75%_75%_at_55%_50%,rgba(228,240,232,0.85)_0%,transparent_65%)]"
+            className="pointer-events-none absolute inset-[-60px] rounded-[60%_40%_50%_50%/50%_50%_60%_40%] bg-[radial-gradient(ellipse_75%_75%_at_55%_50%,hsl(var(--color-hero-glow)/0.35)_0%,transparent_65%)]"
           />
           {floatCards.map((card) => (
             <LandingHeroFloatCard key={card.id} card={card} />

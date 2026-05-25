@@ -70,7 +70,7 @@ export function MarketingSectionHeader({
               className={cn(
                 "max-w-[540px] leading-relaxed",
                 align === "center" && "mx-auto",
-                tone === "onDark" && "text-white/60",
+                tone === "onDark" && "text-brand-band-muted",
               )}
             >
               {subtitle}

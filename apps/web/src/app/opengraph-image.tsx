@@ -28,15 +28,13 @@ export default async function OpenGraphImage() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 16,
             fontSize: 28,
             fontWeight: 700,
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            color: "#E8C070",
+            letterSpacing: "-0.02em",
           }}
         >
-          {messages.site.logoLabel}
+          <span style={{ color: "#E8C070" }}>P</span>
+          <span style={{ color: "#F5F0E8" }}>ulse</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 920 }}>
           <div

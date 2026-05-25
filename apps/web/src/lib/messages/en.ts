@@ -39,6 +39,8 @@ export const enMessages = {
     description:
       "Find a verified trainer, book a session, and track your progress.",
     logoLabel: "Pulse",
+    logoAriaLabel: "Pulse",
+    logoHomeAriaLabel: "Pulse — homepage",
     locale: "en_US",
   },
   nav: {
@@ -181,6 +183,10 @@ export const enMessages = {
     nav: {
       signIn: "Sign in",
       getStarted: "Get started",
+      menuOpenLabel: "Open menu",
+      menuTitle: "Menu",
+      preferencesLabel: "Preferences",
+      themeLabel: "Theme",
       links: {
         how: "How it works",
         trainers: "Trainers",

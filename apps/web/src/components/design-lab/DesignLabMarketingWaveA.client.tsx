@@ -16,7 +16,7 @@ export function DesignLabMarketingWaveA() {
         <div className="flex flex-wrap gap-3">
           <SectionEyebrow>Default</SectionEyebrow>
           <SectionEyebrow tone="outline">Outline</SectionEyebrow>
-          <div className="rounded-xl bg-[hsl(var(--color-primary-hover))] p-4">
+          <div className="rounded-xl bg-brand-band p-4">
             <SectionEyebrow tone="onDark">On dark</SectionEyebrow>
           </div>
           <div className="rounded-xl bg-primary p-4">

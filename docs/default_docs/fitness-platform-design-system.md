@@ -166,6 +166,14 @@ className="pb-6"  // минимум 24px над nav
   --color-info:              #2D5A6E;
   --color-info-container:    #E0EAF0;
 
+  /* Landing brand bands — section backgrounds; not interchangeable with --color-primary-hover */
+  --color-brand-band:        #1A3028;
+  --color-on-brand-band:     #FFFFFF;
+  --color-brand-band-muted:  /* ~#B8D4C4 on dark band */;
+  --color-brand-cta-band:    #2D5A40;
+  --color-on-brand-cta-band: #FFFFFF;
+  --color-hero-glow:         #E4F0E8;
+
   --font-display: "Source Serif 4", ui-serif, Georgia, serif;
   --font-sans:    "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-mono:    "JetBrains Mono", ui-monospace, monospace;
@@ -197,7 +205,14 @@ className="pb-6"  // минимум 24px над nav
 
   --color-ink:   #F0EAD8;
   --color-ink-2: #B5C2B9;
-  --color-ink-3: #7A857E;
+  --color-ink-3: /* dark: 62% L for small-text AA */;
+
+  --color-brand-band:        #1A2820;
+  --color-on-brand-band:     #F0EAD8;
+  --color-brand-band-muted:  #B5C2B9;
+  --color-brand-cta-band:    #2D4034;
+  --color-on-brand-cta-band: #F0EAD8;
+  --color-hero-glow:         #6EA886;
 
   --color-success:           #6EE7A0;
   --color-success-container: #1F3A24;

@@ -26,7 +26,7 @@ export function BenefitRow({
         className={cn(
           "flex size-11 shrink-0 items-center justify-center rounded-xl",
           onDark
-            ? "bg-white/8 text-[hsl(var(--color-secondary-light))]"
+            ? "bg-[hsl(var(--color-on-brand-band)/0.08)] text-[hsl(var(--color-secondary-light))]"
             : "bg-primary-container text-primary",
         )}
       >
@@ -36,14 +36,14 @@ export function BenefitRow({
         <ContentText
           variant="smallEmphasis"
           as="p"
-          className={cn("mb-1", onDark && "text-primary-foreground")}
+          className={cn("mb-1", onDark && "text-on-brand-band")}
         >
           {title}
         </ContentText>
         <ContentText
           variant="small"
           as="p"
-          className={cn("leading-snug", onDark && "text-white/52")}
+          className={cn("leading-snug", onDark && "text-brand-band-muted")}
         >
           {description}
         </ContentText>

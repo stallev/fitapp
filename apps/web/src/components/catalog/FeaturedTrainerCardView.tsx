@@ -80,7 +80,7 @@ export function FeaturedTrainerCardView({
             </VerifiedBadge>
           </div>
           <div className="mb-2.5 flex flex-wrap items-center gap-2">
-            <ContentText variant="subtle" as="span" className="text-[13px]">
+            <ContentText variant="muted" as="span" className="text-[13px]">
               {tagline}
             </ContentText>
           </div>
@@ -89,7 +89,7 @@ export function FeaturedTrainerCardView({
             <ContentText variant="small" as="span" className="font-semibold">
               {trainer.ratingAvg.toFixed(1)}
             </ContentText>
-            <ContentText variant="subtle" as="span">
+            <ContentText variant="muted" as="span">
               · {trainer.ratingCount}{" "}
               {messages.landing.featured.reviewsLabel}
             </ContentText>
