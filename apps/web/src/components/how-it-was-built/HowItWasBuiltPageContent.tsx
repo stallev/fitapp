@@ -18,7 +18,7 @@ import {
 } from "@/components/how-it-was-built/HowItWasBuiltToc.client";
 import { LandingFooter } from "@/components/landing/LandingFooter";
 import { LandingFooterSkeleton } from "@/components/landing/LandingFooterSkeleton";
-import { MarketingNav } from "@/components/landing/MarketingNav.client";
+import { MarketingNav } from "@/components/landing/MarketingNav.server";
 import { Container } from "@/components/ui/container";
 
 export function HowItWasBuiltPageContent() {

@@ -12,7 +12,7 @@ import { LandingForTrainers } from "@/components/landing/LandingForTrainers";
 import { LandingHero } from "@/components/landing/LandingHero";
 import { LandingHowItWorks } from "@/components/landing/LandingHowItWorks";
 import { LandingJsonLd } from "@/components/landing/LandingJsonLd";
-import { LandingNav } from "@/components/landing/LandingNav.client";
+import { LandingNav } from "@/components/landing/LandingNav.server";
 import { LandingSpecialtyPills } from "@/components/landing/LandingSpecialtyPills";
 import { LandingTestimonials } from "@/components/landing/LandingTestimonials";
 import { LandingTrustBar } from "@/components/landing/LandingTrustBar.client";

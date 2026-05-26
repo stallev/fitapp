@@ -34,30 +34,26 @@ export async function LandingHero() {
         className="grid w-full items-center gap-16 lg:grid-cols-[1.15fr_0.85fr]"
       >
         <div>
-          <Reveal className="mb-7">
+          <div className="mb-7">
             <SectionEyebrow tone="outline" className="inline-flex items-center gap-1.5 text-[13px] font-medium normal-case tracking-normal">
               <ShieldIcon aria-hidden className="size-3.5" />
               {hero.eyebrow}
             </SectionEyebrow>
-          </Reveal>
-          <Reveal delay="100ms">
-            <Heading
-              as="h1"
-              id="landing-hero-heading"
-              visualLevel="display"
-              className="mb-6 text-[clamp(3.125rem,5.8vw,5.125rem)] leading-[0.97] tracking-[-0.045em]"
-            >
-              {hero.title}
-              <br />
-              <em className="text-primary not-italic">{hero.titleAccent}</em>
-            </Heading>
-          </Reveal>
-          <Reveal delay="200ms">
-            <ContentText variant="lead" as="p" className="mb-10 max-w-[460px]">
-              {hero.subcopy}
-            </ContentText>
-          </Reveal>
-          <Reveal delay="300ms" className="mb-5 flex flex-wrap items-center gap-3.5">
+          </div>
+          <Heading
+            as="h1"
+            id="landing-hero-heading"
+            visualLevel="display"
+            className="mb-6 text-[clamp(3.125rem,5.8vw,5.125rem)] leading-[0.97] tracking-[-0.045em]"
+          >
+            {hero.title}
+            <br />
+            <em className="text-primary not-italic">{hero.titleAccent}</em>
+          </Heading>
+          <ContentText variant="lead" as="p" className="mb-10 max-w-[460px]">
+            {hero.subcopy}
+          </ContentText>
+          <div className="mb-5 flex flex-wrap items-center gap-3.5">
             <CustomLink as="button" href="/trainers" size="lg" className="rounded-full px-9">
               {hero.primaryCta}
               <ArrowRightIcon aria-hidden className="size-[18px]" />
@@ -71,8 +67,8 @@ export async function LandingHero() {
             >
               {hero.secondaryCta}
             </CustomLink>
-          </Reveal>
-          <Reveal delay="400ms" className="mb-6 flex flex-wrap gap-2.5">
+          </div>
+          <div className="mb-6 flex flex-wrap gap-2.5">
             {hero.trustPills.map((pill) => {
               const Icon =
                 TRUST_PILL_ICONS[pill.kind as keyof typeof TRUST_PILL_ICONS];
@@ -82,8 +78,8 @@ export async function LandingHero() {
                 </TrustFeaturePill>
               );
             })}
-          </Reveal>
-          <Reveal delay="500ms" className="flex flex-wrap items-center gap-4">
+          </div>
+          <div className="flex flex-wrap items-center gap-4">
             <span className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
               <StarIcon aria-hidden className="size-[15px] fill-secondary text-secondary" />
               {hero.stats.rating} {hero.stats.ratingLabel}
@@ -96,7 +92,7 @@ export async function LandingHero() {
             <ContentText variant="subtle" as="span" className="text-sm font-medium">
               {hero.stats.sessions}
             </ContentText>
-          </Reveal>
+          </div>
         </div>
 
         <Reveal delay="200ms" className="relative hidden h-[540px] lg:block">

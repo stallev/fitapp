@@ -12,7 +12,7 @@ import {
 } from "@/components/features/FeaturesToc.client";
 import { LandingFooter } from "@/components/landing/LandingFooter";
 import { LandingFooterSkeleton } from "@/components/landing/LandingFooterSkeleton";
-import { MarketingNav } from "@/components/landing/MarketingNav.client";
+import { MarketingNav } from "@/components/landing/MarketingNav.server";
 import { Container } from "@/components/ui/container";
 
 export function FeaturesPageContent() {
