@@ -53,4 +53,4 @@ packages/db/prisma/taxonomy-map-overrides.json
 /docs/stakeholders_docs/
 /docs/prototype/reports/
 
-/templates/
+/templates/**/*.*

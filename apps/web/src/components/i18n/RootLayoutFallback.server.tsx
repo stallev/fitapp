@@ -1,3 +1,4 @@
+import { PulseGoogleAnalytics } from "@/components/analytics/PulseGoogleAnalytics";
 import { RootLayoutProviders } from "@/components/i18n/RootLayoutProviders";
 import { DEFAULT_LOCALE } from "@/lib/i18n/constants";
 import { getMessagesForLocale } from "@/lib/messages";
@@ -25,6 +26,7 @@ export function RootLayoutFallback({
           {children}
         </RootLayoutProviders>
       </body>
+      <PulseGoogleAnalytics />
     </html>
   );
 }

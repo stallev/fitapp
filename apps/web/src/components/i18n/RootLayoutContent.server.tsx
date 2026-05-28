@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { PulseGoogleAnalytics } from "@/components/analytics/PulseGoogleAnalytics";
 import { RootLayoutProviders } from "@/components/i18n/RootLayoutProviders";
 import { resolveLocale } from "@/lib/i18n/resolve-locale";
 import { getMessages } from "@/lib/messages/server";
@@ -30,6 +31,7 @@ export async function RootLayoutContent({
           {children}
         </RootLayoutProviders>
       </body>
+      <PulseGoogleAnalytics />
     </html>
   );
 }
