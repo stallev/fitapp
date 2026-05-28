@@ -1,10 +1,10 @@
 import { Heading } from "@/components/atoms";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getMessages } from "@/lib/messages/server";
+import { DEFAULT_LOCALE } from "@/lib/i18n/constants";
+import { getMessagesForLocale } from "@/lib/messages/locale-catalog";
 
-
-export async function TrainerRegisterPageSkeleton() {
-  const messages = await getMessages();
+export function TrainerRegisterPageSkeleton() {
+  const messages = getMessagesForLocale(DEFAULT_LOCALE);
   return (
     <div
       className="mx-auto w-full max-w-2xl px-4 md:px-0"

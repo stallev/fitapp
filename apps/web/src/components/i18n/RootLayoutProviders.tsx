@@ -26,7 +26,7 @@ export function RootLayoutProviders({
         <Suspense fallback={null}>
           <LocaleQueryHandler />
         </Suspense>
-        {children}
+        <Suspense fallback={null}>{children}</Suspense>
         <Toaster />
       </ThemeProvider>
     </LocaleProvider>
