@@ -4,7 +4,6 @@ import { ContentText, Heading, SectionEyebrow } from "@/components/atoms";
 import { LandingHeroFloatCard } from "@/components/landing/LandingHeroFloatCard";
 import { Container } from "@/components/ui/container";
 import { CustomLink } from "@/components/ui/CustomLink";
-import { Reveal } from "@/components/ui/Reveal.client";
 import { TrustFeaturePill } from "@/components/ui/TrustFeaturePill";
 import type { LandingHeroFloatCardData } from "@/lib/landing/landing-hero-float-cards";
 import type { Messages } from "@/lib/messages/types";
@@ -96,10 +95,9 @@ export function LandingHero({ hero, floatCards }: LandingHeroProps) {
         </div>
 
         <div className="relative mx-auto hidden h-[540px] min-h-[540px] w-full min-w-[365px] max-w-[400px] shrink-0 lg:block">
-          <Reveal
-            delay="200ms"
-            className="pointer-events-none absolute inset-[-60px] rounded-[60%_40%_50%_50%/50%_50%_60%_40%] bg-[radial-gradient(ellipse_75%_75%_at_55%_50%,hsl(var(--color-hero-glow)/0.35)_0%,transparent_65%)] motion-reduce:opacity-100"
+          <div
             aria-hidden
+            className="pointer-events-none absolute inset-[-60px] rounded-[60%_40%_50%_50%/50%_50%_60%_40%] bg-[radial-gradient(ellipse_75%_75%_at_55%_50%,hsl(var(--color-hero-glow)/0.35)_0%,transparent_65%)]"
           />
           {floatCards.map((card) => (
             <LandingHeroFloatCard key={card.id} card={card} />
