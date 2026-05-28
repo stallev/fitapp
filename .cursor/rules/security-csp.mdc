@@ -12,38 +12,94 @@ alwaysApply: false
 
 **Guide:** [`docs/guidelines/security/ai_security_xss_csrf_guidelines.md`](docs/guidelines/security/ai_security_xss_csrf_guidelines.md)  
 **Methodology:** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md)  
-**Runtime:** [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — Next.js **16.2.6**, **`proxy.ts`**
+**Runtime:** [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — Next.js **16.2.6**, **`proxy.ts`**  
+**Next.js canon:** [Content Security Policy](https://nextjs.org/docs/app/guides/content-security-policy)
 
 ## CSP nonce (обязательно)
 
-- CSP устанавливается в **`proxy.ts`** (Next.js 16) — per-request nonce через `crypto.randomUUID()` → base64.
-- **Не** в `next.config.ts` headers — нет per-request nonce.
-- Nonce прокидывается через `request.headers` → `x-nonce` → `await headers().get('x-nonce')` в Server Component.
+- CSP устанавливается в **`apps/web/src/proxy.ts`** — per-request nonce: `Buffer.from(crypto.randomUUID()).toString("base64")`.
+- **Не** в `next.config.ts` `headers()` — там нет per-request nonce.
+- Каноническая сборка директив — **`buildCspHeader(nonce)`** в `proxy.ts`; не дублировать другой логикой в `next.config.ts`.
+- Nonce на запрос: `request.headers` → **`x-nonce`** (через `bootstrapLocaleCookie(..., nonceHeaders)` или аналог).
+- Ответ: **`Content-Security-Policy`** на `NextResponse` (`withCsp`).
+- Next.js на динамическом рендере сам проставляет nonce на framework `<script>` / `<style>`, если есть `x-nonce`. Для сторонних `<Script nonce={...}>` — читать `(await headers()).get("x-nonce")` в RSC.
+
+## `style-src` — dev vs prod (обязательно)
+
+**Не** использовать только `'nonce-…'` для `style-src` в **development** — браузер заблокирует inline-стили от `next/font`, HMR, React (`react-dom`), Radix (`element.style` / `style={}`).
+
+| Среда | Директивы | Зачем |
+|-------|-----------|--------|
+| **development** | `style-src 'self' 'unsafe-inline'` | Совместимость с Next.js dev + Turbopack (официальный паттерн Next.js CSP guide) |
+| **production** | `style-src 'self' 'nonce-${nonce}'` + `style-src-attr 'unsafe-inline'` | Nonce на `<style>` (next/font, bundled CSS); `style-src-attr` — легитимные `style={}` / Radix без `'unsafe-inline'` на все `<style>` |
 
 ```typescript
-// proxy.ts — добавить после auth/locale блока
-const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
-const isDev = process.env.NODE_ENV === 'development';
+// apps/web/src/proxy.ts — buildCspHeader (канон)
+function buildCspHeader(nonce: string): string {
+  const isDev = process.env.NODE_ENV === "development";
+  const styleDirectives = isDev
+    ? ["style-src 'self' 'unsafe-inline'"]
+    : [`style-src 'self' 'nonce-${nonce}'`, "style-src-attr 'unsafe-inline'"];
 
-const cspHeader = [
-  "default-src 'self'",
-  `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ''}`,
-  isDev ? `style-src 'self' 'unsafe-inline'` : `style-src 'self' 'nonce-${nonce}'; style-src-attr 'unsafe-inline'`,
-  "img-src 'self' blob: data: https:",
-  "font-src 'self'",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "frame-ancestors 'none'",
-  "upgrade-insecure-requests",
-].join('; ');
-
-const requestHeaders = new Headers(request.headers);
-requestHeaders.set('x-nonce', nonce);
-requestHeaders.set('Content-Security-Policy', cspHeader);
-const response = NextResponse.next({ request: { headers: requestHeaders } });
-response.headers.set('Content-Security-Policy', cspHeader);
+  return [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
+    ...styleDirectives,
+    "img-src 'self' blob: data: https:",
+    "font-src 'self'",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "upgrade-insecure-requests",
+  ].join("; ");
+}
 ```
+
+### Product UI и inline `style`
+
+- **Предпочитать** Tailwind / CSS variables — не `style={{}}` для статичного layout (CSP prod + проще поддержка).
+- Если placement нельзя выразить классами — документировать в коде (см. `landing-hero-float-cards.ts`).
+- **Запрещено** обходить CSP через `dangerouslySetInnerHTML` для произвольного CSS от пользователя.
+
+## Прокидывание nonce в proxy
+
+```typescript
+const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+const cspHeader = buildCspHeader(nonce);
+const nonceHeaders = { "x-nonce": nonce };
+
+function withCsp(response: NextResponse): NextResponse {
+  response.headers.set("Content-Security-Policy", cspHeader);
+  return response;
+}
+
+// Публичные и auth-пути после locale bootstrap:
+return withCsp(bootstrapLocaleCookie(request, localeOptions, nonceHeaders));
+```
+
+При добавлении новых веток `proxy` — **каждый** `NextResponse` должен проходить через `withCsp`. Новые `NextResponse.next` / redirect — по возможности тоже передавать `nonceHeaders` в request headers.
+
+## Third-party scripts (Google Analytics)
+
+При включённом `NEXT_PUBLIC_GA_MEASUREMENT_ID` / `@next/third-parties/google` расширять CSP (в `buildCspHeader`), например:
+
+- `script-src` … `https://www.googletagmanager.com`
+- `connect-src 'self' https://www.google-analytics.com` (и при необходимости региональные GA endpoints)
+- `img-src` … `https://www.google-analytics.com`
+
+Сверять с [Next.js CSP + third parties](https://nextjs.org/docs/app/guides/content-security-policy). Не оставлять GA включённым в env без обновления CSP.
+
+## Dev: ложные «Console Error» (не CSP, не Pulse)
+
+Игнорировать при разработке, если стек **только** из расширений:
+
+| Симптом | Источник |
+|---------|----------|
+| `The children should not have changed if we pass in the same set` + `installHook.js` | **React Developer Tools** (`chrome-extension://fmkadmapgofadopljbjfkapdkoienihi`) |
+| `Console Ninja failed to send logs` | Расширение **Console Ninja** (WebSocket в IDE) |
+
+Проверка: инкогнито без расширений или отключить React DevTools на `localhost`. Ошибки из `apps/web` / `_next/static/chunks/apps_web_*` — разбирать как баг приложения.
 
 ## `allowedOrigins` при reverse proxy / CDN
 
@@ -58,7 +114,7 @@ experimental: {
 
 ## `dangerouslySetInnerHTML` — только с санитайзером
 
-- Текущие два `dangerouslySetInnerHTML` в Pulse безопасны (JSON-LD + CSS vars).
+- Текущие безопасные случаи в Pulse: JSON-LD (`serializeJsonLd`), CSS vars chart (design tokens).
 - При **user-generated HTML** — обязателен `isomorphic-dompurify`.
 - `dangerouslySetInnerHTML={{ __html: untrusted }}` без санитайзера — **запрещено**.
 
@@ -67,9 +123,9 @@ experimental: {
 Для мутирующих Route Handlers проверять `origin` header:
 
 ```typescript
-const origin = request.headers.get('origin');
+const origin = request.headers.get("origin");
 if (origin !== process.env.NEXT_PUBLIC_APP_URL) {
-  return new NextResponse('Forbidden', { status: 403 });
+  return new NextResponse("Forbidden", { status: 403 });
 }
 ```
 
@@ -80,23 +136,28 @@ if (origin !== process.env.NEXT_PUBLIC_APP_URL) {
 <a href={userInput}>link</a>
 
 // ✅
-const isSafe = href.startsWith('/') || href.startsWith('https://');
+const isSafe = href.startsWith("/") || href.startsWith("https://");
 ```
 
 ## `timingSafeEqual` для секретов
 
 ```typescript
-import { timingSafeEqual } from 'crypto';
+import { timingSafeEqual } from "crypto";
 // Constant-time comparison — защита от timing attacks
 ```
 
 ## Agent checklist
 
-- [ ] CSP nonce установлен в `proxy.ts` (не в `next.config.ts` headers)
+- [ ] CSP только в `proxy.ts` → `buildCspHeader`; не в `next.config.ts` headers
+- [ ] **Dev:** `style-src 'self' 'unsafe-inline'` (не только nonce)
+- [ ] **Prod:** `style-src` + nonce **и** `style-src-attr 'unsafe-inline'`
+- [ ] `x-nonce` на request; `Content-Security-Policy` на response (`withCsp`)
+- [ ] Новые ветки proxy не обходят `withCsp` / `nonceHeaders`
+- [ ] GA / иные third-party — расширены `script-src` / `connect-src` / `img-src`
+- [ ] Product UI: без лишнего `style={{}}`; Tailwind-first
 - [ ] `allowedOrigins` задан при reverse proxy / CDN
-- [ ] `dangerouslySetInnerHTML` только с `DOMPurify.sanitize`
+- [ ] `dangerouslySetInnerHTML` только с `DOMPurify.sanitize` для UGC
 - [ ] Мутирующие Route Handlers проверяют `origin`
-- [ ] Секреты сравниваются через `timingSafeEqual`
-- [ ] `href` с user input — валидация перед рендером
+- [ ] Секреты — `timingSafeEqual`; `href` с user input — валидация
 
 Reference: [`docs/guidelines/security/ai_security_xss_csrf_guidelines.md`](docs/guidelines/security/ai_security_xss_csrf_guidelines.md)
