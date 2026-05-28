@@ -68,6 +68,7 @@ Visual and interaction canon — **do not invent** ad-hoc styles:
 
 | Topic | Source |
 |-------|--------|
+| **UX/UI agent guide (Design Thinking, FX-1–FX-10, checklists)** | [`docs/guidelines/ux_ui/ai_agent_ui_ux_guideline.md`](../../docs/guidelines/ux_ui/ai_agent_ui_ux_guideline.md) — **read before implementing any screen** |
 | **UI component catalog** | `/design-system` (local dev) — import `@/components/atoms`, `@/components/ui/*`; spec: [`design_system_lab_spec.md`](../../docs/implementation/mvp/specs/design_system_lab_spec.md) |
 | Design tokens, typography | [`fitness-platform-design-system.md`](../../docs/default_docs/fitness-platform-design-system.md), [`typography_text_guidelines.md`](../../docs/guidelines/typography_text_guidelines.md) |
 | Page layout reference | [`Fitness_Platform_Prototype_v1.html`](../../docs/prototypes/Fitness_Platform_Prototype_v1.html); landing `/`: [`Pulse Landing Page -Standalone-.html`](../../docs/prototypes/Pulse Landing Page -Standalone-.html) + [`public_landing_spec.md`](../../docs/implementation/mvp/specs/public_landing_spec.md) (P16) |
@@ -85,6 +86,7 @@ Visual and interaction canon — **do not invent** ad-hoc styles:
 | `ios-safari-mutation-transport.mdc` | iOS Safari `Load failed` — Class A/B |
 | `auth-security.mdc` | Auth.js, defense in depth |
 | `app-router-streaming-loading.mdc` | Suspense, `loading.tsx` |
+| Client lazy loading | [`ai_client_lazy_loading.md`](../../docs/guidelines/nextjs/ai_client_lazy_loading.md) — `next/dynamic` |
 | `s3-file-asset-uploads.mdc` | FileAsset + AWS S3 |
 | `react-ui-components.mdc` | RSC/client boundaries |
 | `react-one-component-per-file.mdc` | One component per file |

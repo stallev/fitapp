@@ -19,8 +19,10 @@ export type LandingHeroFloatCardProps = {
 export function LandingHeroFloatCard({ card }: LandingHeroFloatCardProps) {
   return (
     <div
-      style={card.style}
-      className="cursor-default overflow-hidden rounded-[20px] bg-card shadow-[var(--shadow-float-card)] transition-transform duration-300 hover:-translate-y-2.5"
+      className={cn(
+        card.placementClassName,
+        "cursor-default overflow-hidden rounded-[20px] bg-card shadow-[var(--shadow-float-card)] transition-transform duration-300 hover:-translate-y-2.5",
+      )}
     >
       <div
         className={cn(
@@ -59,7 +61,12 @@ export function LandingHeroFloatCard({ card }: LandingHeroFloatCardProps) {
             {card.cert}
           </span>
         </div>
-        <Heading as="h3" visualLevel="h6" variant="brand" className="font-sans text-[13px] font-bold">
+        <Heading
+          as="h3"
+          visualLevel="h6"
+          variant="brand"
+          className="font-sans text-[13px] font-bold"
+        >
           {card.price}
         </Heading>
       </div>

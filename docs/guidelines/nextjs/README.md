@@ -39,7 +39,8 @@ Per official Next.js 16 upgrade guide (Context7 `/vercel/next.js/v16.2.2`):
 | Document | Topic |
 |----------|--------|
 | [ai_nextjs_db_data_handle.md](./ai_nextjs_db_data_handle.md) | Server Actions vs Route Handlers, DAL, iOS Safari §7 |
-| [ai_loading_patterns.md](./ai_loading_patterns.md) | `loading.tsx`, Suspense, streaming shell, page performance; **`'use cache'`** (not `unstable_cache`) |
+| [ai_loading_patterns.md](./ai_loading_patterns.md) | `loading.tsx`, Suspense, streaming shell, page performance; **`'use cache'`**; **§14.1** landing LCP + `blocking-route` |
+| [ai_client_lazy_loading.md](./ai_client_lazy_loading.md) | `next/dynamic`, heavy client deps (`react-day-picker`, `recharts`), interaction-gated panels |
 | [ai_vercel_runtime_compatibility.md](./ai_vercel_runtime_compatibility.md) | Vercel + Next 16 baseline |
 | [ai_admin_interface_requirements.md](./ai_admin_interface_requirements.md) | Admin forms layout |
 | [blob-upload-agent-instruction.md](./blob-upload-agent-instruction.md) | **Deprecated** — use [s3-upload-agent-instruction.md](./s3-upload-agent-instruction.md) |
@@ -64,7 +65,7 @@ Per official Next.js 16 upgrade guide (Context7 `/vercel/next.js/v16.2.2`):
 2. Use MCP **Context7** (`/vercel/next.js/v16.2.2`) for API wording after ADR-002.
 3. React: [React guidelines](../react/README.md).
 
-**Cursor rules:** `nextjs-vercel-app-router.mdc`, `data-server-actions-and-api.mdc`, `ios-safari-mutation-transport.mdc`, `app-router-streaming-loading.mdc`, `s3-file-asset-uploads.mdc`, `admin-forms-layout.mdc`
+**Cursor rules:** `nextjs-vercel-app-router.mdc`, `data-server-actions-and-api.mdc`, `ios-safari-mutation-transport.mdc`, `app-router-streaming-loading.mdc`, `react-ui-components.mdc`, `s3-file-asset-uploads.mdc`, `admin-forms-layout.mdc`
 
 ---
 

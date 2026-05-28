@@ -8,7 +8,8 @@ alwaysApply: false
 # Logic ↔ presentation separation (`apps/web`)
 
 **Methodology:** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md)  
-**Guides:** [ai_component_guidelines.md](docs/guidelines/react/ai_component_guidelines.md), [ai_nextjs_db_data_handle.md](docs/guidelines/nextjs/ai_nextjs_db_data_handle.md)
+**Guides:** [ai_component_guidelines.md](docs/guidelines/react/ai_component_guidelines.md), [ai_nextjs_db_data_handle.md](docs/guidelines/nextjs/ai_nextjs_db_data_handle.md)  
+**Client lazy loading:** [ai_client_lazy_loading.md](docs/guidelines/nextjs/ai_client_lazy_loading.md) — split heavy UI from shared client modules
 
 ## Контракт
 

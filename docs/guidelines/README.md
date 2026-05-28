@@ -13,9 +13,11 @@
 | React | [`react/README.md`](react/README.md) |
 | Auth | [`auth/ai_auth_implementation_guide.md`](auth/ai_auth_implementation_guide.md) |
 | Typography | [`typography_text_guidelines.md`](typography_text_guidelines.md) |
+| **UX/UI — Agent Operational Guide** | [`ux_ui/ai_agent_ui_ux_guideline.md`](ux_ui/ai_agent_ui_ux_guideline.md) — Design Thinking, FX-1–FX-10, Context7 table, Enforcement Matrix, checklists |
 | Visual identity (canon) | [`../design/visual_identity_contract.md`](../design/visual_identity_contract.md) |
 | **UI component catalog (Design Lab)** | [`../implementation/mvp/specs/design_system_lab_spec.md`](../implementation/mvp/specs/design_system_lab_spec.md) — `/design-system` |
 | UX interaction & style (canon) | [`../design/interaction_design_contract.md`](../design/interaction_design_contract.md), [`ui_states_contract.md`](../design/ui_states_contract.md), [`styleguide.md`](../design/styleguide.md) |
+| FAANG-level UX norms (canon) | [`../design/ux_ui_faang_best_practices_for_agents.md`](../design/ux_ui_faang_best_practices_for_agents.md) — FX-1–FX-10 Pulse canon |
 | Accessibility (canon) | [`../design/accessibility_requirements.md`](../design/accessibility_requirements.md) |
 | **Incidents (mitigation patterns)** | [`../incidents/`](../incidents/) — iOS Safari Server Actions |
 

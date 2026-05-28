@@ -1,4 +1,5 @@
 export const CACHE_TAGS = {
+  landingCopy: (locale: string) => `landing:copy:${locale}`,
   trainersCatalog: "trainers:catalog",
   trainer: (id: string) => `trainer:${id}`,
   trainerSchedule: (id: string) => `trainer:${id}:schedule`,

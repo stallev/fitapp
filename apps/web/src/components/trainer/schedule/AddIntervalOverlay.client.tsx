@@ -13,6 +13,7 @@ import {
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -84,6 +85,9 @@ export function AddIntervalOverlay({  open,
         <SheetContent side="bottom" className="flex flex-col px-5 pt-0">
           <SheetHeader className="px-0 text-left">
             <SheetTitle>{mobileTitle}</SheetTitle>
+            <SheetDescription className="sr-only">
+              {mobileTitle}
+            </SheetDescription>
           </SheetHeader>
           <AddIntervalForm
             key={formInstanceKey}

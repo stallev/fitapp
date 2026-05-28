@@ -51,7 +51,7 @@ export async function LandingFinalCta() {
             <TrustFeaturePill
               key={note}
               icon={CheckIcon}
-              className="border-[hsl(var(--color-on-brand-cta-band)/0.2)] bg-transparent text-[hsl(var(--color-on-brand-cta-band)/0.65)] shadow-none"
+              className="border-[hsl(var(--color-on-brand-cta-band)/0.25)] bg-transparent text-on-brand-cta-band/90 shadow-none"
             >
               {note}
             </TrustFeaturePill>

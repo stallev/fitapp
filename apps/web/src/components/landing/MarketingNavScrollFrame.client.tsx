@@ -22,7 +22,7 @@ export function MarketingNavScrollFrame({
     <nav
       aria-label={navAriaLabel}
       className={cn(
-        "fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between px-4 transition-all duration-300 md:h-[72px] md:px-14",
+        "fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between px-4 transition-[border-color,background-color,box-shadow,backdrop-filter] duration-300 md:h-[72px] md:px-14",
         (scrolled || !isLanding) &&
           "border-b border-border/60 bg-background/95 shadow-[var(--shadow-card)] backdrop-blur-xl",
       )}

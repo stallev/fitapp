@@ -1,0 +1,109 @@
+---
+description: CSS animations, transitions, and browser rendering performance — apps/web
+globs:
+  - apps/web/src/**/*.tsx
+  - apps/web/src/**/*.css
+  - apps/web/src/app/globals.css
+alwaysApply: false
+---
+
+# UI Animation Performance (`apps/web`)
+
+**Guide:** [`docs/guidelines/react/ai_browser_rendering_performance.md`](docs/guidelines/react/ai_browser_rendering_performance.md)  
+**Methodology:** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md)
+
+## Animate only Composite properties
+
+Анимировать **только** `transform` и `opacity` (Composite-only, GPU thread, не блокируют JS).
+
+```
+transform, opacity → Composite only ✅
+color, background  → Paint → Composite ⚠️ (редкие переходы OK)
+width, height, margin, top, left → Layout + Paint + Composite ❌ Запрещено в анимациях
+```
+
+## Запрет `transition-all` где меняются layout-свойства
+
+```tsx
+// ❌ Запрещено — transition-all анимирует layout-свойства
+className="transition-all"
+
+// ✅ Явный список только safe-свойств
+className="transition-[colors,opacity]"
+className="transition-[border-color,background-color,box-shadow]"
+className="transition-[border-color,background-color,box-shadow,backdrop-filter]"
+```
+
+**Исключение:** `transition-all` допустимо только если список CSS-изменений явно known-composite (например, только `transform` + `opacity` в компоненте).
+
+## `will-change` — только для постоянно анимируемых элементов
+
+```css
+/* ✅ Постоянная анимация — оправдано */
+.spinner { will-change: transform; animation: spin 1s linear infinite; }
+
+/* ❌ Статичный элемент — занимает GPU VRAM зря */
+.card { will-change: transform; }
+```
+
+**Паттерн apply-before/remove-after для разовых анимаций:**
+
+```typescript
+element.style.willChange = 'transform';
+element.animate([...]).addEventListener('finish', () => {
+  element.style.willChange = 'auto'; // Освобождаем слой
+});
+```
+
+## `prefers-reduced-motion` — обязательный глобальный reset
+
+В `apps/web/src/app/globals.css` должен присутствовать:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+```
+
+## Layout Thrashing — антипаттерн
+
+```typescript
+// ❌ Thrashing: чередование read/write в цикле
+boxes.forEach(box => {
+  const width = box.offsetWidth; // READ → Reflow
+  box.style.width = (width * 2) + 'px'; // WRITE → Reflow на следующей итерации
+});
+
+// ✅ Разделить READ и WRITE фазы
+const widths = boxes.map(box => box.offsetWidth); // все READ
+boxes.forEach((box, i) => { box.style.width = (widths[i] * 2) + 'px'; }); // все WRITE
+```
+
+## `useLayoutEffect` для DOM-измерений
+
+```typescript
+// ✅ DOM-измерения — до отрисовки браузером, без мерцания
+useLayoutEffect(() => {
+  const width = ref.current?.offsetWidth ?? 0;
+  setWidth(width);
+}, []);
+
+// ❌ useEffect для DOM-измерений → мерцание
+useEffect(() => { setWidth(ref.current?.offsetWidth ?? 0); }, []);
+```
+
+## Agent checklist
+
+- [ ] Анимации используют только `transform` / `opacity`
+- [ ] Нет `transition-all` где меняются `width`, `height`, `margin`, `padding`
+- [ ] `will-change` только для постоянно анимируемых + убрать после
+- [ ] `prefers-reduced-motion` глобальный reset в `globals.css`
+- [ ] DOM-измерения в `useLayoutEffect`, не `useEffect`
+- [ ] Нет `getBoundingClientRect()` в render-фазе
+
+Reference: [`docs/guidelines/react/ai_browser_rendering_performance.md`](docs/guidelines/react/ai_browser_rendering_performance.md)

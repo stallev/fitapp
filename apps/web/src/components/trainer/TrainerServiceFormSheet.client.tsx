@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -109,6 +110,11 @@ function TrainerServiceFormFields({
             ? messages.trainer.services.editService
             : messages.trainer.services.newService}
         </DialogTitle>
+        <DialogDescription className="sr-only">
+          {isEditing
+            ? messages.trainer.services.editService
+            : messages.trainer.services.newService}
+        </DialogDescription>
       </DialogHeader>
 
       <FieldGroup>
@@ -173,7 +179,7 @@ function TrainerServiceFormFields({
       </FieldGroup>
 
       <DialogFooter className="gap-2 sm:gap-0">
-        <Button type="button" variant="outline" onClick={onClose} disabled={isPending}>
+        <Button type="button" variant="outline" onClick={onClose} disabled={isPending} aria-busy={isPending}>
           {messages.trainer.services.cancel}
         </Button>
         <Button type="button" onClick={handleSave} disabled={isPending} aria-busy={isPending}>

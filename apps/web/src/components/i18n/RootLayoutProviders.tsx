@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 
+import { HtmlLangSync } from "@/components/i18n/HtmlLangSync.client";
 import { LocaleProvider } from "@/components/i18n/LocaleProvider.client";
 import { LocaleQueryHandler } from "@/components/i18n/LocaleQueryHandler.client";
 import { ThemeProvider } from "@/components/providers/ThemeProvider.client";
@@ -20,6 +21,7 @@ export function RootLayoutProviders({
 }: RootLayoutProvidersProps) {
   return (
     <LocaleProvider locale={locale} messages={messages}>
+      <HtmlLangSync />
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <Suspense fallback={null}>
           <LocaleQueryHandler />

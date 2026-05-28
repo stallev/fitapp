@@ -7,6 +7,7 @@ alwaysApply: false
 # App Router: streaming, loading & page performance (mandatory for route work)
 
 **Normative doc:** [`docs/guidelines/nextjs/ai_loading_patterns.md`](docs/guidelines/nextjs/ai_loading_patterns.md) — loading UX **and** page performance (adapted from lampto `ai_page_performance_streaming.md`).  
+**Client JS (orthogonal layer):** [`ai_client_lazy_loading.md`](docs/guidelines/nextjs/ai_client_lazy_loading.md) — `next/dynamic`, heavy client deps; Suspense does **not** defer `react-day-picker` / `recharts`.  
 **Runtime:** [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — Next.js **16.2.6**, Vercel streaming supported  
 **Cache tags:** [`cache_revalidation_policy.md`](docs/prds/05_runtime/cache_revalidation_policy.md)
 

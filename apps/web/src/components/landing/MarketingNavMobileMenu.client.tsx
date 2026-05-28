@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -57,6 +58,9 @@ export function MarketingNavMobileMenu({
       <SheetContent side="bottom" className="max-h-[85dvh] gap-0 overflow-y-auto px-0">
         <SheetHeader className="px-5 pb-2">
           <SheetTitle>{messages.landing.nav.menuTitle}</SheetTitle>
+          <SheetDescription className="sr-only">
+            {messages.landing.nav.menuTitle}
+          </SheetDescription>
         </SheetHeader>
         <nav
           aria-label={messages.locale.navAriaLabel}

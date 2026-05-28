@@ -11,6 +11,7 @@
 - **Default:** Server Component — no `'use client'`
 - **Client:** hooks, events, browser APIs only
 - New client modules: **`.client.tsx`** suffix for clarity
+- **Heavy client deps** in shared `components/ui/*` → lazy-load per [ai_client_lazy_loading.md](../nextjs/ai_client_lazy_loading.md) (`next/dynamic`, interaction-gated panels)
 
 ---
 
@@ -97,7 +98,21 @@ Routes stay thin — data in `src/data/**`, actions in `src/actions/**`.
 
 ---
 
-## 7. Accessibility & semantic markup
+## 8. Client lazy loading (heavy deps)
+
+Server Components and Suspense optimize **data streaming**, not **client JS download**. When a `'use client'` module imports heavy libraries (`react-day-picker`, `recharts`, editors):
+
+1. Isolate the heavy UI in a dedicated client file.
+2. Use **`next/dynamic`** from a parent `.client.tsx` — as low in the tree as possible.
+3. For popovers/dialogs — mount lazy child only when `open === true`.
+4. Provide sized `loading` skeletons (CLS < 0.1).
+
+Full contract, patterns, and Pulse audit backlog: [ai_client_lazy_loading.md](../nextjs/ai_client_lazy_loading.md).  
+Cursor rules: **react-ui-components**, **app-router-streaming-loading**.
+
+---
+
+## 9. Accessibility & semantic markup
 
 **Cursor rule:** **ui-semantics-a11y** · **Guide:** [ai_semantics_a11y_guidelines.md](./ai_semantics_a11y_guidelines.md)  
 **Target:** WCAG 2.1 Level AA

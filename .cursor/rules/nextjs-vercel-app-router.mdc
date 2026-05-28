@@ -48,6 +48,7 @@ Next.js 16 renames `middleware.ts` → **`proxy.ts`** (Context7 / official v16 u
 ## Data layer
 
 - [ai_nextjs_db_data_handle.md](docs/guidelines/nextjs/ai_nextjs_db_data_handle.md)
+- [ai_client_lazy_loading.md](docs/guidelines/nextjs/ai_client_lazy_loading.md) — heavy client deps, `next/dynamic`
 - [data-server-actions-and-api.mdc](data-server-actions-and-api.mdc)
 
 ## Domain invariants

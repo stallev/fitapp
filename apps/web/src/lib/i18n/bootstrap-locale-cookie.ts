@@ -44,14 +44,25 @@ export type BootstrapLocaleOptions = {
 export function bootstrapLocaleCookie(
   request: NextRequest,
   options: BootstrapLocaleOptions = {},
+  extraRequestHeaders: Record<string, string> = {},
 ): NextResponse {
+  const hasExtra = Object.keys(extraRequestHeaders).length > 0;
+
   if (readRequestLocaleCookie(request)) {
-    return NextResponse.next();
+    if (!hasExtra) return NextResponse.next();
+    const requestHeaders = new Headers(request.headers);
+    for (const [k, v] of Object.entries(extraRequestHeaders)) {
+      requestHeaders.set(k, v);
+    }
+    return NextResponse.next({ request: { headers: requestHeaders } });
   }
 
   const locale = resolveBootstrapLocale(request, options.sessionLocale);
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(LOCALE_REQUEST_HEADER, locale);
+  for (const [k, v] of Object.entries(extraRequestHeaders)) {
+    requestHeaders.set(k, v);
+  }
 
   const response = NextResponse.next({
     request: { headers: requestHeaders },

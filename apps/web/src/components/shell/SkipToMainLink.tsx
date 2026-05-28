@@ -1,8 +1,10 @@
-import { getMessages } from "@/lib/messages/server";
+"use client";
 
+import { useMessages } from "@/components/i18n/LocaleProvider.client";
 
-export async function SkipToMainLink() {
-  const messages = await getMessages();
+export function SkipToMainLink() {
+  const messages = useMessages();
+
   return (
     <a
       href="#main-content"

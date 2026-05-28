@@ -33,7 +33,8 @@ alwaysApply: false
 | **Focus** | Видимый `focus-visible:` (`ring-ring`); порядок табуляции = визуальный порядок |
 | **Modals/Sheets** | Focus trap, Escape закрывает — shadcn/Radix primitives |
 | **Forms** | `aria-invalid`, `aria-describedby` / `FieldError` при ошибках |
-| **Mutations** | `disabled` + `aria-busy` — **ui-mutation-pending** |
+| **Mutations** | `disabled={pending}` + `aria-busy={pending}` на кнопке/форме — **ui-mutation-pending**; **обязателен даже при optimistic visual change** (**ui-optimistic-mutations**) |
+| **Live regions** | `aria-live="polite"` + `aria-atomic="true"` для data-driven счётчиков (каталог, поиск, фильтры); Sonner toasts не требуют ручного `aria-live` |
 | **Contrast** | AA: текст 4.5:1, UI 3:1 — Warm Forest tokens, light + dark |
 | **Motion** | `prefers-reduced-motion` — без обязательной анимации для понимания |
 | **Touch** | Targets ≥ 44×44px — **ui-mobile-first** |
@@ -52,10 +53,12 @@ alwaysApply: false
 - [ ] Формы связаны с labels; ошибки доступны screen reader
 - [ ] Keyboard: Tab через интерактив; Enter/Space на кнопках; Escape в overlay
 - [ ] Icon-only controls именованы
+- [ ] Мутации: `disabled={pending}` + `aria-busy={pending}` — включая optimistic UI
+- [ ] Data-driven счётчики: `aria-live="polite"` + `aria-atomic="true"`
 - [ ] Проверка light + dark contrast на primary text/CTA
 
 ## Связанные правила
 
-- **ui-warm-forest-shadcn**, **ui-mobile-first**, **ui-mutation-pending**, **typography_text_guidelines**
+- **ui-warm-forest-shadcn**, **ui-mobile-first**, **ui-mutation-pending**, **ui-optimistic-mutations**, **typography_text_guidelines**
 
 Reference: lampto `ux_ui_faang_principles_for_agents.md` §2.5 — Pulse Warm Forest adaptation.

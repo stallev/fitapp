@@ -308,6 +308,7 @@ Full modals checklist source: [ux-audit checklists/modals.md](https://github.com
 | [`accessibility_requirements.md`](./accessibility_requirements.md) | WCAG 2.1 AA product contract |
 | [`design_system_lab_spec.md`](../implementation/mvp/specs/design_system_lab_spec.md) | FX-1–FX-10, catalog inventory |
 | [`ai_semantics_a11y_guidelines.md`](../guidelines/react/ai_semantics_a11y_guidelines.md) | Implementation a11y |
+| **[`ai_agent_ui_ux_guideline.md`](../guidelines/ux_ui/ai_agent_ui_ux_guideline.md)** | **Операционный guideline для агентов** — синтез этого документа + Design Thinking 8 шагов + Enforcement Matrix + Pre-Merge Checklist; читать перед реализацией любого экрана |
 | lampto [`ux_ui_faang_principles_for_agents.md`](../examples/lampto/docs/design/ux_ui_faang_principles_for_agents.md) | Reference adaptation source |
 
 ---

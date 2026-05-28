@@ -1,14 +1,20 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
+import dynamic from "next/dynamic";
 import { toast } from "sonner";
 
 import { Heading } from "@/components/atoms";
 import { deleteScheduleExceptionAction } from "@/actions/trainer/delete-schedule-exception";
 import { saveScheduleExceptionAction } from "@/actions/trainer/save-schedule-exception";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const Calendar = dynamic(
+  () => import("@/components/ui/calendar").then((m) => m.Calendar),
+  { ssr: false, loading: () => <Skeleton className="h-64 w-full rounded-2xl" /> },
+);
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import type { TrainerScheduleExceptionForEdit } from "@/data/trainer/get-trainer-schedule-for-edit.server";

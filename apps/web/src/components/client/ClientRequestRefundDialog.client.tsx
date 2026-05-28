@@ -8,6 +8,7 @@ import { requestRefundAction } from "@/actions/client/request-refund";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -74,6 +75,9 @@ export function ClientRequestRefundDialog({  bookingId,
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{messages.clientComplaint.requestRefund}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {messages.clientComplaint.requestRefund}
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">

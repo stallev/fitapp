@@ -194,7 +194,7 @@ export function TrainerOnboardingProfessionalStep({  initialBio,
       </FieldGroup>
 
       <div className="flex gap-3">
-        <Button type="button" variant="outline" onClick={onBack} disabled={isPending}>
+        <Button type="button" variant="outline" onClick={onBack} disabled={isPending} aria-busy={isPending}>
           {messages.trainer.onboarding.back}
         </Button>
         <Button type="button" className="flex-1" onClick={handleNext} disabled={isPending} aria-busy={isPending}>

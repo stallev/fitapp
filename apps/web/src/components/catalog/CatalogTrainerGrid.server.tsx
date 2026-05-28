@@ -34,13 +34,15 @@ export async function CatalogTrainerGrid({ query }: CatalogTrainerGridProps) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <ContentText variant="muted" as="p">
-          {formatCatalogResultsCount(
-            result.pagination.totalCount,
-            messages,
-            locale,
-          )}
-        </ContentText>
+        <div aria-live="polite" aria-atomic="true">
+          <ContentText variant="muted" as="p">
+            {formatCatalogResultsCount(
+              result.pagination.totalCount,
+              messages,
+              locale,
+            )}
+          </ContentText>
+        </div>
         <CatalogSortSelect query={result.appliedQuery} />
       </div>
 

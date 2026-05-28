@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 
 import { type AppLocale } from "@/lib/i18n/constants";
 import type { Messages } from "@/lib/messages/types";
@@ -11,6 +18,9 @@ type LocaleContextValue = {
 };
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
+const LocaleSetterContext = createContext<
+  Dispatch<SetStateAction<LocaleContextValue>> | null
+>(null);
 
 export type LocaleProviderProps = {
   locale: AppLocale;
@@ -23,11 +33,40 @@ export function LocaleProvider({
   messages,
   children,
 }: LocaleProviderProps) {
+  const [value, setValue] = useState({ locale, messages });
+
+  useEffect(() => {
+    setValue((current) =>
+      current.locale === locale ? current : { locale, messages },
+    );
+  }, [locale, messages]);
+
   return (
-    <LocaleContext.Provider value={{ locale, messages }}>
-      {children}
-    </LocaleContext.Provider>
+    <LocaleSetterContext.Provider value={setValue}>
+      <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>
+    </LocaleSetterContext.Provider>
   );
+}
+
+export type LocaleHydrationBridgeProps = LocaleContextValue;
+
+export function LocaleHydrationBridge({
+  locale,
+  messages,
+}: LocaleHydrationBridgeProps) {
+  const setValue = useContext(LocaleSetterContext);
+
+  useEffect(() => {
+    if (!setValue) {
+      return;
+    }
+
+    setValue((current) =>
+      current.locale === locale ? current : { locale, messages },
+    );
+  }, [locale, messages, setValue]);
+
+  return null;
 }
 
 export function useLocale(): AppLocale {

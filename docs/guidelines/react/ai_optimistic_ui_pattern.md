@@ -101,10 +101,38 @@ export const WishlistButton = ({
 
 ---
 
-## 6. Антипаттерны
+## 6. `disabled` + `aria-busy` — обязателен даже при визуальной смене
+
+При использовании `useOptimistic` + `useTransition` кнопка **обязана** иметь `disabled={isPending}` и `aria-busy={isPending}`, даже если визуальное состояние уже изменилось (иконка закрашена, switch переключён). Это требование WCAG и правила **ui-mutation-pending**.
+
+```tsx
+// ❌ Недостаточно — visually changed, но screen reader не знает о pending-статусе
+<button onClick={handleClick} aria-pressed={inWishlist}>
+  <Heart className={inWishlist ? 'fill-primary' : ''} aria-hidden />
+</button>
+
+// ✅ Обязательно — disabled + aria-busy всегда при isPending
+<button
+  type="button"
+  onClick={handleClick}
+  disabled={isPending}
+  aria-busy={isPending}
+  aria-pressed={inWishlist}
+>
+  <Heart className={inWishlist ? 'fill-primary' : ''} aria-hidden />
+  <span className="sr-only">
+    {inWishlist ? MESSAGES.catalog.removeWishlist : MESSAGES.catalog.addWishlist}
+  </span>
+</button>
+```
+
+---
+
+## 7. Антипаттерны
 
 - Optimistic без `toast.error` → молчаливый откат
 - Optimistic для cancel booking / admin reject
 - `setOptimisticState` вне `startTransition`
+- Нет `disabled` + `aria-busy` при `isPending` (нарушение **ui-mutation-pending**)
 
 **Reference:** lampto [`ai_optimistic_ui_pattern.md`](../../examples/lampto/docs/guidelines/react/ai_optimistic_ui_pattern.md)

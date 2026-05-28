@@ -1,5 +1,3 @@
-import type { CSSProperties } from "react";
-
 import type { Messages } from "@/lib/messages/types";
 
 export type LandingHeroFloatCardTone = "forest" | "gold" | "slate";
@@ -13,7 +11,8 @@ export type LandingHeroFloatCardData = {
   price: string;
   initials: string;
   tone: LandingHeroFloatCardTone;
-  style: CSSProperties;
+  /** Tailwind placement — inline `style` is blocked by CSP `style-src` nonce policy. */
+  placementClassName: string;
 };
 
 type LandingHeroFloatCardSeed = Omit<LandingHeroFloatCardData, "price"> & {
@@ -30,14 +29,8 @@ const LANDING_HERO_FLOAT_CARD_SEEDS: LandingHeroFloatCardSeed[] = [
     priceAmount: "$32",
     initials: "MP",
     tone: "forest",
-    style: {
-      position: "absolute",
-      top: "10px",
-      left: "0px",
-      transform: "rotate(-4.5deg)",
-      zIndex: 1,
-      width: "215px",
-    },
+    placementClassName:
+      "absolute top-[10px] left-0 z-[1] w-[215px] -rotate-[4.5deg]",
   },
   {
     id: "float-2",
@@ -48,14 +41,8 @@ const LANDING_HERO_FLOAT_CARD_SEEDS: LandingHeroFloatCardSeed[] = [
     priceAmount: "$35",
     initials: "AV",
     tone: "gold",
-    style: {
-      position: "absolute",
-      top: "90px",
-      left: "150px",
-      transform: "rotate(2.5deg)",
-      zIndex: 3,
-      width: "215px",
-    },
+    placementClassName:
+      "absolute top-[90px] left-[150px] z-[3] w-[215px] rotate-[2.5deg]",
   },
   {
     id: "float-3",
@@ -66,19 +53,13 @@ const LANDING_HERO_FLOAT_CARD_SEEDS: LandingHeroFloatCardSeed[] = [
     priceAmount: "$48",
     initials: "SK",
     tone: "slate",
-    style: {
-      position: "absolute",
-      top: "265px",
-      left: "22px",
-      transform: "rotate(-1.5deg)",
-      zIndex: 2,
-      width: "215px",
-    },
+    placementClassName:
+      "absolute top-[265px] left-[22px] z-[2] w-[215px] -rotate-[1.5deg]",
   },
 ];
 
 export function getLandingHeroFloatCards(
-  messages: Messages,
+  messages: Pick<Messages, "landing" | "common">,
 ): LandingHeroFloatCardData[] {
   const priceTemplate = messages.landing.hero.floatCardPrice;
 

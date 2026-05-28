@@ -2,10 +2,18 @@ import { MarketingNavActions } from "@/components/landing/MarketingNavActions.cl
 import { MarketingNavDesktopLinks } from "@/components/landing/MarketingNavDesktopLinks.client";
 import { MarketingNavScrollFrame } from "@/components/landing/MarketingNavScrollFrame.client";
 import { PulseLogo } from "@/components/ui/PulseLogo";
-import { getMessages } from "@/lib/messages/server";
+import type { LandingPageMessages } from "@/lib/landing/landing-page-messages.server";
+import { getCachedLandingPageMessages } from "@/lib/landing/landing-page-messages.server";
+import { getLocale } from "@/lib/messages/server";
 
-export async function MarketingNav() {
-  const messages = await getMessages();
+type MarketingNavProps = {
+  messages: Pick<
+    LandingPageMessages,
+    "landing" | "site" | "locale" | "howItWasBuilt"
+  >;
+};
+
+export function MarketingNav({ messages }: MarketingNavProps) {
   const { nav } = messages.landing;
 
   return (
@@ -27,4 +35,10 @@ export async function MarketingNav() {
       />
     </MarketingNavScrollFrame>
   );
+}
+
+export async function MarketingNavLoader() {
+  const locale = await getLocale();
+  const pageMessages = await getCachedLandingPageMessages(locale);
+  return <MarketingNav messages={pageMessages} />;
 }

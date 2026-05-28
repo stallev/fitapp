@@ -8,6 +8,7 @@ import { fileComplaintAction } from "@/actions/client/file-complaint";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -74,6 +75,9 @@ export function ClientFileComplaintDialog({  bookingId,
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{messages.clientComplaint.reportIssue}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {messages.clientComplaint.reportIssue}
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">

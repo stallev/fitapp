@@ -32,7 +32,12 @@ export function DesignLabMedia() {
     <DesignLabSection id="media" title="L2 — Media & chips">
       <div className="space-y-8">
         <div>
-          <VariantLabel>RatingStars — readonly (gold / text-secondary)</VariantLabel>
+          <VariantLabel>RatingStars — readonly with accessible name (role=img)</VariantLabel>
+          <RatingStars value={4.9} size="md" aria-label="4.9 of 5 stars" />
+        </div>
+
+        <div>
+          <VariantLabel>RatingStars — readonly decorative (aria-hidden)</VariantLabel>
           <div className="flex flex-wrap items-center gap-4">
             {RATING_STAR_SIZES.map((size) => (
               <div key={size} className="flex items-center gap-2">

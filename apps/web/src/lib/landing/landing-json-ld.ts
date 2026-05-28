@@ -1,13 +1,13 @@
-import "server-only";
-
-import { getMessages, getLocale } from "@/lib/messages/server";
+import type { AppLocale } from "@/lib/i18n/constants";
 import { getIntlLocale } from "@/lib/i18n/format";
+import type { Messages } from "@/lib/messages/types";
 
 import { getSiteUrl } from "@/lib/site/site-url";
 
-export async function buildLandingJsonLd() {
-  const messages = await getMessages();
-  const locale = await getLocale();
+export function buildLandingJsonLd(
+  messages: Pick<Messages, "landing" | "site">,
+  locale: AppLocale,
+) {
   const inLanguage = getIntlLocale(locale);
   const siteUrl = getSiteUrl();
   const origin = siteUrl.origin;

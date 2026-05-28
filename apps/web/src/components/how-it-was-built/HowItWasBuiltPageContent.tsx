@@ -18,13 +18,15 @@ import {
 } from "@/components/how-it-was-built/HowItWasBuiltToc.client";
 import { LandingFooter } from "@/components/landing/LandingFooter";
 import { LandingFooterSkeleton } from "@/components/landing/LandingFooterSkeleton";
-import { MarketingNav } from "@/components/landing/MarketingNav.server";
+import { MarketingNavLoader } from "@/components/landing/MarketingNav.server";
 import { Container } from "@/components/ui/container";
 
 export function HowItWasBuiltPageContent() {
   return (
     <HowItWasBuiltTocProvider>
-      <MarketingNav />
+      <Suspense fallback={null}>
+        <MarketingNavLoader />
+      </Suspense>
       <HowItWasBuiltHero />
       <Container variant="marketing" className="pb-12 md:pb-16">
         <HowItWasBuiltTocMobile />

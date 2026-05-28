@@ -10,6 +10,7 @@ alwaysApply: false
 
 **Methodology:** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md)  
 **Guides:** [ai_component_guidelines.md](docs/guidelines/react/ai_component_guidelines.md), [ai_react_hooks_guidelines.md](docs/guidelines/react/ai_react_hooks_guidelines.md), [ai_react_utilities_guidelines.md](docs/guidelines/react/ai_react_utilities_guidelines.md)  
+**Client lazy loading:** [ai_client_lazy_loading.md](docs/guidelines/nextjs/ai_client_lazy_loading.md) — `next/dynamic` for heavy deps in shared `components/ui/*`  
 **Naming:** **react-naming-conventions** · **Logic/presentation:** **react-logic-presentation**
 
 ## Server vs client
@@ -17,6 +18,7 @@ alwaysApply: false
 - **Server Components by default** — no `'use client'`.
 - **`'use client'`** only for hooks, DOM events, client-only APIs; directive at **top of file**.
 - Prefer `.client.tsx` / `.client.ts` for new client-entry modules.
+- **Heavy client libs** (`react-day-picker`, `recharts`, editors) in shared UI → **`next/dynamic`** per [ai_client_lazy_loading.md](docs/guidelines/nextjs/ai_client_lazy_loading.md) — not static import in cross-route modules.
 
 ## Domain literals
 

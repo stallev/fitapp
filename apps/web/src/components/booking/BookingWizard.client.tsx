@@ -243,6 +243,7 @@ export function BookingWizard({  profile,
             size="lg"
             className="w-full md:w-auto"
             disabled={!canProceed || isSlotsPending}
+            aria-busy={isSlotsPending}
             onClick={handleNext}
           >
             {messages.booking.wizard.next}

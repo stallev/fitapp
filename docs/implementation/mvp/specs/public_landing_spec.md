@@ -194,6 +194,23 @@ Typography: `font-heading` (Source Serif 4) for display titles; `font-sans` (Man
 
 ---
 
+## Performance & LCP (above-the-fold)
+
+Implemented contract for `/` (PageSpeed / Core Web Vitals):
+
+| Region | Pattern |
+|--------|---------|
+| Root layout | Sync `<html>/<body>`; `RootLayoutLocaleBridgeServer` in `<Suspense>` |
+| Above-fold (hero + nav) | Sync `page.tsx` + `<Suspense fallback={<LandingHomeAboveFoldFallback />}>` → `LandingHomeAboveFold` |
+| Below hero | `LandingPageRest` in separate `<Suspense fallback={null}>` |
+| Copy cache | `'use cache'` + `cacheTag(landing:copy:{locale})` + `cacheLife("hours")` in `getCachedLandingPageMessages` |
+| Display font | Source Serif 4 — `display: "swap"`, `preload: true` |
+| a11y audits | `RatingStars` readonly + name → `role="img"`; band/eyebrow contrast — **ai_semantics_a11y_guidelines** |
+
+Guidelines: [`ai_loading_patterns.md`](../../../guidelines/nextjs/ai_loading_patterns.md) §14.1, [`ai_client_lazy_loading.md`](../../../guidelines/nextjs/ai_client_lazy_loading.md) §3.
+
+---
+
 ## Authenticated visitors
 
 **Default (MVP):** show landing to all; optional `LandingAuthenticatedRedirect` sends logged-in users to role dashboard — if enabled, document in phase tasks and keep single redirect point.

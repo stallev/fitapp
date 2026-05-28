@@ -26,8 +26,18 @@ function buildS3RemotePatterns(): NonNullable<
 }
 
 const nextConfig: NextConfig = {
+  /** Hide dev route indicator (nextjs-portal) — it overlapped the marketing logo at top-left. */
+  devIndicators: false,
   reactCompiler: true,
   cacheComponents: true,
+  experimental: {
+    optimizePackageImports: ["lucide-react", "date-fns"],
+    serverActions: {
+      allowedOrigins: process.env.NEXT_PUBLIC_APP_URL
+        ? [process.env.NEXT_PUBLIC_APP_URL]
+        : [],
+    },
+  },
   transpilePackages: [
     "@pulse/domain",
     "@pulse/db",

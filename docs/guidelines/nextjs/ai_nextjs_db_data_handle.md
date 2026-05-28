@@ -51,7 +51,32 @@ export default async function Page(props: {
 
 ---
 
-## 5. Request interception (not in DAL)
+## 5. Антипаттерн: `fetch('/api/...')` из RSC
+
+Вызов `fetch('/api/...')` из Server Component создаёт **лишний HTTP-хоп**: RSC → HTTP → Route Handler → DAL. Это медленнее, сложнее и добавляет сетевую задержку на Vercel (internal subrequest = выделенная serverless invocation).
+
+```typescript
+// ❌ Антипаттерн: лишний HTTP-хоп из RSC
+export default async function TrainerPage({ params }: ...) {
+  const profile = await fetch(`/api/trainer/${params.id}`).then(r => r.json());
+  return <TrainerCard profile={profile} />;
+}
+
+// ✅ Правильно: вызывать DAL напрямую из RSC
+import { getTrainerProfile } from '@/data/trainer/get-trainer-profile.server';
+
+export default async function TrainerPage({ params }: ...) {
+  const { id } = await params;
+  const profile = await getTrainerProfile(id);
+  return <TrainerCard profile={profile} />;
+}
+```
+
+**Правило:** Route Handlers (`/api/...`) — только для клиентских запросов (Client Components, iOS Safari fallback). Из RSC всегда вызывать DAL напрямую.
+
+---
+
+## 6. Request interception (not in DAL)
 
 Route protection lives in **`proxy.ts`**, not in Server Actions. See [ADR-002](../../prds/07_governance/adr_002_next162_vercel_runtime_policy.md).
 

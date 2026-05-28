@@ -80,6 +80,7 @@ export function ServiceCard({
           variant="outline"
           size="sm"
           disabled={disabled}
+          aria-busy={disabled}
           onClick={() => onEdit(service)}
         >
           {messages.trainer.services.edit}
@@ -89,6 +90,7 @@ export function ServiceCard({
           variant="outline"
           size="sm"
           disabled={disabled}
+          aria-busy={disabled}
           onClick={() => onDelete(service)}
         >
           {messages.trainer.services.delete}

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -76,6 +77,9 @@ export function CatalogFilterSheet({ query, options }: CatalogFilterSheetProps) 
       <SheetContent side="bottom" className="max-h-[85dvh] overflow-y-auto">
         <SheetHeader>
           <SheetTitle>{messages.catalog.filtersTitle}</SheetTitle>
+          <SheetDescription className="sr-only">
+            {messages.catalog.filtersTitle}
+          </SheetDescription>
         </SheetHeader>
         <div className="px-4 py-2">
           <CatalogFilterFields

@@ -57,7 +57,9 @@ Pulse serves clients, trainers, and admins on mobile and desktop. Semantic struc
 
 ### Perceivable
 
-- **Contrast:** text ≥ **4.5:1**, large text/UI ≥ **3:1** — Warm Forest semantic tokens; verify light **and** dark.
+- **Contrast:** text ≥ **4.5:1**, large text (≥ 18px regular or ≥ 14px bold) ≥ **3:1**, UI components ≥ **3:1** — Warm Forest semantic tokens; verify light **and** dark.
+- **Marketing bands:** text on `bg-brand-cta-band` / `bg-brand-band` uses solid `text-on-brand-*` tokens — **not** opacity below **0.88** for body-sized copy or **11px** eyebrow labels (PageSpeed / axe fail below that).
+- **Tertiary copy:** `text-subtle-foreground` (`--color-ink-3`) MUST meet **4.5:1** on `--color-bg` and `--color-surface`; above-the-fold stats use `text-muted-foreground` when subtle tone fails audit.
 - **Images:** informative `alt`; decorative `alt=""`.
 - **Motion:** respect `prefers-reduced-motion` for non-essential animation.
 
@@ -92,8 +94,20 @@ Pulse serves clients, trainers, and admins on mobile and desktop. Semantic struc
 | Loading button | `aria-busy={pending}` (**ui-mutation-pending**) |
 | Live updates | `aria-live="polite"` sparingly — prefer toast (Sonner) for mutations |
 | Decorative icon | `aria-hidden="true"` |
+| Readonly star rating (no visible text) | `role="img"` + `aria-label` on wrapper — **never** bare `aria-label` on `<span>` without role |
+| Decorative star row (rating duplicated in text nearby) | `aria-hidden="true"` on wrapper; icons `aria-hidden` |
 
-Anti-pattern: redundant ARIA on native elements (`role="button"` on `<button>`).
+### Prohibited ARIA attributes (PageSpeed / axe)
+
+Assistive tech ignores or mis-announces **prohibited** ARIA on elements without a valid implicit/explicit role.
+
+| Anti-pattern | Fix |
+|--------------|-----|
+| `<span aria-label="5 of 5 stars">` (no role) | `role="img"` + `aria-label`, **or** visible text + `aria-hidden` on stars |
+| `aria-label` on generic `<div>` / `<span>` wrappers | Add semantic role (`img`, `group`, …) **or** use native element with name |
+| Redundant `role="button"` on `<button>` | Remove role; keep visible label |
+
+**Catalog example:** `RatingStars` readonly — `role="img"` when `aria-label` is passed; `aria-hidden` when decorative. Interactive mode uses `role="group"` (already valid for `aria-label`).
 
 ---
 
@@ -114,19 +128,66 @@ Install primitives via shadcn MCP — they ship focus management, dialog semanti
 
 ---
 
-## 7. Agent checklist
+## 7. Dynamic counters — `aria-live`
+
+For data-driven counters that update on user interaction (search results, catalog filter counts), wrap in a live region so screen readers announce the change:
+
+```tsx
+{/* CatalogTrainerGrid result count */}
+<div aria-live="polite" aria-atomic="true">
+  <ContentText>{formatCatalogResultsCount(count)}</ContentText>
+</div>
+```
+
+- Use `aria-live="polite"` (not `assertive`) — does not interrupt current speech.
+- Use `aria-atomic="true"` when the whole text should be re-read as one unit.
+- **Do not** add `aria-live` to mutation toasts — Sonner handles its own announcements.
+
+---
+
+## 8. Automated a11y testing (CI)
+
+Use `@axe-core/playwright` to catch WCAG violations in E2E pipelines. In Next.js App Router there is no `_app.tsx` — inject axe via Playwright's `page.addScriptTag`:
+
+```typescript
+// playwright/a11y-helper.ts
+import AxeBuilder from '@axe-core/playwright';
+
+export async function checkA11y(page: Page, selector?: string) {
+  const results = await new AxeBuilder({ page })
+    .include(selector ?? 'main')
+    .withTags(['wcag2a', 'wcag2aa'])
+    .analyze();
+
+  if (results.violations.length > 0) {
+    throw new Error(
+      `Axe found ${results.violations.length} violations:\n` +
+      results.violations.map(v => `  ${v.id}: ${v.description}`).join('\n')
+    );
+  }
+}
+```
+
+Run on critical routes: trainer catalog, booking flow, onboarding steps. Not required per PR — run in dedicated a11y Playwright suite.
+
+---
+
+## 9. Agent checklist
 
 Before finishing a UI task:
 
 - [ ] View page outline (headings + landmarks) makes sense
 - [ ] Tab through primary flow without mouse
 - [ ] Screen reader names on icon-only controls (manual or axe spot-check when scaffold exists)
+- [ ] **No prohibited ARIA** — readonly ratings use `role="img"`; no orphan `aria-label` on unlabeled generics
+- [ ] **Contrast AA** on light + dark — especially `text-subtle-foreground`, marketing band eyebrows, footnote pills on `bg-brand-cta-band`
 - [ ] Error and empty states readable and labeled
 - [ ] Design system §15 checklist applied where relevant
+- [ ] Public landing: sync `page.tsx`; hero via `LandingHomeAboveFoldFallback` / `LandingHomeAboveFold` — [`ai_loading_patterns.md`](../nextjs/ai_loading_patterns.md) §14.1
 
 ---
 
-## 8. Related documents
+## 10. Related documents
 
 | Document | Role |
 |----------|------|

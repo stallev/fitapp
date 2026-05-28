@@ -142,7 +142,7 @@ export function TrainerOnboardingPreviewStep({  draft,
         </FieldGroup>
 
         <div className="flex gap-3">
-          <Button type="button" variant="outline" onClick={onBack} disabled={pending}>
+          <Button type="button" variant="outline" onClick={onBack} disabled={pending} aria-busy={pending}>
             {messages.trainer.onboarding.back}
           </Button>
           <Button

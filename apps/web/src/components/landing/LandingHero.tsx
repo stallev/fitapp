@@ -6,24 +6,24 @@ import { Container } from "@/components/ui/container";
 import { CustomLink } from "@/components/ui/CustomLink";
 import { Reveal } from "@/components/ui/Reveal.client";
 import { TrustFeaturePill } from "@/components/ui/TrustFeaturePill";
-import { getLandingHeroFloatCards } from "@/lib/landing/landing-hero-float-cards";
-import { getMessages } from "@/lib/messages/server";
-
+import type { LandingHeroFloatCardData } from "@/lib/landing/landing-hero-float-cards";
+import type { Messages } from "@/lib/messages/types";
 
 const TRUST_PILL_ICONS = {
   check: CheckIcon,
   lock: LockIcon,
 } as const;
 
-export async function LandingHero() {
-  const messages = await getMessages();
-  const { hero } = messages.landing;
-  const floatCards = getLandingHeroFloatCards(messages);
+type LandingHeroProps = {
+  hero: Messages["landing"]["hero"];
+  floatCards: LandingHeroFloatCardData[];
+};
 
+export function LandingHero({ hero, floatCards }: LandingHeroProps) {
   return (
     <section
       aria-labelledby="landing-hero-heading"
-      className="relative flex min-h-screen items-center overflow-hidden pt-14 md:pt-[72px]"
+      className="relative flex min-h-screen shrink-0 items-center overflow-hidden pt-14 md:pt-[72px]"
     >
       <div
         aria-hidden
@@ -33,7 +33,7 @@ export async function LandingHero() {
         variant="marketing"
         className="grid w-full items-center gap-16 lg:grid-cols-[1.15fr_0.85fr]"
       >
-        <div>
+        <div className="min-w-0">
           <div className="mb-7">
             <SectionEyebrow tone="outline" className="inline-flex items-center gap-1.5 text-[13px] font-medium normal-case tracking-normal">
               <ShieldIcon aria-hidden className="size-3.5" />
@@ -85,25 +85,26 @@ export async function LandingHero() {
               {hero.stats.rating} {hero.stats.ratingLabel}
             </span>
             <span aria-hidden className="size-1 rounded-full bg-border" />
-            <ContentText variant="subtle" as="span" className="text-sm font-medium">
+            <ContentText variant="bodyMuted" as="span" className="text-sm font-medium">
               {hero.stats.trainers}
             </ContentText>
             <span aria-hidden className="size-1 rounded-full bg-border" />
-            <ContentText variant="subtle" as="span" className="text-sm font-medium">
+            <ContentText variant="bodyMuted" as="span" className="text-sm font-medium">
               {hero.stats.sessions}
             </ContentText>
           </div>
         </div>
 
-        <Reveal delay="200ms" className="relative hidden h-[540px] lg:block">
-          <div
+        <div className="relative mx-auto hidden h-[540px] min-h-[540px] w-full min-w-[365px] max-w-[400px] shrink-0 lg:block">
+          <Reveal
+            delay="200ms"
+            className="pointer-events-none absolute inset-[-60px] rounded-[60%_40%_50%_50%/50%_50%_60%_40%] bg-[radial-gradient(ellipse_75%_75%_at_55%_50%,hsl(var(--color-hero-glow)/0.35)_0%,transparent_65%)] motion-reduce:opacity-100"
             aria-hidden
-            className="pointer-events-none absolute inset-[-60px] rounded-[60%_40%_50%_50%/50%_50%_60%_40%] bg-[radial-gradient(ellipse_75%_75%_at_55%_50%,hsl(var(--color-hero-glow)/0.35)_0%,transparent_65%)]"
           />
           {floatCards.map((card) => (
             <LandingHeroFloatCard key={card.id} card={card} />
           ))}
-        </Reveal>
+        </div>
       </Container>
     </section>
   );

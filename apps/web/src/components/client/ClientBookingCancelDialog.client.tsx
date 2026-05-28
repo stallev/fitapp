@@ -77,7 +77,7 @@ export function ClientBookingCancelDialog({  bookingId,
         <form action={formAction}>
           <input type="hidden" name="bookingId" value={bookingId} />
           <AlertDialogFooter>
-            <AlertDialogCancel type="button" disabled={pending}>
+            <AlertDialogCancel type="button" disabled={pending} aria-busy={pending}>
               {messages.booking.cancel.confirmDismiss}
             </AlertDialogCancel>
             <Button

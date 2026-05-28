@@ -30,7 +30,8 @@ Patterns for **Next.js 16.2.6 App Router**, **React 19**, **TypeScript**, **Tail
 | [ai_react_hooks_guidelines.md](./ai_react_hooks_guidelines.md) | Hooks for mutations/data |
 | [ai_react_utilities_guidelines.md](./ai_react_utilities_guidelines.md) | Pure helpers, no magic strings |
 | [ai_component_guidelines.md](./ai_component_guidelines.md) | RSC/client, shadcn workflow |
-| [ai_semantics_a11y_guidelines.md](./ai_semantics_a11y_guidelines.md) | Semantic HTML, WCAG 2.1 AA |
+| [ai_client_lazy_loading.md](../nextjs/ai_client_lazy_loading.md) | `next/dynamic`, heavy client bundles |
+| [ai_semantics_a11y_guidelines.md](./ai_semantics_a11y_guidelines.md) | Semantic HTML, WCAG 2.1 AA, PageSpeed a11y (ARIA + contrast) |
 | [ai_responsive_table_guidelines.md](./ai_responsive_table_guidelines.md) | Admin tables, mobile cards |
 | [TypeScript monorepo](../typescript/ai_typescript_monorepo_guidelines.md) | Cross-package types |
 

@@ -116,7 +116,7 @@ className="pb-6"  // минимум 24px над nav
 |---|---|---|---|
 | `--color-ink` | `#1A3028` | `#F0EAD8` | Headings, body |
 | `--color-ink-2` | `#4A5A50` | `#B5C2B9` | Secondary text, labels |
-| `--color-ink-3` | `#8A8578` | `#7A857E` | Placeholders, captions, disabled |
+| `--color-ink-3` | `#6A6559` | `#7A857E` | Placeholders, captions — MUST meet AA on `--color-bg` |
 
 ### Семантические
 
@@ -155,7 +155,7 @@ className="pb-6"  // минимум 24px над nav
 
   --color-ink:   #1A3028;
   --color-ink-2: #4A5A50;
-  --color-ink-3: #8A8578;
+  --color-ink-3: #6A6559; /* light: AA 4.5:1 on --color-bg for small text */
 
   --color-success:           #1A5C32;
   --color-success-container: #E4F0E8;

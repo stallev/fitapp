@@ -15,6 +15,7 @@
     "@aws-sdk/client-s3": "^3.830.0",
     "@aws-sdk/s3-request-presigner": "^3.830.0",
     "@base-ui/react": "^1.5.0",
+    "@next/third-parties": "^16.2.6",
     "@pulse/db": "*",
     "@pulse/domain": "*",
     "@pulse/policy-edge": "*",

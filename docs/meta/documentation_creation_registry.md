@@ -44,6 +44,7 @@
 | `docs/architecture_learning_pack/01_architecture_overview.md` | Канон |
 | `docs/default_docs/*` | Interim archive — только читать при миграции |
 | `docs/guidelines/**` | Канон реализации — ссылаться, не дублировать |
+| `docs/guidelines/ux_ui/ai_agent_ui_ux_guideline.md` | Операционный UX/UI guideline для агентов v2.0 — Design Thinking 8 шагов, FX-1–FX-10, Context7 table, Enforcement Matrix, Pre-Merge Checklist |
 
 ---
 
@@ -695,6 +696,7 @@ READ registry → READ dependencies → DRAFT file → ADD backlinks → UPDATE 
 
 | Date | Change |
 |------|--------|
+| 2026-05-28 | `docs/guidelines/ux_ui/ai_agent_ui_ux_guideline.md` v2.0 — новый операционный UX/UI guideline для агентов; синтез FAANG best practices + Design Thinking 8 шагов + Context7 table + Enforcement Matrix + Pre-Merge Checklist; интегрирован в `docs/guidelines/README.md`, `apps/web/AGENTS.md`, `docs/design/ux_ui_faang_best_practices_for_agents.md` |
 | 2026-05-25 | **P17 implementation complete** — cookie-first EN/RU i18n in `apps/web`; `getMessages`/`useMessages`; formatters; LocaleSwitcher; auth `user.locale` persist |
 | 2026-05-25 | **W24 complete** — P17 UI i18n (EN/RU): ADR-009, i18n_runtime_spec, P17 phase/tasks, client_profile wireframe v2, matrix + cross-ref sync |
 | 2026-05-25 | **W23 complete** — Complaint Resolution v2 P17→P19; P17 slot reallocated W24; `_migration_P17_to_P19.md`; matrix + cross-ref sync |

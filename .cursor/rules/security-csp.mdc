@@ -1,0 +1,102 @@
+---
+description: Security: CSP nonce, CSRF protection, dangerouslySetInnerHTML, Route Handler origin check
+globs:
+  - apps/web/src/proxy.ts
+  - apps/web/next.config.ts
+  - apps/web/src/**/*.tsx
+  - apps/web/src/app/api/**/route.ts
+alwaysApply: false
+---
+
+# Security: CSP, CSRF, XSS (`apps/web`)
+
+**Guide:** [`docs/guidelines/security/ai_security_xss_csrf_guidelines.md`](docs/guidelines/security/ai_security_xss_csrf_guidelines.md)  
+**Methodology:** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md)  
+**Runtime:** [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — Next.js **16.2.6**, **`proxy.ts`**
+
+## CSP nonce (обязательно)
+
+- CSP устанавливается в **`proxy.ts`** (Next.js 16) — per-request nonce через `crypto.randomUUID()` → base64.
+- **Не** в `next.config.ts` headers — нет per-request nonce.
+- Nonce прокидывается через `request.headers` → `x-nonce` → `await headers().get('x-nonce')` в Server Component.
+
+```typescript
+// proxy.ts — добавить после auth/locale блока
+const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
+const isDev = process.env.NODE_ENV === 'development';
+
+const cspHeader = [
+  "default-src 'self'",
+  `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ''}`,
+  isDev ? `style-src 'self' 'unsafe-inline'` : `style-src 'self' 'nonce-${nonce}'; style-src-attr 'unsafe-inline'`,
+  "img-src 'self' blob: data: https:",
+  "font-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "upgrade-insecure-requests",
+].join('; ');
+
+const requestHeaders = new Headers(request.headers);
+requestHeaders.set('x-nonce', nonce);
+requestHeaders.set('Content-Security-Policy', cspHeader);
+const response = NextResponse.next({ request: { headers: requestHeaders } });
+response.headers.set('Content-Security-Policy', cspHeader);
+```
+
+## `allowedOrigins` при reverse proxy / CDN
+
+```typescript
+// next.config.ts
+experimental: {
+  serverActions: {
+    allowedOrigins: [process.env.NEXT_PUBLIC_APP_URL!],
+  },
+}
+```
+
+## `dangerouslySetInnerHTML` — только с санитайзером
+
+- Текущие два `dangerouslySetInnerHTML` в Pulse безопасны (JSON-LD + CSS vars).
+- При **user-generated HTML** — обязателен `isomorphic-dompurify`.
+- `dangerouslySetInnerHTML={{ __html: untrusted }}` без санитайзера — **запрещено**.
+
+## Route Handler: проверка `origin` на мутациях
+
+Для мутирующих Route Handlers проверять `origin` header:
+
+```typescript
+const origin = request.headers.get('origin');
+if (origin !== process.env.NEXT_PUBLIC_APP_URL) {
+  return new NextResponse('Forbidden', { status: 403 });
+}
+```
+
+## `javascript:` в href — блокировать
+
+```tsx
+// ❌
+<a href={userInput}>link</a>
+
+// ✅
+const isSafe = href.startsWith('/') || href.startsWith('https://');
+```
+
+## `timingSafeEqual` для секретов
+
+```typescript
+import { timingSafeEqual } from 'crypto';
+// Constant-time comparison — защита от timing attacks
+```
+
+## Agent checklist
+
+- [ ] CSP nonce установлен в `proxy.ts` (не в `next.config.ts` headers)
+- [ ] `allowedOrigins` задан при reverse proxy / CDN
+- [ ] `dangerouslySetInnerHTML` только с `DOMPurify.sanitize`
+- [ ] Мутирующие Route Handlers проверяют `origin`
+- [ ] Секреты сравниваются через `timingSafeEqual`
+- [ ] `href` с user input — валидация перед рендером
+
+Reference: [`docs/guidelines/security/ai_security_xss_csrf_guidelines.md`](docs/guidelines/security/ai_security_xss_csrf_guidelines.md)

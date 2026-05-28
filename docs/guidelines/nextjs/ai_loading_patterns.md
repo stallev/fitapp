@@ -64,6 +64,10 @@ A portion of the React Server Components payload in the HTTP response. Without S
 
 After material loading/streaming changes, validate on **Vercel preview** when available — latency and caching differ from localhost.
 
+### 1.5 Client JS layer (orthogonal)
+
+Server streaming (`loading.tsx`, Suspense) does **not** reduce client bundle size. Heavy **Client Components** (`react-day-picker`, `recharts`, editors) need **`next/dynamic`** and interaction-gated imports — see [`ai_client_lazy_loading.md`](./ai_client_lazy_loading.md). Cursor rules: **react-ui-components**, **app-router-streaming-loading**.
+
 ---
 
 ## 2. Streaming model in App Router
@@ -537,6 +541,36 @@ For compliance-only cases where refactor is blocked, **`'use cache: private'`** 
 
 **Vercel note:** deploy invalidates Full Route Cache / Data Cache. `updateTag` / `revalidateTag` after mutations is the primary freshness mechanism; `cacheLife` TTL is a safety net.
 
+### `updateTag` vs `revalidateTag` — когда что использовать
+
+| API | Когда использовать | Контекст вызова |
+|-----|--------------------|-----------------|
+| **`updateTag`** | Read-your-own-writes: после Server Action, чтобы пользователь немедленно увидел свои данные | Только внутри Server Action (`'use server'`) |
+| **`revalidateTag`** | Background invalidation: webhook, cron-job, admin event, внешний триггер | Route Handler, Server Action, Cron |
+
+```typescript
+// ✅ updateTag — после Server Action (read-your-own-writes)
+'use server'
+import { updateTag } from 'next/cache'
+
+export async function approveTrainer(trainerId: string) {
+  await markTrainerApproved(trainerId)
+  updateTag(`trainer:${trainerId}`)       // немедленно для этого пользователя
+  updateTag('trainers:catalog')           // и каталог
+}
+
+// ✅ revalidateTag — из Route Handler (webhook, внешний триггер)
+import { revalidateTag } from 'next/cache'
+
+export async function POST(request: Request) {
+  const { trainerId } = await request.json()
+  revalidateTag(`trainer:${trainerId}`)   // фоновая инвалидация
+  return Response.json({ ok: true })
+}
+```
+
+**Правило:** `updateTag` в Server Actions для немедленных read-your-own-writes; `revalidateTag` для фоновых/webhook инвалидаций из Route Handlers.
+
 ---
 
 ## 9. Neon: cold start and connection
@@ -699,7 +733,24 @@ Do not use route skeletons for button pending states. See **ui-mutation-pending*
 | `/trainer/dashboard` | KPI shell + Suspense upcoming sessions |
 | `/trainer/schedule` | Grid shell + Suspense slot data |
 | `/admin/trainers/pending` | `loading.tsx` + table Suspense |
+| `/` (public landing) | Sync `page.tsx`; above-fold in `<Suspense fallback={<LandingHomeAboveFoldFallback />}>` → `LandingHomeAboveFold` (`getLocale()` inside Suspense); below-fold `LandingPageRest`; copy via `'use cache'` — see §14.1 |
 | `/book/[trainerId]` | Wizard steps — Suspense per step data (services, slots) |
+
+### 14.1 Public landing `/` — LCP + Cache Components
+
+With `cacheComponents: true`, **`cookies()` / `headers()` / `getLocale()` must not run in sync `page.tsx` or sync root `layout.tsx`** — Next.js logs [`blocking-route`](https://nextjs.org/docs/messages/blocking-route) and delays the static shell.
+
+| Piece | Contract |
+|-------|----------|
+| `apps/web/src/app/layout.tsx` | **Sync** `<html>/<body>`; `DEFAULT_LOCALE` + `getMessagesForLocale()`; **no** `readLocaleCookie()` / `auth()` at layout root |
+| `RootLayoutLocaleBridgeServer` | Inside `<Suspense>` — resolves session locale; updates `LocaleProvider` via `LocaleHydrationBridge` **without** remounting `{children}` |
+| `apps/web/src/app/(marketing)/page.tsx` | **Sync** — only composes Suspense regions |
+| `LandingHomeAboveFoldFallback` | Sync fallback — hero + nav on `DEFAULT_LOCALE` (LCP `<h1>` paints immediately) |
+| `LandingHomeAboveFold` | Async inside Suspense — `getLocale()` + `getCachedLandingPageMessages(locale)` |
+| `LandingPageRest` | Async inside separate Suspense — below-fold sections |
+| Fonts (LCP text) | `next/font` Source Serif 4 — `display: "swap"`, `preload: true` in root layout |
+
+**Anti-pattern:** duplicate `<html>` in Suspense fallback vs content (breaks DevTools instrumentation and forces full document remount).
 
 ---
 
@@ -719,7 +770,7 @@ Do not use route skeletons for button pending states. See **ui-mutation-pending*
 1. **TTFB > 500 ms warm** — inspect `auth()` in layout, blocking awaits in `page.tsx`.
 2. **TTFB > 1000 ms** — likely Neon cold start; check pooler URL and suspend timeout.
 3. **High FCP** — heavy top-level `await` in `page.tsx`.
-4. **High LCP** — main content behind wrong Suspense boundary.
+4. **High LCP** — main content behind wrong Suspense boundary; on `/`, async siblings without Suspense before hero (see §14 landing row).
 5. **High CLS** — skeleton dimensions vs final UI.
 
 Optional: `useReportWebVitals` from `next/web-vitals` or Sentry (post-MVP instrumentation).
@@ -732,7 +783,8 @@ Run before finishing any `page.tsx`, segment `layout.tsx`, or colocated `loading
 
 ### A. Structure
 
-- [ ] `page.tsx` — only `await params` / `searchParams`, fast `auth()`, redirect, JSX shell
+- [ ] `page.tsx` — sync shell when `cacheComponents: true`; **`cookies()` / `headers()` / `getLocale()` only inside `<Suspense>` children** (see §14.1, [`blocking-route`](https://nextjs.org/docs/messages/blocking-route))
+- [ ] Root `layout.tsx` — single stable `<html>/<body>`; defer `auth()` / locale to Suspense bridge — not duplicate document trees in fallback
 - [ ] No heavy Prisma / slow I/O in `page.tsx` or segment layout — data in `*.server.tsx` or `src/data/**` behind `<Suspense>`
 - [ ] Each independent DB-backed UI region — own `<Suspense fallback={<RegionSkeleton />}>`
 - [ ] Each heavy async child — separate file (`*.server.tsx` or clear `*-content.server.tsx` name)
@@ -785,6 +837,8 @@ Verify on **Vercel preview** when available.
 | Caching authorization decisions | Security drift | Auth on every read path |
 | New code using `unstable_cache` | Legacy Next 15 API | `'use cache'` + `cacheTag()` + `cacheLife()` |
 | `cookies()` inside `'use cache'` | Build/runtime error or wrong cache key | Pass session/user id as argument from parent |
+| `cookies()` / `getLocale()` in sync `page.tsx` or sync root layout | `blocking-route` — whole route blocked | Sync fallback shell + async child inside `<Suspense>` (§14.1) |
+| Duplicate `<html>` in layout Suspense fallback vs content | Full document remount; DevTools noise | One `<html>/<body>`; bridge locale via `LocaleHydrationBridge` |
 | Route skeleton for mutation pending | Wrong UX layer | `useTransition` + pending UI |
 
 ---
@@ -812,6 +866,7 @@ State briefly in PR/task which exception applies:
 | [`ai_nextjs_db_data_handle.md`](./ai_nextjs_db_data_handle.md) | DAL, Server Actions vs Route Handlers |
 | [`neon_prisma_migrations_guide.md`](../../implementation/mvp/guides/neon_prisma_migrations_guide.md) | Pooler vs direct URLs |
 | [`ai_vercel_runtime_compatibility.md`](./ai_vercel_runtime_compatibility.md) | Vercel streaming baseline |
+| [`ai_client_lazy_loading.md`](./ai_client_lazy_loading.md) | `next/dynamic`, heavy client deps — orthogonal to Suspense |
 | [Next.js: Loading UI and Streaming](https://nextjs.org/docs/app/building-your-application/routing/loading-ui-and-streaming) | Official API |
 | [Next.js: Error Handling](https://nextjs.org/docs/app/getting-started/error-handling) | `error.tsx`, `reset` |
 | [Next.js: `use cache`](https://nextjs.org/docs/app/api-reference/directives/use-cache) | Cross-request cache directive (replaces `unstable_cache`) |

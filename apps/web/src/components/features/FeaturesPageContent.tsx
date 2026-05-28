@@ -12,13 +12,15 @@ import {
 } from "@/components/features/FeaturesToc.client";
 import { LandingFooter } from "@/components/landing/LandingFooter";
 import { LandingFooterSkeleton } from "@/components/landing/LandingFooterSkeleton";
-import { MarketingNav } from "@/components/landing/MarketingNav.server";
+import { MarketingNavLoader } from "@/components/landing/MarketingNav.server";
 import { Container } from "@/components/ui/container";
 
 export function FeaturesPageContent() {
   return (
     <FeaturesTocProvider>
-      <MarketingNav />
+      <Suspense fallback={null}>
+        <MarketingNavLoader />
+      </Suspense>
       <FeaturesHero />
       <Container variant="marketing" className="pb-12 md:pb-16">
         <FeaturesTocMobile />

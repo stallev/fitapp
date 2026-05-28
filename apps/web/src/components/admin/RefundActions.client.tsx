@@ -9,6 +9,7 @@ import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -98,6 +99,9 @@ export function RefundActions({ refundRequestId }: RefundActionsProps) {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>{messages.admin.refunds.reject}</AlertDialogTitle>
+            <AlertDialogDescription className="sr-only">
+              {messages.admin.refunds.reject}
+            </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="space-y-2">
             <Label htmlFor="refund-comment">{messages.admin.refunds.adminCommentLabel}</Label>
@@ -114,7 +118,7 @@ export function RefundActions({ refundRequestId }: RefundActionsProps) {
             ) : null}
           </div>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isPending}>{messages.shell.back}</AlertDialogCancel>
+            <AlertDialogCancel disabled={isPending} aria-busy={isPending}>{messages.shell.back}</AlertDialogCancel>
             <Button
               type="button"
               variant="destructive"
