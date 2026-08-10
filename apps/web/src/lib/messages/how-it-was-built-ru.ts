@@ -103,7 +103,7 @@ export const howItWasBuiltRu = {
       {
         name: "apps/web",
         description:
-          "Next.js 16.2 App Router — Server Components, Server Actions, Route Handlers, proxy.ts для auth.",
+          "Next.js 16.3.0 App Router — Server Components, Server Actions, Route Handlers, proxy.ts для auth.",
       },
       {
         name: "@pulse/domain",
@@ -184,7 +184,7 @@ export const howItWasBuiltRu = {
     title: "Стек и стандарты",
     intro: "Зафиксированные версии и явное governance — не случайный набор зависимостей.",
     rows: [
-      { label: "Framework", value: "Next.js 16.2.6 App Router, React 19, TypeScript" },
+      { label: "Framework", value: "Next.js 16.3.0 App Router, React 19, TypeScript" },
       { label: "Hosting", value: "Vercel (serverless, preview deploys)" },
       { label: "Database", value: "Neon PostgreSQL 17 + Prisma v7" },
       { label: "Auth", value: "Auth.js v5 Credentials, JWT RBAC" },

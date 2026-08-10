@@ -12,9 +12,11 @@
 
 ## Purpose
 
-Политика **кэширования и инвалидации** Pulse на Next.js 16.2.6: **`'use cache'`** + `cacheTag()` / `cacheLife()` для cross-request reads; `updateTag`, `revalidateTag`, `revalidatePath` после мутаций; tag naming; drift guards ([`domain_invariants.md`](../02_domain_model/domain_invariants.md) INV-03 catalog approval).
+Политика **кэширования и инвалидации** Pulse на Next.js 16.3.0: **`'use cache'`** + `cacheTag()` / `cacheLife()` для cross-request reads; `updateTag`, `revalidateTag`, `revalidatePath` после мутаций; tag naming; drift guards ([`domain_invariants.md`](../02_domain_model/domain_invariants.md) INV-03 catalog approval).
 
-Context7 verified (`/vercel/next.js/v16.2.2`): Server Actions use `updateTag` for read-your-own-writes; `revalidatePath` for route-scoped refresh; combine with tags for cross-route consistency.
+**Instant Navigations (16.3)** опираются на те же границы: Suspense + `'use cache'` формируют reusable App Shell при `partialPrefetching: true` ([ADR-002](../07_governance/adr_002_next162_vercel_runtime_policy.md) §5.1).
+
+Context7 verified (`/vercel/next.js`): Server Actions use `updateTag` for read-your-own-writes; `revalidatePath` for route-scoped refresh; combine with tags for cross-route consistency.
 
 ---
 
@@ -39,7 +41,7 @@ Context7 verified (`/vercel/next.js/v16.2.2`): Server Actions use `updateTag` fo
 | **`revalidateTag(tag)`** | Stale-while-revalidate for tagged data | Route Handlers, background refresh |
 | **`revalidatePath(path)`** | Invalidate specific route segment | Redirect targets, layout-scoped lists |
 
-**Config:** `cacheComponents: true` in `apps/web/next.config.ts` when using `'use cache'` (see [`ai_loading_patterns.md`](../../guidelines/nextjs/ai_loading_patterns.md) §8).
+**Config:** `cacheComponents: true` and **`partialPrefetching: true`** in `apps/web/next.config.ts` when using `'use cache'` / Instant Navigations (see [`ai_loading_patterns.md`](../../guidelines/nextjs/ai_loading_patterns.md) §8).
 
 **MUST NOT** use `unstable_after` for cache/email side effects ([ADR-002](../07_governance/adr_002_next162_vercel_runtime_policy.md)). **MUST NOT** add new **`unstable_cache()`** — use **`'use cache'`** instead.
 

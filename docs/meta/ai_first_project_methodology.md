@@ -37,7 +37,7 @@
 
 | Компонент | Технология | Роль |
 |-----------|-----------|------|
-| Фреймворк | **Next.js 16.2.6** (pinned) App Router | Routing, SSR, Server Actions — [ADR-002](../prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
+| Фреймворк | **Next.js 16.3.0** (pinned) App Router | Routing, SSR, Server Actions — [ADR-002](../prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
 | Хостинг | **Vercel** | Serverless deployment, preview из PR |
 | Bundler | Turbopack (default) | Сборка |
 | БД | Neon PostgreSQL 17 + Prisma v7 | Единственный источник истины |
@@ -195,7 +195,7 @@ docs/implementation/mvp/
     └── P{N}_tasks.md
 ```
 
-Шаблон Phase Description: [`_phase_template.md`](../implementation/mvp/phases_tasks_descriptions/_phase_template.md). **Канон фаз:** MVP **P01–P14** (W16); post-P14 **P16–P18, P19, P21** (W22–W23); **P17** reserved. Миграции: [`_migration_P01-P07_to_P01-P15.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md), [`_migration_P15-P20_renumbering.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P15-P20_renumbering.md), [`_migration_P17_to_P19.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P17_to_P19.md).
+Шаблон Phase Description: [`_phase_template.md`](../implementation/mvp/phases_tasks_descriptions/_phase_template.md). **Канон фаз:** MVP **P01–P14** (W16); post-P14 **P16–P19, P21–P22** (W22–W25). Миграции: [`_migration_P01-P07_to_P01-P15.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P01-P07_to_P01-P15.md), [`_migration_P15-P20_renumbering.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P15-P20_renumbering.md), [`_migration_P17_to_P19.md`](../implementation/mvp/phases_tasks_descriptions/_migration_P17_to_P19.md).
 
 **Фазы Pulse (canonical):**
 
@@ -360,7 +360,7 @@ docs/
 - [x] `docs/reference/lampto_project_reference.md` — референс lampto
 - [x] `docs/prds/architecture_master_index.md` — карта архитектуры
 - [x] `docs/prds/07_governance/adr_001_stack_and_runtime.md` — выбор стека (Vercel, Neon, …)
-- [x] `docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md` — Next.js **16.2.6** pin + `proxy.ts`
+- [x] `docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md` — Next.js **16.3.0** pin + `proxy.ts`
 - [x] `docs/design/canonical_routes.md` — все маршруты
 - [x] `docs/architecture_learning_pack/01_architecture_overview.md` — обзор для агентов
 - [x] `AGENTS.md` — точка входа monorepo

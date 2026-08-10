@@ -2,24 +2,24 @@
 
 > Monorepo context: [`../../AGENTS.md`](../../AGENTS.md)
 
-**Pulse Web** — Next.js **16.2.6** App Router, тонкий BFF для маркетплейса фитнес-тренеров.  
+**Pulse Web** — Next.js **16.3.0** App Router, тонкий BFF для маркетплейса фитнес-тренеров.  
 Hosting: **Vercel** · UI: **shadcn/ui + Tailwind CSS v4** (Warm Forest).
 
 <!-- BEGIN:nextjs-agent-rules -->
-## Next.js 16 — read before coding
 
-This is **not** the Next.js from training data. APIs, conventions, and file structure differ from Next.js 15.
+# This is NOT the Next.js you know
 
-- Read the relevant guide in `node_modules/next/dist/docs/` before writing code
-- Heed deprecation notices
-- **Project canon:** [ADR-002](../../docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) and `.cursor/rules/nextjs-vercel-app-router.mdc` — not generic Next docs alone
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
 <!-- END:nextjs-agent-rules -->
 
 ## Stack (this app)
 
 | Package | Version | Notes |
 |---------|---------|-------|
-| `next` | **16.2.6** (pinned) | No Next 15 patterns; no floating `^16` without ADR |
+| `next` | **16.3.0** (pinned) | No Next 15 patterns; no floating `^16` without ADR; Instant Navigations (`partialPrefetching`) — see ADR-002 |
 | `react` / `react-dom` | 19.x | Server Components by default |
 | `tailwindcss` | v4 | Semantic tokens in `src/app/globals.css` |
 
@@ -138,7 +138,8 @@ npm run lint        # or npm run lint:web from root
 
 ### Manual verification checklist (web)
 
-- [ ] `next` pinned to **16.2.6** in `package.json`
+- [ ] `next` pinned to **16.3.0** in `package.json`
+- [ ] `partialPrefetching: true` alongside `cacheComponents: true`
 - [ ] New interception in **`src/proxy.ts`**, not Next 15 `middleware.ts` patterns
 - [ ] No `@pulse/policy-server` import in `proxy.ts` / `middleware.ts`
 - [ ] Routes match [`canonical_routes.md`](../../docs/design/canonical_routes.md)
