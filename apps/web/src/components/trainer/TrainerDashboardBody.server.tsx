@@ -1,3 +1,5 @@
+import { connection } from "next/server";
+
 import { TrainerDashboardKpiGrid } from "@/components/trainer/TrainerDashboardKpiGrid";
 import { TrainerRecentReviews } from "@/components/trainer/TrainerRecentReviews";
 import { TrainerTodaySessionsList } from "@/components/trainer/TrainerTodaySessionsList";
@@ -6,6 +8,8 @@ import { getTrainerDashboardSnapshot } from "@/data/trainer/get-trainer-dashboar
 import { getMessages } from "@/lib/messages/server";
 
 export async function TrainerDashboardBody() {
+  // Today/week/month windows use `new Date()` — mark request-bound before DAL.
+  await connection();
   const messages = await getMessages();
   const snapshot = await getTrainerDashboardSnapshot();
 
