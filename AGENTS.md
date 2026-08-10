@@ -1,7 +1,7 @@
 # Pulse — Monorepo Agent Instructions
 
 **Pulse** — онлайн-маркетплейс фитнес-тренеров (клиенты, тренеры, админы).  
-Monorepo: **Next.js 16.2.6** App Router + Vercel + Neon PostgreSQL.
+Monorepo: **Next.js 16.3.0** App Router + Vercel + Neon PostgreSQL.
 
 **Methodology (обязательно):** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md) — цикл КОНТЕКСТ → ФАЗА → КОНТРАКТ → ЗАДАЧИ → ВЕРИФИКАЦИЯ.
 
@@ -65,7 +65,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 | **Implementation contracts** | [`docs/implementation/mvp/contracts/`](docs/implementation/mvp/contracts/) |
 | **Implementation specs** | [`docs/implementation/mvp/specs/`](docs/implementation/mvp/specs/) |
 | **Implementation guides** | [`docs/implementation/mvp/guides/`](docs/implementation/mvp/guides/) |
-| **Implementation phases (P01–P14 MVP; P16–P18, P19, P21 post-P14)** | [`docs/implementation/mvp/phases_tasks_descriptions/`](docs/implementation/mvp/phases_tasks_descriptions/) + [`tasks/`](docs/implementation/mvp/tasks/) + [`ui_component_phase_matrix.md`](docs/implementation/mvp/ui_component_phase_matrix.md) |
+| **Implementation phases (P01–P14 MVP; P16–P19, P21–P22 post-P14)** | [`docs/implementation/mvp/phases_tasks_descriptions/`](docs/implementation/mvp/phases_tasks_descriptions/) + [`tasks/`](docs/implementation/mvp/tasks/) + [`ui_component_phase_matrix.md`](docs/implementation/mvp/ui_component_phase_matrix.md) |
 | HTML-прототип | [`docs/prototypes/Fitness_Platform_Prototype_v1.html`](docs/prototypes/Fitness_Platform_Prototype_v1.html), landing: [`Pulse Landing Page -Standalone-.html`](docs/prototypes/Pulse Landing Page -Standalone-.html) |
 | Runtime / стек | [`docs/prds/07_governance/adr_001_stack_and_runtime.md`](docs/prds/07_governance/adr_001_stack_and_runtime.md), [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) |
 
@@ -84,7 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 
 ## Статус репозитория
 
-**Текущая фаза:** P14 complete (quality gate). **Post-P14 tracks:** **P16** (public landing v2), **P17** (UI i18n EN/RU — **complete**), **P19** (complaint resolution v2 — in progress), **P18** (admin people ops, spec only), **P21** (email & jobs, post-MVP deferral). См. [`_migration_P17_to_P19.md`](docs/implementation/mvp/phases_tasks_descriptions/_migration_P17_to_P19.md) (complaints renumber only).  
+**Текущая фаза:** P14 complete (quality gate). **Post-P14 tracks:** **P16** (public landing v2), **P17** (UI i18n EN/RU — **complete**), **P19** (complaint resolution v2 — in progress), **P18** (admin people ops, spec only), **P21** (email & jobs, post-MVP deferral), **P22** (Instant Navigations / Next.js 16.3 — **implementation complete**, D3 smoke on `next dev`). См. [`_migration_P17_to_P19.md`](docs/implementation/mvp/phases_tasks_descriptions/_migration_P17_to_P19.md) (complaints renumber only).  
 `apps/workers` — ещё не создан.  
 Не расширять реализацию без явной фазы и contract.
 

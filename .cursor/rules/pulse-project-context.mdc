@@ -23,7 +23,7 @@ When Pulse docs are silent — follow lampto **architecture and methodology**, a
 
 ## Stack (baseline)
 
-- **Next.js** **16.2.6** (pinned) App Router, **TypeScript** — [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md)
+- **Next.js** **16.3.0** (pinned) App Router, **TypeScript** — [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md)
 - **Request interception:** **`proxy.ts`** (Next.js 16); `middleware.ts` — только временная миграция
 - **Hosting:** Vercel · **UI:** shadcn/ui + Tailwind CSS v4 (Warm Forest tokens)
 - **Database:** Neon **PostgreSQL 17** + **Prisma v7** (pooled `DATABASE_URL`, `DIRECT_URL` for migrations)
@@ -77,4 +77,4 @@ Full list: [`docs/guidelines/README.md`](docs/guidelines/README.md).
 
 ## Repository status
 
-**Текущая фаза:** P14 complete (quality gate). **Post-P14:** P16 landing v2, **P17 UI i18n complete**, P19 complaints, P18 people ops (spec), P21 email (deferral). Не расширять реализацию без явной фазы и contract.
+**Текущая фаза:** P14 complete (quality gate). **Post-P14:** P16 landing v2, **P17 UI i18n complete**, P19 complaints, P18 people ops (spec), P21 email (deferral), **P22 Instant Navigations** (implementation complete). Не расширять реализацию без явной фазы и contract.
