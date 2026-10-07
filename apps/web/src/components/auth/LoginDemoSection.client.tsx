@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
-import { DemoRolePanel } from "@/components/auth/DemoRolePanel.client";
+import { LoginDemoPanelLazy } from "@/components/auth/LoginDemoPanelLazy.client";
 import { useLoginCredentials } from "@/components/auth/LoginCredentialsProvider.client";
 import {
   DEMO_CREDENTIALS,
@@ -30,6 +30,6 @@ export function LoginDemoSection() {
   };
 
   return (
-    <DemoRolePanel activeRole={demoRole} onRoleSelect={handleRoleSelect} />
+    <LoginDemoPanelLazy activeRole={demoRole} onRoleSelect={handleRoleSelect} />
   );
 }

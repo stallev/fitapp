@@ -1,6 +1,5 @@
 import { Container } from "@/components/ui/container";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
-import { Reveal } from "@/components/ui/Reveal.client";
 import { TestimonialCard } from "@/components/ui/TestimonialCard";
 import { getMessages } from "@/lib/messages/server";
 
@@ -16,15 +15,10 @@ export async function LandingTestimonials() {
           label={testimonials.label}
           title={testimonials.title}
           subtitle={testimonials.subtitle}
-          animate
         />
         <div className="grid items-stretch gap-6 md:grid-cols-3">
-          {testimonials.items.map((item, index) => (
-            <Reveal
-              key={item.author}
-              delay={`${(index + 1) * 100}ms`}
-              className="h-full"
-            >
+          {testimonials.items.map((item) => (
+            <div key={item.author} className="h-full">
               <TestimonialCard
                 quote={item.quote}
                 author={item.author}
@@ -33,7 +27,7 @@ export async function LandingTestimonials() {
                   item.avatarColor as "primary" | "secondary" | "primaryLight"
                 }
               />
-            </Reveal>
+            </div>
           ))}
         </div>
       </Container>

@@ -1,8 +1,22 @@
-import { MarketingNavActions } from "@/components/landing/MarketingNavActions.client";
-import { MarketingNavDesktopLinks } from "@/components/landing/MarketingNavDesktopLinks.client";
+import dynamic from "next/dynamic";
+
 import { MarketingNavScrollFrame } from "@/components/landing/MarketingNavScrollFrame.client";
 import { PulseLogo } from "@/components/ui/PulseLogo";
 import { getMessages } from "@/lib/messages/server";
+
+const MarketingNavDesktopLinks = dynamic(
+  () =>
+    import("@/components/landing/MarketingNavDesktopLinks.client").then(
+      (module) => ({ default: module.MarketingNavDesktopLinks }),
+    ),
+);
+
+const MarketingNavActions = dynamic(
+  () =>
+    import("@/components/landing/MarketingNavActions.client").then(
+      (module) => ({ default: module.MarketingNavActions }),
+    ),
+);
 
 export async function MarketingNav() {
   const messages = await getMessages();

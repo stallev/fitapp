@@ -2,7 +2,6 @@ import { CalendarIcon, SearchIcon, UsersIcon } from "lucide-react";
 
 import { Container } from "@/components/ui/container";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
-import { Reveal } from "@/components/ui/Reveal.client";
 import { StepCard } from "@/components/ui/StepCard";
 import { getMessages } from "@/lib/messages/server";
 
@@ -20,18 +19,17 @@ export async function LandingHowItWorks() {
           label={howItWorks.label}
           title={howItWorks.title}
           subtitle={howItWorks.subtitle}
-          animate
         />
         <div className="grid items-stretch gap-7 md:grid-cols-3">
           {howItWorks.steps.map((step, index) => (
-            <Reveal key={step.step} delay={`${(index + 1) * 100}ms`} className="h-full">
+            <div key={step.step} className="h-full">
               <StepCard
                 step={step.step}
                 icon={STEP_ICONS[index] ?? SearchIcon}
                 title={step.title}
                 description={step.description}
               />
-            </Reveal>
+            </div>
           ))}
         </div>
       </Container>

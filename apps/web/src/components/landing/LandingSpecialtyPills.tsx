@@ -1,7 +1,6 @@
 import { Container } from "@/components/ui/container";
 import { DiscoveryPill } from "@/components/ui/DiscoveryPill";
 import { MarketingSectionHeader } from "@/components/ui/MarketingSectionHeader";
-import { Reveal } from "@/components/ui/Reveal.client";
 import { getMessages } from "@/lib/messages/server";
 
 
@@ -16,9 +15,8 @@ export async function LandingSpecialtyPills() {
           label={specialties.label}
           title={specialties.title}
           subtitle={specialties.subtitle}
-          animate
         />
-        <Reveal delay="100ms" className="flex flex-wrap justify-center gap-3">
+        <div className="flex flex-wrap justify-center gap-3">
           {specialties.items.map((item) => (
             <DiscoveryPill
               key={item.slug}
@@ -27,7 +25,7 @@ export async function LandingSpecialtyPills() {
               count={item.count}
             />
           ))}
-        </Reveal>
+        </div>
       </Container>
     </section>
   );

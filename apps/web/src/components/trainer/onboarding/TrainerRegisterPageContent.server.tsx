@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { TRAINER_STATUS, USER_ROLE } from "@pulse/domain";
 import { getRoleHome } from "@pulse/policy-edge";
 
-import { TrainerOnboardingWizard } from "@/components/trainer/onboarding/TrainerOnboardingWizard.client";
+import { TrainerOnboardingWizardLazy } from "@/components/trainer/onboarding/TrainerOnboardingWizardLazy.client";
 import {
   getTrainerOnboardingDraft,
   type TrainerOnboardingDraft,
@@ -51,7 +51,7 @@ export async function TrainerRegisterPageContent({
   }
 
   return (
-    <TrainerOnboardingWizard
+    <TrainerOnboardingWizardLazy
       isAuthenticated={Boolean(session?.user?.id)}
       userRole={
         session?.user?.role === USER_ROLE.TRAINER ? USER_ROLE.TRAINER : null

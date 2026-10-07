@@ -1,6 +1,8 @@
 import { Heading } from "@/components/atoms";
-import { LoginPageClientShell } from "@/components/auth/LoginPageClientShell.client";
+import { LoginDemoDivider } from "@/components/auth/LoginDemoDivider.server";
+import { LoginPageFlow } from "@/components/auth/LoginPageFlow.client";
 import { Container } from "@/components/ui/container";
+import { isDemoRole } from "@/lib/demo/demo-credentials";
 import { getMessages } from "@/lib/messages/server";
 
 type LoginPageProps = {
@@ -11,6 +13,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const messages = await getMessages();
   const resolvedSearchParams = await searchParams;
   const callbackUrl = resolvedSearchParams.callbackUrl;
+  const loadDemoPanel =
+    isDemoRole(resolvedSearchParams.demo ?? null) ||
+    process.env.NODE_ENV === "development";
 
   return (
     <div className="flex flex-1 flex-col justify-center py-8">
@@ -18,7 +23,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         <Heading as="h1" className="mb-6 text-center">
           {messages.auth.login.title}
         </Heading>
-        <LoginPageClientShell callbackUrl={callbackUrl} />
+        <LoginPageFlow callbackUrl={callbackUrl} loadDemoPanel={loadDemoPanel}>
+          {loadDemoPanel ? <LoginDemoDivider /> : null}
+        </LoginPageFlow>
       </Container>
     </div>
   );

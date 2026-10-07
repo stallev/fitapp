@@ -1,10 +1,10 @@
 import { ArrowRightIcon, CheckIcon, LockIcon, ShieldIcon, StarIcon } from "lucide-react";
 
 import { ContentText, Heading, SectionEyebrow } from "@/components/atoms";
-import { LandingHeroFloatCard } from "@/components/landing/LandingHeroFloatCard";
+import dynamic from "next/dynamic";
+
 import { Container } from "@/components/ui/container";
 import { CustomLink } from "@/components/ui/CustomLink";
-import { Reveal } from "@/components/ui/Reveal.client";
 import { TrustFeaturePill } from "@/components/ui/TrustFeaturePill";
 import { getLandingHeroFloatCards } from "@/lib/landing/landing-hero-float-cards";
 import { getMessages } from "@/lib/messages/server";
@@ -14,6 +14,14 @@ const TRUST_PILL_ICONS = {
   check: CheckIcon,
   lock: LockIcon,
 } as const;
+
+const LandingHeroFloatColumn = dynamic(
+  () =>
+    import("@/components/landing/LandingHeroFloatColumn.client").then(
+      (module) => ({ default: module.LandingHeroFloatColumn }),
+    ),
+  { ssr: false },
+);
 
 export async function LandingHero() {
   const messages = await getMessages();
@@ -101,15 +109,7 @@ export async function LandingHero() {
           </div>
         </div>
 
-        <Reveal delay="200ms" className="relative hidden h-[540px] lg:block">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-[-60px] rounded-[60%_40%_50%_50%/50%_50%_60%_40%] bg-[radial-gradient(ellipse_75%_75%_at_55%_50%,hsl(var(--color-hero-glow)/0.35)_0%,transparent_65%)]"
-          />
-          {floatCards.map((card) => (
-            <LandingHeroFloatCard key={card.id} card={card} />
-          ))}
-        </Reveal>
+        <LandingHeroFloatColumn cards={floatCards} />
       </Container>
     </section>
   );
