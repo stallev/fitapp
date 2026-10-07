@@ -21,10 +21,7 @@ export async function LandingFooterSkeleton() {
             {footer.subtitle}
           </ContentText>
         </div>
-        <nav
-          aria-label={footer.navLabel}
-          className="flex flex-wrap justify-center gap-7"
-        >
+        <nav className="flex flex-wrap justify-center gap-7">
           <CustomLink href="/trainers" variant="quiet" tabIndex={-1}>
             {footer.links.trainers}
           </CustomLink>

@@ -1,8 +1,6 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 
-import { TrainerProfileMain } from "@/components/trainer/TrainerProfileMain.server";
-import { TrainerProfileMainSkeleton } from "@/components/trainer/TrainerProfileMainSkeleton";
+import { TrainerProfilePageBody } from "@/components/trainer/TrainerProfilePageBody.server";
 import { getPublicTrainerProfile } from "@/data/trainer/get-public-trainer-profile.server";
 import { getMessages } from "@/lib/messages/server";
 
@@ -31,9 +29,5 @@ export default async function TrainerProfilePage({
 }: TrainerProfilePageProps) {
   const { id } = await params;
 
-  return (
-    <Suspense fallback={<TrainerProfileMainSkeleton />}>
-      <TrainerProfileMain trainerId={id} />
-    </Suspense>
-  );
+  return <TrainerProfilePageBody trainerId={id} />;
 }

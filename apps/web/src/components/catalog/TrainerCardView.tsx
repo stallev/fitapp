@@ -72,7 +72,7 @@ export function TrainerCardView({
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   <Heading
-                    as="h3"
+                    as="h2"
                     visualLevel="h4"
                     className="truncate font-heading font-normal"
                   >

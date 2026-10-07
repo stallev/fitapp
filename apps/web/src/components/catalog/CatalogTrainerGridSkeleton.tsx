@@ -1,7 +1,7 @@
 import { PulseCard } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-function CatalogTrainerCardSkeleton() {
+export function CatalogTrainerCardSkeleton() {
   return (
     <PulseCard variant="catalog" className="h-full min-w-0">
       <div className="flex h-full gap-3 p-3 md:min-h-[7.5rem]">

@@ -2,6 +2,8 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/ui/PageHeader";
+import { CatalogFirstTrainerCard } from "@/components/catalog/CatalogFirstTrainerCard.server";
+import { CatalogFirstTrainerCardSkeleton } from "@/components/catalog/CatalogFirstTrainerCardSkeleton";
 import { CatalogTrainerGridSkeleton } from "@/components/catalog/CatalogTrainerGridSkeleton";
 import { CatalogTrainerGrid } from "@/components/catalog/CatalogTrainerGrid.server";
 import { CatalogFiltersChrome } from "@/components/catalog/CatalogFiltersChrome.server";
@@ -34,13 +36,17 @@ export default async function TrainersPage({ searchParams }: TrainersPageProps) 
 
       <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[280px_1fr] lg:gap-6">
         <div className="order-1 min-w-0 space-y-4 lg:order-2">
+          <Suspense fallback={<CatalogFirstTrainerCardSkeleton />}>
+            <CatalogFirstTrainerCard query={query} />
+          </Suspense>
+
           <CatalogGridRegionError
             title={messages.catalog.error.title}
             description={messages.catalog.error.description}
             retryLabel={messages.common.segmentError.retry}
           >
             <Suspense fallback={<CatalogTrainerGridSkeleton />}>
-              <CatalogTrainerGrid query={query} />
+              <CatalogTrainerGrid query={query} skipFirst />
             </Suspense>
           </CatalogGridRegionError>
 

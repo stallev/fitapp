@@ -11,11 +11,14 @@ import { getLocale, getMessages } from "@/lib/messages/server";
 
 export type CatalogTrainerGridProps = {
   query: CatalogTrainersQuery;
+  /** When true, first card is rendered by {@link CatalogFirstTrainerCard}. */
+  skipFirst?: boolean;
 };
 
-const ABOVE_FOLD_IMAGE_COUNT = 1;
-
-export async function CatalogTrainerGrid({ query }: CatalogTrainerGridProps) {
+export async function CatalogTrainerGrid({
+  query,
+  skipFirst = false,
+}: CatalogTrainerGridProps) {
   const locale = await getLocale();
   const messages = await getMessages();
   const result = await getCatalogTrainers(query);
@@ -24,18 +27,21 @@ export async function CatalogTrainerGrid({ query }: CatalogTrainerGridProps) {
     return <CatalogEmpty />;
   }
 
+  const gridItems = skipFirst ? result.items.slice(1) : result.items;
+
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 items-stretch gap-2.5 lg:grid-cols-2">
-        {result.items.map((trainer, index) => (
-          <TrainerCard
-            key={trainer.id}
-            trainer={trainer}
-            className="h-full min-w-0"
-            imagePriority={index < ABOVE_FOLD_IMAGE_COUNT}
-          />
-        ))}
-      </div>
+      {gridItems.length > 0 ? (
+        <div className="grid grid-cols-1 items-stretch gap-2.5 lg:grid-cols-2">
+          {gridItems.map((trainer) => (
+            <TrainerCard
+              key={trainer.id}
+              trainer={trainer}
+              className="h-full min-w-0"
+            />
+          ))}
+        </div>
+      ) : null}
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <ContentText variant="muted" as="p">
