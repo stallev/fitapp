@@ -114,3 +114,25 @@ Notes:
 - Home цель **95+** не закрыта: M/D Perf **91**, A11y **92** (`aria-prohibited-attr`, `color-contrast`). `lcpElement` снова **null**.
 - Против wave2: `/features` M Perf **66→94**, `/auth/register/trainer` M **79→91**, `/trainers` M **68→74**, профиль M **66→73** (desktop впервые **91**). `/` M Perf **94→91**. `/auth/register` M Perf **93→88**.
 
+### 2026-10-07 (post LCP/a11y commit) — https://fitapp-web-ten.vercel.app
+
+Command: `npm run psi:lab -- --suite --json` (8 URLs × m+d; `PSI_TRAINER_PROFILE_ID` задан). Warmup: all `PRERENDER`. Первый запуск оборвался PSI HTTP 400 `FAILED_DOCUMENT_REQUEST` / `ERR_TIMED_OUT`; повтор ~4.3 min, exit code 1.
+
+| Path | Warmup | M Perf | M A11y | M BP | M SEO | D Perf | D A11y | D BP | D SEO | M LCP | M FCP | M CLS | Flake |
+|------|--------|--------|--------|------|-------|--------|--------|------|-------|-------|-------|-------|-------|
+| `/` | PRERENDER | 90 | 92 | 100 | 100 | 98 | 92 | 100 | 100 | 2551ms | 1201ms | 0.000 | yes |
+| `/how-it-was-built` | PRERENDER | 72 | 96 | 100 | 100 | 98 | 96 | 100 | 100 | 5494ms | 3122ms | 0.000 | yes |
+| `/features` | PRERENDER | 95 | 96 | 100 | 100 | 99 | 96 | 100 | 100 | 2401ms | 1201ms | 0.000 | no |
+| `/trainers` | PRERENDER | 69 | 100 | 100 | 100 | 96 | 93 | 100 | 100 | 5101ms | 1201ms | 0.000 | yes |
+| `/auth/login` | PRERENDER | 90 | 100 | 100 | 100 | 90 | 100 | 100 | 100 | 2701ms | 1201ms | 0.000 | yes |
+| `/auth/register` | PRERENDER | 89 | 100 | 100 | 100 | 96 | 100 | 100 | 100 | 2551ms | 1201ms | 0.000 | yes |
+| `/auth/register/trainer` | PRERENDER | 90 | 100 | 100 | 100 | 99 | 100 | 100 | 100 | 2551ms | 1201ms | 0.000 | no |
+| `/trainers/[id]` | PRERENDER | 84 | 100 | 100 | 100 | 91 | 100 | 100 | 100 | 3601ms | 1201ms | 0.000 | yes |
+
+Notes:
+
+- Зелёные (4×4 ≥90 m+d): **`/`**, **`/features`**, **`/auth/login`**, **`/auth/register/trainer`**.
+- Красная зона mobile Perf: `/trainers` **69** (LCP **5.1s**), `/how-it-was-built` **72** (LCP **5.5s** — вероятный flake), `/auth/register` **89**, `/trainers/[id]` **84** (было **73**, +11 pt).
+- Home A11y **92** без изменений; M Perf **90** (граница зелёной зоны). Desktop `/` Perf **98**.
+- `/trainers` M Perf **74→69** при том же LCP ~5.1s — регресс score, не обязательно LCP; нужен subset-повтор.
+

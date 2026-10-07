@@ -42,9 +42,9 @@ export async function LandingFeaturedTrainers() {
           </ContentText>
         </div>
         <div className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {trainers.slice(0, 3).map((trainer, index) => (
+          {trainers.slice(0, 3).map((trainer) => (
             <div key={trainer.id} className="h-full">
-              <FeaturedTrainerCard trainer={trainer} imagePriority={index === 0} />
+              <FeaturedTrainerCard trainer={trainer} />
             </div>
           ))}
         </div>

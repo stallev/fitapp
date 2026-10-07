@@ -58,7 +58,6 @@ export async function LandingHero() {
               href="/trainers"
               size="lg"
               className="rounded-full px-9"
-              prefetch={true}
             >
               {hero.primaryCta}
               <ArrowRightIcon aria-hidden className="size-[18px]" />

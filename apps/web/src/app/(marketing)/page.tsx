@@ -33,28 +33,30 @@ export default function HomePage() {
       <LandingNav />
       <LandingHero />
       <LandingTrustBarLazy />
-      <Suspense fallback={<LandingSectionSkeleton />}>
-        <LandingHowItWorks />
-      </Suspense>
-      <Suspense fallback={<LandingSectionSkeleton />}>
-        <LandingSpecialtyPills />
-      </Suspense>
-      <Suspense fallback={<LandingFeaturedTrainersSkeleton />}>
-        <LandingFeaturedTrainers />
-      </Suspense>
-      <Suspense fallback={<LandingSectionSkeleton />}>
-        <LandingTestimonials />
-      </Suspense>
-      <Suspense fallback={<LandingSectionSkeleton />}>
-        <LandingForTrainers />
-      </Suspense>
-      <LandingFaqLazy />
-      <Suspense fallback={<LandingSectionSkeleton />}>
-        <LandingFinalCta />
-      </Suspense>
-      <Suspense fallback={<LandingFooterSkeleton />}>
-        <LandingFooter />
-      </Suspense>
+      <div className="landing-below-fold">
+        <Suspense fallback={<LandingSectionSkeleton />}>
+          <LandingHowItWorks />
+        </Suspense>
+        <Suspense fallback={<LandingSectionSkeleton />}>
+          <LandingSpecialtyPills />
+        </Suspense>
+        <Suspense fallback={<LandingFeaturedTrainersSkeleton />}>
+          <LandingFeaturedTrainers />
+        </Suspense>
+        <Suspense fallback={<LandingSectionSkeleton />}>
+          <LandingTestimonials />
+        </Suspense>
+        <Suspense fallback={<LandingSectionSkeleton />}>
+          <LandingForTrainers />
+        </Suspense>
+        <LandingFaqLazy />
+        <Suspense fallback={<LandingSectionSkeleton />}>
+          <LandingFinalCta />
+        </Suspense>
+        <Suspense fallback={<LandingFooterSkeleton />}>
+          <LandingFooter />
+        </Suspense>
+      </div>
     </>
   );
 }
