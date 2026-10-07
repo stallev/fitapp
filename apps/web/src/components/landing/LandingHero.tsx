@@ -1,8 +1,7 @@
 import { ArrowRightIcon, CheckIcon, LockIcon, ShieldIcon, StarIcon } from "lucide-react";
 
 import { ContentText, Heading, SectionEyebrow } from "@/components/atoms";
-import dynamic from "next/dynamic";
-
+import { LandingHeroFloatColumnLazy } from "@/components/landing/LandingHeroFloatColumnLazy.client";
 import { Container } from "@/components/ui/container";
 import { CustomLink } from "@/components/ui/CustomLink";
 import { TrustFeaturePill } from "@/components/ui/TrustFeaturePill";
@@ -14,14 +13,6 @@ const TRUST_PILL_ICONS = {
   check: CheckIcon,
   lock: LockIcon,
 } as const;
-
-const LandingHeroFloatColumn = dynamic(
-  () =>
-    import("@/components/landing/LandingHeroFloatColumn.client").then(
-      (module) => ({ default: module.LandingHeroFloatColumn }),
-    ),
-  { ssr: false },
-);
 
 export async function LandingHero() {
   const messages = await getMessages();
@@ -109,7 +100,7 @@ export async function LandingHero() {
           </div>
         </div>
 
-        <LandingHeroFloatColumn cards={floatCards} />
+        <LandingHeroFloatColumnLazy cards={floatCards} />
       </Container>
     </section>
   );

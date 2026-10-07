@@ -128,6 +128,7 @@ When `packages/` exist — from monorepo root before phase DoD:
 ```bash
 npm run typecheck
 npm run lint        # web + all packages/*
+npm run build       # обязательно перед git commit при изменениях в web/packages (git-commit-verification)
 ```
 
 From `apps/web/` only (mid-task UI shortcut):
