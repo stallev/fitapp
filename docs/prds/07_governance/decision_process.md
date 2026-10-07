@@ -20,7 +20,7 @@
 
 **In scope:** триггеры ADR, шаблон документа, статусы, связь с contracts/PRD, процесс backlinks, верификация Context7 для runtime/auth/data.
 
-**Out of scope:** code review policy, sprint planning, выбор продуктовых фич (см. PRD `mvp_scope.md`).
+**Out of scope:** политика code review людьми и PR, sprint planning, выбор продуктовых фич (см. PRD `mvp_scope.md`). Ревью кода **AI-агентом** (T3, субагент `reviewer`) — [`ai_agent_model_routing.md`](../../meta/ai_agent_model_routing.md).
 
 ---
 

@@ -25,6 +25,9 @@
 # production
 /apps/**/build/
 
+# Cursor agent handoff plans (ephemeral per task)
+.cursor/plans/
+
 # misc
 .DS_Store
 *.pem
