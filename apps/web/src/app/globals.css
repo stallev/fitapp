@@ -291,6 +291,12 @@
   }
 }
 
+/* Public landing: defer paint for streamed content below hero (PSI Speed Index). */
+.landing-below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 3200px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

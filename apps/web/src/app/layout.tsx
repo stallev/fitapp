@@ -22,8 +22,17 @@ const sourceSerif4 = Source_Serif_4({
   variable: "--font-display",
   subsets: ["latin", "cyrillic"],
   weight: ["400"],
-  style: ["normal", "italic"],
+  style: ["normal"],
   display: "swap",
+});
+
+/** Italic display face — used below the fold (e.g. hero float cards); skip preload for LCP. */
+const sourceSerif4Italic = Source_Serif_4({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400"],
+  style: ["italic"],
+  display: "swap",
+  preload: false,
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -31,11 +40,13 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin", "cyrillic"],
   weight: ["400"],
   display: "swap",
+  preload: false,
 });
 
 const fontClassName = [
   manrope.variable,
   sourceSerif4.variable,
+  sourceSerif4Italic.className,
   jetbrainsMono.variable,
 ].join(" ");
 
