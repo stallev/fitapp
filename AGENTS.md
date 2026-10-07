@@ -84,6 +84,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 6. Выполнить чеклист из `docs/implementation/mvp/tasks/P{N}_tasks.md`
 7. Верифицировать по чеклисту фазы (`npm run typecheck`, `npm run lint` где применимо) и обновить документацию при изменении behavior
 8. На **T3** — субагент `reviewer` (readonly) до отчёта «готово»; IDE Agent Review не заменяет этот шаг
+9. Перед **`git commit`** по просьбе пользователя — **`npm run build`** с корня, если в коммите код/конфиг сборки (`apps/web`, `packages/**`); см. **git-commit-verification**
 
 ## Статус репозитория
 
@@ -99,3 +100,4 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 - [ ] Нет inline domain/mutation codes — константы из `@pulse/domain` (**domain-literals-and-codes**)
 - [ ] Domain invariants не нарушены (timezone, booking state machine, trainer verification)
 - [ ] Для **T3** — прогон `reviewer` до завершения задачи ([`ai_agent_model_routing.md`](docs/meta/ai_agent_model_routing.md))
+- [ ] Перед коммитом кода — успешный **`npm run build`** (корень); Cursor Rule: **git-commit-verification**
