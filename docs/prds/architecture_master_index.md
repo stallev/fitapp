@@ -130,7 +130,7 @@ Purpose: define **how the system executes requests and jobs**.
 | Document | Status | Purpose |
 |----------|--------|---------|
 | [`prds/07_governance/adr_001_stack_and_runtime.md`](07_governance/adr_001_stack_and_runtime.md) | **Canonical** | Stack: Vercel, Neon, Prisma v7, Resend, Blob |
-| [`prds/07_governance/adr_002_next162_vercel_runtime_policy.md`](07_governance/adr_002_next162_vercel_runtime_policy.md) | **Canonical** | **Next.js 16.3.0** pin, `proxy.ts`, Instant Navigations / `partialPrefetching`, `catchError`, cache policy |
+| [`prds/07_governance/adr_002_next162_vercel_runtime_policy.md`](07_governance/adr_002_next162_vercel_runtime_policy.md) | **Canonical** | **Next.js 16.4.0** pin, `proxy.ts`, Instant Navigations / `partialPrefetching`, `catchError`, cache policy |
 | [`07_governance/adr_003_auth_credentials_jwt_rbac.md`](07_governance/adr_003_auth_credentials_jwt_rbac.md) | **Accepted** | Credentials, JWT, RBAC |
 | [`07_governance/adr_004_timezone_scheduling_model.md`](07_governance/adr_004_timezone_scheduling_model.md) | **Accepted** | Trainer timezone model |
 | [`07_governance/adr_005_mvp_booking_without_payment.md`](07_governance/adr_005_mvp_booking_without_payment.md) | **Accepted** | MVP booking without payment |
@@ -266,7 +266,7 @@ For a new AI agent session on Pulse:
 fitapp/
 ├── AGENTS.md
 ├── apps/
-│   ├── web/                 — Next.js 16.3.0 (initial shell; see apps/web/AGENTS.md)
+│   ├── web/                 — Next.js 16.4.0 (initial shell; see apps/web/AGENTS.md)
 │   └── workers/               — job entrypoints (planned)
 ├── packages/
 │   ├── domain/

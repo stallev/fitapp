@@ -1,7 +1,7 @@
 # Next.js Loading & Page Performance — Pulse
 
 **Version:** 2.2 · **Project:** Pulse `apps/web`  
-**Stack:** Next.js **16.3.0** App Router, React 19, Vercel, Neon PostgreSQL 17 + Prisma v7  
+**Stack:** Next.js **16.4.0** App Router, React 19, Vercel, Neon PostgreSQL 17 + Prisma v7  
 **Methodology:** [`docs/meta/ai_first_project_methodology.md`](../../meta/ai_first_project_methodology.md)  
 **Runtime:** [ADR-002](../../prds/07_governance/adr_002_next162_vercel_runtime_policy.md)  
 **Cursor rule:** **app-router-streaming-loading**
@@ -884,4 +884,4 @@ State briefly in PR/task which exception applies:
 
 **Version:** 2.2  
 **Last updated:** August 2026  
-**Next.js:** 16.3.0 · **Hosting:** Vercel · **Cross-request cache:** `'use cache'` · **Instant Navigations:** `partialPrefetching: true`
+**Next.js:** 16.4.0 · **Hosting:** Vercel · **Cross-request cache:** `'use cache'` · **Instant Navigations:** `partialPrefetching: true`

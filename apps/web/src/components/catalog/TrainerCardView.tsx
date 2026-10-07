@@ -65,6 +65,7 @@ export function TrainerCardView({
               alt={trainer.fullName}
               aspect="square"
               className="w-24 shrink-0 self-start"
+              sizes="96px"
               priority={imagePriority}
             />
             <div className="flex min-w-0 flex-1 flex-col">

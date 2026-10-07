@@ -1,6 +1,7 @@
 import { Heading } from "@/components/atoms";
-import { Container } from "@/components/ui/container";
 import { RegisterClientForm } from "@/components/auth/RegisterClientForm.client";
+import { RegisterRoleTiles } from "@/components/auth/RegisterRoleTiles.server";
+import { Container } from "@/components/ui/container";
 import { getMessages } from "@/lib/messages/server";
 
 
@@ -12,7 +13,10 @@ export default async function RegisterPage() {
         <Heading as="h1" className="mb-6 text-center">
           {messages.auth.register.title}
         </Heading>
-        <RegisterClientForm />
+        <div className="space-y-6">
+          <RegisterRoleTiles />
+          <RegisterClientForm />
+        </div>
       </Container>
     </div>
   );

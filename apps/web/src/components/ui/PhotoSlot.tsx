@@ -15,6 +15,7 @@ const photoSlotVariants = cva(
         portrait: "aspect-[3/4]",
         cover: "aspect-[4/3]",
         banner: "aspect-[16/6]",
+        fill: "h-full w-full",
       },
     },
     defaultVariants: { aspect: "square" },

@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
 import {
@@ -7,18 +8,30 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { TrainerProfileAboutTab } from "@/components/trainer/TrainerProfileAboutTab";
-import { TrainerProfileBookSidebar } from "@/components/trainer/TrainerProfileBookSidebar.client";
 import { TrainerProfileHeader } from "@/components/trainer/TrainerProfileHeader";
 import { TrainerProfileReviewsSection } from "@/components/trainer/TrainerProfileReviewsSection.server";
 import { TrainerProfileReviewsSkeleton } from "@/components/trainer/TrainerProfileReviewsSkeleton";
 import { TrainerProfileScheduleSection } from "@/components/trainer/TrainerProfileScheduleSection.server";
 import { TrainerProfileServicesTab } from "@/components/trainer/TrainerProfileServicesTab";
-import { TrainerProfileStickyBar } from "@/components/trainer/TrainerProfileStickyBar.client";
 import { TrainerSchedulePreviewSkeleton } from "@/components/trainer/TrainerSchedulePreviewSkeleton";
 import { getPublicTrainerProfile } from "@/data/trainer/get-public-trainer-profile.server";
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 import { getMessages } from "@/lib/messages/server";
 import { connection } from "next/server";
+
+const TrainerProfileBookSidebar = dynamic(
+  () =>
+    import("@/components/trainer/TrainerProfileBookSidebar.client").then(
+      (module) => ({ default: module.TrainerProfileBookSidebar }),
+    ),
+);
+
+const TrainerProfileStickyBar = dynamic(
+  () =>
+    import("@/components/trainer/TrainerProfileStickyBar.client").then(
+      (module) => ({ default: module.TrainerProfileStickyBar }),
+    ),
+);
 
 export type TrainerProfileMainProps = {
   trainerId: string;

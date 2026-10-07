@@ -2,10 +2,10 @@
 
 import { MoonIcon, SunIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
 
 import { useMessages } from "@/components/i18n/LocaleProvider.client";
 import { Button } from "@/components/ui/button";
+import { useIsClient } from "@/lib/ui/use-is-client";
 
 type ThemeToggleProps = {
   showLabel?: boolean;
@@ -18,18 +18,14 @@ export function ThemeToggle({
 }: ThemeToggleProps) {
   const { setTheme, resolvedTheme } = useTheme();
   const messages = useMessages();
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const isClient = useIsClient();
 
   const isDark = resolvedTheme === "dark";
   const toggleLabel = isDark
     ? messages.shell.themeToggleLight
     : messages.shell.themeToggleDark;
 
-  if (!isMounted) {
+  if (!isClient) {
     return (
       <Button
         type="button"

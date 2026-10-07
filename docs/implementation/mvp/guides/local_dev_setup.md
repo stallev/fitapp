@@ -75,6 +75,14 @@ AUTH_URL="http://localhost:3000"
 
 **MVP — do NOT add:** `RESEND_API_KEY`, `CRON_SECRET` (until P21).
 
+Optional — lab PageSpeed Insights (`npm run psi:lab` from repo root; **not** required for `next dev`). Server-only, never `NEXT_PUBLIC_*`. Guide: [`ai_psi_lab_testing.md`](./ai_psi_lab_testing.md).
+
+```bash
+PAGE_SPEED_API_KEY=
+PSI_ORIGIN=https://your-project.vercel.app
+# PSI_TRAINER_PROFILE_ID=
+```
+
 Optional when file upload ships (S3 — server-only):
 
 ```bash
@@ -194,3 +202,4 @@ After setup, confirm:
 |------|--------|
 | 2026-05-23 | v1.0 — local dev setup guide |
 | 2026-05-23 | Smoke login — ссылка на `apps/text_data/dev-users.json` |
+| 2026-10-07 | Optional `PAGE_SPEED_API_KEY` / `PSI_ORIGIN` for lab PSI |
