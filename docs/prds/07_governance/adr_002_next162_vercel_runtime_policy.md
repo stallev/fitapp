@@ -1,6 +1,7 @@
-# ADR-002 — Next.js 16.3.0 runtime policy (Vercel)
+# ADR-002 — Next.js 16.4.0 runtime policy (Vercel)
 
 **Дата:** 2026-05-23  
+**Amend:** 2026-10-07 — pin **16.4.0** (npm latest; React 19.3); Cache Components remains recommended opt-in until Next 17  
 **Amend:** 2026-08-11 — pin **16.3.0** shipped; Instant Navigations / Partial Prefetching / `catchError`; Context7 `/vercel/next.js`  
 **Статус:** ACCEPTED  
 **Проект:** Pulse (fitapp)  
@@ -26,8 +27,8 @@ Agents must not implement Next.js 15 `middleware.ts` patterns as the canonical a
 
 | Policy | Value |
 |--------|-------|
-| **Next.js version** | **`16.3.0` exactly** — pin in `apps/web` `package.json` as `"next": "16.3.0"` (no caret/range in production lockfile); align `@next/third-parties` and `eslint-config-next` |
-| **React** | 19.x (peer of Next 16.3) |
+| **Next.js version** | **`16.4.0` exactly** — pin in `apps/web` `package.json` as `"next": "16.4.0"` (no caret/range in production lockfile); align `@next/third-parties` and `eslint-config-next` |
+| **React** | **19.3.x** (peer of Next 16.4) |
 | **Hosting** | Vercel |
 | **Bundler** | Turbopack default (`next dev`, `next build`) |
 
@@ -151,13 +152,13 @@ Do not invent ad-hoc client error boundaries that duplicate catalog/`error.tsx` 
 | Lampto ADR | Pulse |
 |------------|-------|
 | ADR-026 (Netlify) | **Not applicable** — Pulse uses Vercel |
-| ADR-022 (Vercel + Next 16.2) | **Conceptually superseded by this ADR** for Pulse; adopt interception/cache rules, pin **16.3.0** |
+| ADR-022 (Vercel + Next 16.2) | **Conceptually superseded by this ADR** for Pulse; adopt interception/cache rules, pin **16.4.0** |
 
 ---
 
 ## 8. Agent checklist
 
-- [ ] `package.json` pins `"next": "16.3.0"`
+- [ ] `package.json` pins `"next": "16.4.0"`
 - [ ] `cacheComponents: true` and `partialPrefetching: true` in `next.config.ts`
 - [ ] New route protection uses **`proxy.ts`**, not `middleware.ts`
 - [ ] `auth.config.ts` used in proxy; `auth.ts` only in server handlers/actions
@@ -180,3 +181,12 @@ Do not invent ad-hoc client error boundaries that duplicate catalog/`error.tsx` 
 - [`.cursor/rules/nextjs-vercel-app-router.mdc`](../../../.cursor/rules/nextjs-vercel-app-router.mdc)
 - [`cache_revalidation_policy.md`](../05_runtime/cache_revalidation_policy.md) — tag/path invalidation detail (W5)
 - Lampto reference: [`adr_022_next16_vercel_runtime_policy.md`](../../examples/lampto/docs/prds/07_governance/adr_022_next16_vercel_runtime_policy.md)
+
+---
+
+## Change log
+
+| Date | Change |
+|------|--------|
+| 2026-10-07 | Pin **16.4.0**; React **19.3**; Cache Components still opt-in until Next 17 |
+| 2026-08-11 | Pin **16.3.0**; Instant Navigations / Partial Prefetching / `catchError` |

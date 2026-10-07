@@ -120,6 +120,7 @@ npm run lint        # apps/web + все packages/* (не только web)
 | [`guides/neon_prisma_migrations_guide.md`](guides/neon_prisma_migrations_guide.md) | Neon branches + Prisma v7 CLI |
 | [`guides/seed_and_fixtures_guide.md`](guides/seed_and_fixtures_guide.md) | Dev seed + smoke credentials |
 | [`guides/cron_jobs_setup_guide.md`](guides/cron_jobs_setup_guide.md) | Vercel Cron (post-MVP P21) |
+| [`guides/ai_psi_lab_testing.md`](guides/ai_psi_lab_testing.md) | Lab PageSpeed Insights (`PAGE_SPEED_API_KEY`) |
 
 Ops PRD: [`../../prds/06_operations/README.md`](../../prds/06_operations/README.md)
 

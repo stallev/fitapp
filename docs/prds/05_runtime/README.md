@@ -12,7 +12,7 @@
 
 ## Purpose
 
-Точка входа в слой **Runtime Architecture**: как Pulse выполняет HTTP-запросы, фоновые jobs, кэш и auth на Vercel + Next.js 16.3.0. Связывает ADR-001/002 с implementation guides и monorepo packages.
+Точка входа в слой **Runtime Architecture**: как Pulse выполняет HTTP-запросы, фоновые jobs, кэш и auth на Vercel + Next.js 16.4.0. Связывает ADR-001/002 с implementation guides и monorepo packages.
 
 ---
 
@@ -72,7 +72,7 @@ flowchart TB
 
 | Component | Choice | ADR |
 |-----------|--------|-----|
-| Next.js | **16.3.0** pinned | ADR-002 |
+| Next.js | **16.4.0** pinned | ADR-002 |
 | Interception | **`proxy.ts`** (nodejs) | ADR-002 |
 | Auth | Auth.js v5, JWT, Credentials | ADR-003 |
 | DB | Prisma v7 + Neon pool | ADR-001 |

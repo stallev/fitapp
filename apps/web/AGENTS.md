@@ -2,7 +2,7 @@
 
 > Monorepo context: [`../../AGENTS.md`](../../AGENTS.md)
 
-**Pulse Web** — Next.js **16.3.0** App Router, тонкий BFF для маркетплейса фитнес-тренеров.  
+**Pulse Web** — Next.js **16.4.0** App Router, тонкий BFF для маркетплейса фитнес-тренеров.  
 Hosting: **Vercel** · UI: **shadcn/ui + Tailwind CSS v4** (Warm Forest).
 
 <!-- BEGIN:nextjs-agent-rules -->
@@ -19,7 +19,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 | Package | Version | Notes |
 |---------|---------|-------|
-| `next` | **16.3.0** (pinned) | No Next 15 patterns; no floating `^16` without ADR; Instant Navigations (`partialPrefetching`) — see ADR-002 |
+| `next` | **16.4.0** (pinned) | No Next 15 patterns; no floating `^16` without ADR; Instant Navigations (`partialPrefetching`) — see ADR-002 |
 | `react` / `react-dom` | 19.x | Server Components by default |
 | `tailwindcss` | v4 | Semantic tokens in `src/app/globals.css` |
 
@@ -138,7 +138,7 @@ npm run lint        # or npm run lint:web from root
 
 ### Manual verification checklist (web)
 
-- [ ] `next` pinned to **16.3.0** in `package.json`
+- [ ] `next` pinned to **16.4.0** in `package.json`
 - [ ] `partialPrefetching: true` alongside `cacheComponents: true`
 - [ ] New interception in **`src/proxy.ts`**, not Next 15 `middleware.ts` patterns
 - [ ] No `@pulse/policy-server` import in `proxy.ts` / `middleware.ts`

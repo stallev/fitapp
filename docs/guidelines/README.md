@@ -1,6 +1,6 @@
 # Guidelines
 
-Нормы реализации — адаптированы из lampto под Vercel, **Next.js 16.3.0** и Pulse design system (Warm Forest).
+Нормы реализации — адаптированы из lampto под Vercel, **Next.js 16.4.0** и Pulse design system (Warm Forest).
 
 **Methodology (канон):** [`docs/meta/ai_first_project_methodology.md`](../meta/ai_first_project_methodology.md) — §2.7 Guidelines, §2.4 Cursor Rules.
 
@@ -13,6 +13,7 @@
 | React | [`react/README.md`](react/README.md) |
 | Auth | [`auth/ai_auth_implementation_guide.md`](auth/ai_auth_implementation_guide.md) |
 | Typography | [`typography_text_guidelines.md`](typography_text_guidelines.md) |
+| Lab PSI | [`psi-lab-testing.md`](psi-lab-testing.md) — REST PageSpeed Insights; Pulse: [`../implementation/mvp/guides/ai_psi_lab_testing.md`](../implementation/mvp/guides/ai_psi_lab_testing.md) |
 | Visual identity (canon) | [`../design/visual_identity_contract.md`](../design/visual_identity_contract.md) |
 | **UI component catalog (Design Lab)** | [`../implementation/mvp/specs/design_system_lab_spec.md`](../implementation/mvp/specs/design_system_lab_spec.md) — `/design-system` |
 | UX interaction & style (canon) | [`../design/interaction_design_contract.md`](../design/interaction_design_contract.md), [`ui_states_contract.md`](../design/ui_states_contract.md), [`styleguide.md`](../design/styleguide.md) |
@@ -32,7 +33,7 @@
 | `ios-safari-mutation-transport.mdc` | iOS Safari `Load failed` — Class A/B dual transport |
 | `policy-packages.mdc` | `@pulse/policy-*` boundaries |
 | `auth-security.mdc` | Auth.js, defense in depth |
-| `nextjs-vercel-app-router.mdc` | Next.js **16.3.0** + Vercel + **`proxy.ts`** + Instant Navigations |
+| `nextjs-vercel-app-router.mdc` | Next.js **16.4.0** + Vercel + **`proxy.ts`** + Instant Navigations |
 | `app-router-streaming-loading.mdc` | Suspense, `loading.tsx`, page performance (§4–§18) |
 | `s3-file-asset-uploads.mdc` | FileAsset + AWS S3 |
 | `admin-forms-layout.mdc` | Admin forms layout |
@@ -50,6 +51,7 @@
 | `ui-optimistic-mutations.mdc` | `useOptimistic` toggles |
 | `ui-messages-and-copy.mdc` | `@/lib/messages` |
 | `ui-icons-lucide.mdc` | lucide-react icons |
+| `psi-lab-testing.mdc` | Always applied — lab PSI via `PAGE_SPEED_API_KEY`, not MCP |
 
 ## Reference (lampto)
 

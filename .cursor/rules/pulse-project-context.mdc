@@ -23,7 +23,7 @@ When Pulse docs are silent — follow lampto **architecture and methodology**, a
 
 ## Stack (baseline)
 
-- **Next.js** **16.3.0** (pinned) App Router, **TypeScript** — [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md)
+- **Next.js** **16.4.0** (pinned) App Router, **TypeScript** — [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md)
 - **Request interception:** **`proxy.ts`** (Next.js 16); `middleware.ts` — только временная миграция
 - **Hosting:** Vercel · **UI:** shadcn/ui + Tailwind CSS v4 (Warm Forest tokens)
 - **Database:** Neon **PostgreSQL 17** + **Prisma v7** (pooled `DATABASE_URL`, `DIRECT_URL` for migrations)
@@ -70,7 +70,7 @@ Runtime policy: [ADR-001](docs/prds/07_governance/adr_001_stack_and_runtime.md),
 
 ## Cursor rules (beyond this file)
 
-Always applied: `product-docs-alignment.mdc`, `typescript-monorepo-types.mdc`, `domain-literals-and-codes.mdc`, `ai-dry-deduplication.mdc`, UI mutation rules (`ui-toast-mutations`, `ui-mutation-pending`, `ui-optimistic-mutations`), `react-one-component-per-file.mdc`.  
+Always applied: `product-docs-alignment.mdc`, `typescript-monorepo-types.mdc`, `domain-literals-and-codes.mdc`, `ai-dry-deduplication.mdc`, `psi-lab-testing.mdc`, UI mutation rules (`ui-toast-mutations`, `ui-mutation-pending`, `ui-optimistic-mutations`), `react-one-component-per-file.mdc`.  
 Implementation: `data-server-actions-and-api.mdc`, `ios-safari-mutation-transport.mdc`, `policy-packages.mdc`, `auth-security.mdc`, `nextjs-vercel-app-router.mdc`, `app-router-streaming-loading.mdc`, `s3-file-asset-uploads.mdc`, `react-logic-presentation.mdc`, `react-naming-conventions.mdc`.  
 UI (on scaffold): `react-ui-components.mdc`, `ui-warm-forest-shadcn.mdc`, `ui-mobile-first.mdc`, `ui-prototype-fidelity.mdc`, `ui-semantics-a11y.mdc`, `ui-messages-and-copy.mdc`, `ui-icons-lucide.mdc`, `admin-forms-layout.mdc`, `patterns-tables-dnd.mdc`.  
 Full list: [`docs/guidelines/README.md`](docs/guidelines/README.md).

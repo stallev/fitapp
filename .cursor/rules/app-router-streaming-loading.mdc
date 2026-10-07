@@ -7,7 +7,7 @@ alwaysApply: false
 # App Router: streaming, loading & page performance (mandatory for route work)
 
 **Normative doc:** [`docs/guidelines/nextjs/ai_loading_patterns.md`](docs/guidelines/nextjs/ai_loading_patterns.md) — loading UX **and** page performance (adapted from lampto `ai_page_performance_streaming.md`).  
-**Runtime:** [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — Next.js **16.3.0**, Vercel streaming + Instant Navigations  
+**Runtime:** [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — Next.js **16.4.0**, Vercel streaming + Instant Navigations  
 **Cache tags:** [`cache_revalidation_policy.md`](docs/prds/05_runtime/cache_revalidation_policy.md)
 
 When you **add or edit** `page.tsx`, segment `layout.tsx`, colocated `loading.tsx`, or `error.tsx` under `apps/web/src/app/`:

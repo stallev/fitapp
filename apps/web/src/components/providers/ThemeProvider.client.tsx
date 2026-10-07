@@ -1,23 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import {
   ThemeProvider as NextThemesProvider,
   type ThemeProviderProps,
 } from "next-themes";
 
+import { useIsClient } from "@/lib/ui/use-is-client";
+
 /**
- * Defer next-themes until after mount so Cache Components / Instant Navigations
+ * Defer next-themes until after hydration so Cache Components / Instant Navigations
  * shell prerender does not hit sync `crypto.getRandomValues()` (blocking-prerender-crypto).
  */
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  const [mounted, setMounted] = useState(false);
+  const isClient = useIsClient();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
+  if (!isClient) {
     return children;
   }
 

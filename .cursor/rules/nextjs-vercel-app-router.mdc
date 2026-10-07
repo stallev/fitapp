@@ -1,20 +1,20 @@
 ---
-description: Next.js 16.3.0 App Router, Vercel, proxy.ts, Instant Navigations — apps/web
+description: Next.js 16.4.0 App Router, Vercel, proxy.ts, Instant Navigations — apps/web
 globs: apps/web/**
 alwaysApply: false
 ---
 
-# Next.js 16.3.0 + Vercel (`apps/web`)
+# Next.js 16.4.0 + Vercel (`apps/web`)
 
 **Methodology:** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md)  
-**Runtime (mandatory):** [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — **pin `next@16.3.0`**  
+**Runtime (mandatory):** [ADR-002](docs/prds/07_governance/adr_002_next162_vercel_runtime_policy.md) — **pin `next@16.4.0`**  
 **Stack:** [ADR-001](docs/prds/07_governance/adr_001_stack_and_runtime.md)  
 **Guidelines:** [`docs/guidelines/nextjs/README.md`](docs/guidelines/nextjs/README.md)
 
 ## Version pin (hard requirement)
 
 ```json
-"next": "16.3.0"
+"next": "16.4.0"
 ```
 
 No Next.js 15.x patterns. No floating `^16` without ADR.
@@ -23,7 +23,7 @@ No Next.js 15.x patterns. No floating `^16` without ADR.
 
 Next.js 16 renames `middleware.ts` → **`proxy.ts`** (Context7 `/vercel/next.js` / official v16 upgrade guide):
 
-| Next.js 15 (legacy) | Next.js 16.3.0 (Pulse) |
+| Next.js 15 (legacy) | Next.js 16.4.0 (Pulse) |
 |---------------------|-------------------------|
 | `middleware.ts` | **`proxy.ts`** |
 | `export function middleware()` | **`export function proxy()`** |
@@ -58,4 +58,4 @@ Next.js 16 renames `middleware.ts` → **`proxy.ts`** (Context7 `/vercel/next.js
 - Booking transitions via domain use-cases only
 - Public trainers only when `status = approved`
 
-Reference: lampto `nextjs-vercel-app-router.mdc` — Pulse uses **Vercel + 16.3.0** per ADR-002.
+Reference: lampto `nextjs-vercel-app-router.mdc` — Pulse uses **Vercel + 16.4.0** per ADR-002.

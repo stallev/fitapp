@@ -12,7 +12,7 @@
 
 ## Purpose
 
-Политика **кэширования и инвалидации** Pulse на Next.js 16.3.0: **`'use cache'`** + `cacheTag()` / `cacheLife()` для cross-request reads; `updateTag`, `revalidateTag`, `revalidatePath` после мутаций; tag naming; drift guards ([`domain_invariants.md`](../02_domain_model/domain_invariants.md) INV-03 catalog approval).
+Политика **кэширования и инвалидации** Pulse на Next.js 16.4.0: **`'use cache'`** + `cacheTag()` / `cacheLife()` для cross-request reads; `updateTag`, `revalidateTag`, `revalidatePath` после мутаций; tag naming; drift guards ([`domain_invariants.md`](../02_domain_model/domain_invariants.md) INV-03 catalog approval).
 
 **Instant Navigations (16.3)** опираются на те же границы: Suspense + `'use cache'` формируют reusable App Shell при `partialPrefetching: true` ([ADR-002](../07_governance/adr_002_next162_vercel_runtime_policy.md) §5.1).
 
