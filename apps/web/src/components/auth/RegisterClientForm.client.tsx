@@ -2,14 +2,12 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { Loader2Icon } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { AUTH_MUTATION_ERROR_CODES } from "@pulse/domain";
 
 import { AlertText, ContentText } from "@/components/atoms";
 import { Button } from "@/components/ui/button";
-import { ChoiceCard } from "@/components/ui/ChoiceCard";
 import { CustomLink } from "@/components/ui/CustomLink";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -29,7 +27,6 @@ import { PRODUCT_TOAST_DURATION_MS } from "@/lib/ui/product-toast";
 
 export const RegisterClientForm = () => {
   const messages = useMessages();
-  const router = useRouter();
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [state, formAction, pending] = useActionState<
     RegisterClientFormState,
@@ -54,22 +51,6 @@ export const RegisterClientForm = () => {
         name="acceptedTerms"
         value={termsAccepted ? "on" : ""}
       />
-      <div className="grid gap-3">
-        <ChoiceCard
-          selected
-          title={messages.auth.register.clientTileTitle}
-          meta={messages.auth.register.clientTileDescription}
-          trailing="🧍"
-          disabled
-          aria-pressed
-        />
-        <ChoiceCard
-          title={messages.auth.register.trainerTileTitle}
-          meta={messages.auth.register.trainerTileDescription}
-          trailing="🏋"
-          onClick={() => router.push("/auth/register/trainer")}
-        />
-      </div>
 
       {state && !state.ok && state.message && state.code !== AUTH_MUTATION_ERROR_CODES.DUPLICATE_EMAIL ? (
         <AlertText>{state.message}</AlertText>

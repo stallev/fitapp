@@ -1,21 +1,74 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { USER_ROLE } from "@pulse/domain";
 
 import { Heading } from "@/components/atoms";
-import { TrainerOnboardingCertificatesStep } from "@/components/trainer/onboarding/TrainerOnboardingCertificatesStep.client";
-import { TrainerOnboardingCredentialsStep } from "@/components/trainer/onboarding/TrainerOnboardingCredentialsStep.client";
-import { TrainerOnboardingPersonalStep } from "@/components/trainer/onboarding/TrainerOnboardingPersonalStep.client";
-import { TrainerOnboardingPreviewStep } from "@/components/trainer/onboarding/TrainerOnboardingPreviewStep.client";
-import { TrainerOnboardingProfessionalStep } from "@/components/trainer/onboarding/TrainerOnboardingProfessionalStep.client";
-import { TrainerOnboardingServicesStep } from "@/components/trainer/onboarding/TrainerOnboardingServicesStep.client";
 import { WizardHeader } from "@/components/ui/WizardHeader";
+import { Skeleton } from "@/components/ui/skeleton";
 import type { TrainerOnboardingDraft } from "@/data/trainer/get-trainer-onboarding-draft.server";
 import { useMessages } from "@/components/i18n/LocaleProvider.client";
 
+function OnboardingStepFallback() {
+  return (
+    <div className="space-y-4" aria-busy="true">
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-32 w-full" />
+      <Skeleton className="h-11 w-full rounded-full" />
+    </div>
+  );
+}
+
+const TrainerOnboardingCredentialsStep = dynamic(
+  () =>
+    import("@/components/trainer/onboarding/TrainerOnboardingCredentialsStep.client").then(
+      (module) => ({ default: module.TrainerOnboardingCredentialsStep }),
+    ),
+  { loading: OnboardingStepFallback },
+);
+
+const TrainerOnboardingPersonalStep = dynamic(
+  () =>
+    import("@/components/trainer/onboarding/TrainerOnboardingPersonalStep.client").then(
+      (module) => ({ default: module.TrainerOnboardingPersonalStep }),
+    ),
+  { loading: OnboardingStepFallback },
+);
+
+const TrainerOnboardingProfessionalStep = dynamic(
+  () =>
+    import("@/components/trainer/onboarding/TrainerOnboardingProfessionalStep.client").then(
+      (module) => ({ default: module.TrainerOnboardingProfessionalStep }),
+    ),
+  { loading: OnboardingStepFallback },
+);
+
+const TrainerOnboardingCertificatesStep = dynamic(
+  () =>
+    import("@/components/trainer/onboarding/TrainerOnboardingCertificatesStep.client").then(
+      (module) => ({ default: module.TrainerOnboardingCertificatesStep }),
+    ),
+  { loading: OnboardingStepFallback },
+);
+
+const TrainerOnboardingServicesStep = dynamic(
+  () =>
+    import("@/components/trainer/onboarding/TrainerOnboardingServicesStep.client").then(
+      (module) => ({ default: module.TrainerOnboardingServicesStep }),
+    ),
+  { loading: OnboardingStepFallback },
+);
+
+const TrainerOnboardingPreviewStep = dynamic(
+  () =>
+    import("@/components/trainer/onboarding/TrainerOnboardingPreviewStep.client").then(
+      (module) => ({ default: module.TrainerOnboardingPreviewStep }),
+    ),
+  { loading: OnboardingStepFallback },
+);
 
 const TOTAL_STEPS = 5;
 

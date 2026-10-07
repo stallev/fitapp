@@ -1,32 +1,42 @@
 "use client";
 
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 import { ContentText } from "@/components/atoms";
-import { DemoRolePanel } from "@/components/auth/DemoRolePanel.client";
+import { LoginCredentialsProvider, useLoginCredentials } from "@/components/auth/LoginCredentialsProvider.client";
+import { LoginDemoSection } from "@/components/auth/LoginDemoSection.client";
 import { LoginForm } from "@/components/auth/LoginForm.client";
 import { useMessages } from "@/components/i18n/LocaleProvider.client";
-import {
-  DEMO_CREDENTIALS,
-  isDemoRole,
-  type DemoRole,
-} from "@/lib/demo/demo-credentials";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export const LoginPageClientShell = () => {
-  const messages = useMessages();
-  const searchParams = useSearchParams();
-  const demoParam = searchParams.get("demo");
-
-  const [activeRole, setActiveRole] = useState<DemoRole | null>(() =>
-    isDemoRole(demoParam) ? demoParam : null,
+function LoginDemoFallback() {
+  return (
+    <div className="space-y-4" aria-busy="true">
+      <Skeleton className="mx-auto h-4 w-48" />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <Skeleton className="h-40 w-full rounded-[var(--card-radius-lg)]" />
+        <Skeleton className="h-40 w-full rounded-[var(--card-radius-lg)]" />
+        <Skeleton className="h-40 w-full rounded-[var(--card-radius-lg)]" />
+      </div>
+    </div>
   );
+}
 
-  const credentials = activeRole ? DEMO_CREDENTIALS[activeRole] : undefined;
+type LoginPageClientShellProps = {
+  callbackUrl?: string;
+};
+
+function LoginPageClientShellInner({
+  callbackUrl,
+}: LoginPageClientShellProps) {
+  const messages = useMessages();
+  const { demoRole, credentials } = useLoginCredentials();
 
   return (
     <div className="space-y-0">
-      <DemoRolePanel activeRole={activeRole} onRoleSelect={setActiveRole} />
+      <Suspense fallback={<LoginDemoFallback />}>
+        <LoginDemoSection />
+      </Suspense>
 
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center" aria-hidden>
@@ -44,10 +54,21 @@ export const LoginPageClientShell = () => {
       </div>
 
       <LoginForm
-        key={activeRole ?? "manual"}
+        key={demoRole ?? "manual"}
+        callbackUrl={callbackUrl}
         initialEmail={credentials?.email}
         initialPassword={credentials?.password}
       />
     </div>
   );
-};
+}
+
+export function LoginPageClientShell({
+  callbackUrl,
+}: LoginPageClientShellProps) {
+  return (
+    <LoginCredentialsProvider>
+      <LoginPageClientShellInner callbackUrl={callbackUrl} />
+    </LoginCredentialsProvider>
+  );
+}

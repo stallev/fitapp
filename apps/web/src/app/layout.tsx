@@ -14,7 +14,8 @@ import "./globals.css";
 const manrope = Manrope({
   variable: "--font-sans",
   subsets: ["latin", "cyrillic"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const sourceSerif4 = Source_Serif_4({
@@ -22,12 +23,14 @@ const sourceSerif4 = Source_Serif_4({
   subsets: ["latin", "cyrillic"],
   weight: ["400"],
   style: ["normal", "italic"],
+  display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin", "cyrillic"],
-  weight: ["400", "500"],
+  weight: ["400"],
+  display: "swap",
 });
 
 const fontClassName = [

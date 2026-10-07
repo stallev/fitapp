@@ -1,4 +1,4 @@
-import { ContentText, Heading } from "@/components/atoms";
+import { ContentText } from "@/components/atoms";
 import { RatingStars } from "@/components/ui/RatingStars";
 import { VerifiedBadge } from "@/components/ui/VerifiedBadge";
 import type { LandingHeroFloatCardData } from "@/lib/landing/landing-hero-float-cards";
@@ -59,9 +59,13 @@ export function LandingHeroFloatCard({ card }: LandingHeroFloatCardProps) {
             {card.cert}
           </span>
         </div>
-        <Heading as="h3" visualLevel="h6" variant="brand" className="font-sans text-[13px] font-bold">
+        <ContentText
+          as="p"
+          variant="smallEmphasis"
+          className="font-sans text-[13px] font-bold text-primary"
+        >
           {card.price}
-        </Heading>
+        </ContentText>
       </div>
     </div>
   );

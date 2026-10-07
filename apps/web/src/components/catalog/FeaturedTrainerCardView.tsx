@@ -54,9 +54,9 @@ export function FeaturedTrainerCardView({
             label={`PHOTO · ${firstName}`}
             src={trainer.photoUrl}
             alt={trainer.fullName}
-            aspect="cover"
-            className="size-full rounded-none"
-            sizes="(max-width: 768px) 100vw, 400px"
+            aspect="fill"
+            className="absolute inset-0 rounded-none"
+            sizes="(max-width: 1024px) min(100vw, 340px), 400px"
             priority={imagePriority}
           />
           <div
