@@ -1,7 +1,6 @@
-import { connection } from "next/server";
 import { redirect } from "next/navigation";
 
-import { auth } from "@/auth";
+import { getSessionForShell } from "@/lib/auth/get-session-for-shell.server";
 import { AppShell } from "@/components/shell/AppShell";
 import { TrainerReviewBanner } from "@/components/shell/TrainerReviewBanner";
 import { getAdminNavBadges } from "@/data/admin/get-admin-nav-badges.server";
@@ -19,8 +18,7 @@ export async function RoleAppShellGate({
   expectedRole,
   children,
 }: Readonly<RoleAppShellGateProps>) {
-  await connection();
-  const session = await auth();
+  const session = await getSessionForShell();
 
   if (!session?.user?.role || session.user.role !== expectedRole) {
     redirect("/auth/login");

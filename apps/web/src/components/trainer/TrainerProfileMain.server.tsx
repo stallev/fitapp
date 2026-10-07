@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { connection } from "next/server";
 
 import { TrainerProfileDetails } from "@/components/trainer/TrainerProfileDetails.server";
 import { TrainerProfileHeader } from "@/components/trainer/TrainerProfileHeader";
@@ -13,7 +12,6 @@ export type TrainerProfileMainProps = {
 export async function TrainerProfileMain({
   trainerId,
 }: TrainerProfileMainProps) {
-  await connection();
   const profile = await getPublicTrainerProfile(trainerId);
 
   return (
@@ -21,7 +19,7 @@ export async function TrainerProfileMain({
       <TrainerProfileHeader profile={profile} />
 
       <Suspense fallback={<TrainerProfileMainSkeleton />}>
-        <TrainerProfileDetails trainerId={trainerId} />
+        <TrainerProfileDetails profile={profile} />
       </Suspense>
     </div>
   );
