@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { cacheLife, cacheTag } from "next/cache";
 import { notFound } from "next/navigation";
 
@@ -36,14 +37,14 @@ async function loadPublicTrainerProfile(
   return mapPublicTrainerProfileRow(row);
 }
 
-export async function getPublicTrainerProfile(
-  trainerProfileId: string,
-): Promise<PublicTrainerProfile> {
-  const profile = await loadPublicTrainerProfile(trainerProfileId);
+export const getPublicTrainerProfile = cache(
+  async (trainerProfileId: string): Promise<PublicTrainerProfile> => {
+    const profile = await loadPublicTrainerProfile(trainerProfileId);
 
-  if (!profile) {
-    notFound();
-  }
+    if (!profile) {
+      notFound();
+    }
 
-  return profile;
-}
+    return profile;
+  },
+);

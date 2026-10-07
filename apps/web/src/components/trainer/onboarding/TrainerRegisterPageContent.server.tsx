@@ -8,7 +8,7 @@ import {
   getTrainerOnboardingDraft,
   type TrainerOnboardingDraft,
 } from "@/data/trainer/get-trainer-onboarding-draft.server";
-import { auth } from "@/auth";
+import { getSessionForShell } from "@/lib/auth/get-session-for-shell.server";
 
 type TrainerRegisterPageContentProps = {
   searchParams: Promise<{ step?: string }>;
@@ -30,7 +30,7 @@ const EMPTY_TRAINER_ONBOARDING_DRAFT: TrainerOnboardingDraft = {
 export async function TrainerRegisterPageContent({
   searchParams,
 }: TrainerRegisterPageContentProps) {
-  const session = await auth();
+  const session = await getSessionForShell();
   const params = await searchParams;
   const initialStep = params.step ? Number(params.step) : 1;
 

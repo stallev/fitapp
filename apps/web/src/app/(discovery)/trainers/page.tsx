@@ -32,16 +32,8 @@ export default async function TrainersPage({ searchParams }: TrainersPageProps) 
     <div className="space-y-4">
       <PageHeader title={messages.catalog.title} />
 
-      <div className="lg:grid lg:grid-cols-[280px_1fr] lg:gap-6">
-        <Suspense fallback={<CatalogFiltersChromeSkeleton />}>
-          <CatalogFiltersChrome query={query} />
-        </Suspense>
-
-        <div className="min-w-0 space-y-4">
-          <Suspense fallback={<CatalogResultsToolbarSkeleton />}>
-            <CatalogResultsToolbar query={query} />
-          </Suspense>
-
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[280px_1fr] lg:gap-6">
+        <div className="order-1 min-w-0 space-y-4 lg:order-2">
           <CatalogGridRegionError
             title={messages.catalog.error.title}
             description={messages.catalog.error.description}
@@ -51,6 +43,16 @@ export default async function TrainersPage({ searchParams }: TrainersPageProps) 
               <CatalogTrainerGrid query={query} />
             </Suspense>
           </CatalogGridRegionError>
+
+          <Suspense fallback={<CatalogResultsToolbarSkeleton />}>
+            <CatalogResultsToolbar query={query} />
+          </Suspense>
+        </div>
+
+        <div className="order-2 lg:order-1">
+          <Suspense fallback={<CatalogFiltersChromeSkeleton />}>
+            <CatalogFiltersChrome query={query} />
+          </Suspense>
         </div>
       </div>
     </div>

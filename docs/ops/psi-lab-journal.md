@@ -68,3 +68,27 @@ Notes:
 - Регрессии / красная зона mobile Perf: `/trainers` **62** (LCP **5.3s**), `/auth/register/trainer` **65**, `/trainers/[id]` **71** (LCP **5.1s**, FCP **3.1s**), `/auth/login` **80** (LCP **5.4s**), `/features` **85**, `/how-it-was-built` **89** (на 1 pt до 90).
 - Для полного suite с `/trainers/[id]` задать `PSI_TRAINER_PROFILE_ID` в `apps/web/.env.local` (см. example).
 
+### 2026-10-07 (wave2 deploy) — https://fitapp-web-ten.vercel.app
+
+Command: `npm run psi:lab -- --suite --json` (7 canon paths × mobile/desktop). Warmup: `HIT`. Flake retry: 4 runs. Доп.: `--url …/trainers/b9f13c28-9d92-4c87-a36c-8bf21b634fe2` mobile only.
+
+| Path | Warmup | M Perf | M A11y | M BP | M SEO | D Perf | D A11y | D BP | D SEO | M LCP | M FCP | M CLS | Flake |
+|------|--------|--------|--------|------|-------|--------|--------|------|-------|-------|-------|-------|-------|
+| `/` | HIT | 94 | 92 | 100 | 100 | 93 | 92 | 100 | 100 | 2551ms | 1201ms | 0.000 | yes |
+| `/how-it-was-built` | HIT | 92 | 96 | 100 | 100 | 98 | 96 | 100 | 100 | 3151ms | 1201ms | 0.000 | no |
+| `/features` | HIT | 66 | 96 | 100 | 100 | 98 | 96 | 100 | 100 | 5630ms | 3156ms | 0.000 | yes |
+| `/trainers` | HIT | 68 | 98 | 100 | 100 | 90 | 100 | 88 | 92 | 5176ms | 3176ms | 0.000 | yes |
+| `/auth/login` | HIT | 93 | 100 | 100 | 100 | 90 | 96 | 96 | 91 | 2551ms | 1201ms | 0.000 | no |
+| `/auth/register` | HIT | 93 | 100 | 100 | 100 | 98 | 100 | 100 | 100 | 2551ms | 1201ms | 0.000 | no |
+| `/auth/register/trainer` | HIT | 79 | 100 | 100 | 100 | 90 | 100 | 100 | 100 | 4801ms | 1201ms | 0.000 | yes |
+| `/trainers/[id]` | PRERENDER | 66 | 98 | 100 | 100 | — | — | — | — | 6076ms | 3104ms | 0.000 | yes |
+
+Notes:
+
+- Зелёные (все 4 категории ≥90, m+d): **`/`**, **`/how-it-was-built`**, **`/auth/login`**, **`/auth/register`**.
+- Home wave H: M Perf **88→94**, BP **100**; цель **95+** не закрыта (A11y **92** m+d; `aria-prohibited-attr`, `color-contrast` в failing).
+- LCP cluster: `/trainers` M **68** (LCP **5.2s**), `/trainers/[id]` M **66** (LCP **6.1s**), `/auth/register/trainer` M **79** (LCP **4.8s**, лучше 65).
+- `/features` mobile Perf **66** при desktop **98** — сильный flake (другой прогон в тот же день давал M **94**); не чинить по одному красному без повтора.
+- `lcpElement` в JSON для `/` — **null** (не подтвердили hero vs image).
+- Suite без `PSI_TRAINER_PROFILE_ID` — профиль только отдельным `--url`.
+
