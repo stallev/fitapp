@@ -140,10 +140,12 @@ AI-агент — **не поисковик и не генератор кода*
 ### 2.2 Цикл работы агента
 
 ```
-КОНТЕКСТ → ФАЗА → КОНТРАКТ → ЗАДАЧИ → ВЕРИФИКАЦИЯ
+КОНТЕКСТ → TIER → ФАЗА → КОНТРАКТ → ЗАДАЧИ → РЕАЛИЗАЦИЯ → ВЕРИФИКАЦИЯ → [reviewer если T3]
 ```
 
 **Контекст** — агент читает [`AGENTS.md`](../../AGENTS.md) и `.cursor/rules/pulse-project-context.mdc`.
+
+**Tier** — классификация T0–T3 и делегирование субагентам; канон [`ai_agent_model_routing.md`](./ai_agent_model_routing.md), runtime: `model-routing.mdc`.
 
 **Фаза** — агент знает номер фазы (P01, P02…). Фаза ограничивает область изменений.
 
@@ -151,7 +153,7 @@ AI-агент — **не поисковик и не генератор кода*
 
 **Задачи** — чеклист из `docs/implementation/mvp/tasks/P{N}_tasks.md`.
 
-**Верификация** — lint, build, smoke-тесты по чеклисту фазы.
+**Верификация** — lint, build, smoke-тесты по чеклисту фазы. На **T3** — обязательный субагент `reviewer` (readonly) до отчёта «готово»; не путать с IDE Agent Review (см. гайд § Agent Review).
 
 ### 2.3 Точка входа: AGENTS.md
 
@@ -162,10 +164,14 @@ AI-агент — **не поисковик и не генератор кода*
 
 `.cursor/rules/*.mdc` — ограничения, применяемые автоматически.
 
-**На старте Pulse:**
-- `pulse-project-context.mdc` — always-applied
-- `product-docs-alignment.mdc` — always-applied
-- `typescript-monorepo-types.mdc` — always-applied
+**Always applied (оркестрация и инварианты):**
+- `pulse-project-context.mdc` — stack, invariants, doc map
+- `model-routing.mdc` — T0–T3, субагенты, гигиена токенов — [`ai_agent_model_routing.md`](./ai_agent_model_routing.md)
+- `product-docs-alignment.mdc` — doc sync on behavior change
+- `typescript-monorepo-types.mdc` — monorepo types
+- `domain-literals-and-codes.mdc`, `ai-dry-deduplication.mdc`, `psi-lab-testing.mdc` — см. [`docs/guidelines/README.md`](../guidelines/README.md)
+
+Субагенты и pin моделей: `.cursor/agents/` (`architect`, `implementer`, `reviewer`).
 
 **Baseline (documentation phase — active):**
 - `data-server-actions-and-api.mdc`

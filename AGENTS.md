@@ -3,7 +3,7 @@
 **Pulse** — онлайн-маркетплейс фитнес-тренеров (клиенты, тренеры, админы).  
 Monorepo: **Next.js 16.4.0** App Router + Vercel + Neon PostgreSQL.
 
-**Methodology (обязательно):** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md) — цикл КОНТЕКСТ → ФАЗА → КОНТРАКТ → ЗАДАЧИ → ВЕРИФИКАЦИЯ.
+**Methodology (обязательно):** [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md) — цикл КОНТЕКСТ → TIER → ФАЗА → КОНТРАКТ → ЗАДАЧИ → ВЕРИФИКАЦИЯ. **Маршрутизация моделей:** [`docs/meta/ai_agent_model_routing.md`](docs/meta/ai_agent_model_routing.md) + `model-routing.mdc`.
 
 ## Референсный проект (обязательно)
 
@@ -50,6 +50,7 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 |---------|----------|
 | **Реестр документации (волны W0–W14)** | [`docs/meta/documentation_creation_registry.md`](docs/meta/documentation_creation_registry.md) |
 | Методология AI-first | [`docs/meta/ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md) |
+| Маршрутизация моделей (T0–T3) | [`docs/meta/ai_agent_model_routing.md`](docs/meta/ai_agent_model_routing.md) · субагенты: `.cursor/agents/` |
 | Карта архитектуры | [`docs/prds/architecture_master_index.md`](docs/prds/architecture_master_index.md) |
 | Обзор для новых агентов | [`docs/architecture_learning_pack/01_architecture_overview.md`](docs/architecture_learning_pack/01_architecture_overview.md) |
 | MVP scope (canonical) | [`docs/prds/01_product_scope/mvp_scope.md`](docs/prds/01_product_scope/mvp_scope.md) |
@@ -72,15 +73,17 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 ## Цикл работы агента
 
 ```
-КОНТЕКСТ → ФАЗА → КОНТРАКТ → ЗАДАЧИ → ВЕРИФИКАЦИЯ
+КОНТЕКСТ → TIER → ФАЗА → КОНТРАКТ → ЗАДАЧИ → РЕАЛИЗАЦИЯ → ВЕРИФИКАЦИЯ → [reviewer если T3]
 ```
 
 1. Прочитать этот файл, [`ai_first_project_methodology.md`](docs/meta/ai_first_project_methodology.md) и `.cursor/rules/pulse-project-context.mdc`
-2. При работе в `apps/web` — также [`apps/web/AGENTS.md`](apps/web/AGENTS.md)
-3. Определить фазу (`docs/implementation/mvp/phases_tasks_descriptions/P{N}_*.md`)
-4. Прочитать contracts для фазы
-5. Выполнить чеклист из `docs/implementation/mvp/tasks/P{N}_tasks.md`
-6. Верифицировать по чеклисту фазы и обновить документацию при изменении behavior
+2. Классифицировать задачу (строка `Tier: T0|T1|T2|T3`) — [`ai_agent_model_routing.md`](docs/meta/ai_agent_model_routing.md)
+3. При работе в `apps/web` — также [`apps/web/AGENTS.md`](apps/web/AGENTS.md)
+4. Определить фазу (`docs/implementation/mvp/phases_tasks_descriptions/P{N}_*.md`)
+5. Прочитать contracts для фазы
+6. Выполнить чеклист из `docs/implementation/mvp/tasks/P{N}_tasks.md`
+7. Верифицировать по чеклисту фазы (`npm run typecheck`, `npm run lint` где применимо) и обновить документацию при изменении behavior
+8. На **T3** — субагент `reviewer` (readonly) до отчёта «готово»; IDE Agent Review не заменяет этот шаг
 
 ## Статус репозитория
 
@@ -95,3 +98,4 @@ Web AGENTS не отменяет Cursor Rules — только маршрути�
 - [ ] Маршруты не дублируются вне [`canonical_routes.md`](docs/design/canonical_routes.md)
 - [ ] Нет inline domain/mutation codes — константы из `@pulse/domain` (**domain-literals-and-codes**)
 - [ ] Domain invariants не нарушены (timezone, booking state machine, trainer verification)
+- [ ] Для **T3** — прогон `reviewer` до завершения задачи ([`ai_agent_model_routing.md`](docs/meta/ai_agent_model_routing.md))

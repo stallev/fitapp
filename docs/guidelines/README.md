@@ -14,6 +14,7 @@
 | Auth | [`auth/ai_auth_implementation_guide.md`](auth/ai_auth_implementation_guide.md) |
 | Typography | [`typography_text_guidelines.md`](typography_text_guidelines.md) |
 | Lab PSI | [`psi-lab-testing.md`](psi-lab-testing.md) — REST PageSpeed Insights; Pulse: [`../implementation/mvp/guides/ai_psi_lab_testing.md`](../implementation/mvp/guides/ai_psi_lab_testing.md) |
+| Маршрутизация моделей | [`../meta/ai_agent_model_routing.md`](../meta/ai_agent_model_routing.md) — T0–T3, субагенты, гигиена токенов; runtime: `model-routing.mdc` |
 | Visual identity (canon) | [`../design/visual_identity_contract.md`](../design/visual_identity_contract.md) |
 | **UI component catalog (Design Lab)** | [`../implementation/mvp/specs/design_system_lab_spec.md`](../implementation/mvp/specs/design_system_lab_spec.md) — `/design-system` |
 | UX interaction & style (canon) | [`../design/interaction_design_contract.md`](../design/interaction_design_contract.md), [`ui_states_contract.md`](../design/ui_states_contract.md), [`styleguide.md`](../design/styleguide.md) |
@@ -25,6 +26,7 @@
 | Rule | Scope |
 |------|--------|
 | `pulse-project-context.mdc` | Always applied — stack, invariants |
+| `model-routing.mdc` | Always applied — T0–T3, субагенты, гигиена токенов; канон: [`../meta/ai_agent_model_routing.md`](../meta/ai_agent_model_routing.md) |
 | `product-docs-alignment.mdc` | Always applied — doc sync on behavior change |
 | `typescript-monorepo-types.mdc` | Always applied — monorepo types |
 | `domain-literals-and-codes.mdc` | Always applied — mutation codes, domain literals |

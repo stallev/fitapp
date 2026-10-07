@@ -46,3 +46,25 @@ Notes:
 - Худший: `/auth/register` mobile Perf 66 (FCP 3.3s, LCP 5.6s) — клиентская форма без RSC-shell.
 - Не чинить A11y-аудиты на страницах с A11y ≥90 (home `heading-order` / `target-size` / `aria-prohibited-attr` — запас, не блокер).
 
+### 2026-10-07 (post-deploy) — https://fitapp-web-ten.vercel.app
+
+Command: `npm run psi:lab -- --suite` (7 canon paths × mobile/desktop; `PSI_TRAINER_PROFILE_ID` не задан в `.env.local`). Дополнительно: `--url …/trainers/b9f13c28-9d92-4c87-a36c-8bf21b634fe2` mobile + desktop. Warmup: `PRERENDER` / `HIT`. Flake retry: 9 + 1 run.
+
+| Path | Warmup | M Perf | M A11y | M BP | M SEO | D Perf | D A11y | D BP | D SEO | M LCP | M FCP | M CLS | Flake |
+|------|--------|--------|--------|------|-------|--------|--------|------|-------|-------|-------|-------|-------|
+| `/` | PRERENDER | 88 | 92 | 100 | 100 | 95 | 92 | 100 | 100 | 2701ms | 1201ms | 0.000 | yes |
+| `/how-it-was-built` | PRERENDER | 89 | 96 | 100 | 100 | 91 | 96 | 100 | 100 | 3301ms | 1201ms | 0.000 | yes |
+| `/features` | PRERENDER | 85 | 96 | 100 | 100 | 99 | 96 | 96 | 100 | 3301ms | 1201ms | 0.000 | yes |
+| `/trainers` | PRERENDER | 62 | 98 | 100 | 100 | 96 | 96 | 96 | 100 | 5333ms | 1201ms | 0.000 | yes |
+| `/auth/login` | PRERENDER | 80 | 100 | 100 | 100 | 96 | 100 | 100 | 100 | 5401ms | 1201ms | 0.015 | yes |
+| `/auth/register` | PRERENDER | 96 | 100 | 100 | 100 | 97 | 100 | 100 | 100 | 2701ms | 1201ms | 0.000 | yes |
+| `/auth/register/trainer` | PRERENDER | 65 | 100 | 100 | 100 | 95 | 100 | 100 | 100 | 5626ms | 3296ms | 0.000 | yes |
+| `/trainers/[id]` | PRERENDER / HIT | 71 | 98 | 100 | 100 | 93 | 99 | 100 | 100 | 5101ms | 3128ms | 0.000 | yes |
+
+Notes:
+
+- Зелёные (все 4 категории ≥90, m+d): **`/auth/register`** (единственный полный pass).
+- Выигрыш после PSI-оптимизаций: `/auth/register` mobile Perf **66→96**, FCP **3.3s→1.2s**, LCP **5.6s→2.7s**; `/` mobile BP **88→100**, Perf **81→88**, LCP **3.0s→2.7s**.
+- Регрессии / красная зона mobile Perf: `/trainers` **62** (LCP **5.3s**), `/auth/register/trainer` **65**, `/trainers/[id]` **71** (LCP **5.1s**, FCP **3.1s**), `/auth/login` **80** (LCP **5.4s**), `/features` **85**, `/how-it-was-built` **89** (на 1 pt до 90).
+- Для полного suite с `/trainers/[id]` задать `PSI_TRAINER_PROFILE_ID` в `apps/web/.env.local` (см. example).
+

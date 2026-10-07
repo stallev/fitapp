@@ -34,6 +34,7 @@
 | Файл | Статус |
 |------|--------|
 | `docs/meta/ai_first_project_methodology.md` | Канон |
+| `docs/meta/ai_agent_model_routing.md` | Канон — T0–T3, субагенты, гигиена токенов |
 | `docs/reference/lampto_project_reference.md` | Канон |
 | `docs/prds/architecture_master_index.md` | Канон |
 | `docs/prds/07_governance/adr_001_stack_and_runtime.md` | ACCEPTED |

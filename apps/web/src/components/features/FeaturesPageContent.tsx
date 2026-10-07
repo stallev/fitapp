@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
 import { FeaturesBoundaries } from "@/components/features/FeaturesBoundaries";
@@ -5,11 +6,21 @@ import { FeaturesCta } from "@/components/features/FeaturesCta";
 import { FeaturesDemoPaths } from "@/components/features/FeaturesDemoPaths";
 import { FeaturesHero } from "@/components/features/FeaturesHero";
 import { FeaturesRoleSection } from "@/components/features/FeaturesRoleSection";
-import {
-  FeaturesTocDesktop,
-  FeaturesTocMobile,
-  FeaturesTocProvider,
-} from "@/components/features/FeaturesToc.client";
+import { FeaturesTocProvider } from "@/components/features/FeaturesToc.client";
+
+const FeaturesTocMobile = dynamic(
+  () =>
+    import("@/components/features/FeaturesToc.client").then((module) => ({
+      default: module.FeaturesTocMobile,
+    })),
+);
+
+const FeaturesTocDesktop = dynamic(
+  () =>
+    import("@/components/features/FeaturesToc.client").then((module) => ({
+      default: module.FeaturesTocDesktop,
+    })),
+);
 import { LandingFooter } from "@/components/landing/LandingFooter";
 import { LandingFooterSkeleton } from "@/components/landing/LandingFooterSkeleton";
 import { MarketingNav } from "@/components/landing/MarketingNav.server";

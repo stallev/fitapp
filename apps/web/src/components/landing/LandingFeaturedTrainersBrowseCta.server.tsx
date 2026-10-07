@@ -1,11 +1,8 @@
-"use client";
-
 import { ArrowRightIcon } from "lucide-react";
 
 import { CustomLink } from "@/components/ui/CustomLink";
-import { Reveal } from "@/components/ui/Reveal.client";
 
-type LandingFeaturedTrainersBrowseCtaProps = {
+export type LandingFeaturedTrainersBrowseCtaProps = {
   label: string;
 };
 
@@ -13,7 +10,7 @@ export function LandingFeaturedTrainersBrowseCta({
   label,
 }: LandingFeaturedTrainersBrowseCtaProps) {
   return (
-    <Reveal className="mt-10 text-center">
+    <div className="mt-10 text-center">
       <CustomLink
         as="button"
         href="/trainers"
@@ -25,6 +22,6 @@ export function LandingFeaturedTrainersBrowseCta({
         {label}
         <ArrowRightIcon aria-hidden className="size-[18px]" />
       </CustomLink>
-    </Reveal>
+    </div>
   );
 }

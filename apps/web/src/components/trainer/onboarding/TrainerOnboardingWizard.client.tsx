@@ -6,7 +6,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { USER_ROLE } from "@pulse/domain";
 
-import { Heading } from "@/components/atoms";
 import { WizardHeader } from "@/components/ui/WizardHeader";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { TrainerOnboardingDraft } from "@/data/trainer/get-trainer-onboarding-draft.server";
@@ -181,10 +180,6 @@ export function TrainerOnboardingWizard({  isAuthenticated,
       ) : null}
 
       <div className="px-4 py-6 md:px-0">
-        <Heading as="h1" className="mb-6 text-center">
-          {messages.trainer.onboarding.title}
-        </Heading>
-
         {step === 0 ? (
           <TrainerOnboardingCredentialsStep
             onSuccess={() => {
