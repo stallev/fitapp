@@ -59,7 +59,7 @@ export function TrainerProfileReviewsTabPanel({
   if (reviews.items.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-border p-6 text-center">
-        <SectionTitle as="h3">{messages.trainer.profile.reviewsEmpty.title}</SectionTitle>
+        <SectionTitle as="h2">{messages.trainer.profile.reviewsEmpty.title}</SectionTitle>
         <ContentText variant="muted" as="p" className="mt-2">
           {messages.trainer.profile.reviewsEmpty.description}
         </ContentText>

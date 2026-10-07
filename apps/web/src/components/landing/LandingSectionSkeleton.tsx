@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function LandingSectionSkeleton() {
   return (
-    <div className="bg-card py-24" aria-busy="true" aria-hidden>
+    <div className="bg-card py-24" aria-busy="true" role="status">
       <Container variant="marketing" className="space-y-8">
         <Skeleton className="mx-auto h-4 w-32" />
         <Skeleton className="mx-auto h-12 w-full max-w-lg" />

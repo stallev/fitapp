@@ -27,12 +27,7 @@ export async function LandingFeaturedTrainersSkeleton() {
   const { featured } = messages.landing;
 
   return (
-    <section
-      id="trainers"
-      aria-busy="true"
-      aria-label={featured.title}
-      className="bg-card py-24"
-    >
+    <section id="trainers" aria-busy="true" role="status" className="bg-card py-24">
       <Container variant="marketing">
         <MarketingSectionHeader
           label={featured.label}

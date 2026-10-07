@@ -1,4 +1,4 @@
-import { ContentText, Heading } from "@/components/atoms";
+import { ContentText, Heading, SectionTitle } from "@/components/atoms";
 import { PulseCard } from "@/components/ui/card";
 import type { PublicTrainerProfile } from "@/lib/trainer/trainer-profile";
 import { formatServicePrice } from "@/lib/trainer/format-service-price";
@@ -15,7 +15,11 @@ export async function TrainerProfileServicesTab({
   const messages = await getMessages();
 
   return (
-    <div className="grid items-stretch gap-3 md:grid-cols-2">
+    <div className="space-y-3">
+      <SectionTitle as="h2" className="sr-only">
+        {messages.trainer.profile.tabs.services}
+      </SectionTitle>
+      <div className="grid items-stretch gap-3 md:grid-cols-2">
       {profile.services.map((service) => (
         <PulseCard key={service.id} className="flex h-full flex-col p-4 md:p-5">
           <Heading as="h3" visualLevel="h4">
@@ -41,6 +45,7 @@ export async function TrainerProfileServicesTab({
           </div>
         </PulseCard>
       ))}
+      </div>
     </div>
   );
 }

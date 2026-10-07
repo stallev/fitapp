@@ -21,7 +21,7 @@ export async function TrainerProfileAboutTab({ profile }: TrainerProfileAboutTab
 
       <div className="grid items-stretch gap-4 lg:grid-cols-2">
         <PulseCard className="flex h-full min-w-0 flex-col p-4 md:p-6">
-          <SectionTitle as="h3">{messages.trainer.profile.categoriesTitle}</SectionTitle>
+          <SectionTitle as="h2">{messages.trainer.profile.categoriesTitle}</SectionTitle>
           <div className="mt-3 flex flex-1 flex-wrap content-start gap-1.5">
             {profile.specializations.map((spec) => (
               <SpecChip key={spec.slug}>{spec.name}</SpecChip>
@@ -30,7 +30,7 @@ export async function TrainerProfileAboutTab({ profile }: TrainerProfileAboutTab
         </PulseCard>
 
         <PulseCard className="flex h-full min-w-0 flex-col p-4 md:p-6">
-          <SectionTitle as="h3">{messages.trainer.profile.certificatesTitle}</SectionTitle>
+          <SectionTitle as="h2">{messages.trainer.profile.certificatesTitle}</SectionTitle>
           {profile.certificates.length > 0 ? (
             <ul className="mt-3 space-y-2">
               {profile.certificates.map((certificate) => (

@@ -92,3 +92,25 @@ Notes:
 - `lcpElement` в JSON для `/` — **null** (не подтвердили hero vs image).
 - Suite без `PSI_TRAINER_PROFILE_ID` — профиль только отдельным `--url`.
 
+### 2026-10-07 (redeploy) — https://fitapp-web-ten.vercel.app
+
+Command: `npm run psi:lab -- --suite --json` (8 public URLs × mobile/desktop; `PSI_TRAINER_PROFILE_ID` задан). Warmup: all `PRERENDER`. Flake retry: 10 runs. Exit code 1 (есть категории &lt; 90).
+
+| Path | Warmup | M Perf | M A11y | M BP | M SEO | D Perf | D A11y | D BP | D SEO | M LCP | M FCP | M CLS | Flake |
+|------|--------|--------|--------|------|-------|--------|--------|------|-------|-------|-------|-------|-------|
+| `/` | PRERENDER | 91 | 92 | 100 | 100 | 91 | 92 | 100 | 100 | 2701ms | 1201ms | 0.000 | yes |
+| `/how-it-was-built` | PRERENDER | 96 | 96 | 100 | 100 | 98 | 96 | 100 | 100 | 2551ms | 1201ms | 0.000 | yes |
+| `/features` | PRERENDER | 94 | 96 | 100 | 100 | 92 | 96 | 100 | 100 | 2401ms | 1201ms | 0.000 | yes |
+| `/trainers` | PRERENDER | 74 | 98 | 100 | 100 | 93 | 91 | 100 | 100 | 5176ms | 1201ms | 0.000 | yes |
+| `/auth/login` | PRERENDER | 95 | 100 | 100 | 100 | 90 | 100 | 100 | 100 | 2701ms | 1201ms | 0.000 | no |
+| `/auth/register` | PRERENDER | 88 | 100 | 100 | 100 | 90 | 100 | 100 | 100 | 2551ms | 1201ms | 0.000 | yes |
+| `/auth/register/trainer` | PRERENDER | 91 | 100 | 100 | 100 | 96 | 100 | 100 | 100 | 2551ms | 1201ms | 0.000 | no |
+| `/trainers/[id]` | PRERENDER | 73 | 98 | 100 | 100 | 91 | 99 | 100 | 100 | 3751ms | 1201ms | 0.000 | yes |
+
+Notes:
+
+- Зелёные (все 4 категории ≥90, m+d): **`/`**, **`/how-it-was-built`**, **`/features`**, **`/auth/login`**, **`/auth/register/trainer`**.
+- Ниже 90 только mobile Perf: `/trainers` **74** (LCP **5.2s**, TBT **297ms**), `/trainers/[id]` **73** (LCP **3.8s**, TBT **621ms**), `/auth/register` **88** (SI **6.9s** при LCP **2.6s** / TTI **4.8s**).
+- Home цель **95+** не закрыта: M/D Perf **91**, A11y **92** (`aria-prohibited-attr`, `color-contrast`). `lcpElement` снова **null**.
+- Против wave2: `/features` M Perf **66→94**, `/auth/register/trainer` M **79→91**, `/trainers` M **68→74**, профиль M **66→73** (desktop впервые **91**). `/` M Perf **94→91**. `/auth/register` M Perf **93→88**.
+

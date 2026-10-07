@@ -90,11 +90,11 @@ export async function LandingHero() {
               {hero.stats.rating} {hero.stats.ratingLabel}
             </span>
             <span aria-hidden className="size-1 rounded-full bg-border" />
-            <ContentText variant="subtle" as="span" className="text-sm font-medium">
+            <ContentText variant="muted" as="span" className="text-sm font-medium">
               {hero.stats.trainers}
             </ContentText>
             <span aria-hidden className="size-1 rounded-full bg-border" />
-            <ContentText variant="subtle" as="span" className="text-sm font-medium">
+            <ContentText variant="muted" as="span" className="text-sm font-medium">
               {hero.stats.sessions}
             </ContentText>
           </div>

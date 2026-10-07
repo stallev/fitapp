@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 
 import { TrainerProfileAboutTab } from "@/components/trainer/TrainerProfileAboutTab";
 import { TrainerProfileServicesTab } from "@/components/trainer/TrainerProfileServicesTab";
-import { TrainerProfileTabsShell } from "@/components/trainer/TrainerProfileTabsShell.client";
+import { TrainerProfileTabsShellDeferred } from "@/components/trainer/TrainerProfileTabsShellDeferred.client";
 import type { PublicTrainerProfile } from "@/lib/trainer/trainer-profile";
 import { getPolicySessionContext } from "@/server/auth/session-to-policy-context";
 import { getMessages } from "@/lib/messages/server";
@@ -39,7 +39,7 @@ export async function TrainerProfileDetails({
     <>
       <div className="md:grid md:grid-cols-[minmax(0,1fr)_360px] md:items-start md:gap-6">
         <div className="min-w-0 space-y-4">
-          <TrainerProfileTabsShell
+          <TrainerProfileTabsShellDeferred
             labels={{
               about: messages.trainer.profile.tabs.about,
               services: messages.trainer.profile.tabs.services,

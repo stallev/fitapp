@@ -73,7 +73,7 @@ export function TrainerProfileScheduleTabPanel({
   if (dayGroups.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-border p-6 text-center">
-        <SectionTitle as="h3">{messages.trainer.profile.scheduleEmpty.title}</SectionTitle>
+        <SectionTitle as="h2">{messages.trainer.profile.scheduleEmpty.title}</SectionTitle>
         <ContentText variant="muted" as="p" className="mt-2">
           {messages.trainer.profile.scheduleEmpty.description}
         </ContentText>
@@ -84,7 +84,7 @@ export function TrainerProfileScheduleTabPanel({
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <SectionTitle as="h3">{messages.trainer.profile.scheduleThisWeek}</SectionTitle>
+        <SectionTitle as="h2">{messages.trainer.profile.scheduleThisWeek}</SectionTitle>
         <ContentText variant="mutedMicro" as="p" className="font-mono">
           {preview.timezoneLabel}
         </ContentText>
